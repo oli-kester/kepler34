@@ -72,8 +72,8 @@ bool global_stats = false;
 bool global_pass_sysex = false;
 Glib::ustring global_filename = "";
 Glib::ustring last_used_dir ="/";
-std::string config_filename = ".seq24rc";
-std::string user_filename = ".seq24usr";
+std::string config_filename = ".kepler34rc";
+std::string user_filename = ".kepler34usr";
 bool global_print_keys = false;
 interaction_method_e global_interactionmethod = e_seq24_interaction;
 
@@ -133,12 +133,23 @@ main (int argc, char *argv[])
      * lash_driver variable*/
     perform p;
 
+    /* config DIR */
+    Glib::ustring config_dir = Glib::ustring::compose("%1%2%3%2%4%2",getenv(HOME),SLASH,".config","kepler34");
+    //config_dir.append(SLASH + "%1" + SLASH + "%2" + SLASH,".config","kepler34");
+
+    /* make sure .config directory exists. If not, create it */
+    struct stat status;
+    if ( stat(config_dir.c_str(), &status)) {
+        printf( "No config directory detected. Creating ... [%s]\n", config_dir.c_str());
+        //kdir(config_dir);
+    }
+
     /* read user preferences files */
     if ( getenv( HOME ) != NULL )
     {
         Glib::ustring home( getenv( HOME ));
         last_used_dir = home;
-        Glib::ustring total_file = home + SLASH + config_filename;
+        Glib::ustring total_file = config_dir + config_filename;
         
         if (Glib::file_test(total_file, Glib::FILE_TEST_EXISTS))
         {
@@ -151,7 +162,7 @@ main (int argc, char *argv[])
             }
         }
 
-        total_file = home + SLASH + user_filename;
+        total_file = config_dir + user_filename;
         if (Glib::file_test(total_file, Glib::FILE_TEST_EXISTS))
         {
             printf( "Reading [%s]\n", total_file.c_str());
@@ -311,7 +322,7 @@ main (int argc, char *argv[])
     if ( getenv( HOME ) != NULL )
     {
         string home( getenv( HOME ));
-        Glib::ustring total_file = home + SLASH + config_filename;
+        Glib::ustring total_file = config_dir + config_filename;
         printf( "Writing [%s]\n", total_file.c_str());
 
         optionsfile options( total_file );

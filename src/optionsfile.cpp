@@ -383,9 +383,6 @@ optionsfile::write( perform *a_perf  )
     file << "\n\n[midi-clock-mod-ticks]\n";
     file << midibus::get_clock_mod() << "\n";
 
-
-
-
     /* bus input data */
     buses = a_perf->get_master_midi_bus( )->get_num_in_buses();
 
