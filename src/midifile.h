@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef SEQ24_MIDIFILE
-#define SEQ24_MIDIFILE
+#pragma once
 
 #include "perform.h"
 #include <fstream>
@@ -61,4 +60,3 @@ class midifile
 };
 
 
-#endif 

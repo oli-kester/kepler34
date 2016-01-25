@@ -1,5 +1,5 @@
-seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
- /usr/include/ctype.h /usr/include/features.h \
+src/seq24.o: src/seq24.cpp /usr/include/stdc-predef.h \
+ /usr/include/getopt.h /usr/include/ctype.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
@@ -28,7 +28,7 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h config.h font.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h src/config.h src/font.h \
  /usr/include/gtkmm-2.4/gtkmm/image.h /usr/include/glibmm-2.4/glibmm.h \
  /usr/lib/x86_64-linux-gnu/glibmm-2.4/include/glibmmconfig.h \
  /usr/include/glibmm-2.4/glibmm/thread.h /usr/include/glib-2.0/glib.h \
@@ -128,6 +128,7 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/x86_64-linux-gnu/bits/wchar2.h \
  /usr/include/c++/4.8/iterator \
  /usr/include/c++/4.8/bits/stl_iterator_base_types.h \
+ /usr/include/c++/4.8/type_traits \
  /usr/include/c++/4.8/bits/stl_iterator_base_funcs.h \
  /usr/include/c++/4.8/bits/concept_check.h \
  /usr/include/c++/4.8/debug/debug.h \
@@ -137,12 +138,15 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/c++/4.8/ostream /usr/include/c++/4.8/ios \
  /usr/include/c++/4.8/exception \
  /usr/include/c++/4.8/bits/atomic_lockfree_defines.h \
+ /usr/include/c++/4.8/bits/exception_ptr.h \
+ /usr/include/c++/4.8/bits/exception_defines.h \
+ /usr/include/c++/4.8/bits/nested_exception.h \
  /usr/include/c++/4.8/bits/char_traits.h \
  /usr/include/c++/4.8/bits/stl_algobase.h \
  /usr/include/c++/4.8/bits/functexcept.h \
- /usr/include/c++/4.8/bits/exception_defines.h \
  /usr/include/c++/4.8/ext/numeric_traits.h \
- /usr/include/c++/4.8/bits/stl_pair.h \
+ /usr/include/c++/4.8/bits/stl_pair.h /usr/include/c++/4.8/cstdint \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
  /usr/include/c++/4.8/bits/localefwd.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++locale.h \
  /usr/include/c++/4.8/clocale /usr/include/locale.h \
@@ -162,6 +166,15 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/c++/4.8/backward/binders.h \
  /usr/include/c++/4.8/bits/range_access.h \
  /usr/include/c++/4.8/bits/basic_string.h \
+ /usr/include/c++/4.8/initializer_list \
+ /usr/include/c++/4.8/ext/string_conversions.h \
+ /usr/include/c++/4.8/cstdlib /usr/include/c++/4.8/cstdio \
+ /usr/include/c++/4.8/cerrno /usr/include/errno.h \
+ /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
+ /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ /usr/include/c++/4.8/bits/functional_hash.h \
+ /usr/include/c++/4.8/bits/hash_bytes.h \
  /usr/include/c++/4.8/bits/basic_string.tcc \
  /usr/include/c++/4.8/bits/locale_classes.tcc \
  /usr/include/c++/4.8/streambuf /usr/include/c++/4.8/bits/streambuf.tcc \
@@ -238,6 +251,8 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/glib-2.0/gobject/gvaluetypes.h /usr/include/c++/4.8/vector \
  /usr/include/c++/4.8/bits/stl_construct.h \
  /usr/include/c++/4.8/ext/alloc_traits.h \
+ /usr/include/c++/4.8/bits/alloc_traits.h \
+ /usr/include/c++/4.8/bits/ptr_traits.h \
  /usr/include/c++/4.8/bits/stl_uninitialized.h \
  /usr/include/c++/4.8/bits/stl_vector.h \
  /usr/include/c++/4.8/bits/stl_bvector.h \
@@ -245,9 +260,10 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/glibmm-2.4/glibmm/variantiter.h \
  /usr/include/c++/4.8/utility /usr/include/c++/4.8/bits/stl_relops.h \
  /usr/include/c++/4.8/map /usr/include/c++/4.8/bits/stl_tree.h \
- /usr/include/c++/4.8/bits/stl_map.h \
- /usr/include/c++/4.8/bits/stl_multimap.h /usr/include/c++/4.8/stdexcept \
- /usr/include/c++/4.8/typeinfo \
+ /usr/include/c++/4.8/bits/stl_map.h /usr/include/c++/4.8/tuple \
+ /usr/include/c++/4.8/array /usr/include/c++/4.8/stdexcept \
+ /usr/include/c++/4.8/bits/uses_allocator.h \
+ /usr/include/c++/4.8/bits/stl_multimap.h /usr/include/c++/4.8/typeinfo \
  /usr/include/glibmm-2.4/glibmm/variant_basictypes.h \
  /usr/include/glibmm-2.4/glibmm/wrap.h \
  /usr/include/glibmm-2.4/glibmm/objectbase.h \
@@ -263,10 +279,36 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/glibmm-2.4/glibmm/debug.h /usr/include/c++/4.8/memory \
  /usr/include/c++/4.8/bits/stl_tempbuf.h \
  /usr/include/c++/4.8/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/4.8/ext/concurrence.h /usr/include/c++/4.8/functional \
+ /usr/include/c++/4.8/bits/unique_ptr.h \
+ /usr/include/c++/4.8/bits/shared_ptr.h \
+ /usr/include/c++/4.8/bits/shared_ptr_base.h \
  /usr/include/c++/4.8/backward/auto_ptr.h /usr/include/c++/4.8/algorithm \
- /usr/include/c++/4.8/bits/stl_algo.h /usr/include/c++/4.8/cstdlib \
+ /usr/include/c++/4.8/bits/stl_algo.h \
  /usr/include/c++/4.8/bits/algorithmfwd.h \
- /usr/include/c++/4.8/bits/stl_heap.h /usr/include/c++/4.8/deque \
+ /usr/include/c++/4.8/bits/stl_heap.h /usr/include/c++/4.8/random \
+ /usr/include/c++/4.8/cmath /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathinline.h \
+ /usr/include/c++/4.8/limits /usr/include/c++/4.8/bits/random.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/opt_random.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/x86intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/ia32intrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/mmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/xmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/mm_malloc.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/emmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/immintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/fxsrintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/adxintrin.h \
+ /usr/include/c++/4.8/bits/random.tcc /usr/include/c++/4.8/numeric \
+ /usr/include/c++/4.8/bits/stl_numeric.h /usr/include/c++/4.8/deque \
  /usr/include/c++/4.8/bits/stl_deque.h \
  /usr/include/c++/4.8/bits/deque.tcc \
  /usr/include/glibmm-2.4/glibmm/balancedtree.h \
@@ -385,16 +427,7 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/cairomm-1.0/cairomm/pattern.h \
  /usr/include/cairomm-1.0/cairomm/path.h \
  /usr/include/cairomm-1.0/cairomm/scaledfont.h \
- /usr/include/c++/4.8/valarray /usr/include/c++/4.8/cmath \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/huge_val.h \
- /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
- /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
- /usr/include/x86_64-linux-gnu/bits/inf.h \
- /usr/include/x86_64-linux-gnu/bits/nan.h \
- /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h \
- /usr/include/c++/4.8/bits/valarray_array.h \
+ /usr/include/c++/4.8/valarray /usr/include/c++/4.8/bits/valarray_array.h \
  /usr/include/c++/4.8/bits/valarray_array.tcc \
  /usr/include/c++/4.8/bits/valarray_before.h \
  /usr/include/c++/4.8/bits/slice_array.h \
@@ -853,11 +886,11 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/gdkmm-2.4/gdkmm/pixbufanimation.h \
  /usr/include/gdkmm-2.4/gdkmm/pixbufanimationiter.h \
  /usr/include/giomm-2.4/giomm/icon.h \
- /usr/include/gtkmm-2.4/gtkmm/drawingarea.h lash.h perform.h globals.h \
- /usr/include/gtkmm-2.4/gtkmm/main.h \
+ /usr/include/gtkmm-2.4/gtkmm/drawingarea.h src/lash.h src/perform.h \
+ src/globals.h /usr/include/gtkmm-2.4/gtkmm/main.h \
  /usr/include/gtkmm-2.4/gtkmm/accelkey.h \
  /usr/include/gtk-2.0/gdk/gdkkeysyms.h \
- /usr/include/gtk-2.0/gdk/gdkkeysyms-compat.h event.h midibus.h \
+ /usr/include/gtk-2.0/gdk/gdkkeysyms-compat.h src/event.h src/midibus.h \
  /usr/include/alsa/asoundlib.h /usr/include/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
@@ -865,31 +898,27 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl2.h /usr/include/assert.h \
  /usr/include/x86_64-linux-gnu/sys/poll.h \
  /usr/include/x86_64-linux-gnu/bits/poll.h \
- /usr/include/x86_64-linux-gnu/bits/poll2.h /usr/include/errno.h \
- /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
- /usr/include/x86_64-linux-gnu/asm/errno.h \
- /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /usr/include/alsa/asoundef.h /usr/include/alsa/version.h \
- /usr/include/alsa/global.h /usr/include/alsa/input.h \
- /usr/include/alsa/output.h /usr/include/alsa/error.h \
- /usr/include/alsa/conf.h /usr/include/alsa/pcm.h \
- /usr/include/alsa/rawmidi.h /usr/include/alsa/timer.h \
- /usr/include/alsa/hwdep.h /usr/include/alsa/control.h \
- /usr/include/alsa/mixer.h /usr/include/alsa/seq_event.h \
- /usr/include/alsa/seq.h /usr/include/alsa/seqmid.h \
- /usr/include/alsa/seq_midi_event.h sequence.h mutex.h midifile.h \
- /usr/include/c++/4.8/fstream /usr/include/c++/4.8/bits/codecvt.h \
- /usr/include/c++/4.8/cstdio \
+ /usr/include/x86_64-linux-gnu/bits/poll2.h /usr/include/alsa/asoundef.h \
+ /usr/include/alsa/version.h /usr/include/alsa/global.h \
+ /usr/include/alsa/input.h /usr/include/alsa/output.h \
+ /usr/include/alsa/error.h /usr/include/alsa/conf.h \
+ /usr/include/alsa/pcm.h /usr/include/alsa/rawmidi.h \
+ /usr/include/alsa/timer.h /usr/include/alsa/hwdep.h \
+ /usr/include/alsa/control.h /usr/include/alsa/mixer.h \
+ /usr/include/alsa/seq_event.h /usr/include/alsa/seq.h \
+ /usr/include/alsa/seqmid.h /usr/include/alsa/seq_midi_event.h \
+ src/sequence.h src/mutex.h src/midifile.h /usr/include/c++/4.8/fstream \
+ /usr/include/c++/4.8/bits/codecvt.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++io.h \
  /usr/include/c++/4.8/bits/fstream.tcc /usr/include/jack/jack.h \
  /usr/include/jack/systemdeps.h /usr/include/inttypes.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
  /usr/include/jack/types.h /usr/include/jack/transport.h \
  /usr/include/jack/weakmacros.h /usr/include/jack/session.h \
  /usr/include/lash/lash.h /usr/include/uuid/uuid.h \
- /usr/include/x86_64-linux-gnu/sys/time.h mainwnd.h mainwid.h seqmenu.h \
- /usr/include/gtkmm-2.4/gtkmm/button.h /usr/include/gtkmm-2.4/gtkmm/bin.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h src/mainwnd.h src/mainwid.h \
+ src/seqmenu.h /usr/include/gtkmm-2.4/gtkmm/button.h \
+ /usr/include/gtkmm-2.4/gtkmm/bin.h \
  /usr/include/gtkmm-2.4/gtkmm/container.h \
  /usr/include/gtkmm-2.4/gtkmm/window.h \
  /usr/include/gtkmm-2.4/gtkmm/accelgroup.h \
@@ -911,7 +940,7 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/gtkmm-2.4/gtkmm/separatormenuitem.h \
  /usr/include/gtkmm-2.4/gtkmm/menubar.h \
  /usr/include/gtkmm-2.4/gtkmm/eventbox.h \
- /usr/include/gtkmm-2.4/gtkmm/table.h maintime.h perfedit.h \
+ /usr/include/gtkmm-2.4/gtkmm/table.h src/maintime.h src/perfedit.h \
  /usr/include/gtkmm-2.4/gtkmm/adjustment.h \
  /usr/include/gtkmm-2.4/gtkmm/scrollbar.h \
  /usr/include/gtkmm-2.4/gtkmm/range.h \
@@ -936,9 +965,10 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/gtkmm-2.4/gtkmm/invisible.h \
  /usr/include/gtkmm-2.4/gtkmm/separator.h \
  /usr/include/gtkmm-2.4/gtkmm/arrow.h \
- /usr/include/sigc++-2.0/sigc++/bind.h perfnames.h perfroll.h \
- /usr/include/gdkmm-2.4/gdkmm/cursor.h perfroll_input.h perftime.h \
- seqtime.h options.h /usr/include/gtkmm-2.4/gtkmm/dialog.h \
+ /usr/include/sigc++-2.0/sigc++/bind.h src/perfnames.h src/perfroll.h \
+ /usr/include/gdkmm-2.4/gdkmm/cursor.h src/perfroll_input.h \
+ src/perftime.h src/seqtime.h src/options.h \
+ /usr/include/gtkmm-2.4/gtkmm/dialog.h \
  /usr/include/gtkmm-2.4/gtkmm/buttonbox.h \
  /usr/include/gtkmm-2.4/gtkmm/frame.h \
  /usr/include/gtkmm-2.4/gtkmm/fileselection.h \
@@ -1175,8 +1205,8 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
  /usr/include/gtkmm-2.4/gtkmm/treerowreference.h \
  /usr/include/gtkmm-2.4/gtkmm/treestore.h \
  /usr/include/gtkmm-2.4/gtkmm/uimanager.h \
- /usr/include/gtkmm-2.4/gtkmm/actiongroup.h optionsfile.h configfile.h \
- userfile.h
+ /usr/include/gtkmm-2.4/gtkmm/actiongroup.h src/optionsfile.h \
+ src/configfile.h src/userfile.h
 
 /usr/include/stdc-predef.h:
 
@@ -1260,9 +1290,9 @@ seq24.o: seq24.cpp /usr/include/stdc-predef.h /usr/include/getopt.h \
 
 /usr/include/x86_64-linux-gnu/bits/stdlib.h:
 
-config.h:
+src/config.h:
 
-font.h:
+src/font.h:
 
 /usr/include/gtkmm-2.4/gtkmm/image.h:
 
@@ -1506,6 +1536,8 @@ font.h:
 
 /usr/include/c++/4.8/bits/stl_iterator_base_types.h:
 
+/usr/include/c++/4.8/type_traits:
+
 /usr/include/c++/4.8/bits/stl_iterator_base_funcs.h:
 
 /usr/include/c++/4.8/bits/concept_check.h:
@@ -1528,17 +1560,27 @@ font.h:
 
 /usr/include/c++/4.8/bits/atomic_lockfree_defines.h:
 
+/usr/include/c++/4.8/bits/exception_ptr.h:
+
+/usr/include/c++/4.8/bits/exception_defines.h:
+
+/usr/include/c++/4.8/bits/nested_exception.h:
+
 /usr/include/c++/4.8/bits/char_traits.h:
 
 /usr/include/c++/4.8/bits/stl_algobase.h:
 
 /usr/include/c++/4.8/bits/functexcept.h:
 
-/usr/include/c++/4.8/bits/exception_defines.h:
-
 /usr/include/c++/4.8/ext/numeric_traits.h:
 
 /usr/include/c++/4.8/bits/stl_pair.h:
+
+/usr/include/c++/4.8/cstdint:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h:
+
+/usr/include/stdint.h:
 
 /usr/include/c++/4.8/bits/localefwd.h:
 
@@ -1583,6 +1625,32 @@ font.h:
 /usr/include/c++/4.8/bits/range_access.h:
 
 /usr/include/c++/4.8/bits/basic_string.h:
+
+/usr/include/c++/4.8/initializer_list:
+
+/usr/include/c++/4.8/ext/string_conversions.h:
+
+/usr/include/c++/4.8/cstdlib:
+
+/usr/include/c++/4.8/cstdio:
+
+/usr/include/c++/4.8/cerrno:
+
+/usr/include/errno.h:
+
+/usr/include/x86_64-linux-gnu/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/x86_64-linux-gnu/asm/errno.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/asm-generic/errno-base.h:
+
+/usr/include/c++/4.8/bits/functional_hash.h:
+
+/usr/include/c++/4.8/bits/hash_bytes.h:
 
 /usr/include/c++/4.8/bits/basic_string.tcc:
 
@@ -1750,6 +1818,10 @@ font.h:
 
 /usr/include/c++/4.8/ext/alloc_traits.h:
 
+/usr/include/c++/4.8/bits/alloc_traits.h:
+
+/usr/include/c++/4.8/bits/ptr_traits.h:
+
 /usr/include/c++/4.8/bits/stl_uninitialized.h:
 
 /usr/include/c++/4.8/bits/stl_vector.h:
@@ -1770,9 +1842,15 @@ font.h:
 
 /usr/include/c++/4.8/bits/stl_map.h:
 
-/usr/include/c++/4.8/bits/stl_multimap.h:
+/usr/include/c++/4.8/tuple:
+
+/usr/include/c++/4.8/array:
 
 /usr/include/c++/4.8/stdexcept:
+
+/usr/include/c++/4.8/bits/uses_allocator.h:
+
+/usr/include/c++/4.8/bits/stl_multimap.h:
 
 /usr/include/c++/4.8/typeinfo:
 
@@ -1808,17 +1886,77 @@ font.h:
 
 /usr/include/c++/4.8/bits/stl_raw_storage_iter.h:
 
+/usr/include/c++/4.8/ext/concurrence.h:
+
+/usr/include/c++/4.8/functional:
+
+/usr/include/c++/4.8/bits/unique_ptr.h:
+
+/usr/include/c++/4.8/bits/shared_ptr.h:
+
+/usr/include/c++/4.8/bits/shared_ptr_base.h:
+
 /usr/include/c++/4.8/backward/auto_ptr.h:
 
 /usr/include/c++/4.8/algorithm:
 
 /usr/include/c++/4.8/bits/stl_algo.h:
 
-/usr/include/c++/4.8/cstdlib:
-
 /usr/include/c++/4.8/bits/algorithmfwd.h:
 
 /usr/include/c++/4.8/bits/stl_heap.h:
+
+/usr/include/c++/4.8/random:
+
+/usr/include/c++/4.8/cmath:
+
+/usr/include/math.h:
+
+/usr/include/x86_64-linux-gnu/bits/huge_val.h:
+
+/usr/include/x86_64-linux-gnu/bits/huge_valf.h:
+
+/usr/include/x86_64-linux-gnu/bits/huge_vall.h:
+
+/usr/include/x86_64-linux-gnu/bits/inf.h:
+
+/usr/include/x86_64-linux-gnu/bits/nan.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathdef.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathinline.h:
+
+/usr/include/c++/4.8/limits:
+
+/usr/include/c++/4.8/bits/random.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/opt_random.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/x86intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/ia32intrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/mmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/xmmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/mm_malloc.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/emmintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/immintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/fxsrintrin.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/adxintrin.h:
+
+/usr/include/c++/4.8/bits/random.tcc:
+
+/usr/include/c++/4.8/numeric:
+
+/usr/include/c++/4.8/bits/stl_numeric.h:
 
 /usr/include/c++/4.8/deque:
 
@@ -2083,26 +2221,6 @@ font.h:
 /usr/include/cairomm-1.0/cairomm/scaledfont.h:
 
 /usr/include/c++/4.8/valarray:
-
-/usr/include/c++/4.8/cmath:
-
-/usr/include/math.h:
-
-/usr/include/x86_64-linux-gnu/bits/huge_val.h:
-
-/usr/include/x86_64-linux-gnu/bits/huge_valf.h:
-
-/usr/include/x86_64-linux-gnu/bits/huge_vall.h:
-
-/usr/include/x86_64-linux-gnu/bits/inf.h:
-
-/usr/include/x86_64-linux-gnu/bits/nan.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathdef.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathinline.h:
 
 /usr/include/c++/4.8/bits/valarray_array.h:
 
@@ -3100,11 +3218,11 @@ font.h:
 
 /usr/include/gtkmm-2.4/gtkmm/drawingarea.h:
 
-lash.h:
+src/lash.h:
 
-perform.h:
+src/perform.h:
 
-globals.h:
+src/globals.h:
 
 /usr/include/gtkmm-2.4/gtkmm/main.h:
 
@@ -3114,9 +3232,9 @@ globals.h:
 
 /usr/include/gtk-2.0/gdk/gdkkeysyms-compat.h:
 
-event.h:
+src/event.h:
 
-midibus.h:
+src/midibus.h:
 
 /usr/include/alsa/asoundlib.h:
 
@@ -3137,18 +3255,6 @@ midibus.h:
 /usr/include/x86_64-linux-gnu/bits/poll.h:
 
 /usr/include/x86_64-linux-gnu/bits/poll2.h:
-
-/usr/include/errno.h:
-
-/usr/include/x86_64-linux-gnu/bits/errno.h:
-
-/usr/include/linux/errno.h:
-
-/usr/include/x86_64-linux-gnu/asm/errno.h:
-
-/usr/include/asm-generic/errno.h:
-
-/usr/include/asm-generic/errno-base.h:
 
 /usr/include/alsa/asoundef.h:
 
@@ -3184,17 +3290,15 @@ midibus.h:
 
 /usr/include/alsa/seq_midi_event.h:
 
-sequence.h:
+src/sequence.h:
 
-mutex.h:
+src/mutex.h:
 
-midifile.h:
+src/midifile.h:
 
 /usr/include/c++/4.8/fstream:
 
 /usr/include/c++/4.8/bits/codecvt.h:
-
-/usr/include/c++/4.8/cstdio:
 
 /usr/include/x86_64-linux-gnu/c++/4.8/bits/basic_file.h:
 
@@ -3207,10 +3311,6 @@ midifile.h:
 /usr/include/jack/systemdeps.h:
 
 /usr/include/inttypes.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h:
-
-/usr/include/stdint.h:
 
 /usr/include/jack/types.h:
 
@@ -3226,11 +3326,11 @@ midifile.h:
 
 /usr/include/x86_64-linux-gnu/sys/time.h:
 
-mainwnd.h:
+src/mainwnd.h:
 
-mainwid.h:
+src/mainwid.h:
 
-seqmenu.h:
+src/seqmenu.h:
 
 /usr/include/gtkmm-2.4/gtkmm/button.h:
 
@@ -3282,9 +3382,9 @@ seqmenu.h:
 
 /usr/include/gtkmm-2.4/gtkmm/table.h:
 
-maintime.h:
+src/maintime.h:
 
-perfedit.h:
+src/perfedit.h:
 
 /usr/include/gtkmm-2.4/gtkmm/adjustment.h:
 
@@ -3336,19 +3436,19 @@ perfedit.h:
 
 /usr/include/sigc++-2.0/sigc++/bind.h:
 
-perfnames.h:
+src/perfnames.h:
 
-perfroll.h:
+src/perfroll.h:
 
 /usr/include/gdkmm-2.4/gdkmm/cursor.h:
 
-perfroll_input.h:
+src/perfroll_input.h:
 
-perftime.h:
+src/perftime.h:
 
-seqtime.h:
+src/seqtime.h:
 
-options.h:
+src/options.h:
 
 /usr/include/gtkmm-2.4/gtkmm/dialog.h:
 
@@ -3830,8 +3930,8 @@ options.h:
 
 /usr/include/gtkmm-2.4/gtkmm/actiongroup.h:
 
-optionsfile.h:
+src/optionsfile.h:
 
-configfile.h:
+src/configfile.h:
 
-userfile.h:
+src/userfile.h:

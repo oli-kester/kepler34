@@ -23,8 +23,6 @@
 event::event() :
     m_timestamp(0),
     m_status(EVENT_NOTE_OFF),
-    m_sysex(NULL),
-    m_size(0),
     m_linked(NULL),
     m_has_link(false),
     m_selected(false),
@@ -33,13 +31,6 @@ event::event() :
 {
     m_data[0] = 0;
     m_data[1] = 0;
-}
-
-event::~event()
-{
-  delete[] m_sysex;
-
-  m_sysex = NULL;
 }
 
 long
@@ -90,13 +81,13 @@ event::set_data( char a_D1, char a_D2 )
 }
 
 void
-event::increment_data2(void )
+event::increment_data2()
 {
 	m_data[1] = (m_data[1]+1) & 0x7F;
 }
 
 void
-event::decrement_data2(void )
+event::decrement_data2()
 {
 	m_data[1] = (m_data[1]-1) & 0x7F;
 }
@@ -104,13 +95,13 @@ event::decrement_data2(void )
 
 
 void
-event::increment_data1(void )
+event::increment_data1()
 {
 	m_data[0] = (m_data[0]+1) & 0x7F;
 }
 
 void
-event::decrement_data1(void )
+event::decrement_data1()
 {
 	m_data[0] = (m_data[0]-1) & 0x7F;
 }
@@ -131,12 +122,9 @@ event::get_status( )
 
 
 void
-event::start_sysex( void  )
+event::start_sysex()
 {
-  delete[] m_sysex;
-
-  m_sysex = NULL;
-  m_size = 0;
+  m_sysex.clear();
 }
 
 bool
@@ -144,19 +132,9 @@ event::append_sysex( unsigned char *a_data, long a_size )
 {
   bool ret = true;
 
-  unsigned char *buffer = new unsigned char[m_size + a_size];
-
-  /* copy old and append */
-  memcpy(  buffer        , m_sysex, m_size );
-  memcpy( &buffer[m_size], a_data, a_size );
-
-  delete[] m_sysex;
-
-  m_size = m_size + a_size;
-  m_sysex = buffer;
-
   for ( int i=0; i<a_size; i++ ){
 
+    m_sysex.push_back( a_data[i] );
     if ( a_data[i] == EVENT_SYSEX_END )
       ret = false;
   }
@@ -167,9 +145,9 @@ event::append_sysex( unsigned char *a_data, long a_size )
 
 
 unsigned char *
-event::get_sysex( void )
+event::get_sysex()
 {
-  return m_sysex;
+  return m_sysex.data();
 }
 
 
@@ -177,13 +155,13 @@ event::get_sysex( void )
 void
 event::set_size( long a_size )
 {
-  m_size = a_size;
+  m_sysex.resize(a_size);
 }
 
 long
-event::get_size( void )
+event::get_size()
 {
-  return m_size;
+  return m_sysex.size();
 }
 
 void
@@ -228,12 +206,12 @@ event::print()
 {
     printf( "[%06ld] [%04lX] %02X ",
 	    m_timestamp,
-	    m_size,
+	    m_sysex.size(),
 	    m_status );
 
     if ( m_status == EVENT_SYSEX ){
 
-      for( int i=0; i<m_size; i++ ){
+      for( size_t i=0; i<m_sysex.size(); i++ ){
 
 	if ( i%16 == 0 )
 	  printf( "\n    " );
@@ -253,7 +231,7 @@ event::print()
 }
 
 int
-event::get_rank( void ) const
+event::get_rank(void) const
 {
     switch ( m_status )
     {

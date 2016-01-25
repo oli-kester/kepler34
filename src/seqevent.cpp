@@ -66,6 +66,8 @@ seqevent::seqevent(sequence *a_seq,
 
     set_size_request( 10, c_eventarea_y );
     set_double_buffered( false );
+
+    memset(&m_old, 0, sizeof m_old);
 }
 
 void
@@ -473,7 +475,7 @@ seqevent::on_expose_event(GdkEventExpose* e)
 }
 
 void
-seqevent::force_draw(void )
+seqevent::force_draw()
 {
     m_window->draw_drawable(m_gc,
                             m_pixmap,
@@ -968,7 +970,6 @@ bool FruitySeqEventInput::on_button_release_event(GdkEventButton* a_ev, seqevent
     long tick_f;
 
     int x,w;
-    int numsel;
 
     ths.grab_focus( );
 
@@ -1022,7 +1023,7 @@ bool FruitySeqEventInput::on_button_release_event(GdkEventButton* a_ev, seqevent
                 (a_ev->state & GDK_CONTROL_MASK))
             {
                 // deselect the event
-                numsel = ths.m_seq->select_events( t_s, t_f,
+                ths.m_seq->select_events( t_s, t_f,
                                                   ths.m_status, ths.m_cc,
                                                   sequence::e_deselect );
             }
@@ -1052,7 +1053,7 @@ bool FruitySeqEventInput::on_button_release_event(GdkEventButton* a_ev, seqevent
             ths.convert_x( x,   &tick_s );
             ths.convert_x( x+w, &tick_f );
 
-            numsel = ths.m_seq->select_events( tick_s, tick_f,
+            ths.m_seq->select_events( tick_s, tick_f,
                                             ths.m_status,
                                             ths.m_cc, sequence::e_toggle_selection );
         }
@@ -1292,7 +1293,6 @@ bool Seq24SeqEventInput::on_button_release_event(GdkEventButton* a_ev, seqevent&
     long tick_f;
 
     int x,w;
-    int numsel;
 
     ths.grab_focus( );
 
@@ -1314,7 +1314,7 @@ bool Seq24SeqEventInput::on_button_release_event(GdkEventButton* a_ev, seqevent&
             ths.convert_x( x,   &tick_s );
             ths.convert_x( x+w, &tick_f );
 
-            numsel = ths.m_seq->select_events( tick_s, tick_f,
+            ths.m_seq->select_events( tick_s, tick_f,
                     ths.m_status,
                     ths.m_cc, sequence::e_select );
         }

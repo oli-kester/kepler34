@@ -129,7 +129,6 @@ bool midifile::parse (perform * a_perf, int a_screen_set)
     unsigned short NumTracks;
     unsigned short ppqn;
     unsigned short perf;
-    int c;
 
     /* track name from file */
     char TrackName[256];
@@ -396,10 +395,8 @@ bool midifile::parse (perform * a_perf, int a_screen_set)
                                 default:
                                     for (i = 0; i < len; i++)
                                     {
-                                        c = read_byte();
-                                        //printf( "%02X ", c  );
+                                        read_byte();
                                     }
-                                    //printf("\n");
                                     break;
                             }
                         }

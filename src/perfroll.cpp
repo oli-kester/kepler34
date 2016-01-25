@@ -556,7 +556,7 @@ perfroll::on_expose_event(GdkEventExpose* e)
 
 
 void
-perfroll::redraw_dirty_sequences( void )
+perfroll::redraw_dirty_sequences()
 {
     bool draw = false;
 
@@ -606,7 +606,7 @@ perfroll::draw_drawable_row( Glib::RefPtr<Gdk::Drawable> a_dest, Glib::RefPtr<Gd
 
 
 void
-perfroll::start_playing( void )
+perfroll::start_playing()
 {
     // keep in sync with perfedit's start_playing... wish i could call it directly...
     m_mainperf->position_jack( true );
@@ -615,7 +615,7 @@ perfroll::start_playing( void )
 }
 
 void
-perfroll::stop_playing( void )
+perfroll::stop_playing()
 {
     // keep in sync with perfedit's stop_playing... wish i could call it directly...
     m_mainperf->stop_jack();

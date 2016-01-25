@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef SEQ24_MUTEX
-#define SEQ24_MUTEX
+#pragma once
 
 #include "globals.h"
 
@@ -62,4 +61,3 @@ public:
 
 };
 
-#endif

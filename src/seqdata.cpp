@@ -180,7 +180,6 @@ seqdata::draw_events_on(  Glib::RefPtr<Gdk::Drawable> a_draw  )
     unsigned char d0,d1;
 
     int event_x;
-    int event_width;
     int event_height;
 
     bool selected;
@@ -212,7 +211,6 @@ seqdata::draw_events_on(  Glib::RefPtr<Gdk::Drawable> a_draw  )
             /* turn into screen corrids */
 
             event_x = tick / m_zoom;
-            event_width  = c_data_x;
 
             /* generate the value */
             event_height = d1;
@@ -465,7 +463,7 @@ seqdata::on_leave_notify_event(GdkEventCrossing* p0)
 
 
 void
-seqdata::draw_line_on_window( void )
+seqdata::draw_line_on_window()
 {
     int x,y,w,h;
     m_gc->set_foreground( m_black );
@@ -534,7 +532,7 @@ seqdata::on_size_allocate(Gtk::Allocation& a_r )
 
 
 void
-seqdata::force_draw(void )
+seqdata::force_draw()
 {
     m_window->draw_drawable(m_gc,
                             m_pixmap,

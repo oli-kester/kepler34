@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef SEQ24_GLOBALS
-#define SEQ24_GLOBALS
+#pragma once
 
 #ifdef __WIN32__
 #    include "configwin32.h"
@@ -333,4 +332,3 @@ const char* const c_interaction_method_descs[] =
 
 extern interaction_method_e global_interactionmethod;
 
-#endif

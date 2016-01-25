@@ -17,8 +17,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 //-----------------------------------------------------------------------------
-#ifndef SEQ24_CONTROLLERS
-#define SEQ24_CONTROLLERS
+#pragma once
 
 string c_controller_names[128] = {
 
@@ -154,4 +153,3 @@ string c_controller_names[128] = {
 };
 
 
-#endif

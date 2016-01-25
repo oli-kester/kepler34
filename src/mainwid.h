@@ -26,8 +26,7 @@
 
 class seqedit;
 
-#ifndef SEQ24_MAINWID
-#define SEQ24_MAINWID
+#pragma once
 
 
 #include <gtkmm/button.h>
@@ -113,7 +112,7 @@ class mainwid : public Gtk::DrawingArea, public seqmenu
 
     int seq_from_xy( int a_x, int a_y );
 
-    int timeout( void );
+    int timeout();
 
     void redraw( int a_seq );
 
@@ -135,4 +134,3 @@ class mainwid : public Gtk::DrawingArea, public seqmenu
 
 };
 
-#endif

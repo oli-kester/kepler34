@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 //
-#ifndef SEQ24_PERFROLL_INPUT_H
-#define SEQ24_PERFROLL_INPUT_H
+#pragma once
 
 #include <gtkmm/button.h>
 
@@ -67,5 +66,4 @@ class Seq24PerfInput : public AbstractPerfInput
         bool m_adding_pressed;
 };
 
-#endif
 

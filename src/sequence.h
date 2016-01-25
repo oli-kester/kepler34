@@ -19,8 +19,7 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef SEQ24_SEQUENCE
-#define SEQ24_SEQUENCE
+#pragma once
 
 class sequence;
 
@@ -164,9 +163,9 @@ class sequence
     void put_event_on_bus (event * a_e);
 
     /* resetes the location counters */
-    void reset_loop (void);
+    void reset_loop ();
 
-    void remove_all (void);
+    void remove_all ();
 
     /* mutex */
     void lock ();
@@ -187,12 +186,12 @@ class sequence
      ~sequence ();
 
 
-    void push_undo (void);
-    void pop_undo (void);
-    void pop_redo (void);
+    void push_undo ();
+    void pop_undo ();
+    void pop_redo ();
 
-    void push_trigger_undo (void);
-    void pop_trigger_undo (void);
+    void push_trigger_undo ();
+    void pop_trigger_undo ();
 
     //
     //  Gets and Sets
@@ -203,26 +202,26 @@ class sequence
     void set_name (char *a_name);
 
     void set_measures (long a_length_measures);
-    long get_measures (void);
+    long get_measures ();
 
     void set_bpm (long a_beats_per_measure);
-    long get_bpm (void);
+    long get_bpm ();
 
     void set_bw (long a_beat_width);
-    long get_bw (void);
+    long get_bw ();
     void set_rec_vol (long a_rec_vol);
 
     void set_song_mute (bool a_mute);
-    bool get_song_mute (void);
+    bool get_song_mute ();
 
     /* returns string of name */
-    const char *get_name (void);
+    const char *get_name ();
 
     void set_editing (bool a_edit)
     {
 	m_editing = a_edit;
     };
-    bool get_editing (void)
+    bool get_editing ()
     {
 	return m_editing;
     };
@@ -230,7 +229,7 @@ class sequence
     {
 	m_raise = a_edit;
     };
-    bool get_raise (void)
+    bool get_raise ()
     {
 	return m_raise;
     };
@@ -251,10 +250,10 @@ class sequence
     bool get_playing ();
     void toggle_playing ();
 
-    void toggle_queued (void);
-    void off_queued (void);
-    bool get_queued (void);
-    long get_queued_tick (void);
+    void toggle_queued ();
+    void off_queued ();
+    bool get_queued ();
+    long get_queued_tick ();
 
     void set_recording (bool);
     bool get_recording ();
@@ -302,34 +301,34 @@ class sequence
     void del_trigger (long a_tick );
     bool get_trigger_state (long a_tick);
     bool select_trigger(long a_tick);
-    bool unselect_triggers (void);
+    bool unselect_triggers ();
 
     bool intersectTriggers( long position, long& start, long& end );
     bool intersectNotes( long position, long position_note, long& start, long& end, long& note );
     bool intersectEvents( long posstart, long posend, long status, long& start );
 
 
-    void del_selected_trigger( void );
-    void cut_selected_trigger( void );
-    void copy_selected_trigger( void );
-    void paste_trigger( void );
+    void del_selected_trigger();
+    void cut_selected_trigger();
+    void copy_selected_trigger();
+    void paste_trigger();
 
     void move_selected_triggers_to(long a_tick, bool a_adjust_offset, int a_which=2);
-    long get_selected_trigger_start_tick( void );
-    long get_selected_trigger_end_tick( void );
+    long get_selected_trigger_start_tick();
+    long get_selected_trigger_end_tick();
 
-    long get_max_trigger (void);
+    long get_max_trigger ();
 
     void move_triggers (long a_start_tick, long a_distance, bool a_direction);
     void copy_triggers (long a_start_tick, long a_distance);
-    void clear_triggers (void);
+    void clear_triggers ();
 
 
-    long get_trigger_offset (void);
+    long get_trigger_offset ();
 
     /* sets the midibus to dump to */
     void set_midi_bus (char a_mb);
-    char get_midi_bus (void);
+    char get_midi_bus ();
 
     void set_master_midi_bus (mastermidibus * a_mmb);
 
@@ -357,9 +356,9 @@ class sequence
     int get_num_selected_notes ();
     int get_num_selected_events (unsigned char a_status, unsigned char a_cc);
 
-    void select_all (void);
+    void select_all ();
 
-    void copy_selected (void);
+    void copy_selected ();
     void paste_selected (long a_tick, int a_note);
 
     /* returns the 'box' of selected items */
@@ -412,7 +411,7 @@ class sequence
 
     /* resets everything to zero, used when
        sequencer stops */
-    void zero_markers (void);
+    void zero_markers ();
 
     /* flushes a note to the midibus to preview its
        sound, used by the virtual paino */
@@ -420,7 +419,7 @@ class sequence
     void play_note_off (int a_note);
 
     /* send a note off for all active notes */
-    void off_playing_notes (void);
+    void off_playing_notes ();
 
     //
     // Drawing functions
@@ -428,8 +427,8 @@ class sequence
 
     /* resets draw marker so calls to getNextnoteEvent
        will start from the first */
-    void reset_draw_marker (void);
-    void reset_draw_trigger_marker (void);
+    void reset_draw_marker ();
+    void reset_draw_trigger_marker ();
 
     /* each call seqdata( sequence *a_seq, int a_scale );fills the passed refrences with a
        events elements, and returns true.  When it
@@ -466,4 +465,3 @@ class sequence
     void transpose_notes (int a_steps, int a_scale);
 };
 
-#endif

@@ -25,8 +25,7 @@
 
 class seqedit;
 
-#ifndef SEQ24_MENU
-#define SEQ24_MENU
+#pragma once
 
 
 #include <gtkmm/button.h>
@@ -84,4 +83,3 @@ class seqmenu : public virtual Glib::ObjectBase
     virtual ~seqmenu( ){ };
 };
 
-#endif

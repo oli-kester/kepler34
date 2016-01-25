@@ -1,0 +1,38 @@
+# Makefile.am for seq24
+
+EXTRA_DIST += \
+	src/pixmaps/bus.xpm \
+  src/pixmaps/collapse.xpm \
+  src/pixmaps/copy.xpm \
+  src/pixmaps/down.xpm \
+  src/pixmaps/expand.xpm \
+  src/pixmaps/font_b.xpm \
+  src/pixmaps/font_w.xpm \
+  src/pixmaps/key.xpm \
+  src/pixmaps/learn2.xpm \
+  src/pixmaps/learn.xpm \
+  src/pixmaps/length.xpm \
+  src/pixmaps/loop.xpm \
+  src/pixmaps/menu_empty.xpm \
+  src/pixmaps/menu_full.xpm \
+  src/pixmaps/midi.xpm \
+  src/pixmaps/note_length.xpm \
+  src/pixmaps/perfedit.xpm \
+  src/pixmaps/play2.xpm \
+  src/pixmaps/play.xpm \
+  src/pixmaps/q_rec.xpm \
+  src/pixmaps/quanize.xpm \
+  src/pixmaps/rec.xpm \
+  src/pixmaps/redo.xpm \
+  src/pixmaps/scale.xpm \
+  src/pixmaps/seq24_32.xpm \
+  src/pixmaps/seq24.xpm \
+  src/pixmaps/seq-editor.xpm \
+  src/pixmaps/sequences.xpm \
+  src/pixmaps/snap.xpm \
+  src/pixmaps/song-editor.xpm \
+  src/pixmaps/stop.xpm \
+  src/pixmaps/thru.xpm \
+  src/pixmaps/tools.xpm \
+  src/pixmaps/undo.xpm \
+  src/pixmaps/zoom.xpm

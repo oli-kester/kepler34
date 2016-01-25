@@ -19,8 +19,7 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef SEQ24_PERFROLL
-#define SEQ24_PERFROLL
+#pragma once
 
 #include <gtkmm/button.h>
 #include <gtkmm/window.h>
@@ -120,8 +119,8 @@ class perfroll : public Gtk::DrawingArea
     void snap_x( int *a_x );
 
 
-    void start_playing( void );
-    void stop_playing( void );
+    void start_playing();
+    void stop_playing();
 
 
 
@@ -131,8 +130,8 @@ class perfroll : public Gtk::DrawingArea
     void draw_drawable_row( Glib::RefPtr<Gdk::Drawable> a_dest, Glib::RefPtr<Gdk::Drawable> a_src,  long a_y );
 
 
-    void change_horz( void );
-    void change_vert( void );
+    void change_horz();
+    void change_vert();
 
     void split_trigger( int a_sequence, long a_tick );
 
@@ -149,7 +148,7 @@ class perfroll : public Gtk::DrawingArea
 
     void draw_progress();
 
-    void redraw_dirty_sequences( void );
+    void redraw_dirty_sequences();
 
     perfroll( perform *a_perf,
 	      Adjustment *a_hadjust,
@@ -158,4 +157,3 @@ class perfroll : public Gtk::DrawingArea
     ~perfroll( );
 };
 
-#endif
