@@ -29,8 +29,7 @@
 
 
 
-#ifndef SEQ24_MAINWINDOW
-#define SEQ24_MAINWINDOW
+#pragma once
 
 #include <map>
 #include <gtkmm.h>
@@ -93,9 +92,9 @@ class mainwnd : public Gtk::Window, public performcallback
 
     sigc::connection   m_timeout_connect;
 
-    void file_import_dialog( void );
-    void options_dialog( void );
-    void about_dialog( void );
+    void file_import_dialog();
+    void options_dialog();
+    void about_dialog();
 
     void adj_callback_ss( );
     void adj_callback_bpm( );
@@ -138,4 +137,3 @@ class mainwnd : public Gtk::Window, public performcallback
 };
 
 
-#endif

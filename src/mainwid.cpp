@@ -127,7 +127,7 @@ mainwid::fill_background_window()
 }
 
 int
-mainwid::timeout( void )
+mainwid::timeout()
 {
     return true;
 }

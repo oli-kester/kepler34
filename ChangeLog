@@ -1,3 +1,24 @@
++++ Release 0.9.3 (2016-02-24) +++
+
+2016-01-22  Wolfgang Illmeyer <wolfgang@illmeyer.com>
+	* configure.ac, src/perfedit.cpp, m4/*: Make the build work with
+	C++11, as required by recent versions of gtkmm
+
+2012-02-25  Guido Scholz  <guido.scholz@bayernline.de>
+	* src/perform.*: Remove --file option from jack session
+	commandline, hint by Frank Kober
+
+2012-02-24  Guido Scholz  <guido.scholz@bayernline.de>
+	* src/perform.*: Register empty process callback for JACK, patch
+	provided by Lieven Moors
+
+2012-01-05 Sebastien Alaiwan <sebastien.alaiwan@gmail.com>
+	* src/perform.cpp: Fix clock tick drift
+
+2011-01-04  Guido Scholz  <guido.scholz@bayernline.de>
+	* src/lash.*, src/seq24.cpp: Fix lash client initialization
+
+
 +++ Release 0.9.2 (2010-11-27) +++
 
 2010-11-25  Guido Scholz  <guido.scholz@bayernline.de>

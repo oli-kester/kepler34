@@ -299,7 +299,7 @@ mainwnd::timer_callback(  )
 
 
 void
-mainwnd::open_performance_edit( void )
+mainwnd::open_performance_edit()
 {
     if (m_perf_edit->is_visible())
         m_perf_edit->hide();
@@ -312,7 +312,7 @@ mainwnd::open_performance_edit( void )
 
 
 void
-mainwnd::options_dialog( void )
+mainwnd::options_dialog()
 {
     delete m_options;
     m_options = new options( *this,  m_mainperf );
@@ -321,7 +321,7 @@ mainwnd::options_dialog( void )
 
 
 void
-mainwnd::start_playing( void )
+mainwnd::start_playing()
 {
     m_mainperf->position_jack( false );
     m_mainperf->start( false );
@@ -331,7 +331,7 @@ mainwnd::start_playing( void )
 
 
 void
-mainwnd::stop_playing( void )
+mainwnd::stop_playing()
 {
     m_mainperf->stop_jack();
     m_mainperf->stop();
@@ -418,8 +418,6 @@ void mainwnd::file_save_as()
     switch (result) {
         case Gtk::RESPONSE_OK:
         {
-            bool result = false;
-
             std::string fname = dialog.get_filename();
             Gtk::FileFilter* current_filter = dialog.get_filter();
 
@@ -440,7 +438,7 @@ void mainwnd::file_save_as()
                         "Do you want to overwrite it?",
                         false,
                         Gtk::MESSAGE_WARNING, Gtk::BUTTONS_YES_NO, true);
-                result = warning.run();
+                auto result = warning.run();
 
                 if (result == Gtk::RESPONSE_NO)
                     return;
@@ -611,7 +609,7 @@ mainwnd::toLower(basic_string<char>& s)
 
 
 void
-mainwnd::file_import_dialog( void )
+mainwnd::file_import_dialog()
 {
     Gtk::FileChooserDialog dialog("Import MIDI file",
             Gtk::FILE_CHOOSER_ACTION_OPEN);
@@ -710,7 +708,7 @@ mainwnd::on_delete_event(GdkEventAny *a_e)
 
 
 void
-mainwnd::about_dialog( void )
+mainwnd::about_dialog()
 {
     Gtk::AboutDialog dialog;
     dialog.set_transient_for(*this);

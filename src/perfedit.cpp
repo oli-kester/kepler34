@@ -119,7 +119,7 @@ perfedit::perfedit( perform *a_perf )
     /* snap */
     m_button_snap = manage( new Button());
     m_button_snap->add( *manage( new Image(Gdk::Pixbuf::create_from_xpm_data( snap_xpm ))));
-    m_button_snap->signal_clicked().connect(  bind<Menu *>( mem_fun( *this, &perfedit::popup_menu), m_menu_snap  ));
+    m_button_snap->signal_clicked().connect(  sigc::bind<Menu *>( mem_fun( *this, &perfedit::popup_menu), m_menu_snap  ));
     add_tooltip( m_button_snap, "Grid snap. (Fraction of Measure Length)" );
     m_entry_snap = manage( new Entry());
     m_entry_snap->set_size_request( 40, -1 );
@@ -152,7 +152,7 @@ perfedit::perfedit( perform *a_perf )
     /* beats per measure */
     m_button_bpm = manage( new Button());
     m_button_bpm->add( *manage( new Image(Gdk::Pixbuf::create_from_xpm_data( down_xpm  ))));
-    m_button_bpm->signal_clicked().connect(  bind<Menu *>( mem_fun( *this, &perfedit::popup_menu), m_menu_bpm  ));
+    m_button_bpm->signal_clicked().connect(  sigc::bind<Menu *>( mem_fun( *this, &perfedit::popup_menu), m_menu_bpm  ));
     add_tooltip( m_button_bpm, "Time Signature. Beats per Measure" );
     m_entry_bpm = manage( new Entry());
     m_entry_bpm->set_width_chars(2);
@@ -162,7 +162,7 @@ perfedit::perfedit( perform *a_perf )
     /* beat width */
     m_button_bw = manage( new Button());
     m_button_bw->add( *manage( new Image(Gdk::Pixbuf::create_from_xpm_data( down_xpm  ))));
-    m_button_bw->signal_clicked().connect(  bind<Menu *>( mem_fun( *this, &perfedit::popup_menu), m_menu_bw  ));
+    m_button_bw->signal_clicked().connect(  sigc::bind<Menu *>( mem_fun( *this, &perfedit::popup_menu), m_menu_bw  ));
     add_tooltip( m_button_bw, "Time Signature.  Length of Beat" );
     m_entry_bw = manage( new Entry());
     m_entry_bw->set_width_chars(2);
@@ -290,14 +290,14 @@ perfedit::on_key_press_event(GdkEventKey* a_ev)
 }
 
 void
-perfedit::undo( void )
+perfedit::undo()
 {
     m_mainperf->pop_trigger_undo();
     m_perfroll->queue_draw();
 }
 
 void
-perfedit::start_playing( void )
+perfedit::start_playing()
 {
     m_mainperf->position_jack( true );
     m_mainperf->start_jack( );
@@ -305,7 +305,7 @@ perfedit::start_playing( void )
 }
 
 void
-perfedit::stop_playing( void )
+perfedit::stop_playing()
 {
 
     m_mainperf->stop_jack();
@@ -313,7 +313,7 @@ perfedit::stop_playing( void )
 }
 
 void
-perfedit::collapse( void )
+perfedit::collapse()
 {
     m_mainperf->push_trigger_undo();
     m_mainperf->move_triggers( false );
@@ -321,7 +321,7 @@ perfedit::collapse( void )
 }
 
 void
-perfedit::copy( void )
+perfedit::copy()
 {
     m_mainperf->push_trigger_undo();
     m_mainperf->copy_triggers(  );
@@ -329,7 +329,7 @@ perfedit::copy( void )
 }
 
 void
-perfedit::expand( void )
+perfedit::expand()
 {
     m_mainperf->push_trigger_undo();
     m_mainperf->move_triggers( true );
@@ -337,7 +337,7 @@ perfedit::expand( void )
 }
 
 void
-perfedit::set_looped( void )
+perfedit::set_looped()
 {
     m_mainperf->set_looping( m_button_loop->get_active());
 }
@@ -350,7 +350,7 @@ perfedit::popup_menu(Menu *a_menu)
 }
 
 void
-perfedit::set_guides( void )
+perfedit::set_guides()
 {
     long measure_ticks = (c_ppqn * 4) * m_bpm / m_bw;
     long snap_ticks =  measure_ticks / m_snap;
@@ -418,7 +418,7 @@ perfedit::init_before_show()
 }
 
 bool
-perfedit::timeout( void )
+perfedit::timeout()
 {
 
     m_perfroll->redraw_dirty_sequences();

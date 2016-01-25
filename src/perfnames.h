@@ -19,8 +19,7 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef SEQ24_PERFNAME
-#define SEQ24_PERFNAME
+#pragma once
 
 #include "perform.h"
 #include "sequence.h"
@@ -79,13 +78,13 @@ class perfnames : public virtual Gtk::DrawingArea, public virtual seqmenu
 
     void draw_sequence( int a_sequence );
 
-    void change_vert( void );
+    void change_vert();
 
     void redraw( int a_sequence );
 
  public:
 
-    void redraw_dirty_sequences( void );
+    void redraw_dirty_sequences();
 
     perfnames( perform *a_perf,
 	       Adjustment *a_vadjust   );
@@ -93,4 +92,3 @@ class perfnames : public virtual Gtk::DrawingArea, public virtual seqmenu
 
 };
 
-#endif

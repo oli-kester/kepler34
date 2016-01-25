@@ -19,8 +19,7 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef SEQ24_PERFTIME
-#define SEQ24_PERFTIME
+#pragma once
 
 #include "perform.h"
 #include "seqtime.h"
@@ -79,7 +78,7 @@ class perftime: public Gtk::DrawingArea
 
     int idle_progress();
 
-    void change_horz( void );
+    void change_horz();
 
  public:
 
@@ -92,4 +91,3 @@ class perftime: public Gtk::DrawingArea
     void increment_size();
 };
 
-#endif

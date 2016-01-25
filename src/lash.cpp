@@ -29,17 +29,9 @@
 lash::lash(int *argc, char ***argv)
 {
 #ifdef LASH_SUPPORT
-   m_lash_args = lash_extract_args(argc, argv);
-#endif // LASH_SUPPORT
-}
+    m_perform = NULL;
 
-
-void lash::init(perform* perform)
-{
-#ifdef LASH_SUPPORT
-    m_perform = perform;
-
-    m_client = lash_init(m_lash_args, PACKAGE_NAME,
+    m_client = lash_init(lash_extract_args(argc, argv), PACKAGE_NAME,
             LASH_Config_File, LASH_PROTOCOL(2, 0));
 
     if (m_client == NULL) {
@@ -65,9 +57,10 @@ lash::set_alsa_client_id(int id)
 
 
 void
-lash::start()
+lash::start(perform* perform)
 {
 #ifdef LASH_SUPPORT
+    m_perform = perform;
     /* Process any LASH events every 250 msec (arbitrarily chosen interval) */
     Glib::signal_timeout().connect(sigc::mem_fun(*this, &lash::process_events), 250);
 #endif // LASH_SUPPORT

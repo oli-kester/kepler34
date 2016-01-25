@@ -1,3 +1,19 @@
+seq24-0.9.3 (2016-01-24)
+
+Fixed Bugs
+  * Fix LASH support (crash on 64 Bit systems)
+  * Fix broken JACK transport with newer jackd version
+  * Fix clock tick drift
+  * Fix jack session commandline (obsolete --file option removed)
+
+New Features
+  * Non recursive make
+
+General Changes
+  * Some code cleanups
+  * C++11 compatible compiler required
+
+
 seq24-0.9.2 (2010-11-27)
 
 Fixed Bugs

@@ -19,8 +19,7 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef SEQ24_SEQDATA
-#define SEQ24_SEQDATA
+#pragma once
 
 #include "sequence.h"
 #include "seqkeys.h"
@@ -107,9 +106,9 @@ class seqdata : public Gtk::DrawingArea
     void draw_events_on( Glib::RefPtr<Gdk::Drawable> a_draw );
 
     void on_size_allocate(Gtk::Allocation& );
-    void change_horz( void );
+    void change_horz();
 
-    void force_draw( void );
+    void force_draw();
 
  public:
 
@@ -127,4 +126,3 @@ class seqdata : public Gtk::DrawingArea
 
 };
 
-#endif

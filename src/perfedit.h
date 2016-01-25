@@ -19,8 +19,7 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef SEQ24_PERFEDIT
-#define SEQ24_PERFEDIT
+#pragma once
 
 #include "sequence.h"
 #include "perform.h"
@@ -126,25 +125,25 @@ class perfedit:public Gtk::Window
     void set_bw( int a_beat_width );
     void set_snap (int a_snap);
 
-    void set_guides( void );
+    void set_guides();
 
-    void grow (void);
+    void grow ();
 
     void on_realize ();
 
-    void start_playing (void);
-    void stop_playing (void);
+    void start_playing ();
+    void stop_playing ();
 
-    void set_looped (void);
+    void set_looped ();
 
-    void expand (void);
-    void collapse (void);
-    void copy (void);
-    void undo ( void );
+    void expand ();
+    void collapse ();
+    void copy ();
+    void undo ();
 
     void popup_menu (Menu * a_menu);
 
-    bool timeout (void);
+    bool timeout ();
 
     bool on_delete_event (GdkEventAny * a_event);
     bool on_key_press_event(GdkEventKey* a_ev);
@@ -158,4 +157,3 @@ class perfedit:public Gtk::Window
 };
 
 
-#endif

@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef SEQ24_MIDIBUS
-#define SEQ24_MIDIBUS
+#pragma once
 
 /* forward declarations*/
 class mastermidibus;
@@ -161,12 +160,12 @@ class midibus
 
 	/* address of client */
 #if HAVE_LIBASOUND	
-    int get_client( void ) {  return m_dest_addr_client; };
-    int get_port( void ) { return m_dest_addr_port; };
+    int get_client(void) {  return m_dest_addr_client; };
+    int get_port(void) { return m_dest_addr_port; };
 #endif
 
     static void set_clock_mod( int a_clock_mod );
-    static int get_clock_mod( void );
+    static int get_clock_mod();
 
 };
 
@@ -273,5 +272,4 @@ class mastermidibus
 
 };
 
-#endif
 #endif

@@ -1,6 +1,9 @@
 /* src/config.h.  Generated from config.h.in by configure.  */
 /* src/config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* define if the compiler supports basic C++11 syntax */
+/* #undef HAVE_CXX11 */
+
 /* Define to 1 if you have the <getopt.h> header file. */
 #define HAVE_GETOPT_H 1
 
@@ -62,7 +65,7 @@
 #define PACKAGE_NAME "seq24"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "seq24 0.9.2"
+#define PACKAGE_STRING "seq24 0.9.3"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "seq24"
@@ -71,13 +74,13 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.9.2"
+#define PACKAGE_VERSION "0.9.3"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "0.9.2"
+#define VERSION "0.9.3"
 
 /* gnu source */
 #define _GNU_SOURCE 1

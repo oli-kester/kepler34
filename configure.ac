@@ -1,13 +1,13 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(seq24, [0.9.2], [seq24-devel@lists.sourceforge.net])
+AC_INIT(seq24, [0.9.3], [seq24-devel@lists.sourceforge.net])
 
 AC_CONFIG_SRCDIR([src/event.cpp])
 AC_CONFIG_HEADER([src/config.h])
+AC_CONFIG_MACRO_DIRS([m4])
 
-AM_INIT_AUTOMAKE([dist-bzip2])
+AM_INIT_AUTOMAKE([dist-bzip2 subdir-objects])
 
 AC_DEFINE(_GNU_SOURCE, 1, [gnu source])
-
 
 dnl Checks for programs.
 AC_PROG_AWK
@@ -15,6 +15,7 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LN_S
+AX_CXX_COMPILE_STDCXX_11(noext,mandatory)
 
 
 dnl Do we have -Wl,--as-needed?
@@ -140,5 +141,5 @@ else
 fi
 
 
-AC_OUTPUT(Makefile man/Makefile src/Makefile src/pixmaps/Makefile)
+AC_OUTPUT(Makefile)
 

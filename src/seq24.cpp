@@ -108,11 +108,65 @@ main (int argc, char *argv[])
      * GTK+. */
     Gtk::Main kit(argc, argv);
 
-    /* Init the lash driver (strips lash specific command line
-     * arguments, but does not connect to daemon) */
+    /*prepare global MIDI definitions*/
+    for ( int i=0; i<c_maxBuses; i++ )
+    {
+        for ( int j=0; j<16; j++ )
+            global_user_midi_bus_definitions[i].instrument[j] = -1;
+    }
+
+    for ( int i=0; i<c_max_instruments; i++ )
+    {
+        for ( int j=0; j<128; j++ )
+            global_user_instrument_definitions[i].controllers_active[j] = false;
+    }
+
+
+    /* Init the lash driver (strip lash specific command line
+     * arguments and connect to daemon) */
 #ifdef LASH_SUPPORT
     lash_driver = new lash(&argc, &argv);
 #endif
+
+    /* the main performance object */
+    /* lash must be initialized here because mastermidibus uses the global
+     * lash_driver variable*/
+    perform p;
+
+    /* read user preferences files */
+    if ( getenv( HOME ) != NULL )
+    {
+        Glib::ustring home( getenv( HOME ));
+        last_used_dir = home;
+        Glib::ustring total_file = home + SLASH + config_filename;
+        
+        if (Glib::file_test(total_file, Glib::FILE_TEST_EXISTS))
+        {
+            printf( "Reading [%s]\n", total_file.c_str());
+
+            optionsfile options( total_file );
+
+            if ( !options.parse( &p ) ){
+                printf( "Error Reading [%s]\n", total_file.c_str());
+            }
+        }
+
+        total_file = home + SLASH + user_filename;
+        if (Glib::file_test(total_file, Glib::FILE_TEST_EXISTS))
+        {
+            printf( "Reading [%s]\n", total_file.c_str());
+
+            userfile user( total_file );
+
+            if ( !user.parse( &p ) ){
+                printf( "Error Reading [%s]\n", total_file.c_str());
+            }
+        }
+
+    }
+    else
+        printf( "Error calling getenv( \"%s\" )\n", HOME );
+
 
     /* parse parameters */
     int c;
@@ -229,64 +283,13 @@ main (int argc, char *argv[])
     } /* end while */
 
 
-    /*prepare global MIDI definitions*/
-    for ( int i=0; i<c_maxBuses; i++ )
-    {
-        for ( int j=0; j<16; j++ )
-            global_user_midi_bus_definitions[i].instrument[j] = -1;
-    }
-
-    for ( int i=0; i<c_max_instruments; i++ )
-    {
-        for ( int j=0; j<128; j++ )
-            global_user_instrument_definitions[i].controllers_active[j] = false;
-    }
-
-
-    /* the main performance object */
-    perform p;
-
-    p_font_renderer = new font();
-
-
-    if ( getenv( HOME ) != NULL )
-    {
-        Glib::ustring home( getenv( HOME ));
-        last_used_dir = home;
-        Glib::ustring total_file = home + SLASH + config_filename;
-        
-        if (Glib::file_test(total_file, Glib::FILE_TEST_EXISTS))
-        {
-            printf( "Reading [%s]\n", total_file.c_str());
-
-            optionsfile options( total_file );
-
-            if ( !options.parse( &p ) ){
-                printf( "Error Reading [%s]\n", total_file.c_str());
-            }
-        }
-
-        total_file = home + SLASH + user_filename;
-        if (Glib::file_test(total_file, Glib::FILE_TEST_EXISTS))
-        {
-            printf( "Reading [%s]\n", total_file.c_str());
-
-            userfile user( total_file );
-
-            if ( !user.parse( &p ) ){
-                printf( "Error Reading [%s]\n", total_file.c_str());
-            }
-        }
-
-    }
-    else
-        printf( "Error calling getenv( \"%s\" )\n", HOME );
-
     p.init();
     p.launch_input_thread();
     p.launch_output_thread();
     p.init_jack();
 
+
+    p_font_renderer = new font();
 
     mainwnd seq24_window( &p );
     if (optind < argc)
@@ -299,8 +302,7 @@ main (int argc, char *argv[])
 
     /* connect to lash daemon and poll events*/
 #ifdef LASH_SUPPORT
-    lash_driver->init(&p);
-    lash_driver->start();
+    lash_driver->start(&p);
 #endif
     kit.run(seq24_window);
 

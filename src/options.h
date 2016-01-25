@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef SEQ24_OPTIONS
-#define SEQ24_OPTIONS
+#pragma once
 
 #include <gtkmm/button.h>
 #include <gtkmm/window.h>
@@ -110,4 +109,3 @@ public:
     options( Gtk::Window &parent, perform *a_p );
 };
 
-#endif

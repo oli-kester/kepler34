@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef SEQ24_PERFORM
-#define SEQ24_PERFORM
+#pragma once
 
 class perform;
 
@@ -218,14 +217,14 @@ class perform
     perform();
     ~perform();
 
-    void init( void );
+    void init();
 
-    void clear_all( void );
+    void clear_all();
 
-    void launch_input_thread( void );
-    void launch_output_thread( void );
-    void init_jack( void );
-    void deinit_jack( void );
+    void launch_input_thread();
+    void launch_output_thread();
+    void init_jack();
+    void deinit_jack();
 
     void add_sequence( sequence *a_seq, int a_perf );
     void delete_sequence( int a_num );
@@ -237,19 +236,19 @@ class perform
     long get_tick( ) { return m_tick; };
 
     void set_left_tick( long a_tick );
-    long get_left_tick( void );
+    long get_left_tick();
 
     void set_starting_tick( long a_tick );
-    long get_starting_tick( void );
+    long get_starting_tick();
 
     void set_right_tick( long a_tick );
-    long get_right_tick( void );
+    long get_right_tick();
 
     void move_triggers( bool a_direction );
     void copy_triggers(  );
 
-    void push_trigger_undo( void );
-    void pop_trigger_undo( void );
+    void push_trigger_undo();
+    void pop_trigger_undo();
 
     void print();
 
@@ -263,16 +262,16 @@ class perform
     string *get_screen_set_notepad( int a_screen_set );
 
     void set_screenset( int a_ss );
-    int get_screenset( void );
-    void set_playing_screenset( void );
-    int get_playing_screenset( void );
-    void mute_group_tracks (void);
+    int get_screenset();
+    void set_playing_screenset();
+    int get_playing_screenset();
+    void mute_group_tracks ();
     void select_and_mute_group (int a_g_group);
     void set_mode_group_mute ();
     void select_group_mute (int a_g_mute);
-    void set_mode_group_learn (void);
-    void unset_mode_group_learn (void);
-    bool is_group_learning( void ) { return m_mode_group_learn; }
+    void set_mode_group_learn ();
+    void unset_mode_group_learn ();
+    bool is_group_learning(void) { return m_mode_group_learn; }
     void select_mute_group ( int a_group );
     void unset_mode_group_mute ();
     void start( bool a_state );
@@ -282,8 +281,8 @@ class perform
     void stop_jack();
     void position_jack( bool a_state );
 
-    void off_sequences( void );
-    void all_notes_off( void );
+    void off_sequences();
+    void all_notes_off();
 
     void set_active(int a_sequence, bool a_active);
     void set_was_active( int a_sequence );
@@ -301,7 +300,7 @@ class perform
 
     sequence * get_sequence( int a_sequence );
 
-    void reset_sequences( void );
+    void reset_sequences();
 
     void set_bpm(int a_bpm);
     int  get_bpm( );
@@ -317,23 +316,23 @@ class perform
     void set_group_mute_state (int a_g_track, bool a_mute_state);
     bool get_group_mute_state (int a_g_track);
 
-    void mute_all_tracks( void );
+    void mute_all_tracks();
 
     mastermidibus* get_master_midi_bus( );
 
     void output_func();
     void input_func();
 
-    long get_max_trigger( void );
+    long get_max_trigger();
 
     void set_offset( int a_offset );
 
-    void save_playing_state( void );
-    void restore_playing_state( void );
+    void save_playing_state();
+    void restore_playing_state();
 
 
-    const std::map<unsigned int,long> *get_key_events( void ) const { return &key_events; };
-    const std::map<unsigned int,long> *get_key_groups( void ) const { return &key_groups; };
+    const std::map<unsigned int,long> *get_key_events(void) const { return &key_events; };
+    const std::map<unsigned int,long> *get_key_groups(void) const { return &key_groups; };
 
     void set_key_event( unsigned int keycode, long sequence_slot );
     void set_key_group( unsigned int keycode, long group_slot );
@@ -375,10 +374,10 @@ void print_jack_pos( jack_position_t* jack_pos );
 void jack_shutdown(void *arg);
 void jack_timebase_callback(jack_transport_state_t state, jack_nframes_t nframes,
                             jack_position_t *pos, int new_pos, void *arg);
+int jack_process_callback(jack_nframes_t nframes, void* arg);
 #ifdef JACK_SESSION
 void jack_session_callback(jack_session_event_t *ev, void *arg);
 #endif
 #endif
 
 
-#endif

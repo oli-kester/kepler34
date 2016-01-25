@@ -19,8 +19,7 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef SEQ24_SEQTIME
-#define SEQ24_SEQTIME
+#pragma once
 
 #include "globals.h"
 
@@ -50,4 +49,3 @@ class maintime: public Gtk::DrawingArea
 
 };
 
-#endif
