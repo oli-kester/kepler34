@@ -135,13 +135,12 @@ main (int argc, char *argv[])
 
     /* config DIR */
     Glib::ustring config_dir = Glib::ustring::compose("%1%2%3%2%4%2",getenv(HOME),SLASH,".config","kepler34");
-    //config_dir.append(SLASH + "%1" + SLASH + "%2" + SLASH,".config","kepler34");
 
     /* make sure .config directory exists. If not, create it */
     struct stat status;
     if ( stat(config_dir.c_str(), &status)) {
         printf( "No config directory detected. Creating ... [%s]\n", config_dir.c_str());
-        //kdir(config_dir);
+        mkdir(config_dir.c_str(),0700);
     }
 
     /* read user preferences files */
