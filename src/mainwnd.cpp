@@ -800,9 +800,15 @@ mainwnd::on_key_press_event(GdkEventKey* a_ev)
 {
     Gtk::Window::on_key_press_event(a_ev);
 
-    // control and modifier key combinations matching
-    if ( a_ev->type == GDK_KEY_PRESS ){
+    /* Ignore key presses if we're renaming the scene */
+    if ( m_entry_notes->has_focus()) {
+        m_entry_notes->event( (GdkEvent*) a_ev );
+        return false;
+    }
 
+    // control and modifier key combinations matching
+    else if ( a_ev->type == GDK_KEY_PRESS )
+    {
         if ( global_print_keys ){
             printf( "key_press[%d]\n", a_ev->keyval );
             fflush( stdout );
