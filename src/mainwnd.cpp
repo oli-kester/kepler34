@@ -80,20 +80,40 @@ mainwnd::mainwnd(perform *a_p):
     m_menu_file->items().push_back(MenuElem("_New",
                 Gtk::AccelKey("<control>N"),
                 mem_fun(*this, &mainwnd::file_new)));
+
     m_menu_file->items().push_back(MenuElem("_Open...",
                 Gtk::AccelKey("<control>O"),
                 mem_fun(*this, &mainwnd::file_open)));
+
+    /* recent files sub-menu */
+    m_menu_file_recent = manage (new Menu());
+
+    /*  */
+
+    /* add recent files to sub menu */
+    m_menu_file_recent->items().push_back(MenuElem("1",
+                mem_fun(*this, &mainwnd::file_save_as)));
+
+    m_menu_file->items().push_back(MenuElem("Open Recent...",
+                *m_menu_file_recent));
+
     m_menu_file->items().push_back(MenuElem("_Save",
                 Gtk::AccelKey("<control>S"),
                 mem_fun(*this, &mainwnd::file_save)));
-    m_menu_file->items().push_back(MenuElem("Save _as...",
+
+    m_menu_file->items().push_back(MenuElem("Save _As...",
                 mem_fun(*this, &mainwnd::file_save_as)));
+
     m_menu_file->items().push_back(SeparatorElem());
+
     m_menu_file->items().push_back(MenuElem("_Import...",
                 mem_fun(*this, &mainwnd::file_import_dialog)));
+
     m_menu_file->items().push_back(MenuElem("O_ptions...",
                 mem_fun(*this,&mainwnd::options_dialog)));
+
     m_menu_file->items().push_back(SeparatorElem());
+
     m_menu_file->items().push_back(MenuElem("E_xit",
                 Gtk::AccelKey("<control>Q"),
                 mem_fun(*this, &mainwnd::file_exit)));

@@ -61,9 +61,9 @@ class mainwnd : public Gtk::Window, public performcallback
 #endif
     MenuBar  *m_menubar;
     Menu     *m_menu_file;
+    Menu     *m_menu_file_recent;
     Menu     *m_menu_view;
     Menu     *m_menu_help;
-
 
     mainwid  *m_main_wid;
     maintime *m_main_time;
