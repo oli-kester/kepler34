@@ -22,16 +22,9 @@
 #include <iostream>
 
 userfile::userfile( string a_name ) :
-    configfile( a_name )
-{
-}
+    configfile( a_name ) { }
 
-userfile::~userfile( )
-{
-
-}
-
-
+userfile::~userfile( ) { }
 
 bool
 userfile::parse( perform *a_perf )

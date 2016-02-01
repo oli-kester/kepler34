@@ -74,6 +74,7 @@ bool global_stats = false;
 bool global_pass_sysex = false;
 Glib::ustring global_filename = "";
 Glib::ustring last_used_dir ="/";
+Glib::ustring recent_files[10];
 std::string config_filename = ".kepler34rc";
 std::string user_filename = ".kepler34usr";
 bool global_print_keys = false;

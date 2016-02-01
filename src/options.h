@@ -107,5 +107,6 @@ class options : public Gtk::Dialog
 public:
 
     options( Gtk::Window &parent, perform *a_p );
+    void add_recent_file( string path );
 };
 

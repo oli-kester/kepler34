@@ -21,6 +21,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/table.h>
 #include <sstream>
+#include <iostream>
 
 #include "options.h"
 #include "keybindentry.h"
@@ -582,4 +583,15 @@ options::transport_callback(button a_type, Button *a_check)
         default:
             break;
     }
+}
+
+/* add a new recent file. Shift along all other recent files,
+ * dropping the oldest and add the new path to the first slot.*/
+void options::add_recent_file(string path){
+    cout << "New recent file is - " << path << endl;
+    /* TODO make sure duplicates aren't added */
+    for (int c=9;c>0;c--){
+        recent_files[c]=recent_files[c-1];
+    }
+    recent_files[0]=path;
 }

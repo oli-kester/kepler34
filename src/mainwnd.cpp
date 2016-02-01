@@ -497,6 +497,9 @@ void mainwnd::open_file(const Glib::ustring& fn)
     global_filename = fn;
     update_window_title();
 
+    /* add to recent files list */
+    m_options->add_recent_file(fn);
+
     m_main_wid->reset();
     m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
                 m_mainperf->get_screenset()));
@@ -563,6 +566,9 @@ bool mainwnd::save_file()
                 "Error writing file.", false,
                 Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
         errdialog.run();
+    } else {
+        /* add to recent files list */
+        m_options->add_recent_file(global_filename);
     }
     m_modified = !result;
     return result;

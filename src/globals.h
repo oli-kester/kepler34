@@ -160,6 +160,7 @@ extern bool global_manual_alsa_ports;
 extern Glib::ustring global_filename;
 extern Glib::ustring global_jack_session_uuid;
 extern Glib::ustring last_used_dir;
+extern Glib::ustring recent_files[10];
 extern bool is_pattern_playing;
 
 extern bool global_print_keys;

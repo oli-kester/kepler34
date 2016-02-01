@@ -888,9 +888,9 @@ src/options.o: src/options.cpp /usr/include/stdc-predef.h \
  /usr/include/gdkmm-2.4/gdkmm/pixbufanimation.h \
  /usr/include/gdkmm-2.4/gdkmm/pixbufanimationiter.h \
  /usr/include/giomm-2.4/giomm/icon.h /usr/include/gtkmm-2.4/gtkmm/table.h \
- /usr/include/gtkmm-2.4/gtkmm/container.h src/options.h \
- /usr/include/gtkmm-2.4/gtkmm/button.h /usr/include/gtkmm-2.4/gtkmm/bin.h \
- /usr/include/gtkmm-2.4/gtkmm/window.h \
+ /usr/include/gtkmm-2.4/gtkmm/container.h /usr/include/c++/4.8/iostream \
+ src/options.h /usr/include/gtkmm-2.4/gtkmm/button.h \
+ /usr/include/gtkmm-2.4/gtkmm/bin.h /usr/include/gtkmm-2.4/gtkmm/window.h \
  /usr/include/gtkmm-2.4/gtkmm/accelgroup.h \
  /usr/include/gtkmm-2.4/gtkmm/box.h /usr/include/gtkmm-2.4/gtkmm/main.h \
  /usr/include/gtkmm-2.4/gtkmm/menu.h \
@@ -2984,6 +2984,8 @@ src/options.o: src/options.cpp /usr/include/stdc-predef.h \
 /usr/include/gtkmm-2.4/gtkmm/table.h:
 
 /usr/include/gtkmm-2.4/gtkmm/container.h:
+
+/usr/include/c++/4.8/iostream:
 
 src/options.h:
 

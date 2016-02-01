@@ -213,7 +213,6 @@ optionsfile::parse( perform *a_perf )
     sscanf( m_line, "%ld", &flag );
     global_jack_start_mode = (bool) flag;
 
-
     line_after( &file, "[midi-input]" );
     buses = 0;
     sscanf( m_line, "%ld", &buses );
@@ -245,6 +244,17 @@ optionsfile::parse( perform *a_perf )
     if (m_line[0] == '/')
         last_used_dir.assign(m_line);
 
+    /* recent files list */
+    line_after( &file, "[recent-files]" );
+    for (int c = 0;c<10;c++){
+        if (m_line[0]!=EOF){
+            cout << m_line << endl;
+            recent_files[c] = m_line;
+        } else
+            recent_files[c] = "";
+        next_data_line(&file);
+    }
+
     /* interaction method  */
     long method = 0;
     line_after( &file, "[interaction-method]" );
@@ -268,12 +278,10 @@ optionsfile::write( perform *a_perf  )
     if( ! file.is_open() )
         return false;
 
-
-
     /* midi control */
 
     file << "#\n";
-    file << "# Seq 24 Init File\n";
+    file << "#Kepler34 Init File\n";
     file << "#\n\n\n";
 
     file << "[midi-control]\n";
@@ -507,6 +515,12 @@ optionsfile::write( perform *a_perf  )
     file << "\n\n\n[last-used-dir]\n\n"
          << "# Last used directory.\n"
          << last_used_dir << "\n\n";
+
+    file << "\n\n\n[recent-files]\n\n"
+         << "# List of 10 recently opened files.\n";
+         for (int c=0;c<10;c++){
+            file << recent_files[c] << "\n";
+         }
 
     file.close();
     return true;
