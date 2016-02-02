@@ -32,8 +32,6 @@
 //For keys
 #include <gtkmm/accelkey.h>
 
-
-
 using namespace std;
 
 /* 16 per screen */
@@ -47,7 +45,6 @@ const int c_total_seqs = c_seqs_in_set * c_max_sets;
 /* number of sequences */
 /* 32 screen sets */
 const int c_max_sequence =  c_mainwnd_rows *  c_mainwnd_cols * c_max_sets;
-
 
 const int c_ppqn         = 192;  /* default - dosnt change */
 const int c_bpm          = 120;  /* default */

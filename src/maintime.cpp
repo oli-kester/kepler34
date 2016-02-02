@@ -42,7 +42,6 @@ maintime::on_realize()
     // we need to do the default realize
     Gtk::DrawingArea::on_realize();
 
-
     // Now we can allocate any additional resources we need
     m_window = get_window();
     m_gc = Gdk::GC::create( m_window );

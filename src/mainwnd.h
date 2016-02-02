@@ -65,6 +65,9 @@ class mainwnd : public Gtk::Window, public performcallback
     Menu     *m_menu_view;
     Menu     *m_menu_help;
 
+    VBox     *mainvbox;
+    VBox     *contentvbox;
+
     mainwid  *m_main_wid;
     maintime *m_main_time;
 
@@ -122,6 +125,20 @@ class mainwnd : public Gtk::Window, public performcallback
     static void handle_signal(int sig);
     bool install_signal_handlers();
     bool signal_action(Glib::IOCondition condition);
+
+    void redraw();
+
+    /* hook functions for loading recent files */
+    void load_recent_1();
+    void load_recent_2();
+    void load_recent_3();
+    void load_recent_4();
+    void load_recent_5();
+    void load_recent_6();
+    void load_recent_7();
+    void load_recent_8();
+    void load_recent_9();
+    void load_recent_10();
 
  public:
 
