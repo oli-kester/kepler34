@@ -595,7 +595,6 @@ void options::add_recent_file(string path){
     /* check if path is already present */
     for (int c = 0; c<10; c++) {
         if (recent_files[c] == path) {
-            cout << "File already recent. Reorganising list." << endl;
             path_found_index = c;
         }
     }
@@ -607,5 +606,4 @@ void options::add_recent_file(string path){
 
     /* add the new path to the first slot */
     recent_files[0] = path;
-    cout << "New recent file is - " << path << endl;
 }
