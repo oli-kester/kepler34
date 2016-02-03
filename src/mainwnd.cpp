@@ -88,33 +88,46 @@ mainwnd::mainwnd(perform *a_p):
     /* recent files sub-menu */
     m_menu_file_recent = manage (new Menu());
 
+    /* only add if a path is actually contained in each slot */
+    if (recent_files[0]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[0],
                 mem_fun(*this, &mainwnd::load_recent_1)));
+    else
+    m_menu_file_recent->items().push_back(MenuElem("(no recent files)"));
 
+    if (recent_files[1]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[1],
                 mem_fun(*this, &mainwnd::load_recent_2)));
 
+    if (recent_files[2]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[2],
                 mem_fun(*this, &mainwnd::load_recent_3)));
 
+    if (recent_files[3]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[3],
                 mem_fun(*this, &mainwnd::load_recent_4)));
 
+    if (recent_files[4]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[4],
                 mem_fun(*this, &mainwnd::load_recent_5)));
 
+    if (recent_files[5]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[5],
                 mem_fun(*this, &mainwnd::load_recent_6)));
 
+    if (recent_files[6]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[6],
                 mem_fun(*this, &mainwnd::load_recent_7)));
 
+    if (recent_files[7]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[7],
                 mem_fun(*this, &mainwnd::load_recent_8)));
 
+    if (recent_files[8]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[8],
                 mem_fun(*this, &mainwnd::load_recent_9)));
 
+    if (recent_files[9]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[9],
                 mem_fun(*this, &mainwnd::load_recent_10)));
 
@@ -1159,33 +1172,46 @@ void mainwnd::redraw_menu(){
     /* recent files sub-menu */
     m_menu_file_recent = manage (new Menu());
 
+    /* only add if a path is actually contained in each slot */
+    if (recent_files[0]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[0],
                 mem_fun(*this, &mainwnd::load_recent_1)));
+    else
+    m_menu_file_recent->items().push_back(MenuElem("(no recent files)"));
 
+    if (recent_files[1]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[1],
                 mem_fun(*this, &mainwnd::load_recent_2)));
 
+    if (recent_files[2]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[2],
                 mem_fun(*this, &mainwnd::load_recent_3)));
 
+    if (recent_files[3]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[3],
                 mem_fun(*this, &mainwnd::load_recent_4)));
 
+    if (recent_files[4]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[4],
                 mem_fun(*this, &mainwnd::load_recent_5)));
 
+    if (recent_files[5]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[5],
                 mem_fun(*this, &mainwnd::load_recent_6)));
 
+    if (recent_files[6]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[6],
                 mem_fun(*this, &mainwnd::load_recent_7)));
 
+    if (recent_files[7]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[7],
                 mem_fun(*this, &mainwnd::load_recent_8)));
 
+    if (recent_files[8]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[8],
                 mem_fun(*this, &mainwnd::load_recent_9)));
 
+    if (recent_files[9]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[9],
                 mem_fun(*this, &mainwnd::load_recent_10)));
 
