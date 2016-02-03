@@ -585,13 +585,27 @@ options::transport_callback(button a_type, Button *a_check)
     }
 }
 
-/* add a new recent file. Shift along all other recent files,
- * dropping the oldest and add the new path to the first slot.*/
+/* add a new file to the recent files list.
+ * reorganises the list if file already present */
 void options::add_recent_file(string path){
-    cout << "New recent file is - " << path << endl;
-    /* TODO make sure duplicates aren't added */
-    for (int c=9;c>0;c--){
-        recent_files[c]=recent_files[c-1];
+
+    /* start shifting from the last element if file not already recent */
+    int path_found_index = 9;
+
+    /* check if path is already present */
+    for (int c = 0; c<10; c++) {
+        if (recent_files[c] == path) {
+            cout << "File already recent. Reorganising list." << endl;
+            path_found_index = c;
+        }
     }
-    recent_files[0]=path;
+
+    /* shift the recent files along by one, thus dropping the oldest */
+    for (int c = path_found_index; c>0; c--){
+        recent_files[c] = recent_files[c-1];
+    }
+
+    /* add the new path to the first slot */
+    recent_files[0] = path;
+    cout << "New recent file is - " << path << endl;
 }

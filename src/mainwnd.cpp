@@ -521,7 +521,7 @@ void mainwnd::open_file(const Glib::ustring& fn)
 
     /* add to recent files list */
     m_options->add_recent_file(fn);
-    /* TODO update recent menu */
+    /* update recent menu */
     redraw_menu();
 
     m_main_wid->reset();
@@ -593,7 +593,7 @@ bool mainwnd::save_file()
     } else {
         /* add to recent files list */
         m_options->add_recent_file(global_filename);
-        /* TODO update recent menu */
+        /* update recent menu */
         redraw_menu();
     }
     m_modified = !result;
