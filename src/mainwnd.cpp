@@ -522,7 +522,7 @@ void mainwnd::open_file(const Glib::ustring& fn)
     /* add to recent files list */
     m_options->add_recent_file(fn);
     /* TODO update recent menu */
-    redraw();
+    redraw_menu();
 
     m_main_wid->reset();
     m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
@@ -594,7 +594,7 @@ bool mainwnd::save_file()
         /* add to recent files list */
         m_options->add_recent_file(global_filename);
         /* TODO update recent menu */
-        redraw();
+        redraw_menu();
     }
     m_modified = !result;
     return result;
@@ -1126,13 +1126,17 @@ mainwnd::signal_action(Glib::IOCondition condition)
     return true;
 }
 
-void mainwnd::redraw(){
+void mainwnd::redraw_menu(){
 
-//    m_menubar = manage(new MenuBar());
-//    m_menubar =
-    m_menubar->items().remove(*m_menu_file);
-    m_menubar->items().remove(*m_menu_view);
-    m_menubar->items().remove(*m_menu_help);
+    /* get rid of old menubar and main content */
+    mainvbox->remove(*m_menubar);
+    mainvbox->remove(*contentvbox);
+
+    /* unpack mainvbox from window */
+    this->remove();
+
+    /* regenerate menu content */
+    m_menubar = new MenuBar();
 
     m_menu_file = manage(new Menu());
     m_menubar->items().push_front(MenuElem("_File", *m_menu_file));
@@ -1218,153 +1222,19 @@ void mainwnd::redraw(){
     m_menu_help->items().push_back(MenuElem("_About...",
                 mem_fun(*this, &mainwnd::about_dialog)));
 
-    /* top line items */
-//    HBox *tophbox = manage( new HBox( false, 0 ) );
-//    tophbox->pack_start(*manage(new Image(
-//                    Gdk::Pixbuf::create_from_xpm_data(seq24_xpm))),
-//            false, false);
-
-    // adjust placement...
-//    VBox *vbox_b = manage( new VBox() );
-//    HBox *hbox3 = manage( new HBox( false, 0 ) );
-//    vbox_b->pack_start( *hbox3, false, false );
-//    tophbox->pack_end( *vbox_b, false, false );
-//    hbox3->set_spacing( 10 );
-
-    //hbox3->remove(*m_main_time);
-
-    /* timeline */
-//    hbox3->pack_start( *m_main_time, false, false );
-
-    /* group learn button */
-//    m_button_learn = manage( new Button( ));
-//    m_button_learn->set_focus_on_click( false );
-//    m_button_learn->set_flags( m_button_learn->get_flags() & ~Gtk::CAN_FOCUS );
-//    m_button_learn->set_image(*manage(new Image(
-//                    Gdk::Pixbuf::create_from_xpm_data( learn_xpm ))));
-//    m_button_learn->signal_clicked().connect(
-//            mem_fun(*this, &mainwnd::learn_toggle));
-//    add_tooltip( m_button_learn, "Mute Group Learn\n\n"
-//            "Click 'L' then press a mutegroup key to store the mute state of "
-//            "the sequences in that key.\n\n"
-//            "(see File/Options/Keyboard for available mutegroup keys "
-//            "and the corresponding hotkey for the 'L' button)" );
-//    hbox3->pack_end( *m_button_learn, false, false );
-
-    /*this seems to be a dirty hack:*/
-//    Button w;
-//    hbox3->set_focus_child( w ); // clear the focus not to trigger L via keys
-
-
-    /* bottom line items */
-//    HBox *bottomhbox = manage( new HBox(false, 10));
-
-    /* container for start+stop buttons */
-//    HBox *startstophbox = manage(new HBox(false, 4));
-//    bottomhbox->pack_start(*startstophbox, Gtk::PACK_SHRINK);
-
-    /* stop button */
-//    m_button_stop = manage( new Button());
-//    m_button_stop->add(*manage(new Image(
-//                    Gdk::Pixbuf::create_from_xpm_data( stop_xpm ))));
-//    m_button_stop->signal_clicked().connect(
-//            mem_fun(*this, &mainwnd::stop_playing));
-//    add_tooltip( m_button_stop, "Stop playing MIDI sequence" );
-//    startstophbox->pack_start(*m_button_stop, Gtk::PACK_SHRINK);
-
-    /* play button */
-//    m_button_play = manage(new Button() );
-//    m_button_play->add(*manage(new Image(
-//                    Gdk::Pixbuf::create_from_xpm_data( play2_xpm ))));
-//    m_button_play->signal_clicked().connect(
-//            mem_fun( *this, &mainwnd::start_playing));
-//    add_tooltip( m_button_play, "Play MIDI sequence" );
-//    startstophbox->pack_start(*m_button_play, Gtk::PACK_SHRINK);
-
-    /* bpm spin button with label*/
-//    HBox *bpmhbox = manage(new HBox(false, 4));
-//    bottomhbox->pack_start(*bpmhbox, Gtk::PACK_SHRINK);
-
-//    m_adjust_bpm = manage(new Adjustment(m_mainperf->get_bpm(), 20, 500, 1));
-//    m_spinbutton_bpm = manage( new SpinButton( *m_adjust_bpm ));
-//    m_spinbutton_bpm->set_editable( false );
-//    m_adjust_bpm->signal_value_changed().connect(
-//            mem_fun(*this, &mainwnd::adj_callback_bpm));
-//    add_tooltip( m_spinbutton_bpm, "Adjust beats per minute (BPM) value");
-//    Label* bpmlabel = manage(new Label("_bpm", true));
-//    bpmlabel->set_mnemonic_widget(*m_spinbutton_bpm);
-//    bpmhbox->pack_start(*bpmlabel, Gtk::PACK_SHRINK);
-//    bpmhbox->pack_start(*m_spinbutton_bpm, Gtk::PACK_SHRINK);
-
-//    /* screen set name edit line */
-//    HBox *notebox = manage(new HBox(false, 4));
-//    bottomhbox->pack_start(*notebox, Gtk::PACK_EXPAND_WIDGET);
-
-//    m_entry_notes = manage( new Entry());
-//    m_entry_notes->signal_changed().connect(
-//            mem_fun(*this, &mainwnd::edit_callback_notepad));
-//    m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
-//                m_mainperf->get_screenset()));
-//    add_tooltip( m_entry_notes, "Enter screen set name" );
-//    Label* notelabel = manage(new Label("_Name", true));
-//    notelabel->set_mnemonic_widget(*m_entry_notes);
-//    notebox->pack_start(*notelabel, Gtk::PACK_SHRINK);
-//    notebox->pack_start(*m_entry_notes, Gtk::PACK_EXPAND_WIDGET);
-
-//    /* sequence set spin button */
-//    HBox *sethbox = manage(new HBox(false, 4));
-//    bottomhbox->pack_start(*sethbox, Gtk::PACK_SHRINK);
-
-//    m_adjust_ss = manage( new Adjustment( 0, 0, c_max_sets - 1, 1 ));
-//    m_spinbutton_ss = manage( new SpinButton( *m_adjust_ss ));
-//    m_spinbutton_ss->set_editable( false );
-//    m_spinbutton_ss->set_wrap( true );
-//    m_adjust_ss->signal_value_changed().connect(
-//            mem_fun(*this, &mainwnd::adj_callback_ss ));
-//    add_tooltip( m_spinbutton_ss, "Select screen set" );
-//    Label* setlabel = manage(new Label("_Set", true));
-//    setlabel->set_mnemonic_widget(*m_spinbutton_ss);
-//    sethbox->pack_start(*setlabel, Gtk::PACK_SHRINK);
-//    sethbox->pack_start(*m_spinbutton_ss, Gtk::PACK_SHRINK);
-
-    /* song edit button */
-//    m_button_perfedit = manage( new Button( ));
-//    m_button_perfedit->add( *manage( new Image(
-//                    Gdk::Pixbuf::create_from_xpm_data( perfedit_xpm  ))));
-//    m_button_perfedit->signal_clicked().connect(
-//            mem_fun( *this, &mainwnd::open_performance_edit ));
-//    add_tooltip( m_button_perfedit, "Show or hide song editor window" );
-//    bottomhbox->pack_end(*m_button_perfedit, Gtk::PACK_SHRINK);
-
-
-    /* vertical layout container for window content*/
-//    contentvbox = new VBox();
-//    contentvbox->set_spacing(10);
-//    contentvbox->set_border_width(10);
-//    contentvbox->pack_start(*tophbox, Gtk::PACK_SHRINK);
-//    contentvbox->pack_start(*m_main_wid, Gtk::PACK_SHRINK);
-//    contentvbox->pack_start(*bottomhbox, Gtk::PACK_SHRINK);
-
-    /*main container for menu and window content */
-//    mainvbox = new VBox();
-
-    /* unpack vbox from window */
-    this->remove();
-
-    mainvbox->remove(*m_menubar);
-    mainvbox->remove(*contentvbox);
-
+    /* pack content. main content widgets are the
+     * same, so just add again */
     mainvbox->pack_start(*m_menubar, false, false);
     mainvbox->pack_start(*contentvbox);
 
     /* add main layout box */
-
     this->add (*mainvbox);
 
     /* show everything */
     show_all();
 }
 
+/* recent file loading methods for recent menu callbacks */
 void mainwnd::load_recent_1(){
     open_file(recent_files[0]);
 }

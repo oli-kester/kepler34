@@ -126,7 +126,8 @@ class mainwnd : public Gtk::Window, public performcallback
     bool install_signal_handlers();
     bool signal_action(Glib::IOCondition condition);
 
-    void redraw();
+    void redraw_menu();
+    void make_menu_bar();
 
     /* hook functions for loading recent files */
     void load_recent_1();
