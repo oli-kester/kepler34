@@ -56,31 +56,31 @@
 #define LASH_SUPPORT 1
 
 /* Name of package */
-#define PACKAGE "seq24"
+#define PACKAGE "kepler34"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "seq24-devel@lists.sourceforge.net"
+#define PACKAGE_BUGREPORT "oli_kester@zoho.com"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "seq24"
+#define PACKAGE_NAME "kepler34"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "seq24 0.9.3"
+#define PACKAGE_STRING "kepler34 0.1.0"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "seq24"
+#define PACKAGE_TARNAME "kepler34"
 
 /* Define to the home page for this package. */
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.9.3"
+#define PACKAGE_VERSION "0.1.0"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "0.9.3"
+#define VERSION "0.1.0"
 
 /* gnu source */
 #define _GNU_SOURCE 1

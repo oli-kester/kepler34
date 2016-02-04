@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(seq24, [0.9.3], [seq24-devel@lists.sourceforge.net])
+AC_INIT(kepler34, [0.1.0], [oli_kester@zoho.com])
 
 AC_CONFIG_SRCDIR([src/event.cpp])
 AC_CONFIG_HEADER([src/config.h])

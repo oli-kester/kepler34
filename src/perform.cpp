@@ -191,7 +191,7 @@ void perform::init_jack()
         m_jack_running = true;
         m_jack_master = true;
 
-        //printf ( "init_jack() m_jack_running[%d]\n", m_jack_running );
+        printf ( "init_jack() m_jack_running[%d]\n", m_jack_running );
 
         do {
 
@@ -255,7 +255,7 @@ void perform::deinit_jack()
 
     if ( m_jack_running){
 
-        //printf ( "deinit_jack() m_jack_running[%d]\n", m_jack_running );
+        printf ( "deinit_jack() m_jack_running[%d]\n", m_jack_running );
 
         m_jack_running = false;
         m_jack_master = false;
@@ -267,8 +267,6 @@ void perform::deinit_jack()
         if (jack_client_close(m_jack_client)) {
             printf("Cannot close JACK client.\n");
         }
-
-
     }
 
     if ( !m_jack_running ){
@@ -524,7 +522,7 @@ void perform::set_active( int a_sequence, bool a_active )
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return;
 
-    //printf ("set_active %d\n", a_active );
+    printf ("set_active %d\n", a_active );
 
     if ( m_seqs_active[ a_sequence ] == true && a_active == false )
     {
@@ -540,7 +538,7 @@ void perform::set_was_active( int a_sequence )
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return;
 
-    //printf( "was_active true\n" );
+    printf( "was_active true\n" );
 
     m_was_active_main[ a_sequence ] = true;
     m_was_active_edit[ a_sequence ] = true;
@@ -1070,7 +1068,7 @@ void perform::reset_sequences()
             m_seqs[i]->set_playing(false);
             m_seqs[i]->zero_markers();
 
-//            if (!m_playback_mode)
+            if (!m_playback_mode)
                 m_seqs[i]->set_playing(state);
         }
     }
@@ -1095,6 +1093,7 @@ void perform::launch_output_thread()
 void perform::set_playback_mode( bool a_playback_mode )
 {
     m_playback_mode = a_playback_mode;
+    printf("\nPlayback mode - %i\n", a_playback_mode);
 }
 
 bool perform::get_playback_mode()
@@ -1280,7 +1279,7 @@ void perform::output_func()
 
         m_condition_var.unlock();
 
-        //printf( "signaled [%d]\n", m_playback_mode );
+        printf( "signaled [%d]\n", m_playback_mode );
 
 #ifndef __WIN32__
         /* begning time */
@@ -1343,8 +1342,8 @@ void perform::output_func()
 
         /* if we are in the performance view, we care
            about starting from the offset */
-//        if ( m_playback_mode && !m_jack_running){
-          if (!m_jack_running){
+        if ( m_playback_mode && !m_jack_running){
+//          if (!m_jack_running){
 
             current_tick = m_starting_tick;
             clock_tick = m_starting_tick;
@@ -1462,8 +1461,8 @@ void perform::output_func()
                     current_tick = clock_tick = total_tick = jack_ticks_converted_last = jack_ticks_converted;
                     init_clock = true;
 
-//                    if ( m_looping && m_playback_mode ){
-                    if (m_playback_mode){
+                    if ( m_looping && m_playback_mode ){
+//                    if (m_playback_mode){
 
                         //printf( "left[%lf] right[%lf]\n", (double) get_left_tick(), (double) get_right_tick() );
 
@@ -1590,8 +1589,8 @@ void perform::output_func()
             }
 
             if (dumping) {
-//                if ( m_looping && m_playback_mode )
-                if ( m_looping)
+                if ( m_looping && m_playback_mode )
+//                if ( m_looping)
                 {
                     if ( current_tick >= get_right_tick() )
                     {

@@ -276,12 +276,10 @@ sequence::get_queued_tick()
     return m_queued_tick;
 }
 
-
 /* tick comes in as global tick */
     void
 sequence::play( long a_tick, bool a_playback_mode )
 {
-
     lock();
 
     //printf( "a_tick[%ld] a_playback[%d]\n", a_tick, a_playback_mode );
@@ -302,7 +300,6 @@ sequence::play( long a_tick, bool a_playback_mode )
     }
     else
     {
-
         /* if we are using our in sequence on/off triggers */
         if ( a_playback_mode ){
 

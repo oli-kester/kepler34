@@ -1,23 +1,4 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
-
+/* main window */
 
 #include "mainwid.h"
 #include "perform.h"
@@ -27,8 +8,6 @@
 #include "perfedit.h"
 #include "options.h"
 
-
-
 #pragma once
 
 #include <map>
@@ -36,8 +15,6 @@
 #include <string>
 
 #include "globals.h"
-
-
 
 using namespace Gtk;
 
@@ -153,8 +130,4 @@ class mainwnd : public Gtk::Window, public performcallback
     bool on_delete_event(GdkEventAny *a_e);
     bool on_key_press_event(GdkEventKey* a_ev);
     bool on_key_release_event(GdkEventKey* a_ev);
-
-
 };
-
-

@@ -1,22 +1,4 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
+/* Song Editor Window */
 
 #include "perfedit.h"
 #include "sequence.h"
@@ -59,7 +41,6 @@ perfedit::perfedit( perform *a_perf )
     /* tooltips */
     m_tooltips = manage( new Tooltips( ) );
 
-
     m_vadjust = manage( new Adjustment(0,0,1,1,1,1 ));
     m_hadjust = manage( new Adjustment(0,0,1,1,1,1 ));
 
@@ -88,11 +69,8 @@ perfedit::perfedit( perform *a_perf )
     m_button_grow->signal_clicked().connect( mem_fun( *this, &perfedit::grow));
     add_tooltip( m_button_grow, "Increase size of Grid." );
 
-
     /* fill table */
-
     m_table->attach( *m_hlbox,  0, 3, 0, 1,  Gtk::FILL, Gtk::SHRINK, 2, 0 ); // shrink was 0
-
 
     m_table->attach( *m_perfnames,    0, 1, 2, 3, Gtk::SHRINK, Gtk::FILL );
 
@@ -115,7 +93,6 @@ perfedit::perfedit( perform *a_perf )
     m_menu_snap->items().push_back(MenuElem("1/16",   sigc::bind(mem_fun(*this,&perfedit::set_snap), 16  )));
     m_menu_snap->items().push_back(MenuElem("1/32",   sigc::bind(mem_fun(*this,&perfedit::set_snap), 32  )));
 
-
     /* snap */
     m_button_snap = manage( new Button());
     m_button_snap->add( *manage( new Image(Gdk::Pixbuf::create_from_xpm_data( snap_xpm ))));
@@ -124,7 +101,6 @@ perfedit::perfedit( perform *a_perf )
     m_entry_snap = manage( new Entry());
     m_entry_snap->set_size_request( 40, -1 );
     m_entry_snap->set_editable( false );
-
 
     m_menu_bpm = manage( new Menu() );
     m_menu_bw = manage( new Menu() );
@@ -148,7 +124,6 @@ perfedit::perfedit( perform *a_perf )
                                                     i+1 )));
     }
 
-
     /* beats per measure */
     m_button_bpm = manage( new Button());
     m_button_bpm->add( *manage( new Image(Gdk::Pixbuf::create_from_xpm_data( down_xpm  ))));
@@ -157,7 +132,6 @@ perfedit::perfedit( perform *a_perf )
     m_entry_bpm = manage( new Entry());
     m_entry_bpm->set_width_chars(2);
     m_entry_bpm->set_editable( false );
-
 
     /* beat width */
     m_button_bw = manage( new Button());
@@ -183,8 +157,8 @@ perfedit::perfedit( perform *a_perf )
     /* song playback toggle */
     m_button_song_playback = manage( new ToggleButton());
     m_button_song_playback->set_label("SM");
-    m_button_song_playback->signal_clicked().connect(  mem_fun( *this, &perfedit::song_playback_toggle));
-    add_tooltip( m_button_expand, "Expand between L and R markers." );
+    m_button_song_playback->signal_toggled().connect(  mem_fun( *this, &perfedit::song_playback_toggle));
+    add_tooltip( m_button_song_playback, "Toggle Song Playback" );
 
     /* collapse */
     m_button_collapse = manage( new Button());
@@ -361,7 +335,9 @@ perfedit::set_record()
 /* invert the playback mode */
 void
 perfedit::song_playback_toggle(){
-    m_mainperf->set_playback_mode(!m_mainperf->get_playback_mode());
+    printf("\n\ntoggle\n");
+    m_mainperf->set_playback_mode(m_button_song_playback->get_active());
+    /* TODO update the main window button state */
 }
 
 void
@@ -436,6 +412,13 @@ perfedit::init_before_show()
 {
     m_perfroll->init_before_show();
     //m_perftime->init_before_show();
+}
+
+/* update song playback mode from globals. Used if playback mode
+ * changed from the main window */
+void
+perfedit::update_playback_mode_button(){
+    m_button_song_playback->set_active(m_mainperf->get_playback_mode());
 }
 
 bool

@@ -1,22 +1,4 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
+/* main window */
 
 #include <cctype>
 #include <csignal>
@@ -195,7 +177,7 @@ mainwnd::mainwnd(perform *a_p):
     hbox3->pack_start( *m_button_learn, false, false );
 
     /* song playback button */
-    m_button_song_playback = manage( new ToggleButton( ));
+    m_button_song_playback = manage( new ToggleButton());
     m_button_song_playback->set_label("SM");
     m_button_song_playback->signal_toggled().connect(
             mem_fun(*this, &mainwnd::song_playback_toggle));
@@ -286,7 +268,6 @@ mainwnd::mainwnd(perform *a_p):
     add_tooltip( m_button_perfedit, "Show or hide song editor window" );
     bottomhbox->pack_end(*m_button_perfedit, Gtk::PACK_SHRINK);
 
-
     /* vertical layout container for window content*/
     contentvbox = new VBox();
     contentvbox->set_spacing(10);
@@ -294,7 +275,6 @@ mainwnd::mainwnd(perform *a_p):
     contentvbox->pack_start(*tophbox, Gtk::PACK_SHRINK);
     contentvbox->pack_start(*m_main_wid, Gtk::PACK_SHRINK);
     contentvbox->pack_start(*bottomhbox, Gtk::PACK_SHRINK);
-
 
     /*main container for menu and window content */
     mainvbox = new VBox();
@@ -424,7 +404,11 @@ mainwnd::learn_toggle()
 
 /* invert the playback mode */
 void mainwnd::song_playback_toggle(){
-    m_mainperf->set_playback_mode(!m_mainperf->get_playback_mode());
+//    printf("\nPlayback toggle\n");
+    m_mainperf->set_playback_mode(m_button_song_playback->get_active());
+
+    /* TODO update the song editor window */
+//    m_perf_edit->update_playback_mode_button();
 }
 
 /* callback function */
@@ -1077,7 +1061,6 @@ mainwnd::handle_signal(int sig)
         printf("write() failed: %s\n", std::strerror(errno));
     }
 }
-
 
 bool
 mainwnd::install_signal_handlers()

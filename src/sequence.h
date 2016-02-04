@@ -18,7 +18,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #pragma once
 
 class sequence;
@@ -95,7 +94,6 @@ class sequence
     /* contains the proper midi channel */
     char m_midi_channel;
     char m_bus;
-
 
     /* song playback mode mute */
     bool m_song_mute;
