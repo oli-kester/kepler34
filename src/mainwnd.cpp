@@ -177,12 +177,14 @@ mainwnd::mainwnd(perform *a_p):
     hbox3->pack_start( *m_button_learn, false, false );
 
     /* song playback button */
-    m_button_song_playback = manage( new ToggleButton());
-    m_button_song_playback->set_label("SM");
-    m_button_song_playback->signal_toggled().connect(
-            mem_fun(*this, &mainwnd::song_playback_toggle));
-    add_tooltip( m_button_song_playback,"Toggle Song Playback");
-    hbox3->pack_end( *m_button_song_playback, false, false );
+//    m_button_song_playback = manage( new ToggleButton());
+//    m_button_song_playback->set_label("SM");
+//    m_button_song_playback->signal_toggled().connect(
+//            mem_fun(*this, &mainwnd::song_playback_toggle));
+//    add_tooltip( m_button_song_playback,"Toggle Song Playback");
+//    /* set toggle state according to internals */
+//    m_button_song_playback->set_active(global_jack_start_mode);
+//    hbox3->pack_end( *m_button_song_playback, false, false );
 
     /*this seems to be a dirty hack:*/
     Button w;
@@ -210,7 +212,7 @@ mainwnd::mainwnd(perform *a_p):
                     Gdk::Pixbuf::create_from_xpm_data( play2_xpm ))));
     m_button_play->signal_clicked().connect(
             mem_fun( *this, &mainwnd::start_playing));
-    add_tooltip( m_button_play, "Play MIDI sequence" );
+    add_tooltip( m_button_play, "Play in live mode, ignoring the song data" );
     startstophbox->pack_start(*m_button_play, Gtk::PACK_SHRINK);
 
     /* bpm spin button with label*/
@@ -365,6 +367,9 @@ mainwnd::options_dialog()
 void
 mainwnd::start_playing()
 {
+    /* clicking play in the main window causes
+     * the song data to be ignored (Live mode) */
+    m_mainperf->set_playback_mode( false );
     m_mainperf->position_jack( false );
     m_mainperf->start( false );
     m_mainperf->start_jack( );
@@ -404,11 +409,13 @@ mainwnd::learn_toggle()
 
 /* invert the playback mode */
 void mainwnd::song_playback_toggle(){
-//    printf("\nPlayback toggle\n");
+    printf("\nPlayback toggle\n");
     m_mainperf->set_playback_mode(m_button_song_playback->get_active());
 
-    /* TODO update the song editor window */
-//    m_perf_edit->update_playback_mode_button();
+    /* update the song editor window's button
+     * only do this if it actually exists yet */
+    if (m_perf_edit != NULL)
+        m_perf_edit->update_playback_mode_button();
 }
 
 /* callback function */
@@ -1253,7 +1260,7 @@ void mainwnd::redraw_menu(){
     show_all();
 }
 
-/* recent file loading methods for recent menu callbacks */
+/* recent file loading methods for recent menu signals */
 void mainwnd::load_recent_1(){
     open_file(recent_files[0]);
 }

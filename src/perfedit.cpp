@@ -34,8 +34,8 @@ perfedit::perfedit( perform *a_perf )
 
     m_mainperf = a_perf;
 
-    /* main window */
-    set_title( "seq24 - Song Editor");
+    /* window title & size */
+    set_title( ( PACKAGE ) + string( " - Song Editor" ));
     set_size_request(700, 400);
 
     /* tooltips */
@@ -155,10 +155,12 @@ perfedit::perfedit( perform *a_perf )
     add_tooltip( m_button_expand, "Expand between L and R markers." );
 
     /* song playback toggle */
-    m_button_song_playback = manage( new ToggleButton());
-    m_button_song_playback->set_label("SM");
-    m_button_song_playback->signal_toggled().connect(  mem_fun( *this, &perfedit::song_playback_toggle));
-    add_tooltip( m_button_song_playback, "Toggle Song Playback" );
+//    m_button_song_playback = manage( new ToggleButton());
+//    m_button_song_playback->set_label("SM");
+//    m_button_song_playback->signal_toggled().connect(  mem_fun( *this, &perfedit::song_playback_toggle));
+//    /* set toggle state according to internals */
+//    m_button_song_playback->set_active(global_jack_start_mode);
+//    add_tooltip( m_button_song_playback, "Toggle Song Playback" );
 
     /* collapse */
     m_button_collapse = manage( new Button());
@@ -188,15 +190,15 @@ perfedit::perfedit( perform *a_perf )
     m_button_record = manage( new ToggleButton() );
     m_button_record->set_label("R");
     m_button_record->signal_clicked().connect( mem_fun( *this, &perfedit::set_record));
-    add_tooltip( m_button_stop, "Record." );
+    add_tooltip( m_button_stop, "Record sequence changes to the song editor." );
 
     /* play */
     m_button_play = manage( new Button() );
     m_button_play->add(*manage( new Image(Gdk::Pixbuf::create_from_xpm_data( play2_xpm ))));
     m_button_play->signal_clicked().connect(  mem_fun( *this, &perfedit::start_playing));
-    add_tooltip( m_button_play, "Begin playing at L marker." );
+    add_tooltip( m_button_play, "Begin playing the song at L marker." );
 
-    m_hlbox->pack_end( *m_button_song_playback , false, false );
+//    m_hlbox->pack_end( *m_button_song_playback , false, false );
     m_hlbox->pack_end( *m_button_copy , false, false );
     m_hlbox->pack_end( *m_button_expand , false, false );
     m_hlbox->pack_end( *m_button_collapse , false, false );
@@ -282,6 +284,9 @@ perfedit::undo()
 void
 perfedit::start_playing()
 {
+    /* clicking play in the song editor causes
+     * the song data to be played */
+    m_mainperf->set_playback_mode( true );
     m_mainperf->position_jack( true );
     m_mainperf->start_jack( );
     m_mainperf->start( true );
@@ -336,8 +341,7 @@ perfedit::set_record()
 void
 perfedit::song_playback_toggle(){
     printf("\n\ntoggle\n");
-    m_mainperf->set_playback_mode(m_button_song_playback->get_active());
-    /* TODO update the main window button state */
+//    m_mainperf->set_playback_mode(m_button_song_playback->get_active());
 }
 
 void
@@ -414,11 +418,15 @@ perfedit::init_before_show()
     //m_perftime->init_before_show();
 }
 
-/* update song playback mode from globals. Used if playback mode
- * changed from the main window */
+/* update song playback mode from globals. Used if the playback mode
+ * is changed from the main window */
 void
 perfedit::update_playback_mode_button(){
-    m_button_song_playback->set_active(m_mainperf->get_playback_mode());
+    /* check the new state is different before setting the toggle.
+     * this prevents endless re-toggling */
+    bool new_state = m_mainperf->get_playback_mode();
+    if (new_state != m_button_song_playback->get_active())
+        m_button_song_playback->set_active(new_state);
 }
 
 bool

@@ -487,6 +487,7 @@ optionsfile::write( perform *a_perf  )
          << "# jack_master_cond -  Seq24 will fail to be master if there is already a master set.\n"
          << global_with_jack_master_cond  << "\n\n"
 
+            /* TODO remove jack start mode from config */
          << "# jack_start_mode\n"
          << "# 0 = Playback will be in live mode.  Use this to allow muting and unmuting of loops.\n"
          << "# 1 = Playback will use the song editors data.\n"
