@@ -168,17 +168,22 @@ perfedit::perfedit( perform *a_perf )
     m_entry_bw->set_width_chars(2);
     m_entry_bw->set_editable( false );
 
-/* undo */
+    /* undo */
     m_button_undo = manage( new Button());
     m_button_undo->add( *manage( new Image(Gdk::Pixbuf::create_from_xpm_data( undo_xpm  ))));
     m_button_undo->signal_clicked().connect(  mem_fun( *this, &perfedit::undo));
     add_tooltip( m_button_undo, "Undo." );
 
-
     /* expand */
     m_button_expand = manage( new Button());
     m_button_expand->add(*manage( new Image(Gdk::Pixbuf::create_from_xpm_data( expand_xpm ))));
     m_button_expand->signal_clicked().connect(  mem_fun( *this, &perfedit::expand));
+    add_tooltip( m_button_expand, "Expand between L and R markers." );
+
+    /* song playback toggle */
+    m_button_song_playback = manage( new ToggleButton());
+    m_button_song_playback->set_label("SM");
+    m_button_song_playback->signal_clicked().connect(  mem_fun( *this, &perfedit::song_playback_toggle));
     add_tooltip( m_button_expand, "Expand between L and R markers." );
 
     /* collapse */
@@ -193,32 +198,39 @@ perfedit::perfedit( perform *a_perf )
     m_button_copy->signal_clicked().connect(  mem_fun( *this, &perfedit::copy ));
     add_tooltip( m_button_copy, "Expand and copy between L and R markers." );
 
-
+    /* loop */
     m_button_loop = manage( new ToggleButton() );
     m_button_loop->add(*manage( new Image(Gdk::Pixbuf::create_from_xpm_data( loop_xpm ))));
     m_button_loop->signal_toggled().connect(  mem_fun( *this, &perfedit::set_looped ));
     add_tooltip( m_button_loop, "Play looped between L and R." );
 
-
+    /* stop */
     m_button_stop = manage( new Button() );
     m_button_stop->add(*manage( new Image(Gdk::Pixbuf::create_from_xpm_data( stop_xpm ))));
     m_button_stop->signal_clicked().connect( mem_fun( *this, &perfedit::stop_playing));
     add_tooltip( m_button_stop, "Stop playing." );
 
+    /* record */
+    m_button_record = manage( new ToggleButton() );
+    m_button_record->set_label("R");
+    m_button_record->signal_clicked().connect( mem_fun( *this, &perfedit::set_record));
+    add_tooltip( m_button_stop, "Record." );
+
+    /* play */
     m_button_play = manage( new Button() );
     m_button_play->add(*manage( new Image(Gdk::Pixbuf::create_from_xpm_data( play2_xpm ))));
     m_button_play->signal_clicked().connect(  mem_fun( *this, &perfedit::start_playing));
     add_tooltip( m_button_play, "Begin playing at L marker." );
 
-
+    m_hlbox->pack_end( *m_button_song_playback , false, false );
     m_hlbox->pack_end( *m_button_copy , false, false );
     m_hlbox->pack_end( *m_button_expand , false, false );
     m_hlbox->pack_end( *m_button_collapse , false, false );
     m_hlbox->pack_end( *m_button_undo , false, false );
 
-
     m_hlbox->pack_start( *m_button_stop , false, false );
     m_hlbox->pack_start( *m_button_play , false, false );
+    m_hlbox->pack_start( *m_button_record , false, false );
     m_hlbox->pack_start( *m_button_loop , false, false );
 
     m_hlbox->pack_start( *(manage(new VSeparator( ))), false, false, 4);
@@ -228,7 +240,6 @@ perfedit::perfedit( perform *a_perf )
 
     m_hlbox->pack_start( *(manage(new Label( "/" ))), false, false, 4);
 
-
     m_hlbox->pack_start( *m_button_bw , false, false );
     m_hlbox->pack_start( *m_entry_bw , false, false );
 
@@ -236,8 +247,6 @@ perfedit::perfedit( perform *a_perf )
 
     m_hlbox->pack_start( *m_button_snap , false, false );
     m_hlbox->pack_start( *m_entry_snap , false, false );
-
-
 
     /* add table */
     this->add( *m_table );
@@ -342,6 +351,18 @@ perfedit::set_looped()
     m_mainperf->set_looping( m_button_loop->get_active());
 }
 
+/* toggle recording */
+void
+perfedit::set_record()
+{
+
+}
+
+/* invert the playback mode */
+void
+perfedit::song_playback_toggle(){
+    m_mainperf->set_playback_mode(!m_mainperf->get_playback_mode());
+}
 
 void
 perfedit::popup_menu(Menu *a_menu)

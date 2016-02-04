@@ -437,38 +437,37 @@ options::add_jack_sync_page()
 
 
     /*Frame for jack start mode options*/
-    Frame* modeframe = manage(new Frame("Jack start mode"));
-    modeframe->set_border_width(4);
-    vbox->pack_start(*modeframe, Gtk::PACK_SHRINK);
+//    Frame* modeframe = manage(new Frame("Jack start mode"));
+//    modeframe->set_border_width(4);
+//    vbox->pack_start(*modeframe, Gtk::PACK_SHRINK);
 
-    VBox *modebox = manage(new VBox());
-    modebox->set_border_width(4);
-    modeframe->add(*modebox);
+//    VBox *modebox = manage(new VBox());
+//    modebox->set_border_width(4);
+//    modeframe->add(*modebox);
 
-    Gtk::RadioButton * rb_live = manage(
-            new RadioButton("_Live Mode", true));
-    add_tooltip(rb_live, "Playback will be in live mode.  Use this to "
-            "allow muting and unmuting of loops.");
+//    Gtk::RadioButton * rb_live = manage(
+//            new RadioButton("_Live Mode", true));
+//    add_tooltip(rb_live, "Playback will be in live mode.  Use this to "
+//            "allow muting and unmuting of loops.");
 
-    Gtk::RadioButton * rb_perform = manage(
-            new RadioButton("_Song Mode", true));
-    add_tooltip( rb_perform, "Playback will use the song editors data.");
+//    Gtk::RadioButton * rb_perform = manage(
+//            new RadioButton("_Song Mode", true));
+//    add_tooltip( rb_perform, "Playback will use the song editors data.");
 
-    Gtk::RadioButton::Group group = rb_live->get_group ();
-    rb_perform->set_group (group);
+//    Gtk::RadioButton::Group group = rb_live->get_group ();
+//    rb_perform->set_group (group);
 
-    if (global_jack_start_mode)
-        rb_perform->set_active(true);
-    else
-        rb_live->set_active(true);
+//    if (global_jack_start_mode)
+//        rb_perform->set_active(true);
+//    else
+//        rb_live->set_active(true);
 
-    rb_perform->signal_toggled().connect(bind(mem_fun(*this,
-                    &options::transport_callback), e_jack_start_mode_song,
-                rb_perform));
+//    rb_perform->signal_toggled().connect(bind(mem_fun(*this,
+//                    &options::transport_callback), e_jack_start_mode_song,
+//                rb_perform));
 
-    modebox->pack_start(*rb_live, false, false);
-    modebox->pack_start(*rb_perform, false, false);
-
+//    modebox->pack_start(*rb_live, false, false);
+//    modebox->pack_start(*rb_perform, false, false);
 
     /*Connetion buttons*/
     HButtonBox* buttonbox = manage(new HButtonBox());

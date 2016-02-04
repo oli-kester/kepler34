@@ -1070,7 +1070,7 @@ void perform::reset_sequences()
             m_seqs[i]->set_playing(false);
             m_seqs[i]->zero_markers();
 
-            if (!m_playback_mode)
+//            if (!m_playback_mode)
                 m_seqs[i]->set_playing(state);
         }
     }
@@ -1095,6 +1095,11 @@ void perform::launch_output_thread()
 void perform::set_playback_mode( bool a_playback_mode )
 {
     m_playback_mode = a_playback_mode;
+}
+
+bool perform::get_playback_mode()
+{
+    return m_playback_mode;
 }
 
 
@@ -1338,7 +1343,8 @@ void perform::output_func()
 
         /* if we are in the performance view, we care
            about starting from the offset */
-        if ( m_playback_mode && !m_jack_running){
+//        if ( m_playback_mode && !m_jack_running){
+          if (!m_jack_running){
 
             current_tick = m_starting_tick;
             clock_tick = m_starting_tick;
@@ -1456,7 +1462,8 @@ void perform::output_func()
                     current_tick = clock_tick = total_tick = jack_ticks_converted_last = jack_ticks_converted;
                     init_clock = true;
 
-                    if ( m_looping && m_playback_mode ){
+//                    if ( m_looping && m_playback_mode ){
+                    if (m_playback_mode){
 
                         //printf( "left[%lf] right[%lf]\n", (double) get_left_tick(), (double) get_right_tick() );
 
@@ -1583,7 +1590,8 @@ void perform::output_func()
             }
 
             if (dumping) {
-                if ( m_looping && m_playback_mode )
+//                if ( m_looping && m_playback_mode )
+                if ( m_looping)
                 {
                     if ( current_tick >= get_right_tick() )
                     {

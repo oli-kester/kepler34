@@ -192,12 +192,19 @@ mainwnd::mainwnd(perform *a_p):
             "the sequences in that key.\n\n"
             "(see File/Options/Keyboard for available mutegroup keys "
             "and the corresponding hotkey for the 'L' button)" );
-    hbox3->pack_end( *m_button_learn, false, false );
+    hbox3->pack_start( *m_button_learn, false, false );
+
+    /* song playback button */
+    m_button_song_playback = manage( new ToggleButton( ));
+    m_button_song_playback->set_label("SM");
+    m_button_song_playback->signal_toggled().connect(
+            mem_fun(*this, &mainwnd::song_playback_toggle));
+    add_tooltip( m_button_song_playback,"Toggle Song Playback");
+    hbox3->pack_end( *m_button_song_playback, false, false );
 
     /*this seems to be a dirty hack:*/
     Button w;
     hbox3->set_focus_child( w ); // clear the focus not to trigger L via keys
-
 
     /* bottom line items */
     HBox *bottomhbox = manage( new HBox(false, 10));
@@ -415,7 +422,10 @@ mainwnd::learn_toggle()
     }
 }
 
-
+/* invert the playback mode */
+void mainwnd::song_playback_toggle(){
+    m_mainperf->set_playback_mode(!m_mainperf->get_playback_mode());
+}
 
 /* callback function */
 void mainwnd::file_new()

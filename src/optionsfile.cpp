@@ -248,7 +248,6 @@ optionsfile::parse( perform *a_perf )
     line_after( &file, "[recent-files]" );
     for (int c = 0;c<10;c++){
         if (m_line[0]!=EOF){
-            cout << m_line << endl;
             recent_files[c] = m_line;
         } else
             recent_files[c] = "";

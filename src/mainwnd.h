@@ -78,6 +78,8 @@ class mainwnd : public Gtk::Window, public performcallback
 
     Button      *m_button_learn;
 
+    ToggleButton *m_button_song_playback;
+
     Button      *m_button_stop;
     Button      *m_button_play;
     Button      *m_button_perfedit;
@@ -107,6 +109,7 @@ class mainwnd : public Gtk::Window, public performcallback
     void start_playing();
     void stop_playing();
     void learn_toggle();
+    void song_playback_toggle();
     void open_performance_edit( );
     void sequence_key( int a_seq );
     void update_window_title();

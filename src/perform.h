@@ -137,10 +137,7 @@ class perform
 
     bool m_show_ui_sequence_key;
 
-
     void set_running( bool a_running );
-
-    void set_playback_mode( bool a_playback_mode );
 
     string m_screen_set_notepad[c_max_sets];
 
@@ -187,6 +184,9 @@ class perform
  public:
     bool is_running();
     bool is_learn_mode() const { return m_mode_group_learn; }
+
+    void set_playback_mode( bool a_playback_mode );
+    bool get_playback_mode();
 
     // can register here for events...
     std::vector<performcallback*> m_notify;

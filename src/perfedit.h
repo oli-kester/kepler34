@@ -80,7 +80,6 @@ class perfedit:public Gtk::Window
     Adjustment *m_vadjust;
     Adjustment *m_hadjust;
 
-
     perfnames *m_perfnames;
     perfroll *m_perfroll;
     perftime *m_perftime;
@@ -91,6 +90,7 @@ class perfedit:public Gtk::Window
 
     Button *m_button_stop;
     Button *m_button_play;
+    ToggleButton *m_button_record;
     ToggleButton *m_button_loop;
 
     Button *m_button_expand;
@@ -99,6 +99,7 @@ class perfedit:public Gtk::Window
 
     Button *m_button_grow;
     Button *m_button_undo;
+    ToggleButton *m_button_song_playback;
 
     Button      *m_button_bpm;
     Entry       *m_entry_bpm;
@@ -115,7 +116,6 @@ class perfedit:public Gtk::Window
     Menu       *m_menu_bpm;
     Menu       *m_menu_bw;
 
-
     /* set snap to in pulses */
     int m_snap;
     int m_bpm;
@@ -131,10 +131,13 @@ class perfedit:public Gtk::Window
 
     void on_realize ();
 
+    void song_playback_toggle();
+
     void start_playing ();
     void stop_playing ();
 
     void set_looped ();
+    void set_record ();
 
     void expand ();
     void collapse ();
