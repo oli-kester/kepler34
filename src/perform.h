@@ -94,7 +94,6 @@ class perform
     //andy playing screen
     int m_playing_screen;
 
-
     /* vector of sequences */
     sequence *m_seqs[c_max_sequence];
 
@@ -185,8 +184,10 @@ class perform
     bool is_running();
     bool is_learn_mode() const { return m_mode_group_learn; }
 
-    void set_playback_mode( bool a_playback_mode );
+    /* get or set the playback mode
+     * (i.e. do we/don't we play the song editor's data) */
     bool get_playback_mode();
+    void set_playback_mode( bool a_playback_mode );
 
     // can register here for events...
     std::vector<performcallback*> m_notify;
@@ -231,7 +232,6 @@ class perform
     bool is_sequence_in_edit( int a_num );
 
     void clear_sequence_triggers( int a_seq  );
-
 
     long get_tick( ) { return m_tick; };
 

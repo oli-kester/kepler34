@@ -411,11 +411,6 @@ mainwnd::learn_toggle()
 void mainwnd::song_playback_toggle(){
     printf("\nPlayback toggle\n");
     m_mainperf->set_playback_mode(m_button_song_playback->get_active());
-
-    /* update the song editor window's button
-     * only do this if it actually exists yet */
-    if (m_perf_edit != NULL)
-        m_perf_edit->update_playback_mode_button();
 }
 
 /* callback function */
@@ -424,7 +419,6 @@ void mainwnd::file_new()
     if (is_save())
         new_file();
 }
-
 
 void mainwnd::new_file()
 {
@@ -880,33 +874,39 @@ mainwnd::on_key_press_event(GdkEventKey* a_ev)
             fflush( stdout );
         }
 
+        /* check for bpm down key */
         if ( a_ev->keyval == m_mainperf->m_key_bpm_dn ){
             m_mainperf->set_bpm( m_mainperf->get_bpm() - 1 );
             m_adjust_bpm->set_value(  m_mainperf->get_bpm() );
         }
 
+        /* check for bpm up key */
         if ( a_ev->keyval ==  m_mainperf->m_key_bpm_up ){
             m_mainperf->set_bpm( m_mainperf->get_bpm() + 1 );
             m_adjust_bpm->set_value(  m_mainperf->get_bpm() );
         }
 
+        /* check for sequence replace key */
         if ( a_ev->keyval == m_mainperf->m_key_replace )
         {
             m_mainperf->set_sequence_control_status( c_status_replace );
         }
 
+        /* check for sequence queue key */
         if ((a_ev->keyval ==  m_mainperf->m_key_queue )
                 || (a_ev->keyval == m_mainperf->m_key_keep_queue ))
         {
             m_mainperf->set_sequence_control_status( c_status_queue );
         }
 
+        /* check for sequence snapshot key */
         if ( a_ev->keyval == m_mainperf->m_key_snapshot_1 ||
                 a_ev->keyval == m_mainperf->m_key_snapshot_2 )
         {
             m_mainperf->set_sequence_control_status( c_status_snapshot );
         }
 
+        /* check for screenset down key */
         if ( a_ev->keyval == m_mainperf->m_key_screenset_dn ){
 
             m_mainperf->set_screenset(  m_mainperf->get_screenset() - 1 );
@@ -916,6 +916,7 @@ mainwnd::on_key_press_event(GdkEventKey* a_ev)
                         m_mainperf->get_screenset()));
         }
 
+        /* check for screenset up key */
         if ( a_ev->keyval == m_mainperf->m_key_screenset_up ){
 
             m_mainperf->set_screenset(  m_mainperf->get_screenset() + 1 );
@@ -925,30 +926,34 @@ mainwnd::on_key_press_event(GdkEventKey* a_ev)
                         m_mainperf->get_screenset()));
         }
 
+        /* not sure what this does yet */
         if ( a_ev->keyval == m_mainperf->m_key_set_playing_screenset ){
             m_mainperf->set_playing_screenset();
         }
 
+        /* check for mute group on key */
         if ( a_ev->keyval == m_mainperf->m_key_group_on ){
             m_mainperf->set_mode_group_mute();
         }
 
+        /* check for mute group off key */
         if ( a_ev->keyval == m_mainperf->m_key_group_off ){
             m_mainperf->unset_mode_group_mute();
         }
 
+        /* check for mute group learn key */
         if ( a_ev->keyval == m_mainperf->m_key_group_learn ){
             m_mainperf->set_mode_group_learn();
         }
 
-        // activate mute group key
+        /* activate mute group key */
         if (m_mainperf->get_key_groups()->count( a_ev->keyval ) != 0 )
         {
             m_mainperf->select_and_mute_group(
                     m_mainperf->lookup_keygroup_group(a_ev->keyval));
         }
 
-        // mute group learn
+        /* if mute group learn is on */
         if (m_mainperf->is_learn_mode() &&
                 a_ev->keyval != m_mainperf->m_key_group_learn)
         {

@@ -36,6 +36,8 @@ class mainwnd : public Gtk::Window, public performcallback
 #if GTK_MINOR_VERSION < 12
     Tooltips *m_tooltips;
 #endif
+
+    /* window elements */
     MenuBar  *m_menubar;
     Menu     *m_menu_file;
     Menu     *m_menu_file_recent;
@@ -74,15 +76,18 @@ class mainwnd : public Gtk::Window, public performcallback
 
     sigc::connection   m_timeout_connect;
 
+    /* file dialogs */
     void file_import_dialog();
     void options_dialog();
     void about_dialog();
 
+    /* callback methods */
     void adj_callback_ss( );
     void adj_callback_bpm( );
     void edit_callback_notepad( );
     bool timer_callback( );
 
+    /* playback */
     void start_playing();
     void stop_playing();
     void learn_toggle();
@@ -91,6 +96,8 @@ class mainwnd : public Gtk::Window, public performcallback
     void sequence_key( int a_seq );
     void update_window_title();
     void toLower(basic_string<char>&);
+
+    /* file management */
     bool is_modified();
     void file_new();
     void file_open();
@@ -102,12 +109,14 @@ class mainwnd : public Gtk::Window, public performcallback
     void choose_file();
     int query_save_changes();
     bool is_save();
+
+    /* signal handlers */
     static void handle_signal(int sig);
     bool install_signal_handlers();
     bool signal_action(Glib::IOCondition condition);
 
+    /* repopulate the menu bar and redraw the main window */
     void redraw_menu();
-    void make_menu_bar();
 
     /* hook functions for loading recent files */
     void load_recent_1();
@@ -127,6 +136,7 @@ class mainwnd : public Gtk::Window, public performcallback
     ~mainwnd();
 
     void open_file(const Glib::ustring&);
+
     bool on_delete_event(GdkEventAny *a_e);
     bool on_key_press_event(GdkEventKey* a_ev);
     bool on_key_release_event(GdkEventKey* a_ev);

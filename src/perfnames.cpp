@@ -1,22 +1,6 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
+/* draws and handles the loop labels
+ * on the left of the song editor window */
+
 #include "perfnames.h"
 #include "font.h"
 
@@ -105,8 +89,6 @@ perfnames::draw_sequence( int sequence )
     int i = sequence - m_sequence_offset;
 
     if ( sequence < c_total_seqs ){
-
-
 
         m_gc->set_foreground(m_black);
         m_window->draw_rectangle(m_gc,true,
@@ -259,7 +241,7 @@ perfnames::on_button_press_event(GdkEventButton *a_e)
 
     m_current_seq = sequence;
 
-    /*      left mouse button     */
+    /* left mouse click mutes/unmutes the loop in song mode */
     if ( a_e->button == 1 ){
 
         if ( m_mainperf->is_active( sequence )){
@@ -270,6 +252,7 @@ perfnames::on_button_press_event(GdkEventButton *a_e)
             queue_draw();
         }
     }
+    // TODO double click = new sequence
 
     return true;
 }

@@ -48,11 +48,14 @@ using namespace Gtk;
 /* has a seqroll and paino roll */
 class perfedit:public Gtk::Window
 {
-
   private:
 
     perform * m_mainperf;
+    perfnames *m_perfnames;
+    perfroll *m_perfroll;
+    perftime *m_perftime;
 
+    /* GUI widgets */
     Table *m_table;
 
     VScrollbar *m_vscroll;
@@ -60,10 +63,6 @@ class perfedit:public Gtk::Window
 
     Adjustment *m_vadjust;
     Adjustment *m_hadjust;
-
-    perfnames *m_perfnames;
-    perfroll *m_perfroll;
-    perftime *m_perftime;
 
     Menu *m_menu_snap;
     Button *m_button_snap;
@@ -99,6 +98,7 @@ class perfedit:public Gtk::Window
 
     /* set snap to in pulses */
     int m_snap;
+
     int m_bpm;
     int m_bw;
 
@@ -112,19 +112,20 @@ class perfedit:public Gtk::Window
 
     void on_realize ();
 
+    /* playback methods */
     void song_playback_toggle();
-
     void start_playing ();
     void stop_playing ();
-
     void set_looped ();
     void set_record ();
 
     void expand ();
     void collapse ();
+
     void copy ();
     void undo ();
 
+    /* right click context menu for loop options */
     void popup_menu (Menu * a_menu);
 
     bool timeout ();
@@ -135,10 +136,7 @@ class perfedit:public Gtk::Window
   public:
 
     void init_before_show ();
-    void update_playback_mode_button();
 
     perfedit (perform * a_perf);
     ~perfedit ();
 };
-
-

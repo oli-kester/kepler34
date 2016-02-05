@@ -1,23 +1,4 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
-
+/* deals with the main window sequence squares */
 
 #include "globals.h"
 #include "perform.h"
@@ -26,7 +7,6 @@
 class seqedit;
 
 #pragma once
-
 
 #include <gtkmm/button.h>
 #include <gtkmm/window.h>
@@ -42,10 +22,7 @@ class seqedit;
 #include <gtkmm/widget.h>
 #include <gtkmm/style.h>
 
-
-
 using namespace Gtk;
-
 
 const int c_seqarea_seq_x = c_text_x * 13;
 const int c_seqarea_seq_y = c_text_y * 2;
@@ -109,6 +86,7 @@ class mainwid : public Gtk::DrawingArea, public seqmenu
     void draw_pixmap_on_window();
     void draw_sequence_pixmap_on_window( int a_seq );
 
+    /* translates XY corridinates to a sequence number */
     int seq_from_xy( int a_x, int a_y );
 
     int timeout();
@@ -130,6 +108,5 @@ class mainwid : public Gtk::DrawingArea, public seqmenu
 
     void update_markers( int a_ticks );
     void draw_marker_on_sequence( int a_seq, int a_tick );
-
 };
 

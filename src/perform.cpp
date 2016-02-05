@@ -761,7 +761,7 @@ int perform::get_screenset()
 }
 
 
-void perform::set_playing_screenset ()
+void perform::  set_playing_screenset ()
 {
     for (int j, i = 0; i < c_seqs_in_set; i++) {
         j = i + m_playing_screen * c_seqs_in_set;

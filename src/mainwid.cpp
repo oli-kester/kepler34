@@ -1,22 +1,4 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
+/* deals with the main window sequence squares */
 
 #include "mainwid.h"
 #include "seqedit.h"
@@ -506,6 +488,7 @@ mainwid::seq_from_xy( int a_x, int a_y )
 bool
 mainwid::on_button_press_event(GdkEventButton* a_p0)
 {
+    // TODO double click = new sequence
     grab_focus();
 
     m_current_seq = seq_from_xy( (int) a_p0->x, (int) a_p0->y );
@@ -522,7 +505,6 @@ mainwid::on_button_press_event(GdkEventButton* a_p0)
 bool
 mainwid::on_button_release_event(GdkEventButton* a_p0)
 {
-
     m_current_seq = seq_from_xy( (int) a_p0->x, (int) a_p0->y );
 
     m_button_down = false;
@@ -565,14 +547,11 @@ mainwid::on_button_release_event(GdkEventButton* a_p0)
             draw_sequence_on_pixmap( m_old_seq  );
             draw_sequence_pixmap_on_window( m_old_seq );
         }
-
-
     }
-    // launch menu (right button)
+    // check for right mouse click - this launches the popup menu
     if (  m_current_seq != -1 && a_p0->button == 3  ){
         popup_menu();
     }
-
 
     return true;
 }

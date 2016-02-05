@@ -282,7 +282,7 @@ sequence::play( long a_tick, bool a_playback_mode )
 {
     lock();
 
-    //printf( "a_tick[%ld] a_playback[%d]\n", a_tick, a_playback_mode );
+    printf( "a_tick[%ld] a_playback[%d]\n", a_tick, a_playback_mode );
 
     /* turns sequence off after we play in this frame */
     bool trigger_turning_off = false;
@@ -300,12 +300,12 @@ sequence::play( long a_tick, bool a_playback_mode )
     }
     else
     {
-        /* if we are using our in sequence on/off triggers */
+        /* if we're playing the song data
+         * (i.e. using our in sequence on/off triggers) */
         if ( a_playback_mode ){
 
             bool trigger_state = false;
             long trigger_tick = 0;
-
 
             list<trigger>::iterator i = m_list_trigger.begin();
 

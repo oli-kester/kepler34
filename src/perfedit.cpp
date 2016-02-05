@@ -418,17 +418,6 @@ perfedit::init_before_show()
     //m_perftime->init_before_show();
 }
 
-/* update song playback mode from globals. Used if the playback mode
- * is changed from the main window */
-void
-perfedit::update_playback_mode_button(){
-    /* check the new state is different before setting the toggle.
-     * this prevents endless re-toggling */
-    bool new_state = m_mainperf->get_playback_mode();
-    if (new_state != m_button_song_playback->get_active())
-        m_button_song_playback->set_active(new_state);
-}
-
 bool
 perfedit::timeout()
 {
