@@ -1,4 +1,4 @@
-/* Song Editor Window */
+/* main container for the song editor window */
 
 #pragma once
 
@@ -113,7 +113,6 @@ class perfedit:public Gtk::Window
     void on_realize ();
 
     /* playback methods */
-    void song_playback_toggle();
     void start_playing ();
     void stop_playing ();
     void set_looped ();

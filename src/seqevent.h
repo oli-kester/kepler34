@@ -18,7 +18,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #pragma once
 
 #include "sequence.h"
@@ -70,11 +69,9 @@ struct Seq24SeqEventInput
     bool m_adding;
 };
 
-
 /* piano event */
 class seqevent : public Gtk::DrawingArea
 {
-
  private:
     friend struct FruitySeqEventInput;
     FruitySeqEventInput m_fruity_interaction;

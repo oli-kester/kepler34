@@ -429,7 +429,7 @@ mainwid::draw_pixmap_on_window()
 }
 
 
-// GTK expose event
+/* GTK expose event */
 bool
 mainwid::on_expose_event(GdkEventExpose* a_e)
 {
@@ -444,7 +444,7 @@ mainwid::on_expose_event(GdkEventExpose* a_e)
     return true;
 }
 
-// Translates XY corridinates to a sequence number
+/* Translates XY corridinates to a sequence number */
 int
 mainwid::seq_from_xy( int a_x, int a_y )
 {
@@ -482,9 +482,7 @@ mainwid::seq_from_xy( int a_x, int a_y )
 
 }
 
-
-
-// press a mouse button
+/* press a mouse button */
 bool
 mainwid::on_button_press_event(GdkEventButton* a_p0)
 {
@@ -501,17 +499,17 @@ mainwid::on_button_press_event(GdkEventButton* a_p0)
     return true;
 }
 
-
+/* on mouse release */
 bool
 mainwid::on_button_release_event(GdkEventButton* a_p0)
 {
+    /* get the sequence number we clicked on */
     m_current_seq = seq_from_xy( (int) a_p0->x, (int) a_p0->y );
 
     m_button_down = false;
 
-    /* it hit a sequence ? */
-    // toggle play mode of sequence (left button)
-
+    /* if we're on a valid sequence, we hit the left mouse button,
+     * and are not dragging a sequence */
     if ( m_current_seq != -1  && a_p0->button == 1 && !m_moving ){
 
         if ( m_mainperf->is_active( m_current_seq )){
@@ -526,6 +524,7 @@ mainwid::on_button_release_event(GdkEventButton* a_p0)
         }
     }
 
+    /* if left mouse button & we're moving a seq between slots */
     if ( a_p0->button == 1 && m_moving ){
 
         m_moving = false;
@@ -548,7 +547,8 @@ mainwid::on_button_release_event(GdkEventButton* a_p0)
             draw_sequence_pixmap_on_window( m_old_seq );
         }
     }
-    // check for right mouse click - this launches the popup menu
+
+    /* check for right mouse click - this launches the popup menu */
     if (  m_current_seq != -1 && a_p0->button == 3  ){
         popup_menu();
     }
@@ -566,23 +566,24 @@ mainwid::on_motion_notify_event(GdkEventMotion* a_p0)
 	if ( seq != m_current_seq && !m_moving &&
 		 !m_mainperf->is_sequence_in_edit( m_current_seq ) ){
 
+        /* lets drag a sequence between slots */
 	    if ( m_mainperf->is_active( m_current_seq )){
 
 		m_old_seq = m_current_seq;
 		m_moving = true;
 
+        /* save the sequence and clear the old slot */
 		m_moving_seq = *(m_mainperf->get_sequence( m_current_seq ));
 		m_mainperf->delete_sequence( m_current_seq );
+
+        /* redraw the old slot */
 		draw_sequence_on_pixmap( m_current_seq  );
 		draw_sequence_pixmap_on_window( m_current_seq );
 	    }
 	}
     }
-
     return true;
 }
-
-
 
 // redraws everything, queues redraw
 void
@@ -591,7 +592,6 @@ mainwid::reset( )
     draw_sequences_on_pixmap();
     draw_pixmap_on_window();
 }
-
 
 //int
 //mainwid::get_screenset( )
@@ -615,15 +615,10 @@ mainwid::set_screenset( int a_ss )
     reset();
 }
 
-
-
-
 mainwid::~mainwid( )
 {
 
 }
-
-
 
 bool
 mainwid::on_focus_in_event(GdkEventFocus*)

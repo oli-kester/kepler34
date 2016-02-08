@@ -30,7 +30,6 @@ const int c_seqarea_seq_y = c_text_y * 2;
 /* piano roll */
 class mainwid : public Gtk::DrawingArea, public seqmenu
 {
-
  private:
 
     Glib::RefPtr<Gdk::GC> m_gc;
@@ -54,10 +53,11 @@ class mainwid : public Gtk::DrawingArea, public seqmenu
                  m_window_y;
 
     bool         m_button_down;
+
+    /* holds whether or not were moving a sequence between slots */
     bool         m_moving;
 
     /* when highlighting a bunch of events */
-
     /* where the dragging started */
     int m_drop_x;
     int m_drop_y;
@@ -72,9 +72,15 @@ class mainwid : public Gtk::DrawingArea, public seqmenu
 
     void on_realize();
 
+    /* GTK expose event */
     bool on_expose_event(GdkEventExpose* a_ev);
+
+    /* press a mouse button */
     bool on_button_press_event(GdkEventButton* a_ev);
+
+    /* on mouse release */
     bool on_button_release_event(GdkEventButton* a_ev);
+
     bool on_motion_notify_event(GdkEventMotion* a_p0);
     bool on_focus_in_event(GdkEventFocus*);
     bool on_focus_out_event(GdkEventFocus*);
@@ -83,7 +89,10 @@ class mainwid : public Gtk::DrawingArea, public seqmenu
     void draw_sequences_on_pixmap();
 
     void fill_background_window();
+
     void draw_pixmap_on_window();
+
+    /* draw the specified sequence index onto the window */
     void draw_sequence_pixmap_on_window( int a_seq );
 
     /* translates XY corridinates to a sequence number */
@@ -98,6 +107,7 @@ class mainwid : public Gtk::DrawingArea, public seqmenu
     mainwid( perform *a_p );
     ~mainwid( );
 
+    // redraws everything, queues redraw
     void reset();
 
     //int get_screenset( );

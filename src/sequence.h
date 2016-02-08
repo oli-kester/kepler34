@@ -1,22 +1,4 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
+/* contains sequence and trigger classes */
 
 #pragma once
 
@@ -39,7 +21,7 @@ enum draw_type
     DRAW_NOTE_OFF
 };
 
-/* used in playback */
+/* class to handle triggers for notes and seq on/off */
 class trigger
 {
 public:
@@ -125,6 +107,10 @@ class sequence
     bool m_dirty_perf;
     bool m_dirty_names;
 
+    /* used to temporarily block song mode events
+     * after live sequence triggering/muting */
+    bool m_block_song_temp;
+
     /* anything editing currently ? */
     bool m_editing;
     bool m_raise;
@@ -177,12 +163,10 @@ class sequence
     void remove( list<event>::iterator i );
     void remove( event* e );
 
-
   public:
 
       sequence ();
      ~sequence ();
-
 
     void push_undo ();
     void pop_undo ();
@@ -211,6 +195,9 @@ class sequence
 
     void set_song_mute (bool a_mute);
     bool get_song_mute ();
+
+    void set_song_block_temp (bool a_block);
+    bool get_song_block_temp ();
 
     /* returns string of name */
     const char *get_name ();
@@ -269,7 +256,6 @@ class sequence
     bool is_dirty_perf ();
     bool is_dirty_names ();
 
-
     void set_dirty_mp();
     void set_dirty();
 
@@ -290,7 +276,7 @@ class sequence
     //  Selection and Manipulation
     //
 
-    /* adds event to internal list */
+    /* adds event to internal list in a sorted manner */
     void add_event (const event * a_e);
 
     void add_trigger (long a_tick, long a_length, long a_offset = 0, bool a_adjust_offset = true);
@@ -304,7 +290,6 @@ class sequence
     bool intersectTriggers( long position, long& start, long& end );
     bool intersectNotes( long position, long position_note, long& start, long& end, long& note );
     bool intersectEvents( long posstart, long posend, long status, long& start );
-
 
     void del_selected_trigger();
     void cut_selected_trigger();
@@ -320,7 +305,6 @@ class sequence
     void move_triggers (long a_start_tick, long a_distance, bool a_direction);
     void copy_triggers (long a_start_tick, long a_distance);
     void clear_triggers ();
-
 
     long get_trigger_offset ();
 

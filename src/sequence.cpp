@@ -1,22 +1,5 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
+/* contains sequence and trigger classes */
+
 #include "sequence.h"
 #include "seqedit.h"
 #include <stdlib.h>
@@ -43,6 +26,8 @@ sequence::sequence( ) :
     m_dirty_edit(true),
     m_dirty_perf(true),
     m_dirty_names(true),
+
+    m_block_song_temp(false),
 
     m_editing(false),
     m_raise(false),
@@ -144,8 +129,6 @@ sequence::pop_trigger_undo()
     unlock();
 }
 
-
-
 void
 sequence::set_master_midi_bus( mastermidibus *a_mmb )
 {
@@ -155,7 +138,6 @@ sequence::set_master_midi_bus( mastermidibus *a_mmb )
 
     unlock();
 }
-
 
 void
 sequence::set_song_mute( bool a_mute )
@@ -207,13 +189,19 @@ sequence::get_bw()
     return m_time_beat_width;
 }
 
+bool sequence::get_song_block_temp(){
+    return m_block_song_temp;
+}
+
+void sequence::set_song_block_temp(bool a_block){
+    m_block_song_temp = a_block;
+}
 
 sequence::~sequence()
 {
 
 }
 
-/* adds event in sorted manner */
 void
 sequence::add_event( const event *a_e )
 {
@@ -277,12 +265,13 @@ sequence::get_queued_tick()
 }
 
 /* tick comes in as global tick */
+//TODO modify sequences in song mode
     void
 sequence::play( long a_tick, bool a_playback_mode )
 {
     lock();
 
-    printf( "a_tick[%ld] a_playback[%d]\n", a_tick, a_playback_mode );
+//    printf( "a_tick[%ld] a_playback[%d]\n", a_tick, a_playback_mode );
 
     /* turns sequence off after we play in this frame */
     bool trigger_turning_off = false;
@@ -307,9 +296,15 @@ sequence::play( long a_tick, bool a_playback_mode )
             bool trigger_state = false;
             long trigger_tick = 0;
 
+            /* create iterator for the list of triggers */
             list<trigger>::iterator i = m_list_trigger.begin();
 
             while ( i != m_list_trigger.end()){
+
+                /* if we've reached a new loop in the song data,
+                 * unset the block on it's events */
+                if (a_tick == (*i).m_tick_start || a_tick == (*i).m_tick_end)
+                    m_block_song_temp = false;
 
                 if ( (*i).m_tick_start <= end_tick ){
                     trigger_state = true;
@@ -332,8 +327,11 @@ sequence::play( long a_tick, bool a_playback_mode )
                 i++;
             }
 
-            /* we had triggers in our slice and its not equal to current state */
-            if ( trigger_state != m_playing ){
+            /* if we had triggers in our slice and its not equal to current state,
+             * time to change the sequence trigger state
+             * (only change state if we're not improvising) */
+            if ( trigger_state != m_playing && !m_block_song_temp){
+//                if ( trigger_state != m_playing ){
 
                 //printf( "trigger %d\n", trigger_state );
 
@@ -378,7 +376,6 @@ sequence::play( long a_tick, bool a_playback_mode )
 
         while ( e != m_list_event.end()){
 
-
             //printf ( "s[%ld] -> t[%ld] ", start_tick, end_tick  ); (*e).print();
             if ( ((*e).get_timestamp() + offset_base ) >= (start_tick_offset) &&
                     ((*e).get_timestamp() + offset_base ) <= (end_tick_offset) ){
@@ -416,12 +413,6 @@ sequence::play( long a_tick, bool a_playback_mode )
     unlock();
 }
 
-
-
-
-
-
-
 void
 sequence::zero_markers()
 {
@@ -433,7 +424,6 @@ sequence::zero_markers()
 
     unlock();
 }
-
 
 /* verfies state, all noteons have an off,
    links noteoffs with their ons */
@@ -533,10 +523,6 @@ sequence::verify_and_link()
     unlock();
 }
 
-
-
-
-
 void
 sequence::link_new( )
 {
@@ -603,8 +589,6 @@ sequence::link_new( )
     unlock();
 }
 
-
-
 // helper function, does not lock/unlock, unsafe to call without them
 // supply iterator from m_list_event...
 // lock();  remove();  reset_draw_marker(); unlock()
@@ -641,7 +625,6 @@ sequence::remove( event* e )
     }
 }
 
-
 void
 sequence::remove_marked()
 {
@@ -668,8 +651,6 @@ sequence::remove_marked()
 
     unlock();
 }
-
-
 
 void
 sequence::mark_selected( )
@@ -2774,8 +2755,6 @@ sequence::get_lowest_note_event()
     return ret;
 }
 
-
-
 int
 sequence::get_highest_note_event()
 {
@@ -3138,13 +3117,11 @@ sequence::set_quanized_rec( bool a_qr )
     unlock();
 }
 
-
 bool
 sequence::get_quanidez_rec( )
 {
     return m_quanized_rec;
 }
-
 
 void
 sequence::set_thru( bool a_r )
@@ -3280,15 +3257,6 @@ sequence::off_playing_notes()
 
     unlock();
 }
-
-
-
-
-
-
-
-
-
 
 /* change */
 void
@@ -3482,11 +3450,6 @@ sequence::quanize_events( unsigned char a_status, unsigned char a_cc,
     unlock();
 
 }
-
-
-
-
-
 
 void
 addListVar( list<char> *a_list, long a_var )

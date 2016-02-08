@@ -1,4 +1,4 @@
-/* Song Editor Window */
+/* main container for the song editor window */
 
 #include "perfedit.h"
 #include "sequence.h"
@@ -154,14 +154,6 @@ perfedit::perfedit( perform *a_perf )
     m_button_expand->signal_clicked().connect(  mem_fun( *this, &perfedit::expand));
     add_tooltip( m_button_expand, "Expand between L and R markers." );
 
-    /* song playback toggle */
-//    m_button_song_playback = manage( new ToggleButton());
-//    m_button_song_playback->set_label("SM");
-//    m_button_song_playback->signal_toggled().connect(  mem_fun( *this, &perfedit::song_playback_toggle));
-//    /* set toggle state according to internals */
-//    m_button_song_playback->set_active(global_jack_start_mode);
-//    add_tooltip( m_button_song_playback, "Toggle Song Playback" );
-
     /* collapse */
     m_button_collapse = manage( new Button());
     m_button_collapse->add(*manage( new Image(Gdk::Pixbuf::create_from_xpm_data( collapse_xpm ))));
@@ -198,7 +190,6 @@ perfedit::perfedit( perform *a_perf )
     m_button_play->signal_clicked().connect(  mem_fun( *this, &perfedit::start_playing));
     add_tooltip( m_button_play, "Begin playing the song at L marker." );
 
-//    m_hlbox->pack_end( *m_button_song_playback , false, false );
     m_hlbox->pack_end( *m_button_copy , false, false );
     m_hlbox->pack_end( *m_button_expand , false, false );
     m_hlbox->pack_end( *m_button_collapse , false, false );
@@ -335,13 +326,6 @@ void
 perfedit::set_record()
 {
 
-}
-
-/* invert the playback mode */
-void
-perfedit::song_playback_toggle(){
-    printf("\n\ntoggle\n");
-//    m_mainperf->set_playback_mode(m_button_song_playback->get_active());
 }
 
 void

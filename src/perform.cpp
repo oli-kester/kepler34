@@ -30,7 +30,6 @@
 //For keys
 #include <gtkmm/accelkey.h>
 
-
 using namespace Gtk;
 
 perform::perform()
@@ -546,8 +545,6 @@ void perform::set_was_active( int a_sequence )
     m_was_active_names[ a_sequence ] = true;
 }
 
-
-
 bool perform::is_active( int a_sequence )
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
@@ -555,7 +552,6 @@ bool perform::is_active( int a_sequence )
 
     return m_seqs_active[ a_sequence ];
 }
-
 
 bool perform::is_dirty_main (int a_sequence)
 {
@@ -573,7 +569,6 @@ bool perform::is_dirty_main (int a_sequence)
     return was_active;
 }
 
-
 bool perform::is_dirty_edit (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
@@ -590,7 +585,6 @@ bool perform::is_dirty_edit (int a_sequence)
     return was_active;
 }
 
-
 bool perform::is_dirty_perf (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
@@ -606,7 +600,6 @@ bool perform::is_dirty_perf (int a_sequence)
 
     return was_active;
 }
-
 
 bool perform::is_dirty_names (int a_sequence)
 {
@@ -634,12 +627,10 @@ mastermidibus* perform::get_master_midi_bus( )
     return &m_master_bus;
 }
 
-
 void perform::set_running( bool a_running )
 {
     m_running = a_running;
 }
-
 
 bool perform::is_running()
 {
@@ -655,7 +646,6 @@ void perform::set_bpm(int a_bpm)
         m_master_bus.set_bpm( a_bpm );
     }
 }
-
 
 int  perform::get_bpm( )
 {
@@ -683,7 +673,6 @@ bool perform::is_sequence_in_edit( int a_num )
 
 }
 
-
 void perform::new_sequence( int a_sequence )
 {
     m_seqs[ a_sequence ] = new sequence();
@@ -691,7 +680,6 @@ void perform::new_sequence( int a_sequence )
     set_active(a_sequence, true);
 
 }
-
 
 midi_control * perform::get_midi_control_toggle( unsigned int a_seq )
 {
@@ -795,6 +783,8 @@ void perform::play( long a_tick )
     //printf( "play [%d]\n", a_tick );
 
     m_tick = a_tick;	
+
+    /* for all seqs in the array */
     for (int i=0; i< c_max_sequence; i++ ){
 
         if ( is_active(i) ){
@@ -2087,7 +2077,6 @@ void perform::restore_playing_state()
     }
 }
 
-
 void perform::set_sequence_control_status( int a_status )
 {
     if ( a_status & c_status_snapshot ){
@@ -2122,13 +2111,14 @@ void perform::sequence_playing_toggle( int a_sequence )
                 unset_sequence_control_status( c_status_replace );	
                 off_sequences( );
             }
-
             m_seqs[a_sequence]->toggle_playing();
-
         }
+        /* if we're in song playback, temporarily block the events
+         * till the next loop */
+        if (m_playback_mode)
+            m_seqs[a_sequence]->set_song_block_temp(true);
     }
 }
-
 
 void perform::sequence_playing_on( int a_sequence )
 {

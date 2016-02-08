@@ -70,4 +70,3 @@ bin_PROGRAMS = %D%/kepler34
   %D%/userfile.h
 
 EXTRA_DIST += %D%/configwin32.h
-

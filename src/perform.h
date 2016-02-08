@@ -57,6 +57,7 @@ class midi_control
 	long m_max_value;
 };
 
+
 const int c_status_replace  = 0x01;
 const int c_status_snapshot = 0x02;
 const int c_status_queue    = 0x04;
@@ -76,6 +77,7 @@ const int c_status_queue    = 0x04;
 	 //andy play only this screen set
 	 const int c_midi_control_play_ss      = c_midi_track_ctrl + 9;
 	 const int c_midi_controls             = c_midi_track_ctrl + 10;//7
+
 
 struct performcallback
 {
@@ -97,13 +99,13 @@ class perform
     /* vector of sequences */
     sequence *m_seqs[c_max_sequence];
 
+    /* holds whether each sequence is active */
     bool m_seqs_active[ c_max_sequence ];
 
     bool m_was_active_main[ c_max_sequence ];
     bool m_was_active_edit[ c_max_sequence ];
     bool m_was_active_perf[ c_max_sequence ];
     bool m_was_active_names[ c_max_sequence ];
-
     bool m_sequence_state[  c_max_sequence ];
 
     /* our midibus */
@@ -120,6 +122,7 @@ class perform
     bool m_outputing;
     bool m_looping;
 
+    /* whether we're in live or song mode */
     bool m_playback_mode;
 
     int thread_trigger_width_ms;

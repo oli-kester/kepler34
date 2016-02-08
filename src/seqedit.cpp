@@ -108,7 +108,7 @@ seqedit::seqedit( sequence *a_seq,
 
 
     /* main window */
-    std::string title = "seq24 - ";
+    std::string title = "kepler34 - ";
     title.append(m_seq->get_name());
     set_title(title);
     set_size_request(700, 500);

@@ -1,3 +1,5 @@
+/*input for perfroll, the grid in the song editor window */
+
 #include "perform.h"
 #include "perfroll_input.h"
 #include "perfroll.h"
@@ -325,7 +327,7 @@ bool Seq24PerfInput::on_button_press_event(GdkEventButton* a_ev, perfroll& ths)
 
     ths.convert_xy( ths.m_drop_x, ths.m_drop_y, &ths.m_drop_tick, &ths.m_drop_sequence );
 
-    /*      left mouse button     */
+    /* left mouse button */
     if ( a_ev->button == 1 ){
 
         long tick = ths.m_drop_tick;
@@ -350,11 +352,13 @@ bool Seq24PerfInput::on_button_press_event(GdkEventButton* a_ev, perfroll& ths)
                 {
 
                     // snap to length of sequence
+                    //TODO snap to any length instead
                     tick = tick - (tick % seq_length);
                     //m_adding_pressed_state = true;
 
                     ths.m_mainperf->push_trigger_undo();
                     ths.m_mainperf->get_sequence( ths.m_drop_sequence )->add_trigger( tick, seq_length );
+
                     ths.draw_background_on( ths.m_pixmap, ths.m_drop_sequence );
                     ths.draw_sequence_on( ths.m_pixmap, ths.m_drop_sequence );
                     ths.draw_drawable_row( ths.m_window, ths.m_pixmap, ths.m_drop_y);
@@ -410,12 +414,12 @@ bool Seq24PerfInput::on_button_press_event(GdkEventButton* a_ev, perfroll& ths)
         }
     }
 
-    /*     right mouse button      */
+    /* right mouse button */
     if ( a_ev->button == 3 ){
         set_adding( true, ths );
     }
 
-    /* middle, split */
+    /* middle mouse button, split seq under cursor */
     if ( a_ev->button == 2 )
     {
         if ( ths.m_mainperf->is_active( ths.m_drop_sequence )){
