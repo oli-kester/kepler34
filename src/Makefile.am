@@ -5,7 +5,7 @@ SUBDIRS = pixmaps
 AM_CXXFLAGS = $(GTKMM_CFLAGS) $(JACK_CFLAGS) $(LASH_CFLAGS) -Wall
 seq24_LDADD = $(GTKMM_LIBS) $(ALSA_LIBS) $(JACK_LIBS) $(LASH_LIBS)
 
-bin_PROGRAMS = seq24
+bin_PROGRAMS = kepler34
 
 seq24_SOURCES = \
 	configfile.cpp configfile.h \
@@ -30,7 +30,7 @@ seq24_SOURCES = \
 	perfroll.cpp perfroll.h \
 	perfroll_input.cpp perfroll_input.h \
 	perftime.cpp perftime.h \
-	seq24.cpp \
+        kepler34.cpp \
 	seqdata.cpp seqdata.h \
 	seqedit.cpp seqedit.h \
 	seqevent.cpp seqevent.h \

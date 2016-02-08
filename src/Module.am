@@ -2,11 +2,11 @@
 
 include %D%/pixmaps/Module.am
 AM_CXXFLAGS = $(GTKMM_CFLAGS) $(JACK_CFLAGS) $(LASH_CFLAGS) -Wall
-%C%_seq24_LDADD = $(GTKMM_LIBS) $(ALSA_LIBS) $(JACK_LIBS) $(LASH_LIBS)
+%C%_kepler34_LDADD = $(GTKMM_LIBS) $(ALSA_LIBS) $(JACK_LIBS) $(LASH_LIBS)
 
-bin_PROGRAMS = %D%/seq24
+bin_PROGRAMS = %D%/kepler34
 
-%C%_seq24_SOURCES = \
+%C%_kepler34_SOURCES = \
 	%D%/configfile.cpp \
 	%D%/controllers.h \
 	%D%/event.cpp \
@@ -49,7 +49,7 @@ bin_PROGRAMS = %D%/seq24
   %D%/perfroll_input.h \
   %D%/perftime.cpp \
   %D%/perftime.h \
-  %D%/seq24.cpp \
+  %D%/kepler34.cpp \
   %D%/seqdata.cpp \
   %D%/seqdata.h \
   %D%/seqedit.cpp \

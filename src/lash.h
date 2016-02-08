@@ -57,7 +57,7 @@ public:
 };
 
 
-/* global lash driver, defined in seq24.cpp and used in midibus.cpp*/
+/* global lash driver, defined in kepler34.cpp and used in midibus.cpp*/
 extern lash *lash_driver;
 
 
