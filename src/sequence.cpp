@@ -27,7 +27,7 @@ sequence::sequence( ) :
     m_dirty_perf(true),
     m_dirty_names(true),
 
-    m_block_song_temp(false),
+    m_song_playback_block(false),
 
     m_editing(false),
     m_raise(false),
@@ -189,12 +189,12 @@ sequence::get_bw()
     return m_time_beat_width;
 }
 
-bool sequence::get_song_block_temp(){
-    return m_block_song_temp;
+bool sequence::get_song_playback_block(){
+    return m_song_playback_block;
 }
 
-void sequence::set_song_block_temp(bool a_block){
-    m_block_song_temp = a_block;
+void sequence::set_song_playback_block(bool a_block){
+    m_song_playback_block = a_block;
 }
 
 sequence::~sequence()
@@ -301,10 +301,10 @@ sequence::play( long a_tick, bool a_playback_mode )
 
             while ( i != m_list_trigger.end()){
 
-                /* if we've reached a new loop in the song data,
-                 * unset the block on it's events */
+                /* if we've reached a new block in the song data,
+                 * unset the block on this seq's events */
                 if (a_tick == (*i).m_tick_start || a_tick == (*i).m_tick_end)
-                    m_block_song_temp = false;
+                    m_song_playback_block = false;
 
                 if ( (*i).m_tick_start <= end_tick ){
                     trigger_state = true;
@@ -330,8 +330,7 @@ sequence::play( long a_tick, bool a_playback_mode )
             /* if we had triggers in our slice and its not equal to current state,
              * time to change the sequence trigger state
              * (only change state if we're not improvising) */
-            if ( trigger_state != m_playing && !m_block_song_temp){
-//                if ( trigger_state != m_playing ){
+            if ( trigger_state != m_playing && !m_song_playback_block){
 
                 //printf( "trigger %d\n", trigger_state );
 

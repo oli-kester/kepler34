@@ -2116,7 +2116,7 @@ void perform::sequence_playing_toggle( int a_sequence )
         /* if we're in song playback, temporarily block the events
          * till the next loop */
         if (m_playback_mode)
-            m_seqs[a_sequence]->set_song_block_temp(true);
+            m_seqs[a_sequence]->set_song_playback_block(true);
     }
 }
 

@@ -108,8 +108,8 @@ class sequence
     bool m_dirty_names;
 
     /* used to temporarily block song mode events
-     * after live sequence triggering/muting */
-    bool m_block_song_temp;
+     * during live sequence triggering/muting */
+    bool m_song_playback_block;
 
     /* anything editing currently ? */
     bool m_editing;
@@ -196,8 +196,8 @@ class sequence
     void set_song_mute (bool a_mute);
     bool get_song_mute ();
 
-    void set_song_block_temp (bool a_block);
-    bool get_song_block_temp ();
+    void set_song_playback_block (bool a_block);
+    bool get_song_playback_block ();
 
     /* returns string of name */
     const char *get_name ();
