@@ -123,6 +123,7 @@ class perform
     bool m_looping;
 
     /* whether we're in live or song mode */
+    //TODO replace with enum
     bool m_playback_mode;
 
     int thread_trigger_width_ms;
@@ -148,7 +149,7 @@ class perform
     midi_control m_midi_cc_off[ c_midi_controls ];
 
     int m_offset;
-    int m_control_status;
+    int m_control_status; //TODO replace with enum
     int m_screen_set;
 
     condition_var m_condition_var;
@@ -297,7 +298,7 @@ class perform
 
     void new_sequence( int a_sequence );
 
-    /* plays all notes to Curent tick */
+    /* plays all notes to current tick */
     void play( long a_tick );
     void set_orig_ticks( long a_tick  );
 
@@ -310,15 +311,25 @@ class perform
 
     void set_looping( bool a_looping ){ m_looping = a_looping; };
 
+
+    /* set/unset the control status of the main window.
+     *
+     * Set with byte values. These can be:
+     * - Replace    (c_status_replace)
+     * - Queue      (c_status_queue)
+     * - Snapshot   (c_status_snapshot)
+     *
+     * constants are set up top ^^^ */
     void set_sequence_control_status( int a_status );
     void unset_sequence_control_status( int a_status );
+
 
     void sequence_playing_toggle( int a_sequence );
     void sequence_playing_on( int a_sequence );
     void sequence_playing_off( int a_sequence );
+
     void set_group_mute_state (int a_g_track, bool a_mute_state);
     bool get_group_mute_state (int a_g_track);
-
     void mute_all_tracks();
 
     mastermidibus* get_master_midi_bus( );

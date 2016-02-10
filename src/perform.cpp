@@ -780,7 +780,7 @@ void perform::play( long a_tick )
 
     /* just run down the list of sequences and have them dump */
 
-    //printf( "play [%d]\n", a_tick );
+    //    printf( "play [%d]\n", a_tick );
 
     m_tick = a_tick;	
 
@@ -788,14 +788,20 @@ void perform::play( long a_tick )
     for (int i=0; i< c_max_sequence; i++ ){
 
         if ( is_active(i) ){
+
             assert( m_seqs[i] );
 
+//            printf( "dump seq - [%s]\n", m_seqs[i]->get_name() );
 
             if ( m_seqs[i]->get_queued() &&
+
                     m_seqs[i]->get_queued_tick() <= a_tick ){
 
                 m_seqs[i]->play( m_seqs[i]->get_queued_tick() - 1, m_playback_mode );
+
                 m_seqs[i]->toggle_playing();
+
+                printf( "toggle playing - [%s]\n", m_seqs[i]->get_name() );
             }
 
             m_seqs[i]->play( a_tick, m_playback_mode );
@@ -812,7 +818,9 @@ void perform::set_orig_ticks( long a_tick  )
     for (int i=0; i< c_max_sequence; i++ ){
 
         if ( is_active(i) == true ){
+
             assert( m_seqs[i] );
+
             m_seqs[i]->set_orig_tick( a_tick );
         }
     }
@@ -822,7 +830,9 @@ void perform::set_orig_ticks( long a_tick  )
 void perform::clear_sequence_triggers( int a_seq  )
 {
     if ( is_active(a_seq) == true ){
+
         assert( m_seqs[a_seq] );
+
         m_seqs[a_seq]->clear_triggers( );
     }
 }
@@ -837,7 +847,9 @@ void perform::move_triggers( bool a_direction )
         for (int i=0; i< c_max_sequence; i++ ){
 
             if ( is_active(i) == true ){
+
                 assert( m_seqs[i] );
+
                 m_seqs[i]->move_triggers( m_left_tick, distance, a_direction );
             }
         }
@@ -2105,14 +2117,17 @@ void perform::sequence_playing_toggle( int a_sequence )
         if ( m_control_status & c_status_queue ){
             m_seqs[a_sequence]->toggle_queued();
         }
+
         else {
 
             if (  m_control_status & c_status_replace ){
-                unset_sequence_control_status( c_status_replace );	
+                unset_sequence_control_status( c_status_replace );
                 off_sequences( );
             }
+
             m_seqs[a_sequence]->toggle_playing();
         }
+
         /* if we're in song playback, temporarily block the events
          * till the next loop */
         if (m_playback_mode)

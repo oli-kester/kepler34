@@ -265,8 +265,7 @@ sequence::get_queued_tick()
 }
 
 /* tick comes in as global tick */
-//TODO modify sequences in song mode
-    void
+void
 sequence::play( long a_tick, bool a_playback_mode )
 {
     lock();
@@ -301,10 +300,12 @@ sequence::play( long a_tick, bool a_playback_mode )
 
             while ( i != m_list_trigger.end()){
 
-                /* if we've reached a new block in the song data,
+                /* if we've reached a new chunk of drawn seqs in the song data,
                  * unset the block on this seq's events */
-                if (a_tick == (*i).m_tick_start || a_tick == (*i).m_tick_end)
-                    m_song_playback_block = false;
+                    if (a_tick == (*i).m_tick_start || a_tick == (*i).m_tick_end) {
+                        printf("sequence.cpp - block off on %s - tick start = %ld, tick end = %ld, current tick = %ld \n",m_name.c_str(),(*i).m_tick_start,(*i).m_tick_end,a_tick);
+                        m_song_playback_block = false;
+                }
 
                 if ( (*i).m_tick_start <= end_tick ){
                     trigger_state = true;
@@ -354,12 +355,11 @@ sequence::play( long a_tick, bool a_playback_mode )
             }
 
             if( m_list_trigger.size() == 0 &&
-                    m_playing ){
+                    m_playing && !m_song_playback_block){
 
                 set_playing(false);
 
             }
-
         }
     }
 
