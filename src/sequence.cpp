@@ -301,7 +301,7 @@ sequence::play( long a_tick, bool a_playback_mode )
 
                 /* if we've reached a new chunk of drawn seqs in the song data,
                  * unset the block on this seq's events */
-                    if (end_tick == (*i).m_tick_start || end_tick == (*i).m_tick_end){
+                    if (start_tick == (*i).m_tick_start || end_tick == (*i).m_tick_start || start_tick == (*i).m_tick_end || end_tick == (*i).m_tick_end){
                         printf("sequence.cpp - block off on %s - tick start = %ld, tick end = %ld, current tick = %ld \n",m_name.c_str(),(*i).m_tick_start,(*i).m_tick_end,end_tick);
                         m_song_playback_block = false;
                 }
