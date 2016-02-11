@@ -295,15 +295,14 @@ sequence::play( long a_tick, bool a_playback_mode )
             bool trigger_state = false;
             long trigger_tick = 0;
 
-            /* create iterator for the list of triggers */
             list<trigger>::iterator i = m_list_trigger.begin();
 
             while ( i != m_list_trigger.end()){
 
                 /* if we've reached a new chunk of drawn seqs in the song data,
                  * unset the block on this seq's events */
-                    if (a_tick == (*i).m_tick_start || a_tick == (*i).m_tick_end) {
-                        printf("sequence.cpp - block off on %s - tick start = %ld, tick end = %ld, current tick = %ld \n",m_name.c_str(),(*i).m_tick_start,(*i).m_tick_end,a_tick);
+                    if (end_tick == (*i).m_tick_start || end_tick == (*i).m_tick_end){
+                        printf("sequence.cpp - block off on %s - tick start = %ld, tick end = %ld, current tick = %ld \n",m_name.c_str(),(*i).m_tick_start,(*i).m_tick_end,end_tick);
                         m_song_playback_block = false;
                 }
 
@@ -336,7 +335,7 @@ sequence::play( long a_tick, bool a_playback_mode )
                 //printf( "trigger %d\n", trigger_state );
 
                 /* we are turning on */
-                if ( trigger_state ){
+                if ( trigger_state){
 
                     if ( trigger_tick < m_last_tick )
                         start_tick = m_last_tick;

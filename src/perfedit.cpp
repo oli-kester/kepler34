@@ -4,7 +4,7 @@
 #include "sequence.h"
 
 #include "pixmaps/snap.xpm"
-#include "pixmaps/play2.xpm"
+#include "pixmaps/play3.xpm"
 #include "pixmaps/stop.xpm"
 #include "pixmaps/expand.xpm"
 #include "pixmaps/collapse.xpm"
@@ -186,7 +186,7 @@ perfedit::perfedit( perform *a_perf )
 
     /* play */
     m_button_play = manage( new Button() );
-    m_button_play->add(*manage( new Image(Gdk::Pixbuf::create_from_xpm_data( play2_xpm ))));
+    m_button_play->add(*manage( new Image(Gdk::Pixbuf::create_from_xpm_data( play3_xpm ))));
     m_button_play->signal_clicked().connect(  mem_fun( *this, &perfedit::start_playing));
     add_tooltip( m_button_play, "Begin playing the song at L marker." );
 
