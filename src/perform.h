@@ -121,6 +121,7 @@ class perform
     bool m_inputing;
     bool m_outputing;
     bool m_looping;
+    bool m_song_recording;
 
     /* whether we're in live or song mode */
     //TODO replace with enum
@@ -192,6 +193,11 @@ class perform
      * (i.e. do we/don't we play the song editor's data) */
     bool get_playback_mode();
     void set_playback_mode( bool a_playback_mode );
+
+    /* start/stop recording live sequence changes
+     * into the song data */
+    void set_song_recording(bool new_state);
+    bool get_song_recording();
 
     // can register here for events...
     std::vector<performcallback*> m_notify;
@@ -300,6 +306,7 @@ class perform
 
     /* plays all notes to current tick */
     void play( long a_tick );
+
     void set_orig_ticks( long a_tick  );
 
     sequence * get_sequence( int a_sequence );
@@ -319,7 +326,7 @@ class perform
      * - Queue      (c_status_queue)
      * - Snapshot   (c_status_snapshot)
      *
-     * constants are set up top ^^^ */
+     * constants representing these are up top ^^^ */
     void set_sequence_control_status( int a_status );
     void unset_sequence_control_status( int a_status );
 

@@ -116,7 +116,7 @@ class perfedit:public Gtk::Window
     void start_playing ();
     void stop_playing ();
     void set_looped ();
-    void set_record ();
+    void record_toggle ();
 
     void expand ();
     void collapse ();

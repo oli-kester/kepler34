@@ -5,6 +5,7 @@
 
 #include "pixmaps/snap.xpm"
 #include "pixmaps/play3.xpm"
+#include "pixmaps/rec2.xpm"
 #include "pixmaps/stop.xpm"
 #include "pixmaps/expand.xpm"
 #include "pixmaps/collapse.xpm"
@@ -180,8 +181,8 @@ perfedit::perfedit( perform *a_perf )
 
     /* record */
     m_button_record = manage( new ToggleButton() );
-    m_button_record->set_label("R");
-    m_button_record->signal_clicked().connect( mem_fun( *this, &perfedit::set_record));
+    m_button_record->add(*manage( new Image(Gdk::Pixbuf::create_from_xpm_data( rec2_xpm ))));
+    m_button_record->signal_toggled().connect( mem_fun( *this, &perfedit::record_toggle));
     add_tooltip( m_button_stop, "Record sequence changes to the song editor." );
 
     /* play */
@@ -323,9 +324,10 @@ perfedit::set_looped()
 
 /* toggle recording */
 void
-perfedit::set_record()
+perfedit::record_toggle()
 {
-
+//    m_mainperf->set_record(m_button_record->get_active());
+    m_mainperf->set_song_recording(m_button_record->get_active());
 }
 
 void

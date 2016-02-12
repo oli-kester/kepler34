@@ -1103,6 +1103,13 @@ bool perform::get_playback_mode()
     return m_playback_mode;
 }
 
+void perform::set_song_recording(bool new_state){
+    m_song_recording = new_state;
+}
+
+bool perform::get_song_recording(){
+    return m_song_recording;
+}
 
 void perform::launch_input_thread()
 {
