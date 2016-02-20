@@ -141,6 +141,8 @@ perform::perform()
 
     m_key_start  = GDK_space;
     m_key_stop   = GDK_Escape;
+    m_key_record_upper = GDK_R;
+    m_key_record_lower = GDK_r;
 
     m_offset = 0;
     m_control_status = 0;

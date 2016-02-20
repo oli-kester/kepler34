@@ -203,6 +203,8 @@ class perform
 
     unsigned int m_key_start;
     unsigned int m_key_stop;
+    unsigned int m_key_record_upper;
+    unsigned int m_key_record_lower;
 
     bool show_ui_sequence_key() const { return m_show_ui_sequence_key; }
 
@@ -253,7 +255,7 @@ class perform
     string *get_screen_set_notepad( int a_screen_set );
 
     void set_screenset( int a_ss );
-    int get_screenset();
+    int  get_screenset();
 
     void set_playing_screenset();
     int get_playing_screenset();

@@ -254,7 +254,14 @@ perfedit::on_key_press_event(GdkEventKey* a_ev)
             return true;
         }
 
-        if(a_ev->keyval == m_mainperf->m_key_start || a_ev->keyval == m_mainperf->m_key_stop)
+        //TODO add "R" record hotkey to documentation
+        if (a_ev->keyval == m_mainperf->m_key_record_upper
+                || a_ev->keyval == m_mainperf->m_key_record_lower){
+            m_button_record->set_active(!m_button_record->get_active());
+            return true;
+        }
+
+        if (a_ev->keyval == m_mainperf->m_key_start || a_ev->keyval == m_mainperf->m_key_stop)
           event_was_handled = true;
     }
 

@@ -1017,6 +1017,8 @@ mainwnd::sequence_key( int a_seq )
     if ( m_mainperf->is_active( a_seq ) ){
         m_mainperf->sequence_playing_toggle( a_seq );
 
+        /* if we're recording,
+         * add seq playback changes to the song data */
         if ( m_mainperf->get_song_recording()) {
 
             long seq_length = m_mainperf->get_sequence( a_seq )->get_length( );
@@ -1032,8 +1034,8 @@ mainwnd::sequence_key( int a_seq )
             }
             else
             {
-                // snap to length of sequence
-                tick = tick - (tick % seq_length);
+//                 snap to length of sequence
+//                tick = tick - (tick % seq_length);
 
                 m_mainperf->push_trigger_undo();
                 m_mainperf->get_sequence( a_seq )->add_trigger( tick, seq_length );
