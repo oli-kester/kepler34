@@ -71,6 +71,7 @@ mainwnd::mainwnd(perform *a_p):
     m_menu_file_recent = manage (new Menu());
 
     /* only add if a path is actually contained in each slot */
+    //TODO add the new CtrlR accelerator to documentation
     if (recent_files[0]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[0],
                 Gtk::AccelKey("<control>R"),
@@ -853,7 +854,6 @@ mainwnd::on_key_press_event(GdkEventKey* a_ev)
 
     /* Ignore key presses if we're renaming the scene */
     if ( m_entry_notes->has_focus()) {
-        m_entry_notes->event( (GdkEvent*) a_ev );
         return false;
     }
 
