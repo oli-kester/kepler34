@@ -1,22 +1,4 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
+/* holds all the seqs and handles their playback */
 
 #pragma once
 
@@ -219,7 +201,6 @@ class perform
     unsigned int m_key_group_off;
     unsigned int m_key_group_learn;
 
-
     unsigned int m_key_start;
     unsigned int m_key_stop;
 
@@ -273,8 +254,10 @@ class perform
 
     void set_screenset( int a_ss );
     int get_screenset();
+
     void set_playing_screenset();
     int get_playing_screenset();
+
     void mute_group_tracks ();
     void select_and_mute_group (int a_g_group);
     void set_mode_group_mute ();
@@ -284,6 +267,7 @@ class perform
     bool is_group_learning(void) { return m_mode_group_learn; }
     void select_mute_group ( int a_group );
     void unset_mode_group_mute ();
+
     void start( bool a_state );
     void stop();
 
@@ -330,8 +314,9 @@ class perform
     void set_sequence_control_status( int a_status );
     void unset_sequence_control_status( int a_status );
 
-
+    /* toggle the plackback state of a seq. Used for live input */
     void sequence_playing_toggle( int a_sequence );
+
     void sequence_playing_on( int a_sequence );
     void sequence_playing_off( int a_sequence );
 

@@ -399,12 +399,6 @@ mainwnd::learn_toggle()
     }
 }
 
-/* invert the playback mode */
-void mainwnd::song_playback_toggle(){
-    printf("\nPlayback toggle\n");
-    m_mainperf->set_playback_mode(m_button_song_playback->get_active());
-}
-
 /* callback function */
 void mainwnd::file_new()
 {
@@ -1004,7 +998,7 @@ mainwnd::on_key_press_event(GdkEventKey* a_ev)
             stop_playing();
         }
 
-        /* toggle sequence mute/unmute using keyboard keys... */
+        /* toggle sequence mute/unmute using keyboard keys */
         if (m_mainperf->get_key_events()->count( a_ev->keyval) != 0)
         {
             sequence_key(m_mainperf->lookup_keyevent_seq( a_ev->keyval));
@@ -1017,10 +1011,35 @@ mainwnd::on_key_press_event(GdkEventKey* a_ev)
 void
 mainwnd::sequence_key( int a_seq )
 {
-    int offset = m_mainperf->get_screenset() * c_mainwnd_rows * c_mainwnd_cols;
+    /* add screen set offset */
+    a_seq += m_mainperf->get_screenset() * c_mainwnd_rows * c_mainwnd_cols;
 
-    if ( m_mainperf->is_active( a_seq + offset ) ){
-		m_mainperf->sequence_playing_toggle( a_seq + offset );
+    if ( m_mainperf->is_active( a_seq ) ){
+        m_mainperf->sequence_playing_toggle( a_seq );
+
+        if ( m_mainperf->get_song_recording()) {
+
+            long seq_length = m_mainperf->get_sequence( a_seq )->get_length( );
+
+            long tick = m_mainperf->get_tick();
+
+            bool trigger_state = m_mainperf->get_sequence( a_seq )->get_trigger_state( tick );
+
+            if ( trigger_state )
+            {
+                m_mainperf->push_trigger_undo();
+                m_mainperf->get_sequence( a_seq )->del_trigger( tick );
+            }
+            else
+            {
+                // snap to length of sequence
+                tick = tick - (tick % seq_length);
+
+                m_mainperf->push_trigger_undo();
+                m_mainperf->get_sequence( a_seq )->add_trigger( tick, seq_length );
+            }
+        }
+
     }
 }
 

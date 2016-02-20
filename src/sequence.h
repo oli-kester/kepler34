@@ -269,7 +269,7 @@ class sequence
     void print_triggers();
 
     /* dumps notes from tick and prebuffers to
-       ahead.  Called by sequencer thread - performance */
+       ahead.  Called by sequencer thread - perform.cpp */
     void play (long a_tick, bool a_playback_mode);
     void set_orig_tick (long a_tick);
 

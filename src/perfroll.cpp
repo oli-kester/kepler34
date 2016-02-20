@@ -289,11 +289,8 @@ perfroll::draw_progress()
     m_old_progress_ticks = tick;
 }
 
-
-
 void perfroll::draw_sequence_on( Glib::RefPtr<Gdk::Drawable> a_draw, int a_sequence )
 {
-
     long tick_on;
     long tick_off;
     long offset;
@@ -314,8 +311,8 @@ void perfroll::draw_sequence_on( Glib::RefPtr<Gdk::Drawable> a_draw, int a_seque
 	
 	    a_sequence -= m_sequence_offset;
 
-	    long sequence_length = seq->get_length();
-	    int length_w = sequence_length / c_perf_scale_x;
+        long seq_length = seq->get_length();
+        int length_w = seq_length / c_perf_scale_x;
 	
 	    while ( seq->get_next_trigger( &tick_on, &tick_off, &selected, &offset  )){
 	
@@ -365,7 +362,7 @@ void perfroll::draw_sequence_on( Glib::RefPtr<Gdk::Drawable> a_draw, int a_seque
 
 		    m_gc->set_foreground(m_black);
 
-                    long length_marker_first_tick = ( tick_on - (tick_on % sequence_length) + (offset % sequence_length) - sequence_length);
+                    long length_marker_first_tick = ( tick_on - (tick_on % seq_length) + (offset % seq_length) - seq_length);
 
 
                     long tick_marker = length_marker_first_tick;
@@ -443,7 +440,7 @@ void perfroll::draw_sequence_on( Glib::RefPtr<Gdk::Drawable> a_draw, int a_seque
 
 
 
-                        tick_marker += sequence_length;
+                        tick_marker += seq_length;
 		    }
 		}
 	    }

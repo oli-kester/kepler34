@@ -1,4 +1,4 @@
-/*input for perfroll, the grid in the song editor window */
+/*input classes for perfroll, the grid in the song editor window */
 
 #include "perform.h"
 #include "perfroll_input.h"
@@ -313,7 +313,6 @@ bool Seq24PerfInput::on_button_press_event(GdkEventButton* a_ev, perfroll& ths)
 {
     ths.grab_focus( );
 
-
     if ( ths.m_mainperf->is_active( ths.m_drop_sequence ))
     {
         ths.m_mainperf->get_sequence( ths.m_drop_sequence )->unselect_triggers( );
@@ -332,7 +331,8 @@ bool Seq24PerfInput::on_button_press_event(GdkEventButton* a_ev, perfroll& ths)
 
         long tick = ths.m_drop_tick;
 
-        /* add a new note if we didnt select anything */
+        /* add a new seq instance if we didnt select anything,
+         * and are holding the right mouse btn */
         if (  m_adding ){
 
             m_adding_pressed = true;
@@ -341,18 +341,16 @@ bool Seq24PerfInput::on_button_press_event(GdkEventButton* a_ev, perfroll& ths)
 
                 long seq_length = ths.m_mainperf->get_sequence( ths.m_drop_sequence )->get_length( );
 
-                bool state = ths.m_mainperf->get_sequence( ths.m_drop_sequence )->get_trigger_state( tick );
+                bool trigger_state = ths.m_mainperf->get_sequence( ths.m_drop_sequence )->get_trigger_state( tick );
 
-                if ( state )
+                if ( trigger_state )
                 {
                     ths.m_mainperf->push_trigger_undo();
                     ths.m_mainperf->get_sequence( ths.m_drop_sequence )->del_trigger( tick );
                 }
                 else
                 {
-
                     // snap to length of sequence
-                    //TODO snap to any length instead
                     tick = tick - (tick % seq_length);
                     //m_adding_pressed_state = true;
 
@@ -367,6 +365,7 @@ bool Seq24PerfInput::on_button_press_event(GdkEventButton* a_ev, perfroll& ths)
                 }
             }
         }
+        /* we aren't holding the right mouse btn */
         else {
 
             if ( ths.m_mainperf->is_active( ths.m_drop_sequence )){

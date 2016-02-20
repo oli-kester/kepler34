@@ -93,7 +93,6 @@ mainwid::draw_sequences_on_pixmap()
     }
 }
 
-
 // updates background
 void
 mainwid::fill_background_window()
@@ -508,14 +507,11 @@ mainwid::on_button_release_event(GdkEventButton* a_p0)
 
     m_button_down = false;
 
-    /* if we're on a valid sequence, we hit the left mouse button,
-     * and are not dragging a sequence */
+    /* if we're on a valid sequence, hit the left mouse button,
+     * and are not dragging a sequence - toggle playing*/
     if ( m_current_seq != -1  && a_p0->button == 1 && !m_moving ){
 
         if ( m_mainperf->is_active( m_current_seq )){
-
-            //sequence *seq = m_mainperf->get_sequence(  m_current_seq );
-            //seq->set_playing( !seq->get_playing() );
 
             m_mainperf->sequence_playing_toggle( m_current_seq );
 

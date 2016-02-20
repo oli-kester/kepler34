@@ -1,4 +1,4 @@
-/*input for perfroll, the grid in the song editor window */
+/*input classes for perfroll, the grid in the song editor window */
 
 #pragma once
 

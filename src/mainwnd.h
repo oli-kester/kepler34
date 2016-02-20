@@ -90,10 +90,13 @@ class mainwnd : public Gtk::Window, public performcallback
     /* playback */
     void start_playing();
     void stop_playing();
+
     void learn_toggle();
-    void song_playback_toggle();
     void open_performance_edit( );
+
+    /* set/unset sequences with key presses */
     void sequence_key( int a_seq );
+
     void update_window_title();
     void toLower(basic_string<char>&);
 

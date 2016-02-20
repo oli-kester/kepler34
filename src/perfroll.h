@@ -100,23 +100,18 @@ class perfroll : public Gtk::DrawingArea
     void convert_x( int a_x, long *a_ticks);
     void snap_x( int *a_x );
 
-
     void start_playing();
     void stop_playing();
-
-
 
     void draw_sequence_on( Glib::RefPtr<Gdk::Drawable> a_draw, int a_sequence );
     void draw_background_on( Glib::RefPtr<Gdk::Drawable> a_draw, int a_sequence );
 
     void draw_drawable_row( Glib::RefPtr<Gdk::Drawable> a_dest, Glib::RefPtr<Gdk::Drawable> a_src,  long a_y );
 
-
     void change_horz();
     void change_vert();
 
     void split_trigger( int a_sequence, long a_tick );
-
 
 
  public:
