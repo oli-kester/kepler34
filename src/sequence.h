@@ -111,6 +111,10 @@ class sequence
      * during live sequence triggering/muting */
     bool m_song_playback_block;
 
+    /* used to keep blocking song mode events while recording new ones */
+    bool m_song_recording;
+    int m_song_recording_tick;
+
     /* anything editing currently ? */
     bool m_editing;
     bool m_raise;
@@ -196,8 +200,16 @@ class sequence
     void set_song_mute (bool a_mute);
     bool get_song_mute ();
 
+    /* set / unset the block on the song data triggers */
     void set_song_playback_block (bool a_block);
     bool get_song_playback_block ();
+
+    /* start / stop growing the seq for song recording
+     * pass in the current tick to set the recorded block's boundaries */
+    void song_recording_start (long current_tick);
+    void song_recording_stop ();
+
+    bool get_song_recording ();
 
     /* returns string of name */
     const char *get_name ();

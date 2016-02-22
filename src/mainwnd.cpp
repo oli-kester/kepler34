@@ -1015,33 +1015,38 @@ mainwnd::sequence_key( int a_seq )
     a_seq += m_mainperf->get_screenset() * c_mainwnd_rows * c_mainwnd_cols;
 
     if ( m_mainperf->is_active( a_seq ) ){
-        m_mainperf->sequence_playing_toggle( a_seq );
+
+//        m_mainperf->sequence_playing_toggle( a_seq );
 
         /* if we're recording,
          * add seq playback changes to the song data */
-        if ( m_mainperf->get_song_recording()) {
+        if ( m_mainperf->get_song_recording() ) {
 
-            long seq_length = m_mainperf->get_sequence( a_seq )->get_length( );
+            long seq_length = m_mainperf->get_sequence( a_seq )->get_length();
 
             long tick = m_mainperf->get_tick();
 
             bool trigger_state = m_mainperf->get_sequence( a_seq )->get_trigger_state( tick );
 
+            /* if sequence already playing */
             if ( trigger_state )
             {
-                m_mainperf->push_trigger_undo();
-                m_mainperf->get_sequence( a_seq )->del_trigger( tick );
+                m_mainperf->get_sequence( a_seq )->song_recording_stop();
+
             }
+
+            /* if not playing, start recording a new strip */
             else
             {
 //                 snap to length of sequence
 //                tick = tick - (tick % seq_length);
 
                 m_mainperf->push_trigger_undo();
-                m_mainperf->get_sequence( a_seq )->add_trigger( tick, seq_length );
+                m_mainperf->get_sequence( a_seq )->song_recording_start( tick );
             }
         }
 
+        m_mainperf->sequence_playing_toggle( a_seq );
     }
 }
 

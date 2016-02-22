@@ -293,7 +293,6 @@ bool FruityPerfInput::on_motion_notify_event(GdkEventMotion* a_ev, perfroll& ths
     return true;
 }
 
-
 /* popup menu calls this */
 void Seq24PerfInput::set_adding( bool a_adding, perfroll& ths )
 {

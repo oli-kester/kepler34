@@ -28,6 +28,7 @@ sequence::sequence( ) :
     m_dirty_names(true),
 
     m_song_playback_block(false),
+    m_song_recording(false),
 
     m_editing(false),
     m_raise(false),
@@ -197,6 +198,23 @@ void sequence::set_song_playback_block(bool a_block){
     m_song_playback_block = a_block;
 }
 
+bool sequence::get_song_recording(){
+    return m_song_recording;
+}
+
+void sequence::song_recording_start(long current_tick){
+    /* add a starting chunk of ten ticks,
+     * to allow the rest of the threads to notice the change */
+    add_trigger( current_tick, 10 );
+    m_song_recording_tick = current_tick;
+    m_song_recording = true;
+}
+
+void sequence::song_recording_stop(){
+    m_song_playback_block = false;
+    m_song_recording = false;
+}
+
 sequence::~sequence()
 {
 
@@ -292,6 +310,11 @@ sequence::play( long a_tick, bool a_playback_mode )
          * (i.e. using our in sequence on/off triggers) */
         if ( a_playback_mode ){
 
+            /* if we're recording, keep growing the seq song data triggers */
+            if ( get_song_recording() ){
+                grow_trigger( m_song_recording_tick, end_tick, 10 );
+            }
+
             bool trigger_state = false;
             long trigger_tick = 0;
 
@@ -300,7 +323,7 @@ sequence::play( long a_tick, bool a_playback_mode )
             while ( i != m_list_trigger.end()){
 
                 /* if we've reached a new chunk of drawn seqs in the song data,
-                 * unset the block on this seq's events */
+                 * and we're not recording, unset the block on this seq's events */
                     if (start_tick == (*i).m_tick_start || end_tick == (*i).m_tick_start
                             || start_tick == (*i).m_tick_end || end_tick == (*i).m_tick_end){
 //                        printf("sequence.cpp - block off on %s - tick start = %ld, tick end = %ld, current tick = %ld \n",m_name.c_str(),(*i).m_tick_start,(*i).m_tick_end,end_tick);

@@ -2115,14 +2115,14 @@ void perform::sequence_playing_toggle( int a_sequence )
                 unset_sequence_control_status( c_status_replace );
                 off_sequences( );
             }
-
             m_seqs[a_sequence]->toggle_playing();
         }
 
         /* if we're in song playback, temporarily block the events
-         * till the next loop */
-        if (m_playback_mode)
+         * till the next seq boundary */
+        if (m_playback_mode){
             m_seqs[a_sequence]->set_song_playback_block(true);
+        }
     }
 }
 
