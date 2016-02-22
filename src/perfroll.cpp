@@ -277,14 +277,15 @@ perfroll::draw_progress()
     /* draw old */
     m_window->draw_drawable(m_gc,
 			 m_pixmap,
-			 old_progress_x, 0,
+             old_progress_x, 0,
 			 old_progress_x, 0,
 			 1, m_window_y );
 
+    /* draw playhead */
     m_gc->set_foreground(m_black);
     m_window->draw_line(m_gc,
-		       progress_x, 0,
-		       progress_x, m_window_y);
+               progress_x, 0,
+               progress_x, m_window_y);
 
     m_old_progress_ticks = tick;
 }
@@ -422,14 +423,6 @@ void perfroll::draw_sequence_on( Glib::RefPtr<Gdk::Drawable> a_draw, int a_seque
                             if ( tick_f_x > x + w ){
                                 tick_f_x = x + w;
                             }
-
-                            /*
-                                    [           ]
-                             -----------
-                                             ---------
-                                   ----------------
-                         ------                      ------
-                            */
 
                             if ( tick_f_x >= x && tick_s_x <= x+w )
                                 m_pixmap->draw_line(m_gc, tick_s_x,

@@ -333,7 +333,6 @@ perfedit::set_looped()
 void
 perfedit::record_toggle()
 {
-//    m_mainperf->set_record(m_button_record->get_active());
     m_mainperf->set_song_recording(m_button_record->get_active());
 }
 

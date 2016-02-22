@@ -103,6 +103,7 @@ class perfroll : public Gtk::DrawingArea
     void start_playing();
     void stop_playing();
 
+    /* draw the sequence itself, including contained notes */
     void draw_sequence_on( Glib::RefPtr<Gdk::Drawable> a_draw, int a_sequence );
     void draw_background_on( Glib::RefPtr<Gdk::Drawable> a_draw, int a_sequence );
 

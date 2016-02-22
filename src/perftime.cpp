@@ -1,22 +1,4 @@
-//----------------------------------------------------------------------------
-//
-//  This file is part of seq24.
-//
-//  seq24 is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
-//  seq24 is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with seq24; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-//
-//-----------------------------------------------------------------------------
+/* draws the time strip at the top of the song editor */
 #include "event.h"
 #include "perftime.h"
 #include "font.h"
@@ -159,11 +141,11 @@ perftime::on_expose_event(GdkEventExpose* a_e)
         int x_pos = ((i * m_measure_length) - tick_offset) / c_perf_scale_x;
         
 	/* beat */
-	m_window->draw_line(m_gc,
-			   x_pos,
-			   0,
-			   x_pos,
-			   m_window_y );
+    m_window->draw_line(m_gc,
+               x_pos,
+               0,
+               x_pos,
+               m_window_y );
 	
 	char bar[5];
 	snprintf( bar, sizeof(bar), "%d", i + 1 ); 

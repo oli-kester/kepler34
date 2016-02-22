@@ -310,9 +310,11 @@ sequence::play( long a_tick, bool a_playback_mode )
          * (i.e. using our in sequence on/off triggers) */
         if ( a_playback_mode ){
 
-            /* if we're recording, keep growing the seq song data triggers */
+            /* if we're recording, keep growing the seq song data triggers
+             * set dirty to get constant redraws */
             if ( get_song_recording() ){
                 grow_trigger( m_song_recording_tick, end_tick, 10 );
+                set_dirty_mp();
             }
 
             bool trigger_state = false;
@@ -2319,16 +2321,12 @@ sequence::exact_split_trigger(long a_tick){
     list<trigger>::iterator i = m_list_trigger.begin();
     while(  i != m_list_trigger.end() ){
 
-        // trigger greater than L and R
+        /* if the tick is between the start and end
+         * of this trigger */
         if ( (*i).m_tick_start <= a_tick &&
              (*i).m_tick_end >= a_tick )
         {
-            //printf( "split trigger %ld %ld\n", (*i).m_tick_start, (*i).m_tick_end );
             {
-//                long tick = (*i).m_tick_end - (*i).m_tick_start;
-//                tick += 1;
-//                tick /= 2;
-
                 split_trigger(*i, a_tick);
                 break;
             }
