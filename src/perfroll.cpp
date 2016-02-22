@@ -792,10 +792,10 @@ perfroll::on_size_request(GtkRequisition* a_r )
 
 
 void
-perfroll::split_trigger( int a_sequence, long a_tick )
+perfroll::half_split_trigger( int a_sequence, long a_tick )
 {
     m_mainperf->push_trigger_undo();
-    m_mainperf->get_sequence( a_sequence )->split_trigger( a_tick );
+    m_mainperf->get_sequence( a_sequence )->half_split_trigger( a_tick );
 
     draw_background_on( m_pixmap, a_sequence );
     draw_sequence_on( m_pixmap, a_sequence );

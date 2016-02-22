@@ -111,7 +111,7 @@ class perfroll : public Gtk::DrawingArea
     void change_horz();
     void change_vert();
 
-    void split_trigger( int a_sequence, long a_tick );
+    void half_split_trigger( int a_sequence, long a_tick );
 
 
  public:

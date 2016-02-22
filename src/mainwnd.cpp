@@ -1028,10 +1028,20 @@ mainwnd::sequence_key( int a_seq )
 
             bool trigger_state = m_mainperf->get_sequence( a_seq )->get_trigger_state( tick );
 
+            sequence* seq = m_mainperf->get_sequence( a_seq );
+
             /* if sequence already playing */
             if ( trigger_state )
             {
-                m_mainperf->get_sequence( a_seq )->song_recording_stop();
+                /* if this play is us recording live, end the new trigger block here */
+                if (seq->get_song_recording())
+                    seq->song_recording_stop();
+
+                /* ...else we need to trim the block already in place */
+                else {
+                    seq->exact_split_trigger( tick );
+                    seq->del_trigger( tick );
+                }
 
             }
 
@@ -1042,7 +1052,7 @@ mainwnd::sequence_key( int a_seq )
 //                tick = tick - (tick % seq_length);
 
                 m_mainperf->push_trigger_undo();
-                m_mainperf->get_sequence( a_seq )->song_recording_start( tick );
+                seq->song_recording_start( tick );
             }
         }
 

@@ -82,7 +82,7 @@ bool FruityPerfInput::on_button_press_event(GdkEventButton* a_ev, perfroll& ths)
 
             if ( state )
             {
-                ths.split_trigger(ths.m_drop_sequence, ths.m_drop_tick);
+                ths.half_split_trigger(ths.m_drop_sequence, ths.m_drop_tick);
             }
         }
     }
@@ -101,7 +101,7 @@ void FruityPerfInput::on_left_button_pressed(GdkEventButton* a_ev, perfroll& ths
 
             if ( state )
             {
-                ths.split_trigger(ths.m_drop_sequence, ths.m_drop_tick);
+                ths.half_split_trigger(ths.m_drop_sequence, ths.m_drop_tick);
             }
         }
     }
@@ -426,7 +426,7 @@ bool Seq24PerfInput::on_button_press_event(GdkEventButton* a_ev, perfroll& ths)
 
             if ( state )
             {
-                ths.split_trigger(ths.m_drop_sequence, ths.m_drop_tick);
+                ths.half_split_trigger(ths.m_drop_sequence, ths.m_drop_tick);
             }
         }
     }

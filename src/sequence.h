@@ -113,6 +113,7 @@ class sequence
 
     /* used to keep blocking song mode events while recording new ones */
     bool m_song_recording;
+    /* saves the tick when we started recording live song data */
     int m_song_recording_tick;
 
     /* anything editing currently ? */
@@ -161,6 +162,7 @@ class sequence
 
     /* sets m_trigger_offset and wraps it to length */
     void set_trigger_offset (long a_trigger_offset);
+
     void split_trigger( trigger &trig, long a_split_tick);
     void adjust_trigger_offsets_to_legnth( long a_new_len );
     long adjust_offset( long a_offset );
@@ -292,8 +294,17 @@ class sequence
     /* adds event to internal list in a sorted manner */
     void add_event (const event * a_e);
 
+    /*
+     * manage triggers
+     * (the blocks of seqs for song playback)
+     *
+     */
     void add_trigger (long a_tick, long a_length, long a_offset = 0, bool a_adjust_offset = true);
-    void split_trigger( long a_tick );
+
+    /* split the seq block under specified tick in half  */
+    void half_split_trigger( long a_tick );
+    /* split the seq block into two at the point specified by tick */
+    void exact_split_trigger( long a_tick );
     void grow_trigger (long a_tick_from, long a_tick_to, long a_length);
     void del_trigger (long a_tick );
     bool get_trigger_state (long a_tick);
