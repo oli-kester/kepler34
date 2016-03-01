@@ -1,11 +1,11 @@
 /* XPM */
-static const char * play3_xpm[] = {
+static char * play3_xpm[] = {
 "16 11 5 1",
 " 	c None",
 ".	c #000000",
-"+	c #67AACC",
-"@	c #3D8FB8",
-"#	c #2F6E8E",
+"+	c #BFE8FF",
+"@	c #56BEFF",
+"#	c #357293",
 "  ...           ",
 "  .++..         ",
 "  .+@++..       ",
