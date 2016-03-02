@@ -44,8 +44,13 @@ class mainwnd : public Gtk::Window, public performcallback
     Menu     *m_menu_view;
     Menu     *m_menu_help;
 
-    VBox     *mainvbox;
-    VBox     *contentvbox;
+    VBox     *vbox_main;
+    VBox     *vbox_live_tab;
+    VBox     *vbox_song_tab;
+    VBox     *vbox_edit_tab;
+
+
+    Notebook *notebook;
 
     mainwid  *m_main_wid;
     maintime *m_main_time;
