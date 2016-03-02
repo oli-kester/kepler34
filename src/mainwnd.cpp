@@ -44,7 +44,7 @@ mainwnd::mainwnd(perform *a_p):
 #if GTK_MINOR_VERSION < 12
     m_tooltips = manage( new Tooltips() );
 #endif
-    m_main_wid = manage( new mainwid( m_mainperf ));
+    m_seq_grid = manage( new mainwid( m_mainperf ));
     m_main_time = manage( new maintime( ));
 
     m_menubar = manage(new MenuBar());
@@ -272,7 +272,7 @@ mainwnd::mainwnd(perform *a_p):
         vbox_live_tab->set_spacing(10);
         vbox_live_tab->set_border_width(10);
         vbox_live_tab->pack_start(*tophbox, Gtk::PACK_SHRINK);
-        vbox_live_tab->pack_start(*m_main_wid, Gtk::PACK_SHRINK);
+        vbox_live_tab->pack_start(*m_seq_grid, Gtk::PACK_SHRINK);
         vbox_live_tab->pack_start(*bottomhbox, Gtk::PACK_SHRINK);
 
         /* main container for menu and window content */
@@ -294,26 +294,11 @@ mainwnd::mainwnd(perform *a_p):
         hbox_top->set_spacing( 10 );
         hbox_top->set_border_width( 2 );
 
-        /* group learn button */
-        m_button_learn = manage( new Button( ));
-        m_button_learn->set_focus_on_click( false );
-        m_button_learn->set_flags( m_button_learn->get_flags() & ~Gtk::CAN_FOCUS );
-        m_button_learn->set_image(*manage(new Image(
-                        Gdk::Pixbuf::create_from_xpm_data( learn_xpm ))));
-        m_button_learn->signal_clicked().connect(
-                mem_fun(*this, &mainwnd::learn_toggle));
-        add_tooltip( m_button_learn, "Mute Group Learn\n\n"
-                "Click 'L' then press a mutegroup key to store the mute state of "
-                "the sequences in that key.\n\n"
-                "(see File/Options/Keyboard for available mutegroup keys "
-                "and the corresponding hotkey for the 'L' button)" );
-
         /* this seems to be a dirty hack: */
 //        Button w;
 //        hbox_time_mutegroup->set_focus_child( w ); // clear the focus not to trigger L via keys
 
         hbox_top->pack_start(*m_menubar, false, false );
-        hbox_top->pack_end( *m_button_learn, false, false );
         hbox_top->pack_end( *m_main_time, false, false );
 
         /* bottom line items */
@@ -357,9 +342,13 @@ mainwnd::mainwnd(perform *a_p):
         bpmhbox->pack_start(*bpmlabel, Gtk::PACK_SHRINK);
         bpmhbox->pack_start(*m_spinbutton_bpm, Gtk::PACK_SHRINK);
 
+        /* vertical layout container for live tab */
+        vbox_live_tab = new VBox();
+        vbox_live_tab->set_spacing(10);
+        vbox_live_tab->set_border_width(10);
+
         /* screen set name edit line */
         HBox *notebox = manage(new HBox(false, 4));
-        hbox_bottom->pack_start(*notebox, Gtk::PACK_EXPAND_WIDGET);
 
         m_entry_notes = manage( new Entry());
         m_entry_notes->signal_changed().connect(
@@ -369,13 +358,12 @@ mainwnd::mainwnd(perform *a_p):
         add_tooltip( m_entry_notes, "Enter screen set name" );
         Label* notelabel = manage(new Label("_Name", true));
         notelabel->set_mnemonic_widget(*m_entry_notes);
+
         notebox->pack_start(*notelabel, Gtk::PACK_SHRINK);
         notebox->pack_start(*m_entry_notes, Gtk::PACK_EXPAND_WIDGET);
 
         /* sequence set spin button */
         HBox *sethbox = manage(new HBox(false, 4));
-        hbox_bottom->pack_start(*sethbox, Gtk::PACK_SHRINK);
-
         m_adjust_ss = manage( new Adjustment( 0, 0, c_max_sets - 1, 1 ));
         m_spinbutton_ss = manage( new SpinButton( *m_adjust_ss ));
         m_spinbutton_ss->set_editable( false );
@@ -388,25 +376,33 @@ mainwnd::mainwnd(perform *a_p):
         sethbox->pack_start(*setlabel, Gtk::PACK_SHRINK);
         sethbox->pack_start(*m_spinbutton_ss, Gtk::PACK_SHRINK);
 
-        /* song edit button */
-//        m_button_perfedit = manage( new Button( ));
-//        m_button_perfedit->add( *manage( new Image(
-//                        Gdk::Pixbuf::create_from_xpm_data( perfedit_xpm  ))));
-//        m_button_perfedit->signal_clicked().connect(
-//                mem_fun( *this, &mainwnd::open_performance_edit ));
-//        add_tooltip( m_button_perfedit, "Show or hide song editor window" );
-//        bottomhbox->pack_end(*m_button_perfedit, Gtk::PACK_SHRINK);
+        /* group learn button */
+        m_button_learn = manage( new Button( ));
+        m_button_learn->set_focus_on_click( false );
+        m_button_learn->set_flags( m_button_learn->get_flags() & ~Gtk::CAN_FOCUS );
+        m_button_learn->set_image(*manage(new Image(
+                        Gdk::Pixbuf::create_from_xpm_data( learn_xpm ))));
+        m_button_learn->signal_clicked().connect(
+                mem_fun(*this, &mainwnd::learn_toggle));
+        add_tooltip( m_button_learn, "Mute Group Learn\n\n"
+                "Click 'L' then press a mutegroup key to store the mute state of "
+                "the sequences in that key.\n\n"
+                "(see File/Options/Keyboard for available mutegroup keys "
+                "and the corresponding hotkey for the 'L' button)" );
 
-        /* vertical layout container for live tab*/
-        vbox_live_tab = new VBox();
-        vbox_live_tab->set_spacing(10);
-        vbox_live_tab->set_border_width(10);
-        vbox_live_tab->pack_start(*m_main_wid, Gtk::PACK_SHRINK);
+        HBox *hbox_live_elems = new HBox();
+        hbox_live_elems->set_spacing( 10 );
+        hbox_live_elems->pack_start(*sethbox, Gtk::PACK_SHRINK);
+        hbox_live_elems->pack_start(*notebox, Gtk::PACK_EXPAND_WIDGET);
+        hbox_live_elems->pack_end( *m_button_learn, false, false );
+
+        vbox_live_tab->pack_start( *m_seq_grid, Gtk::PACK_SHRINK );
+        vbox_live_tab->pack_end( *hbox_live_elems, Gtk::PACK_SHRINK );
 
         /* vertical layout container for song tab*/
         vbox_song_tab = new VBox();
-        vbox_song_tab->set_spacing(10);
-        vbox_song_tab->set_border_width(10);
+        vbox_song_tab->set_spacing( 10 );
+        vbox_song_tab->set_border_width( 10 );
 //        vbox_song_tab->pack_start(m_mainperf, Gtk::PACK_SHRINK);
 
         /* vertical layout container for sequence editor tab*/
@@ -469,7 +465,7 @@ mainwnd::timer_callback(  )
     long ticks = m_mainperf->get_tick();
 
     m_main_time->idle_progress( ticks );
-    m_main_wid->update_markers( ticks );
+    m_seq_grid->update_markers( ticks );
 
     if ( m_adjust_bpm->get_value() != m_mainperf->get_bpm()){
         m_adjust_bpm->set_value( m_mainperf->get_bpm());
@@ -477,7 +473,7 @@ mainwnd::timer_callback(  )
 
     if ( m_adjust_ss->get_value() !=  m_mainperf->get_screenset() )
     {
-        m_main_wid->set_screenset(m_mainperf->get_screenset());
+        m_seq_grid->set_screenset(m_mainperf->get_screenset());
         m_adjust_ss->set_value( m_mainperf->get_screenset());
         m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
                     m_mainperf->get_screenset()));
@@ -527,7 +523,7 @@ mainwnd::stop_playing()
 {
     m_mainperf->stop_jack();
     m_mainperf->stop();
-    m_main_wid->update_sequences_on_window();
+    m_seq_grid->update_sequences_on_window();
     is_pattern_playing = false;
 }
 
@@ -563,7 +559,7 @@ void mainwnd::new_file()
 {
     m_mainperf->clear_all();
 
-    m_main_wid->reset();
+    m_seq_grid->reset();
     m_entry_notes->set_text( * m_mainperf->get_screen_set_notepad(
                 m_mainperf->get_screenset() ));
 
@@ -671,7 +667,7 @@ void mainwnd::open_file(const Glib::ustring& fn)
     /* update recent menu */
     redraw_menu();
 
-    m_main_wid->reset();
+    m_seq_grid->reset();
     m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
                 m_mainperf->get_screenset()));
     m_adjust_bpm->set_value( m_mainperf->get_bpm());
@@ -867,7 +863,7 @@ mainwnd::file_import_dialog()
            update_window_title();
            m_modified = true;
 
-           m_main_wid->reset();
+           m_seq_grid->reset();
            m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
                        m_mainperf->get_screenset() ));
            m_adjust_bpm->set_value( m_mainperf->get_bpm() );
@@ -948,7 +944,7 @@ void
 mainwnd::adj_callback_ss( )
 {
     m_mainperf->set_screenset( (int) m_adjust_ss->get_value());
-    m_main_wid->set_screenset( m_mainperf->get_screenset());
+    m_seq_grid->set_screenset( m_mainperf->get_screenset());
     m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
                 m_mainperf->get_screenset()));
     m_modified = true;
@@ -1048,7 +1044,7 @@ mainwnd::on_key_press_event(GdkEventKey* a_ev)
         if ( a_ev->keyval == m_mainperf->m_key_screenset_dn ){
 
             m_mainperf->set_screenset(  m_mainperf->get_screenset() - 1 );
-            m_main_wid->set_screenset(  m_mainperf->get_screenset() );
+            m_seq_grid->set_screenset(  m_mainperf->get_screenset() );
             m_adjust_ss->set_value( m_mainperf->get_screenset()  );
             m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
                         m_mainperf->get_screenset()));
@@ -1058,7 +1054,7 @@ mainwnd::on_key_press_event(GdkEventKey* a_ev)
         if ( a_ev->keyval == m_mainperf->m_key_screenset_up ){
 
             m_mainperf->set_screenset(  m_mainperf->get_screenset() + 1 );
-            m_main_wid->set_screenset(  m_mainperf->get_screenset() );
+            m_seq_grid->set_screenset(  m_mainperf->get_screenset() );
             m_adjust_ss->set_value( m_mainperf->get_screenset()  );
             m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
                         m_mainperf->get_screenset()));

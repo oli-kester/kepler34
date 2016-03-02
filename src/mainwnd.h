@@ -52,7 +52,7 @@ class mainwnd : public Gtk::Window, public performcallback
 
     Notebook *notebook;
 
-    mainwid  *m_main_wid;
+    mainwid  *m_seq_grid;
     maintime *m_main_time;
 
     perfedit *m_perf_edit;
