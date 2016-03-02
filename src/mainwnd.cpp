@@ -291,17 +291,8 @@ mainwnd::mainwnd(perform *a_p):
 
         /* top line items */
         HBox *hbox_top = manage( new HBox( false, 0 ) );
-//        VBox *vbox_top = manage( new VBox( false, 0 ) );
-
-        // adjust placement...
-        VBox *vbox_time_mutegroup = manage( new VBox() );
-        HBox *hbox_time_mutegroup = manage( new HBox( false, 0 ) );
-        vbox_time_mutegroup->pack_start( *hbox_time_mutegroup, false, false );
-        hbox_top->pack_end( *vbox_time_mutegroup, false, false );
-        hbox_time_mutegroup->set_spacing( 10 );
-
-        /* timeline */
-        hbox_time_mutegroup->pack_start( *m_main_time, false, false );
+        hbox_top->set_spacing( 10 );
+        hbox_top->set_border_width( 2 );
 
         /* group learn button */
         m_button_learn = manage( new Button( ));
@@ -316,14 +307,18 @@ mainwnd::mainwnd(perform *a_p):
                 "the sequences in that key.\n\n"
                 "(see File/Options/Keyboard for available mutegroup keys "
                 "and the corresponding hotkey for the 'L' button)" );
-        hbox_time_mutegroup->pack_start( *m_button_learn, false, false );
 
-        /*this seems to be a dirty hack:*/
-        Button w;
-        hbox_time_mutegroup->set_focus_child( w ); // clear the focus not to trigger L via keys
+        /* this seems to be a dirty hack: */
+//        Button w;
+//        hbox_time_mutegroup->set_focus_child( w ); // clear the focus not to trigger L via keys
+
+        hbox_top->pack_start(*m_menubar, false, false );
+        hbox_top->pack_end( *m_button_learn, false, false );
+        hbox_top->pack_end( *m_main_time, false, false );
 
         /* bottom line items */
         HBox *hbox_bottom = manage( new HBox(false, 10));
+        hbox_bottom->set_border_width(2);
 
         /* container for start+stop buttons */
         HBox *hbox_start_stop = manage(new HBox(false, 4));
@@ -412,7 +407,7 @@ mainwnd::mainwnd(perform *a_p):
         vbox_song_tab = new VBox();
         vbox_song_tab->set_spacing(10);
         vbox_song_tab->set_border_width(10);
-        vbox_song_tab->pack_start(*m_mainperf->perform, Gtk::PACK_SHRINK);
+//        vbox_song_tab->pack_start(m_mainperf, Gtk::PACK_SHRINK);
 
         /* vertical layout container for sequence editor tab*/
         vbox_edit_tab = new VBox();
@@ -421,6 +416,7 @@ mainwnd::mainwnd(perform *a_p):
 
         /* notebook for tabbed functionality */
         notebook = manage (new Notebook ());
+        notebook->set_border_width(6);
         notebook->set_tab_pos(Gtk::POS_BOTTOM);
         notebook->append_page(*vbox_live_tab,"_Live",true);
         notebook->append_page(*vbox_song_tab,"_Song",true);
@@ -430,7 +426,6 @@ mainwnd::mainwnd(perform *a_p):
         vbox_main = new VBox();
         vbox_main->set_border_width(6);
         vbox_main->pack_start(*hbox_top, Gtk::PACK_SHRINK);
-        vbox_main->pack_start(*m_menubar, false, false );
         vbox_main->pack_start( *notebook );
         vbox_main->pack_start(*hbox_bottom, Gtk::PACK_SHRINK);
 
