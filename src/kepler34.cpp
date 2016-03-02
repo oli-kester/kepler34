@@ -61,6 +61,7 @@ std::string config_filename = ".kepler34rc";
 std::string user_filename = ".kepler34usr";
 bool global_print_keys = false;
 interaction_method_e global_interactionmethod = e_seq24_interaction;
+display_mode_e global_display_mode = e_single_display;
 
 bool global_with_jack_transport = false;
 bool global_with_jack_master = false;

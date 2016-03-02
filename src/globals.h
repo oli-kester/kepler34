@@ -307,6 +307,12 @@ enum mouse_action_e
     e_action_grow
 };
 
+enum display_mode_e
+{
+    e_classic_display,
+    e_single_display
+};
+
 enum interaction_method_e
 {
     e_seq24_interaction,
@@ -328,5 +334,20 @@ const char* const c_interaction_method_descs[] =
     NULL
 };
 
-extern interaction_method_e global_interactionmethod;
+const char* const c_display_mode_names[] =
+{
+    "single",
+    "classic",
+    NULL
+};
 
+const char* const c_display_mode_descs[] =
+{
+    "keep everything in a single window, using tabs to get around",
+    "multiple windows, like the original seq24",
+    NULL
+};
+
+
+extern interaction_method_e global_interactionmethod;
+extern display_mode_e global_display_mode;

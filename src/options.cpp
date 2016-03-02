@@ -25,7 +25,7 @@ enum {e_keylabelsonsequence = 9999};
 
 
 options::options (Gtk::Window & parent, perform * a_p):
-    Gtk::Dialog ("Options", parent, true, true),
+    Gtk::Dialog ("Preferences", parent, true, true),
     m_perf(a_p)
 {
 #if GTK_MINOR_VERSION < 12
@@ -51,6 +51,7 @@ options::options (Gtk::Window & parent, perform * a_p):
     add_keyboard_page();
     add_mouse_page();
     add_jack_sync_page();
+    add_gui_page();
 }
 
 
@@ -332,6 +333,7 @@ void
 options::add_mouse_page()
 {
     VBox *vbox = manage(new VBox());
+    vbox->set_border_width(6);
     m_notebook->append_page(*vbox, "_Mouse", true);
 
     /*Frame for transport options*/
@@ -380,7 +382,7 @@ options::add_jack_sync_page()
 {
 #ifdef JACK_SUPPORT
     VBox *vbox = manage(new VBox());
-    vbox->set_border_width(4);
+    vbox->set_border_width(6);
     m_notebook->append_page(*vbox, "_Jack Sync", true);
 
     /*Frame for transport options*/
@@ -449,7 +451,7 @@ options::add_jack_sync_page()
 //    modebox->pack_start(*rb_live, false, false);
 //    modebox->pack_start(*rb_perform, false, false);
 
-    /*Connetion buttons*/
+    /*Connection buttons*/
     HButtonBox* buttonbox = manage(new HButtonBox());
     buttonbox->set_layout(Gtk::BUTTONBOX_START);
     buttonbox->set_spacing(6);
@@ -466,7 +468,56 @@ options::add_jack_sync_page()
     button->signal_clicked().connect(bind(mem_fun(*this,
                     &options::transport_callback), e_jack_disconnect, button));
     buttonbox->pack_start(*button, false, false);
+
+    /*TODO add user setting for manual alsa ports here */
+
+
 #endif
+}
+
+void options::add_gui_page(){
+    VBox *vbox = manage(new VBox());
+    vbox->set_border_width(6);
+    m_notebook->append_page(*vbox, "_Display", true);
+
+    /*Frame for transport options*/
+    Frame* windowing_frame = manage(new Frame("Windows"));
+    windowing_frame->set_border_width(4);
+    vbox->pack_start(*windowing_frame, Gtk::PACK_SHRINK);
+
+    VBox *windowing_box = manage(new VBox());
+    windowing_box->set_border_width(4);
+    windowing_frame->add(*windowing_box);
+
+    Gtk::RadioButton * rb_single_window = manage(new RadioButton(
+                "_Single Window Mode - Keep everything in a single window, using tabs to get around", true));
+    windowing_box->pack_start(*rb_single_window, Gtk::PACK_SHRINK);
+
+    Gtk::RadioButton *rb_classic = manage(new RadioButton(
+                "_Classic Mode - Multiple windows, like the original seq24", true));
+    windowing_box->pack_start(*rb_classic, Gtk::PACK_SHRINK);
+
+    Gtk::RadioButton::Group group = rb_single_window->get_group();
+    rb_classic->set_group(group);
+
+    switch(global_display_mode)
+    {
+        case e_classic_display:
+            rb_classic->set_active();
+            break;
+
+        case e_single_display:
+        default:
+            rb_single_window->set_active();
+            break;
+    }
+
+    rb_classic->signal_toggled().connect(sigc::bind(mem_fun(*this,
+                    &options::display_classic_callback), rb_classic));
+
+    rb_single_window->signal_toggled().connect(sigc::bind(mem_fun(*this,
+                    &options::display_single_callback), rb_single_window));
+
 }
 
 void
@@ -528,8 +579,18 @@ options::mouse_fruity_callback(Gtk::RadioButton *btn)
         global_interactionmethod = e_fruity_interaction;
 }
 
+void options::display_classic_callback(Gtk::RadioButton *btn){
+    if (btn->get_active())
+        global_display_mode= e_classic_display;
+}
+
+void options:: display_single_callback(Gtk::RadioButton *btn){
+    if (btn->get_active())
+        global_display_mode= e_single_display;
+}
+
 void
-options::transport_callback(button a_type, Button *a_check)
+options::transport_callback(jack_option a_type, Button *a_check)
 {
     CheckButton *check = (CheckButton *) a_check;
 

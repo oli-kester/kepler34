@@ -130,8 +130,9 @@ mainwnd::mainwnd(perform *a_p):
     m_menu_file->items().push_back(MenuElem("_Import...",
                 mem_fun(*this, &mainwnd::file_import_dialog)));
 
-    m_menu_file->items().push_back(MenuElem("O_ptions...",
-                mem_fun(*this,&mainwnd::options_dialog)));
+    m_menu_file->items().push_back(MenuElem("_Preferences...",
+                Gtk::AccelKey("<control>P"),
+                mem_fun(*this,&mainwnd::prefs_dialog)));
 
     m_menu_file->items().push_back(SeparatorElem());
 
@@ -348,7 +349,7 @@ mainwnd::open_performance_edit()
 
 
 void
-mainwnd::options_dialog()
+mainwnd::prefs_dialog()
 {
     delete m_options;
     m_options = new options( *this,  m_mainperf );
@@ -1022,8 +1023,6 @@ mainwnd::sequence_key( int a_seq )
          * add seq playback changes to the song data */
         if ( m_mainperf->get_song_recording() ) {
 
-            long seq_length = m_mainperf->get_sequence( a_seq )->get_length();
-
             long tick = m_mainperf->get_tick();
 
             bool trigger_state = m_mainperf->get_sequence( a_seq )->get_trigger_state( tick );
@@ -1207,6 +1206,7 @@ void mainwnd::redraw_menu(){
     /* only add if a path is actually contained in each slot */
     if (recent_files[0]!="")
     m_menu_file_recent->items().push_back(MenuElem(recent_files[0],
+                Gtk::AccelKey("<control>R"),
                 mem_fun(*this, &mainwnd::load_recent_1)));
     else
     m_menu_file_recent->items().push_back(MenuElem("(no recent files)"));
@@ -1262,8 +1262,9 @@ void mainwnd::redraw_menu(){
     m_menu_file->items().push_back(MenuElem("_Import...",
                 mem_fun(*this, &mainwnd::file_import_dialog)));
 
-    m_menu_file->items().push_back(MenuElem("O_ptions...",
-                mem_fun(*this,&mainwnd::options_dialog)));
+    m_menu_file->items().push_back(MenuElem("_Preferences...",
+                Gtk::AccelKey("<control>P"),
+                mem_fun(*this,&mainwnd::prefs_dialog)));
 
     m_menu_file->items().push_back(SeparatorElem());
 

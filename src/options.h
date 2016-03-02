@@ -51,7 +51,7 @@ class options : public Gtk::Dialog
 
     Notebook *m_notebook;
 
-    enum button {
+    enum jack_option {
         e_jack_transport,
         e_jack_master,
         e_jack_master_cond,
@@ -59,6 +59,9 @@ class options : public Gtk::Dialog
         e_jack_start_mode_song,
         e_jack_connect,
         e_jack_disconnect
+    };
+
+    enum display_mode_e{
     };
 
     void clock_callback_off( int a_bus, RadioButton *a_button );
@@ -69,10 +72,13 @@ class options : public Gtk::Dialog
 
     void input_callback( int a_bus, Button *a_button );
 
-    void transport_callback( button a_type, Button *a_button );
+    void transport_callback( jack_option a_type, Button *a_button );
 
     void mouse_seq24_callback(Gtk::RadioButton*);
     void mouse_fruity_callback(Gtk::RadioButton*);
+
+    void display_classic_callback(Gtk::RadioButton*);
+    void display_single_callback(Gtk::RadioButton*);
 
     /*notebook pages*/
     void add_midi_clock_page();
@@ -80,6 +86,7 @@ class options : public Gtk::Dialog
     void add_keyboard_page();
     void add_mouse_page();
     void add_jack_sync_page();
+    void add_gui_page();
 
 public:
 

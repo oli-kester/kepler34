@@ -78,7 +78,7 @@ class mainwnd : public Gtk::Window, public performcallback
 
     /* file dialogs */
     void file_import_dialog();
-    void options_dialog();
+    void prefs_dialog();
     void about_dialog();
 
     /* callback methods */

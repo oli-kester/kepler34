@@ -191,9 +191,9 @@ optionsfile::parse( perform *a_perf )
     sscanf( m_line, "%ld", &flag );
     global_with_jack_master_cond = (bool) flag;
 
-    next_data_line( &file );
-    sscanf( m_line, "%ld", &flag );
-    global_jack_start_mode = (bool) flag;
+//    next_data_line( &file );
+//    sscanf( m_line, "%ld", &flag );
+//    global_jack_start_mode = (bool) flag;
 
     line_after( &file, "[midi-input]" );
     buses = 0;
@@ -241,6 +241,12 @@ optionsfile::parse( perform *a_perf )
     line_after( &file, "[interaction-method]" );
     sscanf( m_line, "%ld", &method );
     global_interactionmethod = (interaction_method_e)method;
+
+    /* display mode */
+    long display = 0;
+    line_after( &file, "[display-mode]" );
+    sscanf( m_line, "%ld", &display );
+    global_display_mode = (display_mode_e)display;
 
     file.close();
 
@@ -405,6 +411,16 @@ optionsfile::write( perform *a_perf  )
     }
     file << global_interactionmethod << "\n";
 
+    /* display-mode */
+    x = 0;
+    file << "\n\n\n[display-mode]\n";
+    while (c_display_mode_names[x] && c_display_mode_descs[x])
+    {
+        file << "# " << x << " - '" << c_display_mode_names[x]
+                     << "' (" << c_display_mode_descs[x] << ")\n";
+        ++x;
+    }
+    file << global_display_mode << "\n";
 
 
     file << "\n\n\n[keyboard-control]\n";
@@ -488,10 +504,11 @@ optionsfile::write( perform *a_perf  )
          << global_with_jack_master_cond  << "\n\n"
 
             /* TODO remove jack start mode from config */
-         << "# jack_start_mode\n"
-         << "# 0 = Playback will be in live mode.  Use this to allow muting and unmuting of loops.\n"
-         << "# 1 = Playback will use the song editors data.\n"
-         << global_jack_start_mode << "\n\n";
+//         << "# jack_start_mode\n"
+//         << "# 0 = Playback will be in live mode.  Use this to allow muting and unmuting of loops.\n"
+//         << "# 1 = Playback will use the song editors data.\n"
+//         << global_jack_start_mode << "\n\n"
+            ;
 
 
     file << "\n\n\n[last-used-dir]\n\n"
