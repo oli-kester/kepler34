@@ -7,6 +7,7 @@
 #include "maintime.h"
 #include "perfedit.h"
 #include "options.h"
+#include "songtab.h"
 
 #pragma once
 
@@ -49,13 +50,14 @@ class mainwnd : public Gtk::Window, public performcallback
     VBox     *vbox_song_tab;
     VBox     *vbox_edit_tab;
 
-
     Notebook *notebook;
 
     mainwid  *m_seq_grid;
     maintime *m_main_time;
 
     perfedit *m_perf_edit;
+    songtab *m_songtab;
+
     options *m_options;
 
     Gdk::Cursor   m_main_cursor;

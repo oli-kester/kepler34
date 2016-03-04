@@ -67,6 +67,8 @@ bin_PROGRAMS = %D%/kepler34
   %D%/sequence.cpp \
   %D%/sequence.h \
   %D%/userfile.cpp \
-  %D%/userfile.h
+  %D%/userfile.h \
+  %D%/songtab.cpp \
+  %D%/songtab.h
 
 EXTRA_DIST += %D%/configwin32.h

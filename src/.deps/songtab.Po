@@ -1,5 +1,5 @@
-src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
- /usr/include/c++/4.8/cctype \
+src/songtab.o: src/songtab.cpp /usr/include/stdc-predef.h src/songtab.h \
+ src/sequence.h /usr/include/c++/4.8/string \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -7,30 +7,6 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h \
- /usr/include/ctype.h /usr/include/x86_64-linux-gnu/bits/types.h \
- /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/endian.h \
- /usr/include/x86_64-linux-gnu/bits/endian.h \
- /usr/include/x86_64-linux-gnu/bits/byteswap.h \
- /usr/include/x86_64-linux-gnu/bits/byteswap-16.h /usr/include/xlocale.h \
- /usr/include/c++/4.8/csignal /usr/include/signal.h \
- /usr/include/x86_64-linux-gnu/bits/sigset.h \
- /usr/include/x86_64-linux-gnu/bits/signum.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/siginfo.h \
- /usr/include/x86_64-linux-gnu/bits/sigaction.h \
- /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
- /usr/include/x86_64-linux-gnu/bits/sigstack.h \
- /usr/include/x86_64-linux-gnu/sys/ucontext.h \
- /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
- /usr/include/x86_64-linux-gnu/bits/sigthread.h \
- /usr/include/c++/4.8/cerrno /usr/include/errno.h \
- /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
- /usr/include/x86_64-linux-gnu/asm/errno.h \
- /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /usr/include/c++/4.8/cstring /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/string3.h \
- /usr/include/gtk-2.0/gtk/gtkversion.h src/mainwnd.h src/mainwid.h \
- src/globals.h src/config.h /usr/include/c++/4.8/string \
  /usr/include/c++/4.8/bits/stringfwd.h \
  /usr/include/c++/4.8/bits/memoryfwd.h \
  /usr/include/c++/4.8/bits/char_traits.h \
@@ -51,7 +27,9 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/wchar.h /usr/include/stdio.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
- /usr/include/x86_64-linux-gnu/bits/wchar2.h /usr/include/c++/4.8/cstdint \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/xlocale.h /usr/include/x86_64-linux-gnu/bits/wchar2.h \
+ /usr/include/c++/4.8/cstdint \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
  /usr/include/c++/4.8/bits/allocator.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++allocator.h \
@@ -64,6 +42,12 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++locale.h \
  /usr/include/c++/4.8/clocale /usr/include/locale.h \
  /usr/include/x86_64-linux-gnu/bits/locale.h /usr/include/c++/4.8/iosfwd \
+ /usr/include/c++/4.8/cctype /usr/include/ctype.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
  /usr/include/c++/4.8/bits/ostream_insert.h \
  /usr/include/c++/4.8/bits/cxxabi_forced.h \
  /usr/include/c++/4.8/bits/stl_function.h \
@@ -73,10 +57,11 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8/ext/atomicity.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/gthr.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/gthr-default.h \
- /usr/include/pthread.h /usr/include/sched.h \
+ /usr/include/pthread.h /usr/include/sched.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/bits/sched.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/timex.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/atomic_word.h \
  /usr/include/c++/4.8/initializer_list \
@@ -87,6 +72,7 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/sys/types.h \
  /usr/include/x86_64-linux-gnu/sys/select.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
  /usr/include/x86_64-linux-gnu/bits/select2.h \
  /usr/include/x86_64-linux-gnu/sys/sysmacros.h /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
@@ -96,10 +82,26 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
  /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/c++/4.8/cerrno \
+ /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
+ /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/c++/4.8/bits/functional_hash.h \
  /usr/include/c++/4.8/bits/hash_bytes.h \
- /usr/include/c++/4.8/bits/basic_string.tcc \
+ /usr/include/c++/4.8/bits/basic_string.tcc /usr/include/c++/4.8/list \
+ /usr/include/c++/4.8/bits/stl_list.h /usr/include/c++/4.8/bits/list.tcc \
+ /usr/include/c++/4.8/stack /usr/include/c++/4.8/deque \
+ /usr/include/c++/4.8/bits/stl_construct.h \
+ /usr/include/c++/4.8/ext/alloc_traits.h \
+ /usr/include/c++/4.8/bits/alloc_traits.h \
+ /usr/include/c++/4.8/bits/ptr_traits.h \
+ /usr/include/c++/4.8/bits/stl_uninitialized.h \
+ /usr/include/c++/4.8/bits/stl_deque.h \
+ /usr/include/c++/4.8/bits/deque.tcc \
+ /usr/include/c++/4.8/bits/stl_stack.h src/event.h \
+ /usr/include/c++/4.8/vector /usr/include/c++/4.8/bits/stl_vector.h \
+ /usr/include/c++/4.8/bits/stl_bvector.h \
+ /usr/include/c++/4.8/bits/vector.tcc src/globals.h src/config.h \
  /usr/include/gtkmm-2.4/gtkmm/main.h /usr/include/glibmm-2.4/glibmm.h \
  /usr/lib/x86_64-linux-gnu/glibmm-2.4/include/glibmmconfig.h \
  /usr/include/glibmm-2.4/glibmm/thread.h /usr/include/glib-2.0/glib.h \
@@ -120,7 +122,14 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/glib-2.0/glib/gthread.h \
  /usr/include/glib-2.0/glib/gatomic.h /usr/include/glib-2.0/glib/gerror.h \
  /usr/include/glib-2.0/glib/gquark.h \
- /usr/include/glib-2.0/glib/gbacktrace.h \
+ /usr/include/glib-2.0/glib/gbacktrace.h /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/signum.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h \
  /usr/include/glib-2.0/glib/gbase64.h \
  /usr/include/glib-2.0/glib/gbitlock.h \
  /usr/include/glib-2.0/glib/gbookmarkfile.h \
@@ -198,8 +207,7 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8/bits/sstream.tcc \
  /usr/include/glibmm-2.4/glibmm/timeval.h \
  /usr/include/sigc++-2.0/sigc++/sigc++.h \
- /usr/include/sigc++-2.0/sigc++/signal.h /usr/include/c++/4.8/list \
- /usr/include/c++/4.8/bits/stl_list.h /usr/include/c++/4.8/bits/list.tcc \
+ /usr/include/sigc++-2.0/sigc++/signal.h \
  /usr/include/sigc++-2.0/sigc++/signal_base.h \
  /usr/include/c++/4.8/cstddef \
  /usr/lib/x86_64-linux-gnu/sigc++-2.0/include/sigc++config.h \
@@ -254,15 +262,7 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/glib-2.0/gobject/gtypemodule.h \
  /usr/include/glib-2.0/gobject/gtypeplugin.h \
  /usr/include/glib-2.0/gobject/gvaluearray.h \
- /usr/include/glib-2.0/gobject/gvaluetypes.h /usr/include/c++/4.8/vector \
- /usr/include/c++/4.8/bits/stl_construct.h \
- /usr/include/c++/4.8/ext/alloc_traits.h \
- /usr/include/c++/4.8/bits/alloc_traits.h \
- /usr/include/c++/4.8/bits/ptr_traits.h \
- /usr/include/c++/4.8/bits/stl_uninitialized.h \
- /usr/include/c++/4.8/bits/stl_vector.h \
- /usr/include/c++/4.8/bits/stl_bvector.h \
- /usr/include/c++/4.8/bits/vector.tcc \
+ /usr/include/glib-2.0/gobject/gvaluetypes.h \
  /usr/include/glibmm-2.4/glibmm/variantiter.h \
  /usr/include/c++/4.8/utility /usr/include/c++/4.8/bits/stl_relops.h \
  /usr/include/c++/4.8/map /usr/include/c++/4.8/bits/stl_tree.h \
@@ -314,9 +314,7 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include/fxsrintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include/adxintrin.h \
  /usr/include/c++/4.8/bits/random.tcc /usr/include/c++/4.8/numeric \
- /usr/include/c++/4.8/bits/stl_numeric.h /usr/include/c++/4.8/deque \
- /usr/include/c++/4.8/bits/stl_deque.h \
- /usr/include/c++/4.8/bits/deque.tcc \
+ /usr/include/c++/4.8/bits/stl_numeric.h \
  /usr/include/glibmm-2.4/glibmm/balancedtree.h \
  /usr/include/glibmm-2.4/glibmm/base64.h \
  /usr/include/glibmm-2.4/glibmm/bytearray.h \
@@ -345,8 +343,7 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/glibmm-2.4/glibmm/markup.h \
  /usr/include/glibmm-2.4/glibmm/miscutils.h \
  /usr/include/glibmm-2.4/glibmm/module.h \
- /usr/include/glibmm-2.4/glibmm/nodetree.h /usr/include/c++/4.8/stack \
- /usr/include/c++/4.8/bits/stl_stack.h \
+ /usr/include/glibmm-2.4/glibmm/nodetree.h \
  /usr/include/glibmm-2.4/glibmm/optioncontext.h \
  /usr/include/glibmm-2.4/glibmm/optionentry.h \
  /usr/include/glibmm-2.4/glibmm/optiongroup.h \
@@ -600,7 +597,8 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/freetype2/freetype.h \
  /usr/include/freetype2/config/ftconfig.h \
  /usr/include/freetype2/config/ftoption.h \
- /usr/include/freetype2/config/ftstdlib.h /usr/include/setjmp.h \
+ /usr/include/freetype2/config/ftstdlib.h /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/string3.h /usr/include/setjmp.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp2.h \
  /usr/include/freetype2/fttypes.h /usr/include/freetype2/ftsystem.h \
  /usr/include/freetype2/ftimage.h /usr/include/freetype2/fterrors.h \
@@ -860,6 +858,7 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/gtk-2.0/gtk/gtktreestore.h \
  /usr/include/gtk-2.0/gtk/gtkuimanager.h \
  /usr/include/gtk-2.0/gtk/gtkvbbox.h \
+ /usr/include/gtk-2.0/gtk/gtkversion.h \
  /usr/include/gtk-2.0/gtk/gtkvolumebutton.h \
  /usr/include/gtk-2.0/gtk/gtkvpaned.h \
  /usr/include/gtk-2.0/gtk/gtkvruler.h \
@@ -889,8 +888,8 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/gtkmm-2.4/gtkmm/selectiondata.h \
  /usr/include/gtkmm-2.4/gtkmm/accelkey.h \
  /usr/include/gtk-2.0/gdk/gdkkeysyms.h \
- /usr/include/gtk-2.0/gdk/gdkkeysyms-compat.h src/perform.h src/event.h \
- src/midibus.h /usr/include/alsa/asoundlib.h /usr/include/fcntl.h \
+ /usr/include/gtk-2.0/gdk/gdkkeysyms-compat.h src/midibus.h \
+ /usr/include/alsa/asoundlib.h /usr/include/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/uio.h \
@@ -906,14 +905,15 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/alsa/control.h /usr/include/alsa/mixer.h \
  /usr/include/alsa/seq_event.h /usr/include/alsa/seq.h \
  /usr/include/alsa/seqmid.h /usr/include/alsa/seq_midi_event.h \
- src/sequence.h src/mutex.h src/midifile.h /usr/include/c++/4.8/fstream \
+ src/mutex.h src/perform.h src/midifile.h /usr/include/c++/4.8/fstream \
  /usr/include/c++/4.8/bits/codecvt.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++io.h \
  /usr/include/c++/4.8/bits/fstream.tcc /usr/include/jack/jack.h \
  /usr/include/jack/systemdeps.h /usr/include/inttypes.h \
  /usr/include/jack/types.h /usr/include/jack/transport.h \
- /usr/include/jack/weakmacros.h /usr/include/jack/session.h src/seqmenu.h \
+ /usr/include/jack/weakmacros.h /usr/include/jack/session.h \
+ /usr/include/gtkmm-2.4/gtkmm/adjustment.h \
  /usr/include/gtkmm-2.4/gtkmm/button.h /usr/include/gtkmm-2.4/gtkmm/bin.h \
  /usr/include/gtkmm-2.4/gtkmm/container.h \
  /usr/include/gtkmm-2.4/gtkmm/window.h \
@@ -936,8 +936,7 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/gtkmm-2.4/gtkmm/separatormenuitem.h \
  /usr/include/gtkmm-2.4/gtkmm/menubar.h \
  /usr/include/gtkmm-2.4/gtkmm/eventbox.h \
- /usr/include/gtkmm-2.4/gtkmm/table.h src/maintime.h src/perfedit.h \
- /usr/include/gtkmm-2.4/gtkmm/adjustment.h \
+ /usr/include/gtkmm-2.4/gtkmm/table.h \
  /usr/include/gtkmm-2.4/gtkmm/scrollbar.h \
  /usr/include/gtkmm-2.4/gtkmm/range.h \
  /usr/include/gtkmm-2.4/gtkmm/border.h \
@@ -965,254 +964,21 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
  /usr/include/gtkmm-2.4/gtkmm/invisible.h \
  /usr/include/gtkmm-2.4/gtkmm/separator.h \
  /usr/include/gtkmm-2.4/gtkmm/arrow.h \
- /usr/include/sigc++-2.0/sigc++/bind.h src/perfnames.h src/perfroll.h \
- /usr/include/gdkmm-2.4/gdkmm/cursor.h src/perfroll_input.h \
- src/perftime.h src/seqtime.h src/options.h \
- /usr/include/gtkmm-2.4/gtkmm/dialog.h \
- /usr/include/gtkmm-2.4/gtkmm/buttonbox.h \
- /usr/include/gtkmm-2.4/gtkmm/frame.h \
- /usr/include/gtkmm-2.4/gtkmm/fileselection.h \
- /usr/include/gtkmm-2.4/gtkmm/treeview.h \
- /usr/include/gtkmm-2.4/gtkmm/treeviewcolumn.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrenderer_generation.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrenderertext.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrenderer.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrendererpixbuf.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrenderertoggle.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrendereraccel.h \
- /usr/include/gtkmm-2.4/gtkmm/treeselection.h \
- /usr/include/gtkmm-2.4/gtkmm/treepath.h \
- /usr/include/gtkmm-2.4/gtkmm/tooltip.h \
- /usr/include/gtkmm-2.4/gtkmm/spinbutton.h \
- /usr/include/gtkmm-2.4/gtkmm/progressbar.h \
- /usr/include/gtkmm-2.4/gtkmm/notebook.h src/songtab.h \
- /usr/include/gtkmm-2.4/gtkmm.h /usr/include/giomm-2.4/giomm.h \
- /usr/include/giomm-2.4/giomm/action.h \
- /usr/include/giomm-2.4/giomm/actiongroup.h \
- /usr/include/giomm-2.4/giomm/actionmap.h \
- /usr/include/giomm-2.4/giomm/simpleaction.h \
- /usr/include/giomm-2.4/giomm/appinfo.h \
- /usr/include/giomm-2.4/giomm/applaunchcontext.h \
- /usr/include/giomm-2.4/giomm/application.h \
- /usr/include/giomm-2.4/giomm/applicationcommandline.h \
- /usr/include/giomm-2.4/giomm/file.h \
- /usr/include/giomm-2.4/giomm/fileattributeinfolist.h \
- /usr/include/giomm-2.4/giomm/fileattributeinfo.h \
- /usr/include/giomm-2.4/giomm/fileenumerator.h \
- /usr/include/giomm-2.4/giomm/fileinfo.h \
- /usr/include/giomm-2.4/giomm/fileinputstream.h \
- /usr/include/giomm-2.4/giomm/seekable.h \
- /usr/include/giomm-2.4/giomm/fileiostream.h \
- /usr/include/giomm-2.4/giomm/iostream.h \
- /usr/include/giomm-2.4/giomm/outputstream.h \
- /usr/include/giomm-2.4/giomm/filemonitor.h \
- /usr/include/giomm-2.4/giomm/fileoutputstream.h \
- /usr/include/giomm-2.4/giomm/mountoperation.h \
- /usr/include/giomm-2.4/giomm/drive.h \
- /usr/include/giomm-2.4/giomm/mount.h \
- /usr/include/giomm-2.4/giomm/error.h \
- /usr/include/giomm-2.4/giomm/dbusconnection.h \
- /usr/include/giomm-2.4/giomm/initable.h \
- /usr/include/giomm-2.4/giomm/asyncinitable.h \
- /usr/include/giomm-2.4/giomm/dbusauthobserver.h \
- /usr/include/giomm-2.4/giomm/credentials.h \
- /usr/include/giomm-2.4/giomm/dbusmethodinvocation.h \
- /usr/include/giomm-2.4/giomm/dbusmessage.h \
- /usr/include/giomm-2.4/giomm/unixfdlist.h \
- /usr/include/giomm-2.4/giomm/dbusintrospection.h \
- /usr/include/giomm-2.4/giomm/dbussubtreevtable.h \
- /usr/include/giomm-2.4/giomm/dbusinterfacevtable.h \
- /usr/include/giomm-2.4/giomm/notification.h \
- /usr/include/giomm-2.4/giomm/bufferedinputstream.h \
- /usr/include/giomm-2.4/giomm/filterinputstream.h \
- /usr/include/giomm-2.4/giomm/bufferedoutputstream.h \
- /usr/include/giomm-2.4/giomm/filteroutputstream.h \
- /usr/include/giomm-2.4/giomm/charsetconverter.h \
- /usr/include/giomm-2.4/giomm/converter.h \
- /usr/include/giomm-2.4/giomm/contenttype.h \
- /usr/include/giomm-2.4/giomm/converterinputstream.h \
- /usr/include/giomm-2.4/giomm/pollableinputstream.h \
- /usr/include/giomm-2.4/giomm/converteroutputstream.h \
- /usr/include/giomm-2.4/giomm/pollableoutputstream.h \
- /usr/include/giomm-2.4/giomm/datainputstream.h \
- /usr/include/giomm-2.4/giomm/enums.h \
- /usr/include/giomm-2.4/giomm/dataoutputstream.h \
- /usr/include/giomm-2.4/giomm/dbusactiongroup.h \
- /usr/include/giomm-2.4/giomm/remoteactiongroup.h \
- /usr/include/giomm-2.4/giomm/dbusaddress.h \
- /usr/include/giomm-2.4/giomm/dbuserror.h \
- /usr/include/giomm-2.4/giomm/dbuserrorutils.h \
- /usr/include/giomm-2.4/giomm/dbusinterface.h \
- /usr/include/giomm-2.4/giomm/dbusmenumodel.h \
- /usr/include/giomm-2.4/giomm/menumodel.h \
- /usr/include/giomm-2.4/giomm/dbusobject.h \
- /usr/include/giomm-2.4/giomm/dbusownname.h \
- /usr/include/giomm-2.4/giomm/dbusproxy.h \
- /usr/include/giomm-2.4/giomm/dbusserver.h \
- /usr/include/giomm-2.4/giomm/dbusutils.h \
- /usr/include/giomm-2.4/giomm/dbuswatchname.h \
- /usr/include/giomm-2.4/giomm/desktopappinfo.h \
- /usr/include/giomm-2.4/giomm/emblem.h \
- /usr/include/giomm-2.4/giomm/emblemedicon.h \
- /usr/include/giomm-2.4/giomm/fileicon.h \
- /usr/include/giomm-2.4/giomm/loadableicon.h \
- /usr/include/giomm-2.4/giomm/filenamecompleter.h \
- /usr/include/giomm-2.4/giomm/inetaddress.h \
- /usr/include/giomm-2.4/giomm/inetsocketaddress.h \
- /usr/include/giomm-2.4/giomm/socketaddress.h \
- /usr/include/giomm-2.4/giomm/socketconnectable.h \
- /usr/include/giomm-2.4/giomm/socketaddressenumerator.h \
- /usr/include/giomm-2.4/giomm/init.h \
- /usr/include/giomm-2.4/giomm/wrap_init.h \
- /usr/include/giomm-2.4/giomm/memoryinputstream.h \
- /usr/include/giomm-2.4/giomm/memoryoutputstream.h \
- /usr/include/giomm-2.4/giomm/menu.h \
- /usr/include/giomm-2.4/giomm/menuitem.h \
- /usr/include/giomm-2.4/giomm/menuattributeiter.h \
- /usr/include/giomm-2.4/giomm/menulinkiter.h \
- /usr/include/giomm-2.4/giomm/networkaddress.h \
- /usr/include/giomm-2.4/giomm/networkservice.h \
- /usr/include/giomm-2.4/giomm/proxy.h \
- /usr/include/giomm-2.4/giomm/proxyaddress.h \
- /usr/include/giomm-2.4/giomm/proxyresolver.h \
- /usr/include/giomm-2.4/giomm/resolver.h \
- /usr/include/giomm-2.4/giomm/srvtarget.h \
- /usr/include/giomm-2.4/giomm/resource.h \
- /usr/include/giomm-2.4/giomm/settings.h \
- /usr/include/giomm-2.4/giomm/simpleactiongroup.h \
- /usr/include/giomm-2.4/giomm/socket.h \
- /usr/include/giomm-2.4/giomm/socketclient.h \
- /usr/include/giomm-2.4/giomm/socketconnection.h \
- /usr/include/giomm-2.4/giomm/socketcontrolmessage.h \
- /usr/include/giomm-2.4/giomm/socketlistener.h \
- /usr/include/giomm-2.4/giomm/socketservice.h \
- /usr/include/giomm-2.4/giomm/tcpconnection.h \
- /usr/include/giomm-2.4/giomm/themedicon.h \
- /usr/include/giomm-2.4/giomm/threadedsocketservice.h \
- /usr/include/giomm-2.4/giomm/tlscertificate.h \
- /usr/include/giomm-2.4/giomm/tlsclientconnection.h \
- /usr/include/giomm-2.4/giomm/tlsconnection.h \
- /usr/include/giomm-2.4/giomm/tlsdatabase.h \
- /usr/include/giomm-2.4/giomm/tlsinteraction.h \
- /usr/include/giomm-2.4/giomm/tlspassword.h \
- /usr/include/giomm-2.4/giomm/tlsserverconnection.h \
- /usr/include/giomm-2.4/giomm/unixconnection.h \
- /usr/include/giomm-2.4/giomm/unixcredentialsmessage.h \
- /usr/include/giomm-2.4/giomm/unixfdmessage.h \
- /usr/include/giomm-2.4/giomm/unixinputstream.h \
- /usr/include/giomm-2.4/giomm/unixoutputstream.h \
- /usr/include/giomm-2.4/giomm/unixsocketaddress.h \
- /usr/include/giomm-2.4/giomm/volume.h \
- /usr/include/giomm-2.4/giomm/volumemonitor.h \
- /usr/include/giomm-2.4/giomm/zlibcompressor.h \
- /usr/include/giomm-2.4/giomm/zlibdecompressor.h \
- /usr/include/gdkmm-2.4/gdkmm.h \
- /usr/include/gdkmm-2.4/gdkmm/pixbufloader.h \
- /usr/include/gdkmm-2.4/gdkmm/displaymanager.h \
- /usr/include/gdkmm-2.4/gdkmm/general.h \
- /usr/include/gdkmm-2.4/gdkmm/rgb.h \
- /usr/include/gtkmm-2.4/gtkmm/aboutdialog.h \
- /usr/include/gtkmm-2.4/gtkmm/alignment.h \
- /usr/include/gtkmm-2.4/gtkmm/aspectframe.h \
- /usr/include/gtkmm-2.4/gtkmm/assistant.h \
- /usr/include/gtkmm-2.4/gtkmm/builder.h \
- /usr/include/gtkmm-2.4/gtkmm/cellview.h \
- /usr/include/gtkmm-2.4/gtkmm/celllayout.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrenderercombo.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrendererprogress.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrendererspin.h \
- /usr/include/gtkmm-2.4/gtkmm/cellrendererspinner.h \
- /usr/include/gtkmm-2.4/gtkmm/colorbutton.h \
- /usr/include/gtkmm-2.4/gtkmm/colorselection.h \
- /usr/include/gtkmm-2.4/gtkmm/combobox.h \
- /usr/include/gtkmm-2.4/gtkmm/comboboxentry.h \
- /usr/include/gtkmm-2.4/gtkmm/comboboxentrytext.h \
- /usr/include/gtkmm-2.4/gtkmm/comboboxtext.h \
- /usr/include/gtkmm-2.4/gtkmm/curve.h \
- /usr/include/gtkmm-2.4/gtkmm/expander.h \
- /usr/include/gtkmm-2.4/gtkmm/filechooser.h \
- /usr/include/gtkmm-2.4/gtkmm/filefilter.h \
- /usr/include/gtkmm-2.4/gtkmm/filechooserbutton.h \
- /usr/include/gtkmm-2.4/gtkmm/filechooserdialog.h \
- /usr/include/gtkmm-2.4/gtkmm/filechooserwidget.h \
- /usr/include/gtkmm-2.4/gtkmm/fixed.h \
- /usr/include/gtkmm-2.4/gtkmm/fontbutton.h \
- /usr/include/gtkmm-2.4/gtkmm/fontselection.h \
- /usr/include/gtkmm-2.4/gtkmm/handlebox.h \
- /usr/include/gtkmm-2.4/gtkmm/iconfactory.h \
- /usr/include/gtkmm-2.4/gtkmm/icontheme.h \
- /usr/include/gtkmm-2.4/gtkmm/iconinfo.h \
- /usr/include/gtkmm-2.4/gtkmm/iconview.h \
- /usr/include/gtkmm-2.4/gtkmm/infobar.h \
- /usr/include/gtkmm-2.4/gtkmm/inputdialog.h \
- /usr/include/gtkmm-2.4/gtkmm/calendar.h \
- /usr/include/gtkmm-2.4/gtkmm/layout.h \
- /usr/include/gtkmm-2.4/gtkmm/liststore.h \
- /usr/include/gtkmm-2.4/gtkmm/treedragdest.h \
- /usr/include/gtkmm-2.4/gtkmm/treesortable.h \
- /usr/include/gtkmm-2.4/gtkmm/treedragsource.h \
- /usr/include/gtkmm-2.4/gtkmm/listviewtext.h \
- /usr/include/gtkmm-2.4/gtkmm/linkbutton.h \
- /usr/include/gtkmm-2.4/gtkmm/messagedialog.h \
- /usr/include/gtkmm-2.4/gtkmm/offscreenwindow.h \
- /usr/include/gtkmm-2.4/gtkmm/paned.h \
- /usr/include/gtkmm-2.4/gtkmm/pagesetup.h \
- /usr/include/gtkmm-2.4/gtkmm/papersize.h \
- /usr/include/gtkmm-2.4/gtkmm/pagesetupunixdialog.h \
- /usr/include/gtkmm-2.4/gtkmm/printsettings.h \
- /usr/include/gtkmm-2.4/gtkmm/printcontext.h \
- /usr/include/gtkmm-2.4/gtkmm/printer.h \
- /usr/include/gtkmm-2.4/gtkmm/printjob.h \
- /usr/include/gtkmm-2.4/gtkmm/printoperation.h \
- /usr/include/gtkmm-2.4/gtkmm/printoperationpreview.h \
- /usr/include/gtkmm-2.4/gtkmm/printunixdialog.h \
- /usr/include/gtkmm-2.4/gtkmm/radioaction.h \
- /usr/include/gtkmm-2.4/gtkmm/toggleaction.h \
- /usr/include/gtkmm-2.4/gtkmm/action.h \
- /usr/include/gtkmm-2.4/gtkmm/radiotoolbutton.h \
- /usr/include/gtkmm-2.4/gtkmm/recentaction.h \
- /usr/include/gtkmm-2.4/gtkmm/recentchooser.h \
- /usr/include/gtkmm-2.4/gtkmm/recentinfo.h \
- /usr/include/gtkmm-2.4/gtkmm/recentfilter.h \
- /usr/include/gtkmm-2.4/gtkmm/recentmanager.h \
- /usr/include/gtkmm-2.4/gtkmm/recentchooserdialog.h \
- /usr/include/gtkmm-2.4/gtkmm/recentchoosermenu.h \
- /usr/include/gtkmm-2.4/gtkmm/recentchooserwidget.h \
- /usr/include/gtkmm-2.4/gtkmm/ruler.h \
- /usr/include/gtkmm-2.4/gtkmm/scale.h \
- /usr/include/gtkmm-2.4/gtkmm/scrolledwindow.h \
- /usr/include/gtkmm-2.4/gtkmm/separatortoolitem.h \
- /usr/include/gtkmm-2.4/gtkmm/settings.h \
- /usr/include/gtkmm-2.4/gtkmm/spinner.h \
- /usr/include/gtkmm-2.4/gtkmm/statusbar.h \
- /usr/include/gtkmm-2.4/gtkmm/statusicon.h \
- /usr/include/gtkmm-2.4/gtkmm/stock.h \
- /usr/include/gtkmm-2.4/gtkmm/stockitem.h \
- /usr/include/gtkmm-2.4/gtkmm/textbuffer.h \
- /usr/include/gtkmm-2.4/gtkmm/texttagtable.h \
- /usr/include/gtkmm-2.4/gtkmm/texttag.h \
- /usr/include/gtkmm-2.4/gtkmm/textchildanchor.h \
- /usr/include/gtkmm-2.4/gtkmm/textmark.h \
- /usr/include/gtkmm-2.4/gtkmm/textiter.h \
- /usr/include/gtkmm-2.4/gtkmm/textattributes.h \
- /usr/include/gtkmm-2.4/gtkmm/textview.h \
- /usr/include/gtkmm-2.4/gtkmm/toolpalette.h \
- /usr/include/gtkmm-2.4/gtkmm/orientable.h \
- /usr/include/gtkmm-2.4/gtkmm/toolitemgroup.h \
- /usr/include/gtkmm-2.4/gtkmm/toolshell.h \
- /usr/include/gtkmm-2.4/gtkmm/menutoolbutton.h \
- /usr/include/gtkmm-2.4/gtkmm/treemodelfilter.h \
- /usr/include/gtkmm-2.4/gtkmm/treemodelsort.h \
- /usr/include/gtkmm-2.4/gtkmm/treerowreference.h \
- /usr/include/gtkmm-2.4/gtkmm/treestore.h \
- /usr/include/gtkmm-2.4/gtkmm/uimanager.h \
- /usr/include/gtkmm-2.4/gtkmm/actiongroup.h src/pixmaps/play2.xpm \
- src/pixmaps/stop.xpm src/pixmaps/learn.xpm src/pixmaps/learn2.xpm \
- src/pixmaps/perfedit.xpm src/pixmaps/seq24.xpm src/pixmaps/seq24_32.xpm
+ /usr/include/sigc++-2.0/sigc++/bind.h src/mainwid.h src/seqmenu.h \
+ src/perfnames.h src/perfroll.h /usr/include/gdkmm-2.4/gdkmm/cursor.h \
+ src/perfroll_input.h src/perftime.h src/seqtime.h src/pixmaps/snap.xpm \
+ src/pixmaps/play3.xpm src/pixmaps/rec2.xpm src/pixmaps/stop.xpm \
+ src/pixmaps/expand.xpm src/pixmaps/collapse.xpm src/pixmaps/loop.xpm \
+ src/pixmaps/copy.xpm src/pixmaps/undo.xpm src/pixmaps/down.xpm \
+ src/pixmaps/perfedit.xpm
 
 /usr/include/stdc-predef.h:
 
-/usr/include/c++/4.8/cctype:
+src/songtab.h:
+
+src/sequence.h:
+
+/usr/include/c++/4.8/string:
 
 /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h:
 
@@ -1229,80 +995,6 @@ src/mainwnd.o: src/mainwnd.cpp /usr/include/stdc-predef.h \
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
 /usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h:
-
-/usr/include/ctype.h:
-
-/usr/include/x86_64-linux-gnu/bits/types.h:
-
-/usr/include/x86_64-linux-gnu/bits/typesizes.h:
-
-/usr/include/endian.h:
-
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/x86_64-linux-gnu/bits/byteswap.h:
-
-/usr/include/x86_64-linux-gnu/bits/byteswap-16.h:
-
-/usr/include/xlocale.h:
-
-/usr/include/c++/4.8/csignal:
-
-/usr/include/signal.h:
-
-/usr/include/x86_64-linux-gnu/bits/sigset.h:
-
-/usr/include/x86_64-linux-gnu/bits/signum.h:
-
-/usr/include/time.h:
-
-/usr/include/x86_64-linux-gnu/bits/siginfo.h:
-
-/usr/include/x86_64-linux-gnu/bits/sigaction.h:
-
-/usr/include/x86_64-linux-gnu/bits/sigcontext.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h:
-
-/usr/include/x86_64-linux-gnu/bits/sigstack.h:
-
-/usr/include/x86_64-linux-gnu/sys/ucontext.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
-
-/usr/include/x86_64-linux-gnu/bits/sigthread.h:
-
-/usr/include/c++/4.8/cerrno:
-
-/usr/include/errno.h:
-
-/usr/include/x86_64-linux-gnu/bits/errno.h:
-
-/usr/include/linux/errno.h:
-
-/usr/include/x86_64-linux-gnu/asm/errno.h:
-
-/usr/include/asm-generic/errno.h:
-
-/usr/include/asm-generic/errno-base.h:
-
-/usr/include/c++/4.8/cstring:
-
-/usr/include/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string3.h:
-
-/usr/include/gtk-2.0/gtk/gtkversion.h:
-
-src/mainwnd.h:
-
-src/mainwid.h:
-
-src/globals.h:
-
-src/config.h:
-
-/usr/include/c++/4.8/string:
 
 /usr/include/c++/4.8/bits/stringfwd.h:
 
@@ -1350,6 +1042,10 @@ src/config.h:
 
 /usr/include/x86_64-linux-gnu/bits/wchar.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h:
+
+/usr/include/xlocale.h:
+
 /usr/include/x86_64-linux-gnu/bits/wchar2.h:
 
 /usr/include/c++/4.8/cstdint:
@@ -1386,6 +1082,22 @@ src/config.h:
 
 /usr/include/c++/4.8/iosfwd:
 
+/usr/include/c++/4.8/cctype:
+
+/usr/include/ctype.h:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/x86_64-linux-gnu/bits/typesizes.h:
+
+/usr/include/endian.h:
+
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/x86_64-linux-gnu/bits/byteswap.h:
+
+/usr/include/x86_64-linux-gnu/bits/byteswap-16.h:
+
 /usr/include/c++/4.8/bits/ostream_insert.h:
 
 /usr/include/c++/4.8/bits/cxxabi_forced.h:
@@ -1408,11 +1120,15 @@ src/config.h:
 
 /usr/include/sched.h:
 
+/usr/include/time.h:
+
 /usr/include/x86_64-linux-gnu/bits/sched.h:
 
 /usr/include/x86_64-linux-gnu/bits/time.h:
 
 /usr/include/x86_64-linux-gnu/bits/timex.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
@@ -1435,6 +1151,8 @@ src/config.h:
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/x86_64-linux-gnu/bits/select.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigset.h:
 
 /usr/include/x86_64-linux-gnu/bits/select2.h:
 
@@ -1462,11 +1180,65 @@ src/config.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdio2.h:
 
+/usr/include/c++/4.8/cerrno:
+
+/usr/include/errno.h:
+
+/usr/include/x86_64-linux-gnu/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/x86_64-linux-gnu/asm/errno.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/asm-generic/errno-base.h:
+
 /usr/include/c++/4.8/bits/functional_hash.h:
 
 /usr/include/c++/4.8/bits/hash_bytes.h:
 
 /usr/include/c++/4.8/bits/basic_string.tcc:
+
+/usr/include/c++/4.8/list:
+
+/usr/include/c++/4.8/bits/stl_list.h:
+
+/usr/include/c++/4.8/bits/list.tcc:
+
+/usr/include/c++/4.8/stack:
+
+/usr/include/c++/4.8/deque:
+
+/usr/include/c++/4.8/bits/stl_construct.h:
+
+/usr/include/c++/4.8/ext/alloc_traits.h:
+
+/usr/include/c++/4.8/bits/alloc_traits.h:
+
+/usr/include/c++/4.8/bits/ptr_traits.h:
+
+/usr/include/c++/4.8/bits/stl_uninitialized.h:
+
+/usr/include/c++/4.8/bits/stl_deque.h:
+
+/usr/include/c++/4.8/bits/deque.tcc:
+
+/usr/include/c++/4.8/bits/stl_stack.h:
+
+src/event.h:
+
+/usr/include/c++/4.8/vector:
+
+/usr/include/c++/4.8/bits/stl_vector.h:
+
+/usr/include/c++/4.8/bits/stl_bvector.h:
+
+/usr/include/c++/4.8/bits/vector.tcc:
+
+src/globals.h:
+
+src/config.h:
 
 /usr/include/gtkmm-2.4/gtkmm/main.h:
 
@@ -1519,6 +1291,22 @@ src/config.h:
 /usr/include/glib-2.0/glib/gquark.h:
 
 /usr/include/glib-2.0/glib/gbacktrace.h:
+
+/usr/include/signal.h:
+
+/usr/include/x86_64-linux-gnu/bits/signum.h:
+
+/usr/include/x86_64-linux-gnu/bits/siginfo.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigaction.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigcontext.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigstack.h:
+
+/usr/include/x86_64-linux-gnu/sys/ucontext.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigthread.h:
 
 /usr/include/glib-2.0/glib/gbase64.h:
 
@@ -1710,12 +1498,6 @@ src/config.h:
 
 /usr/include/sigc++-2.0/sigc++/signal.h:
 
-/usr/include/c++/4.8/list:
-
-/usr/include/c++/4.8/bits/stl_list.h:
-
-/usr/include/c++/4.8/bits/list.tcc:
-
 /usr/include/sigc++-2.0/sigc++/signal_base.h:
 
 /usr/include/c++/4.8/cstddef:
@@ -1825,24 +1607,6 @@ src/config.h:
 /usr/include/glib-2.0/gobject/gvaluearray.h:
 
 /usr/include/glib-2.0/gobject/gvaluetypes.h:
-
-/usr/include/c++/4.8/vector:
-
-/usr/include/c++/4.8/bits/stl_construct.h:
-
-/usr/include/c++/4.8/ext/alloc_traits.h:
-
-/usr/include/c++/4.8/bits/alloc_traits.h:
-
-/usr/include/c++/4.8/bits/ptr_traits.h:
-
-/usr/include/c++/4.8/bits/stl_uninitialized.h:
-
-/usr/include/c++/4.8/bits/stl_vector.h:
-
-/usr/include/c++/4.8/bits/stl_bvector.h:
-
-/usr/include/c++/4.8/bits/vector.tcc:
 
 /usr/include/glibmm-2.4/glibmm/variantiter.h:
 
@@ -1972,12 +1736,6 @@ src/config.h:
 
 /usr/include/c++/4.8/bits/stl_numeric.h:
 
-/usr/include/c++/4.8/deque:
-
-/usr/include/c++/4.8/bits/stl_deque.h:
-
-/usr/include/c++/4.8/bits/deque.tcc:
-
 /usr/include/glibmm-2.4/glibmm/balancedtree.h:
 
 /usr/include/glibmm-2.4/glibmm/base64.h:
@@ -2037,10 +1795,6 @@ src/config.h:
 /usr/include/glibmm-2.4/glibmm/module.h:
 
 /usr/include/glibmm-2.4/glibmm/nodetree.h:
-
-/usr/include/c++/4.8/stack:
-
-/usr/include/c++/4.8/bits/stl_stack.h:
 
 /usr/include/glibmm-2.4/glibmm/optioncontext.h:
 
@@ -2589,6 +2343,10 @@ src/config.h:
 /usr/include/freetype2/config/ftoption.h:
 
 /usr/include/freetype2/config/ftstdlib.h:
+
+/usr/include/string.h:
+
+/usr/include/x86_64-linux-gnu/bits/string3.h:
 
 /usr/include/setjmp.h:
 
@@ -3158,6 +2916,8 @@ src/config.h:
 
 /usr/include/gtk-2.0/gtk/gtkvbbox.h:
 
+/usr/include/gtk-2.0/gtk/gtkversion.h:
+
 /usr/include/gtk-2.0/gtk/gtkvolumebutton.h:
 
 /usr/include/gtk-2.0/gtk/gtkvpaned.h:
@@ -3226,10 +2986,6 @@ src/config.h:
 
 /usr/include/gtk-2.0/gdk/gdkkeysyms-compat.h:
 
-src/perform.h:
-
-src/event.h:
-
 src/midibus.h:
 
 /usr/include/alsa/asoundlib.h:
@@ -3286,9 +3042,9 @@ src/midibus.h:
 
 /usr/include/alsa/seq_midi_event.h:
 
-src/sequence.h:
-
 src/mutex.h:
+
+src/perform.h:
 
 src/midifile.h:
 
@@ -3316,7 +3072,7 @@ src/midifile.h:
 
 /usr/include/jack/session.h:
 
-src/seqmenu.h:
+/usr/include/gtkmm-2.4/gtkmm/adjustment.h:
 
 /usr/include/gtkmm-2.4/gtkmm/button.h:
 
@@ -3369,12 +3125,6 @@ src/seqmenu.h:
 /usr/include/gtkmm-2.4/gtkmm/eventbox.h:
 
 /usr/include/gtkmm-2.4/gtkmm/table.h:
-
-src/maintime.h:
-
-src/perfedit.h:
-
-/usr/include/gtkmm-2.4/gtkmm/adjustment.h:
 
 /usr/include/gtkmm-2.4/gtkmm/scrollbar.h:
 
@@ -3432,6 +3182,10 @@ src/perfedit.h:
 
 /usr/include/sigc++-2.0/sigc++/bind.h:
 
+src/mainwid.h:
+
+src/seqmenu.h:
+
 src/perfnames.h:
 
 src/perfroll.h:
@@ -3444,500 +3198,24 @@ src/perftime.h:
 
 src/seqtime.h:
 
-src/options.h:
+src/pixmaps/snap.xpm:
 
-/usr/include/gtkmm-2.4/gtkmm/dialog.h:
+src/pixmaps/play3.xpm:
 
-/usr/include/gtkmm-2.4/gtkmm/buttonbox.h:
-
-/usr/include/gtkmm-2.4/gtkmm/frame.h:
-
-/usr/include/gtkmm-2.4/gtkmm/fileselection.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treeview.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treeviewcolumn.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrenderer_generation.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrenderertext.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrenderer.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrendererpixbuf.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrenderertoggle.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrendereraccel.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treeselection.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treepath.h:
-
-/usr/include/gtkmm-2.4/gtkmm/tooltip.h:
-
-/usr/include/gtkmm-2.4/gtkmm/spinbutton.h:
-
-/usr/include/gtkmm-2.4/gtkmm/progressbar.h:
-
-/usr/include/gtkmm-2.4/gtkmm/notebook.h:
-
-src/songtab.h:
-
-/usr/include/gtkmm-2.4/gtkmm.h:
-
-/usr/include/giomm-2.4/giomm.h:
-
-/usr/include/giomm-2.4/giomm/action.h:
-
-/usr/include/giomm-2.4/giomm/actiongroup.h:
-
-/usr/include/giomm-2.4/giomm/actionmap.h:
-
-/usr/include/giomm-2.4/giomm/simpleaction.h:
-
-/usr/include/giomm-2.4/giomm/appinfo.h:
-
-/usr/include/giomm-2.4/giomm/applaunchcontext.h:
-
-/usr/include/giomm-2.4/giomm/application.h:
-
-/usr/include/giomm-2.4/giomm/applicationcommandline.h:
-
-/usr/include/giomm-2.4/giomm/file.h:
-
-/usr/include/giomm-2.4/giomm/fileattributeinfolist.h:
-
-/usr/include/giomm-2.4/giomm/fileattributeinfo.h:
-
-/usr/include/giomm-2.4/giomm/fileenumerator.h:
-
-/usr/include/giomm-2.4/giomm/fileinfo.h:
-
-/usr/include/giomm-2.4/giomm/fileinputstream.h:
-
-/usr/include/giomm-2.4/giomm/seekable.h:
-
-/usr/include/giomm-2.4/giomm/fileiostream.h:
-
-/usr/include/giomm-2.4/giomm/iostream.h:
-
-/usr/include/giomm-2.4/giomm/outputstream.h:
-
-/usr/include/giomm-2.4/giomm/filemonitor.h:
-
-/usr/include/giomm-2.4/giomm/fileoutputstream.h:
-
-/usr/include/giomm-2.4/giomm/mountoperation.h:
-
-/usr/include/giomm-2.4/giomm/drive.h:
-
-/usr/include/giomm-2.4/giomm/mount.h:
-
-/usr/include/giomm-2.4/giomm/error.h:
-
-/usr/include/giomm-2.4/giomm/dbusconnection.h:
-
-/usr/include/giomm-2.4/giomm/initable.h:
-
-/usr/include/giomm-2.4/giomm/asyncinitable.h:
-
-/usr/include/giomm-2.4/giomm/dbusauthobserver.h:
-
-/usr/include/giomm-2.4/giomm/credentials.h:
-
-/usr/include/giomm-2.4/giomm/dbusmethodinvocation.h:
-
-/usr/include/giomm-2.4/giomm/dbusmessage.h:
-
-/usr/include/giomm-2.4/giomm/unixfdlist.h:
-
-/usr/include/giomm-2.4/giomm/dbusintrospection.h:
-
-/usr/include/giomm-2.4/giomm/dbussubtreevtable.h:
-
-/usr/include/giomm-2.4/giomm/dbusinterfacevtable.h:
-
-/usr/include/giomm-2.4/giomm/notification.h:
-
-/usr/include/giomm-2.4/giomm/bufferedinputstream.h:
-
-/usr/include/giomm-2.4/giomm/filterinputstream.h:
-
-/usr/include/giomm-2.4/giomm/bufferedoutputstream.h:
-
-/usr/include/giomm-2.4/giomm/filteroutputstream.h:
-
-/usr/include/giomm-2.4/giomm/charsetconverter.h:
-
-/usr/include/giomm-2.4/giomm/converter.h:
-
-/usr/include/giomm-2.4/giomm/contenttype.h:
-
-/usr/include/giomm-2.4/giomm/converterinputstream.h:
-
-/usr/include/giomm-2.4/giomm/pollableinputstream.h:
-
-/usr/include/giomm-2.4/giomm/converteroutputstream.h:
-
-/usr/include/giomm-2.4/giomm/pollableoutputstream.h:
-
-/usr/include/giomm-2.4/giomm/datainputstream.h:
-
-/usr/include/giomm-2.4/giomm/enums.h:
-
-/usr/include/giomm-2.4/giomm/dataoutputstream.h:
-
-/usr/include/giomm-2.4/giomm/dbusactiongroup.h:
-
-/usr/include/giomm-2.4/giomm/remoteactiongroup.h:
-
-/usr/include/giomm-2.4/giomm/dbusaddress.h:
-
-/usr/include/giomm-2.4/giomm/dbuserror.h:
-
-/usr/include/giomm-2.4/giomm/dbuserrorutils.h:
-
-/usr/include/giomm-2.4/giomm/dbusinterface.h:
-
-/usr/include/giomm-2.4/giomm/dbusmenumodel.h:
-
-/usr/include/giomm-2.4/giomm/menumodel.h:
-
-/usr/include/giomm-2.4/giomm/dbusobject.h:
-
-/usr/include/giomm-2.4/giomm/dbusownname.h:
-
-/usr/include/giomm-2.4/giomm/dbusproxy.h:
-
-/usr/include/giomm-2.4/giomm/dbusserver.h:
-
-/usr/include/giomm-2.4/giomm/dbusutils.h:
-
-/usr/include/giomm-2.4/giomm/dbuswatchname.h:
-
-/usr/include/giomm-2.4/giomm/desktopappinfo.h:
-
-/usr/include/giomm-2.4/giomm/emblem.h:
-
-/usr/include/giomm-2.4/giomm/emblemedicon.h:
-
-/usr/include/giomm-2.4/giomm/fileicon.h:
-
-/usr/include/giomm-2.4/giomm/loadableicon.h:
-
-/usr/include/giomm-2.4/giomm/filenamecompleter.h:
-
-/usr/include/giomm-2.4/giomm/inetaddress.h:
-
-/usr/include/giomm-2.4/giomm/inetsocketaddress.h:
-
-/usr/include/giomm-2.4/giomm/socketaddress.h:
-
-/usr/include/giomm-2.4/giomm/socketconnectable.h:
-
-/usr/include/giomm-2.4/giomm/socketaddressenumerator.h:
-
-/usr/include/giomm-2.4/giomm/init.h:
-
-/usr/include/giomm-2.4/giomm/wrap_init.h:
-
-/usr/include/giomm-2.4/giomm/memoryinputstream.h:
-
-/usr/include/giomm-2.4/giomm/memoryoutputstream.h:
-
-/usr/include/giomm-2.4/giomm/menu.h:
-
-/usr/include/giomm-2.4/giomm/menuitem.h:
-
-/usr/include/giomm-2.4/giomm/menuattributeiter.h:
-
-/usr/include/giomm-2.4/giomm/menulinkiter.h:
-
-/usr/include/giomm-2.4/giomm/networkaddress.h:
-
-/usr/include/giomm-2.4/giomm/networkservice.h:
-
-/usr/include/giomm-2.4/giomm/proxy.h:
-
-/usr/include/giomm-2.4/giomm/proxyaddress.h:
-
-/usr/include/giomm-2.4/giomm/proxyresolver.h:
-
-/usr/include/giomm-2.4/giomm/resolver.h:
-
-/usr/include/giomm-2.4/giomm/srvtarget.h:
-
-/usr/include/giomm-2.4/giomm/resource.h:
-
-/usr/include/giomm-2.4/giomm/settings.h:
-
-/usr/include/giomm-2.4/giomm/simpleactiongroup.h:
-
-/usr/include/giomm-2.4/giomm/socket.h:
-
-/usr/include/giomm-2.4/giomm/socketclient.h:
-
-/usr/include/giomm-2.4/giomm/socketconnection.h:
-
-/usr/include/giomm-2.4/giomm/socketcontrolmessage.h:
-
-/usr/include/giomm-2.4/giomm/socketlistener.h:
-
-/usr/include/giomm-2.4/giomm/socketservice.h:
-
-/usr/include/giomm-2.4/giomm/tcpconnection.h:
-
-/usr/include/giomm-2.4/giomm/themedicon.h:
-
-/usr/include/giomm-2.4/giomm/threadedsocketservice.h:
-
-/usr/include/giomm-2.4/giomm/tlscertificate.h:
-
-/usr/include/giomm-2.4/giomm/tlsclientconnection.h:
-
-/usr/include/giomm-2.4/giomm/tlsconnection.h:
-
-/usr/include/giomm-2.4/giomm/tlsdatabase.h:
-
-/usr/include/giomm-2.4/giomm/tlsinteraction.h:
-
-/usr/include/giomm-2.4/giomm/tlspassword.h:
-
-/usr/include/giomm-2.4/giomm/tlsserverconnection.h:
-
-/usr/include/giomm-2.4/giomm/unixconnection.h:
-
-/usr/include/giomm-2.4/giomm/unixcredentialsmessage.h:
-
-/usr/include/giomm-2.4/giomm/unixfdmessage.h:
-
-/usr/include/giomm-2.4/giomm/unixinputstream.h:
-
-/usr/include/giomm-2.4/giomm/unixoutputstream.h:
-
-/usr/include/giomm-2.4/giomm/unixsocketaddress.h:
-
-/usr/include/giomm-2.4/giomm/volume.h:
-
-/usr/include/giomm-2.4/giomm/volumemonitor.h:
-
-/usr/include/giomm-2.4/giomm/zlibcompressor.h:
-
-/usr/include/giomm-2.4/giomm/zlibdecompressor.h:
-
-/usr/include/gdkmm-2.4/gdkmm.h:
-
-/usr/include/gdkmm-2.4/gdkmm/pixbufloader.h:
-
-/usr/include/gdkmm-2.4/gdkmm/displaymanager.h:
-
-/usr/include/gdkmm-2.4/gdkmm/general.h:
-
-/usr/include/gdkmm-2.4/gdkmm/rgb.h:
-
-/usr/include/gtkmm-2.4/gtkmm/aboutdialog.h:
-
-/usr/include/gtkmm-2.4/gtkmm/alignment.h:
-
-/usr/include/gtkmm-2.4/gtkmm/aspectframe.h:
-
-/usr/include/gtkmm-2.4/gtkmm/assistant.h:
-
-/usr/include/gtkmm-2.4/gtkmm/builder.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellview.h:
-
-/usr/include/gtkmm-2.4/gtkmm/celllayout.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrenderercombo.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrendererprogress.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrendererspin.h:
-
-/usr/include/gtkmm-2.4/gtkmm/cellrendererspinner.h:
-
-/usr/include/gtkmm-2.4/gtkmm/colorbutton.h:
-
-/usr/include/gtkmm-2.4/gtkmm/colorselection.h:
-
-/usr/include/gtkmm-2.4/gtkmm/combobox.h:
-
-/usr/include/gtkmm-2.4/gtkmm/comboboxentry.h:
-
-/usr/include/gtkmm-2.4/gtkmm/comboboxentrytext.h:
-
-/usr/include/gtkmm-2.4/gtkmm/comboboxtext.h:
-
-/usr/include/gtkmm-2.4/gtkmm/curve.h:
-
-/usr/include/gtkmm-2.4/gtkmm/expander.h:
-
-/usr/include/gtkmm-2.4/gtkmm/filechooser.h:
-
-/usr/include/gtkmm-2.4/gtkmm/filefilter.h:
-
-/usr/include/gtkmm-2.4/gtkmm/filechooserbutton.h:
-
-/usr/include/gtkmm-2.4/gtkmm/filechooserdialog.h:
-
-/usr/include/gtkmm-2.4/gtkmm/filechooserwidget.h:
-
-/usr/include/gtkmm-2.4/gtkmm/fixed.h:
-
-/usr/include/gtkmm-2.4/gtkmm/fontbutton.h:
-
-/usr/include/gtkmm-2.4/gtkmm/fontselection.h:
-
-/usr/include/gtkmm-2.4/gtkmm/handlebox.h:
-
-/usr/include/gtkmm-2.4/gtkmm/iconfactory.h:
-
-/usr/include/gtkmm-2.4/gtkmm/icontheme.h:
-
-/usr/include/gtkmm-2.4/gtkmm/iconinfo.h:
-
-/usr/include/gtkmm-2.4/gtkmm/iconview.h:
-
-/usr/include/gtkmm-2.4/gtkmm/infobar.h:
-
-/usr/include/gtkmm-2.4/gtkmm/inputdialog.h:
-
-/usr/include/gtkmm-2.4/gtkmm/calendar.h:
-
-/usr/include/gtkmm-2.4/gtkmm/layout.h:
-
-/usr/include/gtkmm-2.4/gtkmm/liststore.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treedragdest.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treesortable.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treedragsource.h:
-
-/usr/include/gtkmm-2.4/gtkmm/listviewtext.h:
-
-/usr/include/gtkmm-2.4/gtkmm/linkbutton.h:
-
-/usr/include/gtkmm-2.4/gtkmm/messagedialog.h:
-
-/usr/include/gtkmm-2.4/gtkmm/offscreenwindow.h:
-
-/usr/include/gtkmm-2.4/gtkmm/paned.h:
-
-/usr/include/gtkmm-2.4/gtkmm/pagesetup.h:
-
-/usr/include/gtkmm-2.4/gtkmm/papersize.h:
-
-/usr/include/gtkmm-2.4/gtkmm/pagesetupunixdialog.h:
-
-/usr/include/gtkmm-2.4/gtkmm/printsettings.h:
-
-/usr/include/gtkmm-2.4/gtkmm/printcontext.h:
-
-/usr/include/gtkmm-2.4/gtkmm/printer.h:
-
-/usr/include/gtkmm-2.4/gtkmm/printjob.h:
-
-/usr/include/gtkmm-2.4/gtkmm/printoperation.h:
-
-/usr/include/gtkmm-2.4/gtkmm/printoperationpreview.h:
-
-/usr/include/gtkmm-2.4/gtkmm/printunixdialog.h:
-
-/usr/include/gtkmm-2.4/gtkmm/radioaction.h:
-
-/usr/include/gtkmm-2.4/gtkmm/toggleaction.h:
-
-/usr/include/gtkmm-2.4/gtkmm/action.h:
-
-/usr/include/gtkmm-2.4/gtkmm/radiotoolbutton.h:
-
-/usr/include/gtkmm-2.4/gtkmm/recentaction.h:
-
-/usr/include/gtkmm-2.4/gtkmm/recentchooser.h:
-
-/usr/include/gtkmm-2.4/gtkmm/recentinfo.h:
-
-/usr/include/gtkmm-2.4/gtkmm/recentfilter.h:
-
-/usr/include/gtkmm-2.4/gtkmm/recentmanager.h:
-
-/usr/include/gtkmm-2.4/gtkmm/recentchooserdialog.h:
-
-/usr/include/gtkmm-2.4/gtkmm/recentchoosermenu.h:
-
-/usr/include/gtkmm-2.4/gtkmm/recentchooserwidget.h:
-
-/usr/include/gtkmm-2.4/gtkmm/ruler.h:
-
-/usr/include/gtkmm-2.4/gtkmm/scale.h:
-
-/usr/include/gtkmm-2.4/gtkmm/scrolledwindow.h:
-
-/usr/include/gtkmm-2.4/gtkmm/separatortoolitem.h:
-
-/usr/include/gtkmm-2.4/gtkmm/settings.h:
-
-/usr/include/gtkmm-2.4/gtkmm/spinner.h:
-
-/usr/include/gtkmm-2.4/gtkmm/statusbar.h:
-
-/usr/include/gtkmm-2.4/gtkmm/statusicon.h:
-
-/usr/include/gtkmm-2.4/gtkmm/stock.h:
-
-/usr/include/gtkmm-2.4/gtkmm/stockitem.h:
-
-/usr/include/gtkmm-2.4/gtkmm/textbuffer.h:
-
-/usr/include/gtkmm-2.4/gtkmm/texttagtable.h:
-
-/usr/include/gtkmm-2.4/gtkmm/texttag.h:
-
-/usr/include/gtkmm-2.4/gtkmm/textchildanchor.h:
-
-/usr/include/gtkmm-2.4/gtkmm/textmark.h:
-
-/usr/include/gtkmm-2.4/gtkmm/textiter.h:
-
-/usr/include/gtkmm-2.4/gtkmm/textattributes.h:
-
-/usr/include/gtkmm-2.4/gtkmm/textview.h:
-
-/usr/include/gtkmm-2.4/gtkmm/toolpalette.h:
-
-/usr/include/gtkmm-2.4/gtkmm/orientable.h:
-
-/usr/include/gtkmm-2.4/gtkmm/toolitemgroup.h:
-
-/usr/include/gtkmm-2.4/gtkmm/toolshell.h:
-
-/usr/include/gtkmm-2.4/gtkmm/menutoolbutton.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treemodelfilter.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treemodelsort.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treerowreference.h:
-
-/usr/include/gtkmm-2.4/gtkmm/treestore.h:
-
-/usr/include/gtkmm-2.4/gtkmm/uimanager.h:
-
-/usr/include/gtkmm-2.4/gtkmm/actiongroup.h:
-
-src/pixmaps/play2.xpm:
+src/pixmaps/rec2.xpm:
 
 src/pixmaps/stop.xpm:
 
-src/pixmaps/learn.xpm:
+src/pixmaps/expand.xpm:
 
-src/pixmaps/learn2.xpm:
+src/pixmaps/collapse.xpm:
+
+src/pixmaps/loop.xpm:
+
+src/pixmaps/copy.xpm:
+
+src/pixmaps/undo.xpm:
+
+src/pixmaps/down.xpm:
 
 src/pixmaps/perfedit.xpm:
-
-src/pixmaps/seq24.xpm:
-
-src/pixmaps/seq24_32.xpm:
