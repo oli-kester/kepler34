@@ -1,5 +1,7 @@
 /* handles the main grid in the song editor window */
 
+#include <iostream>
+
 #include "event.h"
 #include "perfroll.h"
 
@@ -59,6 +61,11 @@ perfroll::perfroll( perform *a_perf,
       case e_seq24_interaction:
         m_interaction = new Seq24PerfInput;
         break;
+    }
+
+    if (global_display_mode == e_single_display){
+//        this->init_before_show();
+//        this->on_realize();
     }
 }
 
@@ -275,11 +282,16 @@ perfroll::draw_progress()
     int old_progress_x = ( m_old_progress_ticks - tick_offset ) / c_perf_scale_x ;
 
     /* draw old */
+    //DEBUG prints
+//    cout << m_gc << endl;
+//    cout << m_pixmap << endl;
+//    cout << m_window_y << endl;
+
     m_window->draw_drawable(m_gc,
-			 m_pixmap,
+             m_pixmap,
              old_progress_x, 0,
-			 old_progress_x, 0,
-			 1, m_window_y );
+             old_progress_x, 0,
+             1, m_window_y );
 
     /* draw playhead */
     m_gc->set_foreground(m_black);

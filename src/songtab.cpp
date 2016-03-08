@@ -11,7 +11,6 @@
 #include "pixmaps/copy.xpm"
 #include "pixmaps/undo.xpm"
 #include "pixmaps/down.xpm"
-#include "pixmaps/perfedit.xpm"
 
 using namespace sigc;
 
@@ -51,6 +50,9 @@ songtab::songtab( perform *a_perf  )
     m_perfroll = manage( new perfroll( m_mainperf,
                        m_hadjust,
                        m_vadjust ));
+    /* allocate space for perfroll */
+    Allocation *a = new Allocation(100,100,100,100);
+    m_perfroll->size_allocate(*a);
 
     m_perftime = manage( new perftime( m_mainperf, m_hadjust ));
 
@@ -215,7 +217,7 @@ songtab::songtab( perform *a_perf  )
     m_hlbox->pack_start( *m_entry_snap , false, false );
 
     /* add table */
-//    this->add( *m_table );
+    this->add( *m_table );
 
     m_snap = 8;
     m_bpm = 4;
@@ -264,7 +266,7 @@ songtab::on_key_press_event(GdkEventKey* a_ev)
 
     if(!event_was_handled)
     {
-//      return Gtk::Window::on_key_press_event(a_ev);
+      return Gtk::Widget::on_key_press_event(a_ev);
     }
 
     return false;
@@ -387,7 +389,7 @@ void
 songtab::on_realize()
 {
     // we need to do the default realize
-//    Gtk::Window::on_realize();
+    Gtk::Container::on_realize();
 
     Glib::signal_timeout().connect(mem_fun(*this,&songtab::timeout ), c_redraw_ms);
 }
@@ -404,7 +406,7 @@ void
 songtab::init_before_show()
 {
     m_perfroll->init_before_show();
-    //m_perftime->init_before_show();
+//    m_perftime->init_before_show();
 }
 
 bool

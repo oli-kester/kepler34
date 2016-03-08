@@ -969,8 +969,7 @@ src/songtab.o: src/songtab.cpp /usr/include/stdc-predef.h src/songtab.h \
  src/perfroll_input.h src/perftime.h src/seqtime.h src/pixmaps/snap.xpm \
  src/pixmaps/play3.xpm src/pixmaps/rec2.xpm src/pixmaps/stop.xpm \
  src/pixmaps/expand.xpm src/pixmaps/collapse.xpm src/pixmaps/loop.xpm \
- src/pixmaps/copy.xpm src/pixmaps/undo.xpm src/pixmaps/down.xpm \
- src/pixmaps/perfedit.xpm
+ src/pixmaps/copy.xpm src/pixmaps/undo.xpm src/pixmaps/down.xpm
 
 /usr/include/stdc-predef.h:
 
@@ -3217,5 +3216,3 @@ src/pixmaps/copy.xpm:
 src/pixmaps/undo.xpm:
 
 src/pixmaps/down.xpm:
-
-src/pixmaps/perfedit.xpm:

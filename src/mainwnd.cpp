@@ -36,7 +36,7 @@ mainwnd::mainwnd(perform *a_p):
     set_icon(Gdk::Pixbuf::create_from_xpm_data(seq24_32_xpm));
 
     /* register for notification */
-//    m_songtab->m_notify.push_back( this );
+    m_mainperf->m_notify.push_back( this );
 
     /* main window */
     update_window_title();
@@ -49,6 +49,8 @@ mainwnd::mainwnd(perform *a_p):
     m_seq_grid = manage( new mainwid( m_mainperf ));
     m_main_time = manage( new maintime( ));
     m_songtab = manage( new songtab( m_mainperf ));
+    m_songtab->init_before_show();
+    m_songtab->show_all();
 
     /* setup menubar */
     m_menubar = manage(new MenuBar());
@@ -407,7 +409,7 @@ mainwnd::mainwnd(perform *a_p):
         vbox_song_tab = new VBox();
         vbox_song_tab->set_spacing( 10 );
         vbox_song_tab->set_border_width( 10 );
-//        vbox_song_tab->pack_start(*m_songtab, Gtk::PACK_SHRINK);
+        vbox_song_tab->pack_start(*m_songtab, Gtk::PACK_SHRINK);
 
         /* vertical layout container for sequence editor tab*/
         vbox_edit_tab = new VBox();
@@ -430,7 +432,7 @@ mainwnd::mainwnd(perform *a_p):
         vbox_main->pack_start(*hbox_bottom, Gtk::PACK_SHRINK);
 
         /* add main layout box */
-        this->add (*vbox_main);
+        this->add(*vbox_main);
 
         /* show everything */
         show_all();
