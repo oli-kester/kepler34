@@ -1,4 +1,5 @@
-/* the sequence editor window */
+#ifndef EDITTAB_HPP
+#define EDITTAB_HPP
 
 #pragma once
 
@@ -47,16 +48,13 @@
 
 using namespace Gtk;
 
-
-/* has a seqroll and paino roll */
-class seqedit : public Gtk::Window
+class edittab : public Gtk::Box
 {
-
- private:
+private:
 
     static const int c_min_zoom = 1;
     static const int c_max_zoom = 32;
- 	
+
     sequence   * const m_seq;
     perform    * const m_mainperf;
 
@@ -162,7 +160,7 @@ class seqedit : public Gtk::Window
     Entry       *m_entry_name;
 
     /* the zoom 0  1  2  3  4
-                 1, 2, 4, 8, 16 */
+                     1, 2, 4, 8, 16 */
     int         m_zoom;
     static int  m_initial_zoom;
 
@@ -217,7 +215,7 @@ class seqedit : public Gtk::Window
     void redo_callback();
 
     void set_data_type( unsigned char a_status,
-			unsigned char a_control = 0 );
+                        unsigned char a_control = 0 );
 
     void update_all_windows( );
 
@@ -243,14 +241,14 @@ class seqedit : public Gtk::Window
 
     void mouse_action( mouse_action_e a_action );
 
- public:
+public:
 
-    seqedit(sequence *a_seq,
-	    perform *a_perf,
-	    // mainwid *a_mainwid,
-	    int a_pos);
+    edittab(sequence *a_seq,
+            perform *a_perf,
+            // mainwid *a_mainwid,
+            int a_pos);
 
-    ~seqedit();
+    ~edittab();
 
 
     bool on_delete_event(GdkEventAny *a_event);
@@ -258,3 +256,4 @@ class seqedit : public Gtk::Window
     bool on_key_press_event(GdkEventKey* a_ev);
 };
 
+#endif // EDITTAB_HPP

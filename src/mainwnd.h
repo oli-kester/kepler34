@@ -8,6 +8,7 @@
 #include "perfedit.h"
 #include "options.h"
 #include "songtab.h"
+#include "edittab.h"
 
 #pragma once
 
@@ -57,6 +58,7 @@ class mainwnd : public Gtk::Window, public performcallback
 
     perfedit *m_perf_edit;
     songtab *m_songtab;
+    edittab *m_edittab;
 
     options *m_options;
 

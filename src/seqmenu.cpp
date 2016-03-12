@@ -37,7 +37,7 @@ seqmenu::seqmenu( perform *a_p  ) :
 }
 
 
-    void
+void
 seqmenu::popup_menu()
 {
 
@@ -152,10 +152,12 @@ seqmenu::seq_edit(){
     }
     else {
         this->seq_new();
+//        get_parent_window();
         new seqedit( m_mainperf->get_sequence( m_current_seq ),
                 m_mainperf,
                 m_current_seq
                 );
+
     }
 }
 

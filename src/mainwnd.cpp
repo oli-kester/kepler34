@@ -49,6 +49,7 @@ mainwnd::mainwnd(perform *a_p):
     m_seq_grid = manage( new mainwid( m_mainperf ));
     m_main_time = manage( new maintime( ));
     m_songtab = manage( new songtab( m_mainperf ));
+//    m_edittab = manage( new edittab(m_));
 
     /* setup menubar */
     m_menubar = manage(new MenuBar());
@@ -407,12 +408,13 @@ mainwnd::mainwnd(perform *a_p):
         vbox_song_tab = new VBox();
         vbox_song_tab->set_spacing( 10 );
         vbox_song_tab->set_border_width( 10 );
-//        vbox_song_tab->pack_start(*m_songtab, Gtk::PACK_SHRINK);
+        vbox_song_tab->pack_start(*m_songtab, Gtk::PACK_SHRINK);
 
         /* vertical layout container for sequence editor tab*/
         vbox_edit_tab = new VBox();
         vbox_edit_tab->set_spacing(10);
         vbox_edit_tab->set_border_width(10);
+//        vbox_edit_tab->pack_start(*);
 
         /* notebook for tabbed functionality */
         notebook = manage (new Notebook ());
@@ -430,7 +432,7 @@ mainwnd::mainwnd(perform *a_p):
         vbox_main->pack_start(*hbox_bottom, Gtk::PACK_SHRINK);
 
         /* add main layout box */
-        this->add (*vbox_main);
+        add (*vbox_main);
 
         /* show everything */
         show_all();

@@ -26,15 +26,12 @@ songtab::songtab( perform *a_perf  )
 {
     using namespace Menu_Helpers;
 
-//    set_icon(Gdk::Pixbuf::create_from_xpm_data(perfedit_xpm));
-
     /* set the performance */
     m_snap = c_ppqn / 4;
 
     m_mainperf = a_perf;
 
     /* window title & size */
-//    set_title( ( PACKAGE ) + string( " - Song Editor" ));
     set_size_request(700, 400);
 
     /* tooltips */
@@ -215,7 +212,7 @@ songtab::songtab( perform *a_perf  )
     m_hlbox->pack_start( *m_entry_snap , false, false );
 
     /* add table */
-//    this->add( *m_table );
+    add( *m_table );
 
     m_snap = 8;
     m_bpm = 4;
@@ -264,7 +261,7 @@ songtab::on_key_press_event(GdkEventKey* a_ev)
 
     if(!event_was_handled)
     {
-//      return Gtk::Window::on_key_press_event(a_ev);
+      return on_key_press_event(a_ev);
     }
 
     return false;
@@ -387,7 +384,7 @@ void
 songtab::on_realize()
 {
     // we need to do the default realize
-//    Gtk::Window::on_realize();
+    Gtk::Widget::on_realize();
 
     Glib::signal_timeout().connect(mem_fun(*this,&songtab::timeout ), c_redraw_ms);
 }

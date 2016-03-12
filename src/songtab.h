@@ -45,7 +45,7 @@
 using namespace Gtk;
 
 /* piano roll */
-class songtab : public Gtk::DrawingArea
+class songtab : public Gtk::Table
 {
 private:
 
