@@ -16,6 +16,7 @@
 #include <gtkmm/table.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/widget.h>
+#include <gtkmm/container.h>
 #include <gtkmm/scrollbar.h>
 #include <gtkmm/viewport.h>
 #include <gtkmm/combo.h>
@@ -45,8 +46,7 @@
 using namespace Gtk;
 
 /* piano roll */
-class songtab : public Gtk::Container
-{
+class songtab : public Gtk::Table {
 private:
 
   perform * m_mainperf;
@@ -130,6 +130,8 @@ private:
 
   bool on_delete_event (GdkEventAny * a_event);
   bool on_key_press_event(GdkEventKey* a_ev);
+
+//  void add(Gtk::Container wid);
 
 public:
 

@@ -34,6 +34,7 @@ songtab::songtab( perform *a_perf  )
 
     /* window title & size */
 //    set_title( ( PACKAGE ) + string( " - Song Editor" ));
+    Gtk::Widget::set_has_window(false);
     set_size_request(700, 400);
 
     /* tooltips */
@@ -388,8 +389,11 @@ void songtab::set_bw( int a_beat_width )
 void
 songtab::on_realize()
 {
+//    set_window(get_parent_window());
+
     // we need to do the default realize
     Gtk::Container::on_realize();
+//    set_realized();
 
     Glib::signal_timeout().connect(mem_fun(*this,&songtab::timeout ), c_redraw_ms);
 }
@@ -431,3 +435,9 @@ songtab::on_delete_event(GdkEventAny *a_event)
 {
     return false;
 }
+
+
+//void songtab::add(Gtk::Container wid)
+//{
+//    Gtk::Container::add(wid);
+//}

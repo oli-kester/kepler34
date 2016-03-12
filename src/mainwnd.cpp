@@ -49,8 +49,6 @@ mainwnd::mainwnd(perform *a_p):
     m_seq_grid = manage( new mainwid( m_mainperf ));
     m_main_time = manage( new maintime( ));
     m_songtab = manage( new songtab( m_mainperf ));
-    m_songtab->init_before_show();
-    m_songtab->show_all();
 
     /* setup menubar */
     m_menubar = manage(new MenuBar());
@@ -433,6 +431,9 @@ mainwnd::mainwnd(perform *a_p):
 
         /* add main layout box */
         this->add(*vbox_main);
+
+        m_songtab->init_before_show();
+//        m_songtab->show_all();
 
         /* show everything */
         show_all();
