@@ -1,4 +1,4 @@
-src/seqedit.o: src/seqedit.cpp /usr/include/stdc-predef.h src/seqedit.h \
+src/edittab.o: src/edittab.cpp /usr/include/stdc-predef.h src/edittab.h \
  src/sequence.h /usr/include/c++/4.8/string \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
@@ -966,7 +966,7 @@ src/seqedit.o: src/seqedit.cpp /usr/include/stdc-predef.h src/seqedit.h \
  /usr/include/gtkmm-2.4/gtkmm/invisible.h \
  /usr/include/gtkmm-2.4/gtkmm/separator.h \
  /usr/include/sigc++-2.0/sigc++/bind.h src/mainwid.h src/seqmenu.h \
- src/options.h /usr/include/gtkmm-2.4/gtkmm/dialog.h \
+ src/controllers.h src/options.h /usr/include/gtkmm-2.4/gtkmm/dialog.h \
  /usr/include/gtkmm-2.4/gtkmm/buttonbox.h \
  /usr/include/gtkmm-2.4/gtkmm/frame.h \
  /usr/include/gtkmm-2.4/gtkmm/fileselection.h \
@@ -996,7 +996,7 @@ src/seqedit.o: src/seqedit.cpp /usr/include/stdc-predef.h src/seqedit.h \
 
 /usr/include/stdc-predef.h:
 
-src/seqedit.h:
+src/edittab.h:
 
 src/sequence.h:
 
@@ -3217,6 +3217,8 @@ src/seqtime.h:
 src/mainwid.h:
 
 src/seqmenu.h:
+
+src/controllers.h:
 
 src/options.h:
 

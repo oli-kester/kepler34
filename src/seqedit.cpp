@@ -21,7 +21,7 @@
 #include "seqedit.h"
 #include "sequence.h"
 #include "midibus.h"
-#include "controllers.h"
+//#include "controllers.h"
 #include "event.h"
 #include "options.h"
 
@@ -48,6 +48,7 @@
 #include "pixmaps/tools.xpm"
 #include "pixmaps/seq-editor.xpm"
 
+class controllers;
 // tooltip helper, for old vs new gtk...
 #if GTK_MINOR_VERSION >= 12
 #   define add_tooltip( obj, text ) obj->set_tooltip_text( text);
@@ -1164,7 +1165,8 @@ seqedit::popup_event_menu()
         Menu *menu_cc = manage( new Menu() );
 
         for( int j=0; j<16; j++ ){
-            string controller_name( c_controller_names[i*16+j] );
+//            string controller_name( c_controller_names[i*16+j] );
+            string controller_name( "c_controller_names[i*16+j]" );
             int instrument = global_user_midi_bus_definitions[midi_bus].instrument[midi_ch];
             if ( instrument > -1 && instrument < c_max_instruments )
             {
@@ -1453,7 +1455,8 @@ seqedit::set_data_type( unsigned char a_status, unsigned char a_control  )
         int midi_bus = m_seq->get_midi_bus();
         int midi_ch = m_seq->get_midi_channel();
 
-        string controller_name( c_controller_names[a_control] );
+//        string controller_name( c_controller_names[a_control] );
+        string controller_name("");
         int instrument = global_user_midi_bus_definitions[midi_bus].instrument[midi_ch];
         if ( instrument > -1 && instrument < c_max_instruments )
         {

@@ -82,13 +82,7 @@ edittab::edittab( sequence *a_seq,
     m_key(m_initial_key),
     m_sequence(m_initial_sequence)
 {
-    set_icon(Gdk::Pixbuf::create_from_xpm_data(seq_editor_xpm));
-
-
     /* main window */
-    std::string title = "kepler34 - ";
-    title.append(m_seq->get_name());
-    set_title(title);
     set_size_request(700, 500);
 
     m_seq->set_editing( true );
@@ -188,9 +182,6 @@ edittab::edittab( sequence *a_seq,
 
     /* exapand, cause rollview expands */
     m_vbox->pack_start(*m_table, true, true, 0);
-
-
-
 
     /* data button */
     m_button_data = manage( new Button( " Event " ));
@@ -1461,7 +1452,7 @@ void
 edittab::on_realize()
 {
     // we need to do the default realize
-    Gtk::Window::on_realize();
+    Gtk::Widget::on_realize();
     Glib::signal_timeout().connect(mem_fun(*this, &edittab::timeout),
             c_redraw_ms);
 }
@@ -1474,7 +1465,7 @@ edittab::timeout()
     if (m_seq->get_raise())
     {
         m_seq->set_raise(false);
-        raise();
+//        raise(0);
     }
 
     if (m_seq->is_dirty_edit() ){
@@ -1564,6 +1555,6 @@ edittab::on_key_press_event( GdkEventKey* a_ev )
     if ((a_ev->state & modifiers) == GDK_CONTROL_MASK && a_ev->keyval == 'w')
         return on_delete_event((GdkEventAny*)a_ev);
     else
-        return Gtk::Window::on_key_press_event(a_ev);
+        return Gtk::Widget::on_key_press_event(a_ev);
 }
 

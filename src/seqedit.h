@@ -257,4 +257,3 @@ class seqedit : public Gtk::Window
     bool on_scroll_event(GdkEventScroll* a_ev);
     bool on_key_press_event(GdkEventKey* a_ev);
 };
-

@@ -49,7 +49,7 @@ mainwnd::mainwnd(perform *a_p):
     m_seq_grid = manage( new mainwid( m_mainperf ));
     m_main_time = manage( new maintime( ));
     m_songtab = manage( new songtab( m_mainperf ));
-//    m_edittab = manage( new edittab(m_));
+    m_edittab = manage( new edittab( m_mainperf->get_sequence( 1 ), m_mainperf, 1 ));
 
     /* setup menubar */
     m_menubar = manage(new MenuBar());
@@ -304,6 +304,8 @@ mainwnd::mainwnd(perform *a_p):
 //        hbox_time_mutegroup->set_focus_child( w ); // clear the focus not to trigger L via keys
 
         hbox_top->pack_start(*m_menubar, false, false );
+
+        //TODO use gtk alignment widget here to center vertically
         hbox_top->pack_end( *m_main_time, false, false );
 
         /* bottom line items */
@@ -414,7 +416,7 @@ mainwnd::mainwnd(perform *a_p):
         vbox_edit_tab = new VBox();
         vbox_edit_tab->set_spacing(10);
         vbox_edit_tab->set_border_width(10);
-//        vbox_edit_tab->pack_start(*);
+        vbox_edit_tab->pack_start(*m_edittab, Gtk::PACK_SHRINK);
 
         /* notebook for tabbed functionality */
         notebook = manage (new Notebook ());

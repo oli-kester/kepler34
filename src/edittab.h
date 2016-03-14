@@ -48,7 +48,7 @@
 
 using namespace Gtk;
 
-class edittab : public Gtk::Box
+class edittab : public Gtk::Table
 {
 private:
 
