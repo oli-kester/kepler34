@@ -1,6 +1,0 @@
-src/midibus_portmidi.o: src/midibus_portmidi.cpp \
- /usr/include/stdc-predef.h src/midibus_portmidi.h
-
-/usr/include/stdc-predef.h:
-
-src/midibus_portmidi.h:
