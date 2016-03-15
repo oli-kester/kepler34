@@ -15,14 +15,26 @@ TEMPLATE = app
 SOURCES +=\
     Main.cpp \
     MainWindow.cpp \
-    BeatIndicator.cpp
+    BeatIndicator.cpp \
+    LiveFrame.cpp \
+    SongFrame.cpp \
+    EditFrame.cpp \
+    PreferencesDialog.cpp
 
 HEADERS  += \
     MainWindow.hpp \
-    BeatIndicator.hpp
+    BeatIndicator.hpp \
+    LiveFrame.hpp \
+    SongFrame.hpp \
+    EditFrame.hpp \
+    PreferencesDialog.hpp
 
 FORMS    += \
-    MainWindow.ui
+    MainWindow.ui \
+    LiveFrame.ui \
+    SongFrame.ui \
+    EditFrame.ui \
+    PreferencesDialog.ui
 
 RESOURCES += \
     kepler34.qrc

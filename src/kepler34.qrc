@@ -1,2 +1,15 @@
-<RCC/>
-
+<RCC>
+    <qresource prefix="/pixmaps">
+        <file>pixmaps/stop.xpm</file>
+        <file>pixmaps/rec.xpm</file>
+        <file>pixmaps/play2.xpm</file>
+        <file>pixmaps/play.xpm</file>
+        <file>pixmaps/undo.xpm</file>
+        <file>pixmaps/redo.xpm</file>
+        <file>pixmaps/quanize.xpm</file>
+        <file>pixmaps/loop.xpm</file>
+        <file>pixmaps/collapse.xpm</file>
+        <file>pixmaps/expand.xpm</file>
+        <file>pixmaps/copy.xpm</file>
+    </qresource>
+</RCC>

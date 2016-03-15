@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 
+#include "LiveFrame.hpp"
+#include "SongFrame.hpp"
+#include "EditFrame.hpp"
+
 namespace Ui {
 class MainWindow;
 }
@@ -17,6 +21,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    LiveFrame *live_frame;
+    SongFrame *song_frame;
+    EditFrame *edit_frame;
 };
 
 #endif // MAINWINDOW_HPP
