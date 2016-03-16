@@ -11,5 +11,15 @@
         <file>pixmaps/collapse.xpm</file>
         <file>pixmaps/expand.xpm</file>
         <file>pixmaps/copy.xpm</file>
+        <file>pixmaps/zoom.xpm</file>
+        <file>pixmaps/tools.xpm</file>
+        <file>pixmaps/snap.xpm</file>
+        <file>pixmaps/sequences.xpm</file>
+        <file>pixmaps/scale.xpm</file>
+        <file>pixmaps/note_length.xpm</file>
+        <file>pixmaps/midi.xpm</file>
+        <file>pixmaps/length.xpm</file>
+        <file>pixmaps/key.xpm</file>
+        <file>pixmaps/bus.xpm</file>
     </qresource>
 </RCC>

@@ -2,6 +2,7 @@
 #define SONGFRAME_HPP
 
 #include <QFrame>
+#include <qmath.h>
 
 namespace Ui {
 class SongFrame;

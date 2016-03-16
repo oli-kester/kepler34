@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    prefs_dialog = new PreferencesDialog(this);
+
     live_frame = new LiveFrame(ui->LiveTab);
     song_frame = new SongFrame(ui->SongTab);
     edit_frame = new EditFrame(ui->EditTab);
@@ -14,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->LiveTabLayout->addWidget(live_frame);
     ui->SongTabLayout->addWidget(song_frame);
     ui->EditTabLayout->addWidget(edit_frame);
+
+    QObject::connect(ui->actionPreferences,SIGNAL(triggered()),prefs_dialog,SLOT(show()));
 
     show();
 }

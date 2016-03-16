@@ -2,10 +2,12 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include <iostream>
 
 #include "LiveFrame.hpp"
 #include "SongFrame.hpp"
 #include "EditFrame.hpp"
+#include "PreferencesDialog.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -20,11 +22,13 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow      *ui;
 
-    LiveFrame *live_frame;
-    SongFrame *song_frame;
-    EditFrame *edit_frame;
+    LiveFrame           *live_frame;
+    SongFrame           *song_frame;
+    EditFrame           *edit_frame;
+
+    PreferencesDialog   *prefs_dialog;
 };
 
 #endif // MAINWINDOW_HPP
