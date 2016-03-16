@@ -2,6 +2,7 @@
 #define EDITFRAME_HPP
 
 #include <QFrame>
+#include <qmath.h>
 
 namespace Ui {
 class EditFrame;

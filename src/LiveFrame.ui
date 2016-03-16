@@ -31,7 +31,7 @@
   <property name="frameShadow">
    <enum>QFrame::Plain</enum>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -102,8 +102,16 @@
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>29</height>
+          <height>26</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="placeholderText">
+         <string/>
         </property>
        </widget>
       </item>
@@ -151,6 +159,11 @@
           <height>29</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
      </layout>
@@ -167,8 +180,8 @@
    <slot>setCurrentIndex(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>606</x>
-     <y>329</y>
+     <x>658</x>
+     <y>348</y>
     </hint>
     <hint type="destinationlabel">
      <x>548</x>
