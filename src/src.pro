@@ -44,13 +44,13 @@ HEADERS  += \
     Globals.hpp \
     MidiBus.hpp \
     Mutex.hpp \
-    Config.hpp \
     Lash.hpp \
     Perform.hpp \
     midifile.h \
     optionsfile.h \
     userfile.h \
-    configfile.h
+    configfile.h \
+    config.h
 
 FORMS    += \
     MainWindow.ui \
