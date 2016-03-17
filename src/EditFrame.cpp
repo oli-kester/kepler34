@@ -37,15 +37,20 @@ EditFrame::EditFrame(QWidget *parent) :
         QString combo_text = QString::number(i+1);
         ui->cmb_midi_chan->insertItem(i,combo_text);
     }
-    ui->cmb_midi_chan->setCurrentIndex(0);
 
     // fill options for seq length
     for (int i = 0; i <= 15; i++)
     {
         QString combo_text = QString::number(i+1);
-        ui->cmb_midi_chan->insertItem(i,combo_text);
+        ui->cmb_seq_len->insertItem(i,combo_text);
     }
-    ui->cmb_midi_chan->setCurrentIndex(0);
+    ui->cmb_seq_len->insertItem(16,"32");
+    ui->cmb_seq_len->insertItem(17,"64");
+
+    // fill options for scale
+    ui->cmb_scale->insertItem(0,"Off");
+    ui->cmb_scale->insertItem(1,"Major");
+    ui->cmb_scale->insertItem(2,"Minor");
 
 }
 

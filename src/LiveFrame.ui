@@ -60,17 +60,14 @@
       </property>
       <widget class="QWidget" name="page"/>
       <widget class="QWidget" name="page_2">
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QTableView" name="tableView">
         <property name="geometry">
          <rect>
           <x>170</x>
-          <y>140</y>
-          <width>85</width>
-          <height>27</height>
+          <y>40</y>
+          <width>256</width>
+          <height>192</height>
          </rect>
-        </property>
-        <property name="text">
-         <string>PushButton</string>
         </property>
        </widget>
       </widget>
@@ -109,9 +106,6 @@
          <font>
           <pointsize>9</pointsize>
          </font>
-        </property>
-        <property name="placeholderText">
-         <string/>
         </property>
        </widget>
       </item>

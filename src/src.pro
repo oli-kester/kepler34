@@ -19,7 +19,17 @@ SOURCES +=\
     LiveFrame.cpp \
     SongFrame.cpp \
     EditFrame.cpp \
-    PreferencesDialog.cpp
+    PreferencesDialog.cpp \
+    MidiSequence.cpp \
+    MidiEvent.cpp \
+    Mutex.cpp \
+    MidiBus.cpp \
+    Lash.cpp \
+    Perform.cpp \
+    midifile.cpp \
+    optionsfile.cpp \
+    userfile.cpp \
+    configfile.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -27,7 +37,20 @@ HEADERS  += \
     LiveFrame.hpp \
     SongFrame.hpp \
     EditFrame.hpp \
-    PreferencesDialog.hpp
+    PreferencesDialog.hpp \
+    MidiSequence.hpp \
+    MidiTrigger.hpp \
+    MidiEvent.hpp \
+    Globals.hpp \
+    MidiBus.hpp \
+    Mutex.hpp \
+    Config.hpp \
+    Lash.hpp \
+    Perform.hpp \
+    midifile.h \
+    optionsfile.h \
+    userfile.h \
+    configfile.h
 
 FORMS    += \
     MainWindow.ui \
