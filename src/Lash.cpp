@@ -1,10 +1,10 @@
 #include <QString>
 
 #include "Lash.hpp"
-#include "midifile.h"
+#include "MidiFile.hpp"
 
 
-lash::lash(int *argc, char ***argv)
+Lash::Lash(int *argc, char ***argv)
 {
 #ifdef LASH_SUPPORT
     m_perform = NULL;
@@ -26,7 +26,7 @@ lash::lash(int *argc, char ***argv)
 
 
 void
-lash::set_alsa_client_id(int id)
+Lash::set_alsa_client_id(int id)
 {
 #ifdef LASH_SUPPORT
     lash_alsa_client_id(m_client, id);
@@ -35,7 +35,7 @@ lash::set_alsa_client_id(int id)
 
 
 void
-lash::start(perform* perform)
+Lash::start(Perform* perform)
 {
 #ifdef LASH_SUPPORT
     m_perform = perform;
@@ -49,7 +49,7 @@ lash::start(perform* perform)
 #ifdef LASH_SUPPORT
 
 bool
-lash::process_events()
+Lash::process_events()
 {
     lash_event_t *ev = NULL;
 
@@ -64,18 +64,18 @@ lash::process_events()
 
 
 void
-lash::handle_event(lash_event_t* ev)
+Lash::handle_event(lash_event_t* ev)
 {
     LASH_Event_Type type   = lash_event_get_type(ev);
     const char      *c_str = lash_event_get_string(ev);
     QString     str    = (c_str == NULL) ? "" : c_str;
 
     if (type == LASH_Save_File) {
-        midifile f(str + "/seq24.mid");
+        MidiFile f(str + "/seq24.mid");
         f.write(m_perform);
         lash_send_event(m_client, lash_event_new_with_type(LASH_Save_File));
     } else if (type == LASH_Restore_File) {
-        midifile f(str + "/seq24.mid");
+        MidiFile f(str + "/seq24.mid");
         f.parse(m_perform, 0);
         lash_send_event(m_client, lash_event_new_with_type(LASH_Restore_File));
     } else if (type == LASH_Quit) {
@@ -89,7 +89,7 @@ lash::handle_event(lash_event_t* ev)
 
 
 void
-lash::handle_config(lash_config_t* conf)
+Lash::handle_config(lash_config_t* conf)
 {
     const char *key     = NULL;
     const void *val     = NULL;

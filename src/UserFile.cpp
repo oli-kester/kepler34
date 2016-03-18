@@ -1,13 +1,13 @@
-#include "userfile.h"
+#include "UserFile.hpp"
 #include <iostream>
 
-userfile::userfile( QString a_name ) :
-    configfile( a_name ) { }
+UserFile::UserFile( QString a_name ) :
+    ConfigFile( a_name ) { }
 
-userfile::~userfile( ) { }
+UserFile::~UserFile( ) { }
 
 bool
-userfile::parse( perform *a_perf )
+UserFile::parse( Perform *a_perf )
 {
 
     /* open binary file */
@@ -281,7 +281,7 @@ userfile::parse( perform *a_perf )
 
 
 bool
-userfile::write( perform *a_perf  )
+UserFile::write( Perform *a_perf  )
 {
     return false;
 }

@@ -4,17 +4,17 @@
 #include <fstream>
 #include <string>
 
-#include "optionsfile.h"
+#include "OptionsFile.hpp"
 
 extern QString last_used_dir;
 
-optionsfile::optionsfile(const QString& a_name) :
-    configfile( a_name )
+PreferencesFile::PreferencesFile(const QString& a_name) :
+    ConfigFile( a_name )
 {
 }
 
 bool
-optionsfile::parse( perform *a_perf )
+PreferencesFile::parse( Perform *a_perf )
 {
     /* open binary file */
     ifstream file ( m_name.toAscii().constData(), ios::in | ios::ate );
@@ -212,7 +212,7 @@ optionsfile::parse( perform *a_perf )
     long ticks = 64;
     line_after( &file, "[midi-clock-mod-ticks]" );
     sscanf( m_line, "%ld", &ticks );
-    midibus::set_clock_mod(ticks);
+    MidiBus::set_clock_mod(ticks);
 
 
     /* manual alsa ports */
@@ -249,7 +249,7 @@ optionsfile::parse( perform *a_perf )
 
 
 bool
-optionsfile::write( perform *a_perf  )
+PreferencesFile::write( Perform *a_perf  )
 {
     /* open binary file */
 
@@ -370,7 +370,7 @@ optionsfile::write( perform *a_perf  )
 
     /* midi clock mod  */
     file << "\n\n[midi-clock-mod-ticks]\n";
-    file << midibus::get_clock_mod() << "\n";
+    file << MidiBus::get_clock_mod() << "\n";
 
     /* bus input data */
     buses = a_perf->get_master_midi_bus( )->get_num_in_buses();

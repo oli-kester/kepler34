@@ -5,7 +5,7 @@
 #include <string>
 #include <list>
 
-class configfile
+class ConfigFile
 {
 
  protected:
@@ -27,11 +27,11 @@ class configfile
 
  public:
 
-    configfile(const QString& a_name);
-    virtual ~configfile();
+    ConfigFile(const QString& a_name);
+    virtual ~ConfigFile();
 
-    virtual bool parse( perform *a_perf ) = 0;
-    virtual bool write( perform *a_perf ) = 0;
+    virtual bool parse( Perform *a_perf ) = 0;
+    virtual bool write( Perform *a_perf ) = 0;
 
 };
 

@@ -23,7 +23,7 @@
 #ifdef __WIN32__
 #    include "configwin32.h"
 #else
-#    include "config.h"
+#    include "Config.hpp"
 #endif
 
 #include <QString>

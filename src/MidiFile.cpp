@@ -1,18 +1,18 @@
 #include <iostream>
-#include "midifile.h"
+#include "MidiFile.hpp"
 
-midifile::midifile(const QString &a_name) :
+MidiFile::MidiFile(const QString &a_name) :
     m_pos(0),
     m_name(a_name)
 {
 }
 
-midifile::~midifile ()
+MidiFile::~MidiFile ()
 {
 }
 
 unsigned long
-midifile::read_long ()
+MidiFile::read_long ()
 {
     unsigned long ret = 0;
 
@@ -25,7 +25,7 @@ midifile::read_long ()
 }
 
 unsigned short
-midifile::read_short ()
+MidiFile::read_short ()
 {
     unsigned short ret = 0;
 
@@ -37,13 +37,13 @@ midifile::read_short ()
 }
 
 unsigned char
-midifile::read_byte ()
+MidiFile::read_byte ()
 {
     return m_d[m_pos++];
 }
 
 unsigned long
-midifile::read_var ()
+MidiFile::read_var ()
 {
     unsigned long ret = 0;
     unsigned char c;
@@ -65,7 +65,7 @@ midifile::read_var ()
 }
 
 
-bool midifile::parse (perform * a_perf, int a_screen_set)
+bool MidiFile::parse (Perform * a_perf, int a_screen_set)
 {
     /* open binary file */
     ifstream file(m_name.toAscii().constData(), ios::in | ios::binary | ios::ate);
@@ -118,7 +118,7 @@ bool midifile::parse (perform * a_perf, int a_screen_set)
 
     /* sequence pointer */
     MidiSequence * seq;
-    event e;
+    MidiEvent e;
 
     /* read in header */
     ID = read_long ();
@@ -537,7 +537,7 @@ bool midifile::parse (perform * a_perf, int a_screen_set)
 
 
 void
-midifile::write_long (unsigned long a_x)
+MidiFile::write_long (unsigned long a_x)
 {
     write_byte ((a_x & 0xFF000000) >> 24);
     write_byte ((a_x & 0x00FF0000) >> 16);
@@ -547,19 +547,19 @@ midifile::write_long (unsigned long a_x)
 
 
 void
-midifile::write_short (unsigned short a_x)
+MidiFile::write_short (unsigned short a_x)
 {
     write_byte ((a_x & 0xFF00) >> 8);
     write_byte ((a_x & 0x00FF));
 }
 
 void
-midifile::write_byte (unsigned char a_x)
+MidiFile::write_byte (unsigned char a_x)
 {
     m_l.push_back (a_x);
 }
 
-bool midifile::write (perform * a_perf)
+bool MidiFile::write (Perform * a_perf)
 {
     int numtracks = 0;
 

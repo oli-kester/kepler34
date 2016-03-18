@@ -7,17 +7,17 @@
 #ifdef __WIN32__
 #    include "configwin32.h"
 #else
-#    include "config.h"
+#    include "Config.hpp"
 #endif
 
 //#include "font.h"
 #ifdef LASH_SUPPORT
 #    include "Lash.hpp"
 #endif
-#include "midifile.h"
-#include "optionsfile.h"
+#include "MidiFile.hpp"
+#include "OptionsFile.hpp"
 #include "Perform.hpp"
-#include "userfile.h"
+#include "UserFile.hpp"
 
 /* struct for command parsing */
 static struct
@@ -73,7 +73,7 @@ user_instrument_definition global_user_instrument_definitions[c_max_instruments]
 //font *p_font_renderer;
 
 #ifdef LASH_SUPPORT
-lash *lash_driver = NULL;
+Lash *lash_driver = NULL;
 #endif
 
 #ifdef __WIN32__
@@ -105,13 +105,13 @@ int main(int argc, char *argv[])
     /* Init the lash driver (strip lash specific command line
      * arguments and connect to daemon) */
 #ifdef LASH_SUPPORT
-    lash_driver = new lash(&argc, &argv);
+    lash_driver = new Lash(&argc, &argv);
 #endif
 
     /* the main performance object */
     /* lash must be initialized here because mastermidibus uses the global
      * lash_driver variable*/
-    perform p;
+    Perform p;
 
     /* config DIR */
     QString config_dir = QString(getenv(HOME)) + SLASH + ".config" + SLASH + "kepler" + SLASH;
@@ -136,8 +136,8 @@ int main(int argc, char *argv[])
         {
             printf( "Reading [%s]\n", total_file.toAscii().constData());
 
-            optionsfile options( total_file );
-            userfile user( total_file );
+            PreferencesFile options( total_file );
+            UserFile user( total_file );
 
             if ( !options.parse( &p ) || !user.parse( &p )){
                 printf( "Error Reading [%s]\n", total_file.toAscii().constData());
@@ -300,7 +300,7 @@ int main(int argc, char *argv[])
         QString total_file = config_dir + config_filename;
         printf( "Writing [%s]\n", total_file.toAscii().constData());
 
-        optionsfile options( total_file );
+        PreferencesFile options( total_file );
 
         if (!options.write( &p))
             printf( "Error writing [%s]\n", total_file.toAscii().constData());

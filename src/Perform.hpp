@@ -2,12 +2,12 @@
 
 #pragma once
 
-class perform;
+class Perform;
 
 #include "Globals.hpp"
 #include "MidiEvent.hpp"
 #include "MidiBus.hpp"
-#include "midifile.h"
+#include "MidiFile.hpp"
 #include "MidiSequence.hpp"
 #ifndef __WIN32__
 #   include <unistd.h>
@@ -28,7 +28,7 @@ class perform;
 
 /* class contains sequences that make up a live set */
 
-class midi_control
+class MidiControl
 {
  public:
 
@@ -67,8 +67,15 @@ struct performcallback
     virtual void on_grouplearnchange(bool state) {}
 };
 
-class perform
+class Perform
 {
+ public:
+    // do not access these directly, use set/lookup below
+    map<unsigned int,long> key_events;
+    map<unsigned int,long> key_groups;
+
+    bool m_show_ui_sequence_key;
+
  private:
     //andy mute group
     bool m_mute_group[c_gmute_tracks];
@@ -92,7 +99,7 @@ class perform
     bool m_sequence_state[  c_max_sequence ];
 
     /* our midibus */
-    mastermidibus m_master_bus;
+    MasterMidiBus m_master_bus;
 
     /* pthread info */
     pthread_t m_out_thread;
@@ -122,15 +129,13 @@ class perform
     int  m_midiclocktick;
     int  m_midiclockpos;
 
-    bool m_show_ui_sequence_key;
-
     void set_running( bool a_running );
 
     string m_screen_set_notepad[c_max_sets];
 
-    midi_control m_midi_cc_toggle[ c_midi_controls ];
-    midi_control m_midi_cc_on[ c_midi_controls ];
-    midi_control m_midi_cc_off[ c_midi_controls ];
+    MidiControl m_midi_cc_toggle[ c_midi_controls ];
+    MidiControl m_midi_cc_on[ c_midi_controls ];
+    MidiControl m_midi_cc_off[ c_midi_controls ];
 
     int m_offset;
     int m_control_status; //TODO replace with enum
@@ -138,9 +143,6 @@ class perform
 
     condition_var m_condition_var;
 
-    // do not access these directly, use set/lookup below
-    map<unsigned int,long> key_events;
-    map<unsigned int,long> key_groups;
     map<long,unsigned int> key_events_rev; // reverse lookup, keep this in sync!!
     map<long,unsigned int> key_groups_rev; // reverse lookup, keep this in sync!!
 
@@ -209,8 +211,8 @@ class perform
 
     bool show_ui_sequence_key() const { return m_show_ui_sequence_key; }
 
-    perform();
-    ~perform();
+    Perform();
+    ~Perform();
 
     void init();
 
@@ -246,9 +248,9 @@ class perform
 
     void print();
 
-    midi_control *get_midi_control_toggle( unsigned int a_seq );
-    midi_control *get_midi_control_on( unsigned int a_seq );
-    midi_control *get_midi_control_off( unsigned int a_seq );
+    MidiControl *get_midi_control_toggle( unsigned int a_seq );
+    MidiControl *get_midi_control_on( unsigned int a_seq );
+    MidiControl *get_midi_control_off( unsigned int a_seq );
 
     void handle_midi_control( int a_control, bool a_state );
 
@@ -327,7 +329,7 @@ class perform
     bool get_group_mute_state (int a_g_track);
     void mute_all_tracks();
 
-    mastermidibus* get_master_midi_bus( );
+    MasterMidiBus* get_master_midi_bus( );
 
     void output_func();
     void input_func();
@@ -355,7 +357,7 @@ class perform
 
 
 
-    friend class midifile;
+    friend class MidiFile;
     friend class optionsfile;
     friend class options;
 

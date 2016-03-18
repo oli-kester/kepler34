@@ -4,7 +4,7 @@
 
 #include <pthread.h>
 
-class mutex {
+class Mutex {
 
 private:
 
@@ -17,14 +17,14 @@ protected:
 
 public:
 
-    mutex();
+    Mutex();
 
     void lock();
     void unlock();
 
 };
 
-class condition_var : public mutex {
+class condition_var : public Mutex {
 
 private:
 

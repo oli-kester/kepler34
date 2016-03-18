@@ -29,20 +29,20 @@ class MidiSequence
   private:
 
     /* holds the events */
-    list < event > m_list_event;
-    static list < event > m_list_clipboard;
+    list < MidiEvent > m_list_event;
+    static list < MidiEvent > m_list_clipboard;
 
     list < MidiTrigger > m_list_trigger;
     MidiTrigger m_trigger_clipboard;
 
-    stack < list < event > >m_list_undo;
-    stack < list < event > >m_list_redo;
+    stack < list < MidiEvent > >m_list_undo;
+    stack < list < MidiEvent > >m_list_redo;
     stack < list < MidiTrigger > >m_list_trigger_undo;
     stack < list < MidiTrigger > >m_list_trigger_redo;
 
     /* markers */
-    list < event >::iterator m_iterator_play;
-    list < event >::iterator m_iterator_draw;
+    list < MidiEvent >::iterator m_iterator_play;
+    list < MidiEvent >::iterator m_iterator_draw;
 
     list < MidiTrigger >::iterator m_iterator_play_trigger;
     list < MidiTrigger >::iterator m_iterator_draw_trigger;
@@ -58,7 +58,7 @@ class MidiSequence
     int m_notes_on;
 
     /* outputs to sequence to this Bus on midichannel */
-    mastermidibus *m_masterbus;
+    MasterMidiBus *m_masterbus;
 
     /* map for noteon, used when muting, to shut off current
        messages */
@@ -116,14 +116,14 @@ class MidiSequence
     long m_rec_vol;
 
     /* locking */
-    mutex m_mutex;
+    Mutex m_mutex;
 
     /* used to idenfity which events are ours in the out queue */
     //unsigned char m_tag;
 
     /* takes an event this sequence is holding and
        places it on our midibus */
-    void put_event_on_bus (event * a_e);
+    void put_event_on_bus (MidiEvent * a_e);
 
     /* resetes the location counters */
     void reset_loop ();
@@ -140,8 +140,8 @@ class MidiSequence
     void split_trigger( MidiTrigger &trig, long a_split_tick);
     void adjust_trigger_offsets_to_legnth( long a_new_len );
     long adjust_offset( long a_offset );
-    void remove( list<event>::iterator i );
-    void remove( event* e );
+    void remove( list<MidiEvent>::iterator i );
+    void remove( MidiEvent* e );
 
   public:
 
@@ -266,7 +266,7 @@ class MidiSequence
     //
 
     /* adds event to internal list in a sorted manner */
-    void add_event (const event * a_e);
+    void add_event (const MidiEvent * a_e);
 
     /*
      * manage triggers
@@ -310,7 +310,7 @@ class MidiSequence
     void set_midi_bus (char a_mb);
     char get_midi_bus ();
 
-    void set_master_midi_bus (mastermidibus * a_mmb);
+    void set_master_midi_bus (MasterMidiBus * a_mmb);
 
     enum select_action_e
     {
@@ -359,7 +359,7 @@ class MidiSequence
             unsigned char a_status,
             unsigned char a_d0, unsigned char a_d1, bool a_paint = false);
 
-    void stream_event (event * a_ev);
+    void stream_event (MidiEvent * a_ev);
 
     /* changes velocities in a ramping way from vel_s to vel_f  */
     void change_event_data_range (long a_tick_s, long a_tick_f,

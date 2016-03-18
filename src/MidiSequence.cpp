@@ -4,7 +4,7 @@
 #include "EditFrame.hpp"
 #include <stdlib.h>
 
-list < event > MidiSequence::m_list_clipboard;
+list < MidiEvent > MidiSequence::m_list_clipboard;
 
 MidiSequence::MidiSequence( ) :
     m_midi_channel(0),
@@ -131,7 +131,7 @@ MidiSequence::pop_trigger_undo()
 }
 
 void
-MidiSequence::set_master_midi_bus( mastermidibus *a_mmb )
+MidiSequence::set_master_midi_bus( MasterMidiBus *a_mmb )
 {
     lock();
 
@@ -221,7 +221,7 @@ MidiSequence::~MidiSequence()
 }
 
 void
-MidiSequence::add_event( const event *a_e )
+MidiSequence::add_event( const MidiEvent *a_e )
 {
     lock();
 
@@ -396,7 +396,7 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
     /* play the notes in our frame */
     if ( m_playing ){
 
-        list<event>::iterator e = m_list_event.begin();
+        list<MidiEvent>::iterator e = m_list_event.begin();
 
         while ( e != m_list_event.end()){
 
@@ -455,9 +455,9 @@ void
 MidiSequence::verify_and_link()
 {
 
-    list<event>::iterator i;
-    list<event>::iterator on;
-    list<event>::iterator off;
+    list<MidiEvent>::iterator i;
+    list<MidiEvent>::iterator on;
+    list<MidiEvent>::iterator off;
     bool end_found = false;
 
     lock();
@@ -550,8 +550,8 @@ MidiSequence::verify_and_link()
 void
 MidiSequence::link_new( )
 {
-    list<event>::iterator on;
-    list<event>::iterator off;
+    list<MidiEvent>::iterator on;
+    list<MidiEvent>::iterator off;
     bool end_found = false;
 
     lock();
@@ -617,7 +617,7 @@ MidiSequence::link_new( )
 // supply iterator from m_list_event...
 // lock();  remove();  reset_draw_marker(); unlock()
 void
-MidiSequence::remove(list<event>::iterator i)
+MidiSequence::remove(list<MidiEvent>::iterator i)
 {
     /* if its a note off, and that note is currently
        playing, send a note off */
@@ -635,9 +635,9 @@ MidiSequence::remove(list<event>::iterator i)
 // lock();  remove();  reset_draw_marker(); unlock()
 // finds e in m_list_event, removes the first iterator matching that.
 void
-MidiSequence::remove( event* e )
+MidiSequence::remove( MidiEvent* e )
 {
-    list<event>::iterator i = m_list_event.begin();
+    list<MidiEvent>::iterator i = m_list_event.begin();
     while( i != m_list_event.end() )
     {
         if (e == &(*i))
@@ -652,7 +652,7 @@ MidiSequence::remove( event* e )
 void
 MidiSequence::remove_marked()
 {
-    list<event>::iterator i, t;
+    list<MidiEvent>::iterator i, t;
 
     lock();
 
@@ -679,7 +679,7 @@ MidiSequence::remove_marked()
 void
 MidiSequence::mark_selected( )
 {
-    list<event>::iterator i, t;
+    list<MidiEvent>::iterator i, t;
 
     lock();
 
@@ -700,7 +700,7 @@ MidiSequence::mark_selected( )
 void
 MidiSequence::unpaint_all( )
 {
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     lock();
 
@@ -719,7 +719,7 @@ MidiSequence::get_selected_box( long *a_tick_s, int *a_note_h,
                 long *a_tick_f, int *a_note_l )
 {
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     *a_tick_s = c_maxbeats * c_ppqn;
     *a_tick_f = 0;
@@ -758,7 +758,7 @@ MidiSequence::get_clipboard_box( long *a_tick_s, int *a_note_h,
                  long *a_tick_f, int *a_note_l )
 {
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     *a_tick_s = c_maxbeats * c_ppqn;
     *a_tick_f = 0;
@@ -798,7 +798,7 @@ MidiSequence::get_num_selected_notes( )
 {
     int ret = 0;
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     lock();
 
@@ -822,7 +822,7 @@ MidiSequence::get_num_selected_events( unsigned char a_status,
                                    unsigned char a_cc )
 {
     int ret = 0;
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     lock();
 
@@ -859,7 +859,7 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
     long tick_s = 0;
     long tick_f = 0;
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     lock();
 
@@ -869,7 +869,7 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
             (*i).get_note()      >= a_note_l ) {
 
             if ( (*i).is_linked() ) {
-                event *ev = (*i).get_linked();
+                MidiEvent *ev = (*i).get_linked();
 
                 if ( (*i).is_note_off() ) {
                     tick_s = ev->get_timestamp();
@@ -1008,7 +1008,7 @@ MidiSequence::select_events( long a_tick_s, long a_tick_f,
              unsigned char a_cc, select_action_e a_action)
 {
     int ret=0;
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     lock();
 
@@ -1084,7 +1084,7 @@ MidiSequence::select_all()
 {
     lock();
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ )
     (*i).select( );
@@ -1099,7 +1099,7 @@ MidiSequence::unselect()
 {
     lock();
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ )
     (*i).unselect();
 
@@ -1111,13 +1111,13 @@ MidiSequence::unselect()
 void
 MidiSequence::move_selected_notes( long a_delta_tick, int a_delta_note )
 {
-    event e;
+    MidiEvent e;
     bool noteon=false;
     long timestamp=0;
 
     lock();
     mark_selected();
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
@@ -1170,11 +1170,11 @@ MidiSequence::move_selected_notes( long a_delta_tick, int a_delta_note )
 void
 MidiSequence::stretch_selected( long a_delta_tick )
 {
-    event *e, new_e;
+    MidiEvent *e, new_e;
 
     lock();
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     int old_len = 0, new_len = 0;
     int first_ev = 0x7fffffff;
@@ -1295,11 +1295,11 @@ MidiSequence::stretch_selected( long a_delta_tick )
 void
 MidiSequence::grow_selected( long a_delta_tick )
 {
-    event *on, *off, e;
+    MidiEvent *on, *off, e;
 
     lock();
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     mark_selected();
 
@@ -1352,7 +1352,7 @@ MidiSequence::increment_selected( unsigned char a_status, unsigned char a_contro
 {
     lock();
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
@@ -1385,7 +1385,7 @@ MidiSequence::decrement_selected(unsigned char a_status, unsigned char a_control
 {
     lock();
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
@@ -1419,7 +1419,7 @@ MidiSequence::decrement_selected(unsigned char a_status, unsigned char a_control
 void
 MidiSequence::copy_selected()
 {
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     lock();
 
@@ -1445,11 +1445,11 @@ MidiSequence::copy_selected()
 void
 MidiSequence::paste_selected( long a_tick, int a_note )
 {
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
     int highest_note = 0;
 
     lock();
-    list<event> clipboard = m_list_clipboard;
+    list<MidiEvent> clipboard = m_list_clipboard;
 
     for ( i = clipboard.begin(); i != clipboard.end(); i++ ){
     (*i).set_timestamp((*i).get_timestamp() + a_tick );
@@ -1492,7 +1492,7 @@ MidiSequence::change_event_data_range( long a_tick_s, long a_tick_f,
     lock();
 
     unsigned char d0, d1;
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     /* change only selected events, if any */
     bool have_selection = false;
@@ -1592,7 +1592,7 @@ MidiSequence::add_note( long a_tick, long a_length, int a_note, bool a_paint)
 
     lock();
 
-    event e;
+    MidiEvent e;
     bool ignore = false;
 
     if ( a_tick >= 0 &&
@@ -1604,7 +1604,7 @@ MidiSequence::add_note( long a_tick, long a_length, int a_note, bool a_paint)
          * overlap the one we want to add */
         if ( a_paint )
         {
-            list<event>::iterator i,t;
+            list<MidiEvent>::iterator i,t;
             for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
                 if ( (*i).is_painted() &&
@@ -1667,14 +1667,14 @@ MidiSequence::add_event( long a_tick,
 
     if ( a_tick >= 0 ){
 
-        event e;
+        MidiEvent e;
 
         /* if we care about the painted, run though
          * our events, delete the painted ones that
          * overlap the one we want to add */
         if ( a_paint )
         {
-            list<event>::iterator i,t;
+            list<MidiEvent>::iterator i,t;
             for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
                 if ( (*i).is_painted() &&
@@ -1712,7 +1712,7 @@ MidiSequence::add_event( long a_tick,
 
 
 void
-MidiSequence::stream_event(  event *a_ev  )
+MidiSequence::stream_event(  MidiEvent *a_ev  )
 {
     lock();
 
@@ -1836,7 +1836,7 @@ MidiSequence::play_note_on( int a_note )
 {
     lock();
 
-    event e;
+    MidiEvent e;
 
     e.set_status( EVENT_NOTE_ON );
     e.set_data( a_note, 127 );
@@ -1854,7 +1854,7 @@ MidiSequence::play_note_off( int a_note )
 {
     lock();
 
-    event e;
+    MidiEvent e;
 
     e.set_status( EVENT_NOTE_OFF );
     e.set_data( a_note, 127 );
@@ -1977,8 +1977,8 @@ bool MidiSequence::intersectNotes( long position, long position_note, long& star
 {
     lock();
 
-    list<event>::iterator on = m_list_event.begin();
-    list<event>::iterator off = m_list_event.begin();
+    list<MidiEvent>::iterator on = m_list_event.begin();
+    list<MidiEvent>::iterator off = m_list_event.begin();
     while ( on != m_list_event.end() )
     {
         if (position_note == (*on).get_note() &&
@@ -2014,7 +2014,7 @@ bool MidiSequence::intersectEvents( long posstart, long posend, long status, lon
 {
     lock();
 
-    list<event>::iterator on = m_list_event.begin();
+    list<MidiEvent>::iterator on = m_list_event.begin();
     while ( on != m_list_event.end() )
     {
         //printf( "intersect   looking for:%ld  found:%ld\n", status, (*on).get_status() );
@@ -2788,7 +2788,7 @@ MidiSequence::get_lowest_note_event()
     lock();
 
     int ret = 127;
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
@@ -2808,7 +2808,7 @@ MidiSequence::get_highest_note_event()
     lock();
 
     int ret = 0;
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
@@ -3223,7 +3223,7 @@ MidiSequence::print()
 {
     printf("[%s]\n", m_name.c_str()  );
 
-    for( list<event>::iterator i = m_list_event.begin(); i != m_list_event.end(); i++ )
+    for( list<MidiEvent>::iterator i = m_list_event.begin(); i != m_list_event.end(); i++ )
     (*i).print();
     printf("events[%zd]\n\n",m_list_event.size());
 
@@ -3247,7 +3247,7 @@ MidiSequence::print_triggers()
 
 
 void
-MidiSequence::put_event_on_bus( event *a_e )
+MidiSequence::put_event_on_bus( MidiEvent *a_e )
 {
     lock();
 
@@ -3284,7 +3284,7 @@ MidiSequence::off_playing_notes()
     lock();
 
 
-    event e;
+    MidiEvent e;
 
     for ( int x=0; x< c_midi_notes; x++ ){
 
@@ -3312,7 +3312,7 @@ MidiSequence::select_events( unsigned char a_status, unsigned char a_cc, bool a_
     lock();
 
     unsigned char d0, d1;
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
@@ -3351,15 +3351,15 @@ MidiSequence::select_events( unsigned char a_status, unsigned char a_cc, bool a_
 void
 MidiSequence::transpose_notes( int a_steps, int a_scale )
 {
-    event e;
+    MidiEvent e;
 
-    list<event> transposed_events;
+    list<MidiEvent> transposed_events;
 
     lock();
 
     mark_selected();
 
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     const int *transpose_table = NULL;
 
@@ -3421,14 +3421,14 @@ void
 MidiSequence::quanize_events( unsigned char a_status, unsigned char a_cc,
                           long a_snap_tick,  int a_divide, bool a_linked )
 {
-    event e,f;
+    MidiEvent e,f;
 
     lock();
 
     unsigned char d0, d1;
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
-    list<event> quantized_events;
+    list<MidiEvent> quantized_events;
 
     mark_selected();
 
@@ -3563,11 +3563,11 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
     a_list->push_front( m_name.c_str()[i] );
 
     long timestamp = 0, delta_time = 0, prev_timestamp = 0;
-    list<event>::iterator i;
+    list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
-    event e = (*i);
+    MidiEvent e = (*i);
     timestamp = e.get_timestamp();
     delta_time = timestamp - prev_timestamp;
     prev_timestamp = timestamp;

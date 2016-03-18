@@ -7,7 +7,7 @@
 #include <vector>
 #include <QString>
 
-class midifile 
+class MidiFile
 {
 
  private:
@@ -31,12 +31,12 @@ class midifile
 
  public:
 
-    midifile(const QString&);
+    MidiFile(const QString&);
  
-    ~midifile();
+    ~MidiFile();
 
-    bool parse( perform *a_perf, int a_screen_set );
-    bool write( perform *a_perf );
+    bool parse( Perform *a_perf, int a_screen_set );
+    bool write( Perform *a_perf );
 
 };
 

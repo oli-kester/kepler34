@@ -3,7 +3,7 @@
 #ifdef __WIN32__
 #include "configwin32.h"
 #else
-#include "config.h"
+#include "Config.hpp"
 #endif
 
 #include "Perform.hpp"
@@ -16,11 +16,12 @@
  * other part of the code can use this class whether or not lash support is
  * actually built in (the functions will just do nothing) */
 
-class lash
+class Lash
 {
 private:
 #ifdef LASH_SUPPORT
-    perform       *m_perform;
+    Perform
+    *m_perform;
     lash_client_t *m_client;
 
     bool process_events();
@@ -30,14 +31,14 @@ private:
 #endif // LASH_SUPPORT
 
 public:
-    lash(int *argc, char ***argv);
+    Lash(int *argc, char ***argv);
 
     void set_alsa_client_id(int id);
-    void start(perform* perform);
+    void start(Perform* Perform);
 };
 
 
 /* global lash driver, defined in kepler34.cpp and used in midibus.cpp*/
-extern lash *lash_driver;
+extern Lash *lash_driver;
 
 

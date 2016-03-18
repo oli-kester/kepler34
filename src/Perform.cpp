@@ -13,7 +13,7 @@
 //For keys
 //#include <gtkmm/accelkey.h>
 
-perform::perform()
+Perform::Perform()
 {
     for (int i=0; i< c_max_sequence; i++) {
 
@@ -45,7 +45,7 @@ perform::perform()
     m_right_tick = c_ppqn * 16;
     m_starting_tick = 0;
 
-    midi_control zero = {false,false,0,0,0};
+    MidiControl zero = {false,false,0,0,0};
 
     for ( int i=0; i<c_midi_controls; i++ ){
 
@@ -158,13 +158,13 @@ perform::perform()
 }
 
 
-void perform::init()
+void Perform::init()
 {
     m_master_bus.init( );
 }
 
 
-void perform::init_jack()
+void Perform::init_jack()
 {
 
 #ifdef JACK_SUPPORT
@@ -232,7 +232,7 @@ void perform::init_jack()
 }
 
 
-void perform::deinit_jack()
+void Perform::deinit_jack()
 {
 #ifdef JACK_SUPPORT
 
@@ -260,7 +260,7 @@ void perform::deinit_jack()
 }
 
 
-void perform::clear_all()
+void Perform::clear_all()
 {
     reset_sequences();
 
@@ -278,18 +278,18 @@ void perform::clear_all()
 }
 
 
-void perform::set_mode_group_mute ()
+void Perform::set_mode_group_mute ()
 {
     m_mode_group = true;
 }
 
-void perform::unset_mode_group_mute ()
+void Perform::unset_mode_group_mute ()
 {
     m_mode_group = false;
 }
 
 
-void perform::set_group_mute_state (int a_g_track, bool a_mute_state)
+void Perform::set_group_mute_state (int a_g_track, bool a_mute_state)
 {
     if (a_g_track < 0)
         a_g_track = 0;
@@ -299,7 +299,7 @@ void perform::set_group_mute_state (int a_g_track, bool a_mute_state)
 }
 
 
-bool perform::get_group_mute_state (int a_g_track)
+bool Perform::get_group_mute_state (int a_g_track)
 {
     if (a_g_track < 0)
         a_g_track = 0;
@@ -309,7 +309,7 @@ bool perform::get_group_mute_state (int a_g_track)
 }
 
 
-void perform::select_group_mute (int a_g_mute)
+void Perform::select_group_mute (int a_g_mute)
 {
     int j = (a_g_mute * c_seqs_in_set);
     int k = m_playing_screen * c_seqs_in_set;
@@ -328,7 +328,7 @@ void perform::select_group_mute (int a_g_mute)
 }
 
 
-void perform::set_mode_group_learn ()
+void Perform::set_mode_group_learn ()
 {
     set_mode_group_mute();
     m_mode_group_learn = true;
@@ -337,7 +337,7 @@ void perform::set_mode_group_learn ()
 }
 
 
-void perform::unset_mode_group_learn ()
+void Perform::unset_mode_group_learn ()
 {
     for (size_t x = 0; x < m_notify.size(); ++x)
         m_notify[x]->on_grouplearnchange( false );
@@ -345,7 +345,7 @@ void perform::unset_mode_group_learn ()
 }
 
 
-void perform::select_mute_group ( int a_group )
+void Perform::select_mute_group ( int a_group )
 {
     int j = (a_group * c_seqs_in_set);
     int k = m_playing_screen * c_seqs_in_set;
@@ -364,7 +364,7 @@ void perform::select_mute_group ( int a_group )
 }
 
 
-void perform::mute_group_tracks ()
+void Perform::mute_group_tracks ()
 {
     if (m_mode_group) {
         for (int i=0; i< c_seqs_in_set; i++) {
@@ -383,14 +383,14 @@ void perform::mute_group_tracks ()
 }
 
 
-void perform::select_and_mute_group (int a_g_group)
+void Perform::select_and_mute_group (int a_g_group)
 {
     select_mute_group(a_g_group);
     mute_group_tracks();
 }
 
 
-void perform::mute_all_tracks()
+void Perform::mute_all_tracks()
 {
     for (int i=0; i< c_max_sequence; i++ )
     {
@@ -401,7 +401,7 @@ void perform::mute_all_tracks()
 }
 
 
-perform::~perform()
+Perform::~Perform()
 {
     m_inputing = false;
     m_outputing = false;
@@ -423,7 +423,7 @@ perform::~perform()
 }
 
 
-void perform::set_left_tick( long a_tick )
+void Perform::set_left_tick( long a_tick )
 {
     m_left_tick = a_tick;
     m_starting_tick = a_tick;
@@ -434,25 +434,25 @@ void perform::set_left_tick( long a_tick )
 }
 
 
-long perform::get_left_tick()
+long Perform::get_left_tick()
 {
     return m_left_tick;
 }
 
 
-void perform::set_starting_tick( long a_tick )
+void Perform::set_starting_tick( long a_tick )
 {
     m_starting_tick = a_tick;
 }
 
 
-long perform::get_starting_tick()
+long Perform::get_starting_tick()
 {
     return m_starting_tick;
 }
 
 
-void perform::set_right_tick( long a_tick )
+void Perform::set_right_tick( long a_tick )
 {
     if ( a_tick >= c_ppqn * 4 ){
 
@@ -466,13 +466,13 @@ void perform::set_right_tick( long a_tick )
 }
 
 
-long perform::get_right_tick()
+long Perform::get_right_tick()
 {
     return m_right_tick;
 }
 
 
-void perform::add_sequence(MidiSequence *a_seq, int a_perf )
+void Perform::add_sequence(MidiSequence *a_seq, int a_perf )
 {
     /* check for perferred */
     if ( a_perf < c_max_sequence &&
@@ -500,7 +500,7 @@ void perform::add_sequence(MidiSequence *a_seq, int a_perf )
 }
 
 
-void perform::set_active( int a_sequence, bool a_active )
+void Perform::set_active( int a_sequence, bool a_active )
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return;
@@ -516,7 +516,7 @@ void perform::set_active( int a_sequence, bool a_active )
 }
 
 
-void perform::set_was_active( int a_sequence )
+void Perform::set_was_active( int a_sequence )
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return;
@@ -529,7 +529,7 @@ void perform::set_was_active( int a_sequence )
     m_was_active_names[ a_sequence ] = true;
 }
 
-bool perform::is_active( int a_sequence )
+bool Perform::is_active( int a_sequence )
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -537,7 +537,7 @@ bool perform::is_active( int a_sequence )
     return m_seqs_active[ a_sequence ];
 }
 
-bool perform::is_dirty_main (int a_sequence)
+bool Perform::is_dirty_main (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -553,7 +553,7 @@ bool perform::is_dirty_main (int a_sequence)
     return was_active;
 }
 
-bool perform::is_dirty_edit (int a_sequence)
+bool Perform::is_dirty_edit (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -569,7 +569,7 @@ bool perform::is_dirty_edit (int a_sequence)
     return was_active;
 }
 
-bool perform::is_dirty_perf (int a_sequence)
+bool Perform::is_dirty_perf (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -585,7 +585,7 @@ bool perform::is_dirty_perf (int a_sequence)
     return was_active;
 }
 
-bool perform::is_dirty_names (int a_sequence)
+bool Perform::is_dirty_names (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -601,27 +601,27 @@ bool perform::is_dirty_names (int a_sequence)
     return was_active;
 }
 
-MidiSequence *perform::get_sequence(int MidiSequence )
+MidiSequence *Perform::get_sequence(int MidiSequence )
 {
     return m_seqs[MidiSequence];
 }
 
-mastermidibus* perform::get_master_midi_bus( )
+MasterMidiBus* Perform::get_master_midi_bus( )
 {
     return &m_master_bus;
 }
 
-void perform::set_running( bool a_running )
+void Perform::set_running( bool a_running )
 {
     m_running = a_running;
 }
 
-bool perform::is_running()
+bool Perform::is_running()
 {
     return m_running;
 }
 
-void perform::set_bpm(int a_bpm)
+void Perform::set_bpm(int a_bpm)
 {
     if ( a_bpm < 20 )  a_bpm = 20;
     if ( a_bpm > 500 ) a_bpm = 500;
@@ -631,13 +631,13 @@ void perform::set_bpm(int a_bpm)
     }
 }
 
-int  perform::get_bpm( )
+int  Perform::get_bpm( )
 {
     return  m_master_bus.get_bpm( );
 }
 
 
-void perform::delete_sequence( int a_num )
+void Perform::delete_sequence( int a_num )
 {
     set_active(a_num, false);
 
@@ -650,14 +650,14 @@ void perform::delete_sequence( int a_num )
 }
 
 
-bool perform::is_sequence_in_edit( int a_num )
+bool Perform::is_sequence_in_edit( int a_num )
 {
     return ( m_seqs[a_num] != NULL &&
             m_seqs[a_num]->get_editing());
 
 }
 
-void perform::new_sequence( int a_sequence )
+void Perform::new_sequence( int a_sequence )
 {
     m_seqs[ a_sequence ] = new MidiSequence();
     m_seqs[ a_sequence ]->set_master_midi_bus( &m_master_bus );
@@ -665,7 +665,7 @@ void perform::new_sequence( int a_sequence )
 
 }
 
-midi_control * perform::get_midi_control_toggle( unsigned int a_seq )
+MidiControl * Perform::get_midi_control_toggle( unsigned int a_seq )
 {
     if ( a_seq >= (unsigned int) c_midi_controls )
         return NULL;
@@ -674,7 +674,7 @@ midi_control * perform::get_midi_control_toggle( unsigned int a_seq )
 }
 
 
-midi_control * perform::get_midi_control_on( unsigned int a_seq )
+MidiControl * Perform::get_midi_control_on( unsigned int a_seq )
 {
     if ( a_seq >= (unsigned int) c_midi_controls )
         return NULL;
@@ -682,7 +682,7 @@ midi_control * perform::get_midi_control_on( unsigned int a_seq )
 }
 
 
-midi_control* perform::get_midi_control_off( unsigned int a_seq )
+MidiControl* Perform::get_midi_control_off( unsigned int a_seq )
 {
     if ( a_seq >= (unsigned int) c_midi_controls )
         return NULL;
@@ -690,7 +690,7 @@ midi_control* perform::get_midi_control_off( unsigned int a_seq )
 }
 
 
-void perform::print()
+void Perform::print()
 {
     //   for( int i=0; i<m_numSeq; i++ ){
 
@@ -702,20 +702,20 @@ void perform::print()
 }
 
 
-void perform::set_screen_set_notepad( int a_screen_set, string *a_notepad )
+void Perform::set_screen_set_notepad( int a_screen_set, string *a_notepad )
 {
     if ( a_screen_set < c_max_sets )
         m_screen_set_notepad[a_screen_set] = *a_notepad;
 }
 
 
-string * perform::get_screen_set_notepad( int a_screen_set )
+string * Perform::get_screen_set_notepad( int a_screen_set )
 {
     return &m_screen_set_notepad[a_screen_set];
 }
 
 
-void perform::set_screenset( int a_ss )
+void Perform::set_screenset( int a_ss )
 {
     m_screen_set = a_ss;
 
@@ -727,13 +727,13 @@ void perform::set_screenset( int a_ss )
 }
 
 
-int perform::get_screenset()
+int Perform::get_screenset()
 {
     return m_screen_set;
 }
 
 
-void perform::  set_playing_screenset ()
+void Perform::  set_playing_screenset ()
 {
     for (int j, i = 0; i < c_seqs_in_set; i++) {
         j = i + m_playing_screen * c_seqs_in_set;
@@ -747,19 +747,19 @@ void perform::  set_playing_screenset ()
 }
 
 
-int perform::get_playing_screenset ()
+int Perform::get_playing_screenset ()
 {
     return m_playing_screen;
 }
 
 
-void perform::set_offset( int a_offset )
+void Perform::set_offset( int a_offset )
 {
     m_offset = a_offset  * c_mainwnd_rows * c_mainwnd_cols;
 }
 
 
-void perform::play( long a_tick )
+void Perform::play( long a_tick )
 {
 
     /* just run down the list of sequences and have them dump */
@@ -797,7 +797,7 @@ void perform::play( long a_tick )
 }
 
 
-void perform::set_orig_ticks( long a_tick  )
+void Perform::set_orig_ticks( long a_tick  )
 {
     for (int i=0; i< c_max_sequence; i++ ){
 
@@ -811,7 +811,7 @@ void perform::set_orig_ticks( long a_tick  )
 }
 
 
-void perform::clear_sequence_triggers( int a_seq  )
+void Perform::clear_sequence_triggers( int a_seq  )
 {
     if ( is_active(a_seq) == true ){
 
@@ -822,7 +822,7 @@ void perform::clear_sequence_triggers( int a_seq  )
 }
 
 
-void perform::move_triggers( bool a_direction )
+void Perform::move_triggers( bool a_direction )
 {
     if ( m_left_tick < m_right_tick ){
 
@@ -841,7 +841,7 @@ void perform::move_triggers( bool a_direction )
 }
 
 
-void perform::push_trigger_undo()
+void Perform::push_trigger_undo()
 {
     for (int i=0; i< c_max_sequence; i++ ){
 
@@ -853,7 +853,7 @@ void perform::push_trigger_undo()
 }
 
 
-void perform::pop_trigger_undo()
+void Perform::pop_trigger_undo()
 {
     for (int i=0; i< c_max_sequence; i++ ){
 
@@ -866,7 +866,7 @@ void perform::pop_trigger_undo()
 
 
 /* copies between L and R -> R */
-void perform::copy_triggers( )
+void Perform::copy_triggers( )
 {
     if ( m_left_tick < m_right_tick ){
 
@@ -883,7 +883,7 @@ void perform::copy_triggers( )
 }
 
 
-void perform::start_jack(  )
+void Perform::start_jack(  )
 {
     //printf( "perform::start_jack()\n" );
 #ifdef JACK_SUPPORT
@@ -893,7 +893,7 @@ void perform::start_jack(  )
 }
 
 
-void perform::stop_jack(  )
+void Perform::stop_jack(  )
 {
     //printf( "perform::stop_jack()\n" );
 #ifdef JACK_SUPPORT
@@ -903,7 +903,7 @@ void perform::stop_jack(  )
 }
 
 
-void perform::position_jack( bool a_state )
+void Perform::position_jack( bool a_state )
 {
 
     //printf( "perform::position_jack()\n" );
@@ -967,7 +967,7 @@ void perform::position_jack( bool a_state )
 }
 
 
-void perform::start(bool a_state)
+void Perform::start(bool a_state)
 {
     if (m_jack_running) {
         return;
@@ -977,7 +977,7 @@ void perform::start(bool a_state)
 }
 
 
-void perform::stop()
+void Perform::stop()
 {
     if (m_jack_running) {
         return;
@@ -987,7 +987,7 @@ void perform::stop()
 }
 
 
-void perform::inner_start(bool a_state)
+void Perform::inner_start(bool a_state)
 {
     m_condition_var.lock();
 
@@ -1006,7 +1006,7 @@ void perform::inner_start(bool a_state)
 }
 
 
-void perform::inner_stop()
+void Perform::inner_stop()
 {
     set_running(false);
     //off_sequences();
@@ -1015,7 +1015,7 @@ void perform::inner_stop()
 }
 
 
-void perform::off_sequences()
+void Perform::off_sequences()
 {
     for (int i = 0; i < c_max_sequence; i++) {
 
@@ -1027,7 +1027,7 @@ void perform::off_sequences()
 }
 
 
-void perform::all_notes_off()
+void Perform::all_notes_off()
 {
     for (int i=0; i< c_max_sequence; i++) {
 
@@ -1041,7 +1041,7 @@ void perform::all_notes_off()
 }
 
 
-void perform::reset_sequences()
+void Perform::reset_sequences()
 {
     for (int i=0; i< c_max_sequence; i++) {
 
@@ -1063,7 +1063,7 @@ void perform::reset_sequences()
 }
 
 
-void perform::launch_output_thread()
+void Perform::launch_output_thread()
 {
     int err;
 
@@ -1076,26 +1076,26 @@ void perform::launch_output_thread()
 }
 
 
-void perform::set_playback_mode( bool a_playback_mode )
+void Perform::set_playback_mode( bool a_playback_mode )
 {
     m_playback_mode = a_playback_mode;
     printf("\nPlayback mode - %i\n", a_playback_mode);
 }
 
-bool perform::get_playback_mode()
+bool Perform::get_playback_mode()
 {
     return m_playback_mode;
 }
 
-void perform::set_song_recording(bool new_state){
+void Perform::set_song_recording(bool new_state){
     m_song_recording = new_state;
 }
 
-bool perform::get_song_recording(){
+bool Perform::get_song_recording(){
     return m_song_recording;
 }
 
-void perform::launch_input_thread()
+void Perform::launch_input_thread()
 {
     int err;
 
@@ -1108,7 +1108,7 @@ void perform::launch_input_thread()
 }
 
 
-long perform::get_max_trigger()
+long Perform::get_max_trigger()
 {
     long ret = 0, t;
 
@@ -1130,7 +1130,7 @@ long perform::get_max_trigger()
 void* output_thread_func(void *a_pef )
 {
     /* set our performance */
-    perform *p = (perform *) a_pef;
+    Perform *p = (Perform *) a_pef;
     assert(p);
 
     struct sched_param schp;
@@ -1172,7 +1172,7 @@ int jack_process_callback(jack_nframes_t nframes, void* arg)
 int jack_sync_callback(jack_transport_state_t state,
         jack_position_t *pos, void *arg)
 {
-    perform *p = (perform *) arg;
+    Perform *p = (Perform *) arg;
 
     p->m_jack_frame_current = jack_get_current_transport_frame(p->m_jack_client);
 
@@ -1219,7 +1219,7 @@ int jack_sync_callback(jack_transport_state_t state,
 
 #ifdef JACK_SESSION
 
-bool perform::jack_session_event()
+bool Perform::jack_session_event()
 {
     QString fname( m_jsession_ev->session_dir );
     fname += "file.mid";
@@ -1227,7 +1227,7 @@ bool perform::jack_session_event()
     QString cmd( "seq24 \"${SESSION_DIR}file.mid\" --jack_session_uuid " );
     cmd += m_jsession_ev->client_uuid;
 
-    midifile f(fname);
+    MidiFile f(fname);
     f.write(this);
 
     m_jsession_ev->command_line = strdup( cmd.toAscii().constData() );
@@ -1245,7 +1245,7 @@ bool perform::jack_session_event()
 
 void jack_session_callback(jack_session_event_t *event, void *arg )
 {
-    perform *p = (perform *) arg;
+    Perform *p = (Perform *) arg;
     p->m_jsession_ev = event;
     //TODO restore
 //    Glib::signal_idle().connect( sigc::mem_fun( *p, &perform::jack_session_event) );
@@ -1255,7 +1255,7 @@ void jack_session_callback(jack_session_event_t *event, void *arg )
 #endif
 
 
-void perform::output_func()
+void Perform::output_func()
 {
     while (m_outputing) {
 
@@ -1782,7 +1782,7 @@ void* input_thread_func(void *a_pef )
 {
 
     /* set our performance */
-    perform *p = (perform *) a_pef;
+    Perform *p = (Perform *) a_pef;
     assert(p);
 
 
@@ -1820,7 +1820,7 @@ void* input_thread_func(void *a_pef )
 }
 
 
-void perform::handle_midi_control( int a_control, bool a_state )
+void Perform::handle_midi_control( int a_control, bool a_state )
 {
 
     switch (a_control) {
@@ -1900,9 +1900,9 @@ void perform::handle_midi_control( int a_control, bool a_state )
 }
 
 
-void perform::input_func()
+void Perform::input_func()
 {
-    event ev;
+    MidiEvent ev;
 
     while (m_inputing) {
 
@@ -2057,7 +2057,7 @@ void perform::input_func()
 }
 
 
-void perform::save_playing_state()
+void Perform::save_playing_state()
 {
     for( int i=0; i<c_total_seqs; i++ ){
 
@@ -2071,7 +2071,7 @@ void perform::save_playing_state()
 }
 
 
-void perform::restore_playing_state()
+void Perform::restore_playing_state()
 {
     for( int i=0; i<c_total_seqs; i++ ){
 
@@ -2082,7 +2082,7 @@ void perform::restore_playing_state()
     }
 }
 
-void perform::set_sequence_control_status( int a_status )
+void Perform::set_sequence_control_status( int a_status )
 {
     if ( a_status & c_status_snapshot ){
         save_playing_state(  );
@@ -2092,7 +2092,7 @@ void perform::set_sequence_control_status( int a_status )
 }
 
 
-void perform::unset_sequence_control_status( int a_status )
+void Perform::unset_sequence_control_status( int a_status )
 {
     if ( a_status & c_status_snapshot ){
         restore_playing_state(  );
@@ -2102,7 +2102,7 @@ void perform::unset_sequence_control_status( int a_status )
 }
 
 
-void perform::sequence_playing_toggle( int a_sequence )
+void Perform::sequence_playing_toggle( int a_sequence )
 {
     if ( is_active(a_sequence) == true ){
         assert( m_seqs[a_sequence] );
@@ -2128,7 +2128,7 @@ void perform::sequence_playing_toggle( int a_sequence )
     }
 }
 
-void perform::sequence_playing_on( int a_sequence )
+void Perform::sequence_playing_on( int a_sequence )
 {
     if ( is_active(a_sequence) == true ){
         if (m_mode_group && (m_playing_screen == m_screen_set)
@@ -2150,7 +2150,7 @@ void perform::sequence_playing_on( int a_sequence )
 }
 
 
-void perform::sequence_playing_off( int a_sequence )
+void Perform::sequence_playing_off( int a_sequence )
 {
     if ( is_active(a_sequence) == true ){
         if (m_mode_group && (m_playing_screen == m_screen_set)
@@ -2172,7 +2172,7 @@ void perform::sequence_playing_off( int a_sequence )
 }
 
 
-void perform::set_key_event( unsigned int keycode, long sequence_slot )
+void Perform::set_key_event( unsigned int keycode, long sequence_slot )
 {
     // unhook previous binding...
     std::map<unsigned int,long>::iterator it1 = key_events.find( keycode );
@@ -2197,7 +2197,7 @@ void perform::set_key_event( unsigned int keycode, long sequence_slot )
 }
 
 
-void perform::set_key_group( unsigned int keycode, long group_slot )
+void Perform::set_key_group( unsigned int keycode, long group_slot )
 {
     // unhook previous binding...
     std::map<unsigned int,long>::iterator it1 = key_groups.find( keycode );
@@ -2235,7 +2235,7 @@ void jack_timebase_callback(jack_transport_state_t state,
 
     state_current = state;
 
-    perform *p = (perform *) arg;
+    Perform *p = (Perform *) arg;
     current_frame = jack_get_current_transport_frame( p->m_jack_client );
 
     //printf( "jack_timebase_callback() [%d] [%d] [%d]", state, new_pos, current_frame);
@@ -2290,7 +2290,7 @@ void jack_timebase_callback(jack_transport_state_t state,
 
 void jack_shutdown(void *arg)
 {
-    perform *p = (perform *) arg;
+    Perform *p = (Perform *) arg;
     p->m_jack_running = false;
 
     printf("JACK shut down.\nJACK sync Disabled.\n");

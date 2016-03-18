@@ -1,22 +1,22 @@
 #include "Mutex.hpp"
 
-const pthread_mutex_t mutex::recmutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+const pthread_mutex_t Mutex::recmutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 const pthread_cond_t condition_var::cond  = PTHREAD_COND_INITIALIZER;
 
-mutex::mutex( )
+Mutex::Mutex( )
 {
     m_mutex_lock = recmutex;
 }
 
 void
-mutex::lock( )
+Mutex::lock( )
 {
     pthread_mutex_lock( &m_mutex_lock );
 }
 
 
 void
-mutex::unlock( )
+Mutex::unlock( )
 {
     pthread_mutex_unlock( &m_mutex_lock );
 }

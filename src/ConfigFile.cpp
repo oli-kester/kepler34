@@ -1,18 +1,18 @@
-#include "configfile.h"
+#include "ConfigFile.hpp"
 #include <iostream>
 
-configfile::configfile(const QString &a_name) :
+ConfigFile::ConfigFile(const QString &a_name) :
     m_pos(0),
     m_name(a_name)
 {
 }
 
-configfile::~configfile( )
+ConfigFile::~ConfigFile( )
 {
 }
 
 void
-configfile::next_data_line( ifstream *a_file)
+ConfigFile::next_data_line( ifstream *a_file)
 {
     a_file->getline( m_line, sizeof(m_line) );
     while (( m_line[0] == '#' || m_line[0] == ' ' || m_line[0] == 0 ) &&
@@ -23,7 +23,7 @@ configfile::next_data_line( ifstream *a_file)
 }
 
 void
-configfile::line_after( ifstream *a_file, string a_tag)
+ConfigFile::line_after( ifstream *a_file, string a_tag)
 {
     /* run to start */
     a_file->clear();

@@ -23,7 +23,7 @@ const unsigned char  EVENT_MIDI_STOP        = 0xFC;
 const unsigned char  EVENT_SYSEX            = 0xF0;
 const unsigned char  EVENT_SYSEX_END        = 0xF7;
 
-class event
+class MidiEvent
 {
 
  private:
@@ -45,7 +45,7 @@ class event
     vector<unsigned char> m_sysex;
 
     /* used to link note ons and offs together */
-    event *m_linked;
+    MidiEvent *m_linked;
     bool m_has_link;
 
     /* is this event selected in editing */
@@ -62,7 +62,7 @@ class event
 
  public:
 
-    event();
+    MidiEvent();
 
     void set_timestamp( const unsigned long time );
     long get_timestamp();
@@ -87,8 +87,8 @@ class event
     void set_size( long a_size );
     long get_size();
 
-    void link( event *event );
-    event *get_linked( );
+    void link( MidiEvent *MidiEvent );
+    MidiEvent *get_linked( );
     bool is_linked( );
     void clear_link( );
 
@@ -120,8 +120,8 @@ class event
 
     /* overloads */
 
-    bool operator> ( const event &rhsevent );
-    bool operator< ( const event &rhsevent );
+    bool operator> ( const MidiEvent &rhsevent );
+    bool operator< ( const MidiEvent &rhsevent );
 
     bool operator<=( const unsigned long &rhslong );
     bool operator> ( const unsigned long &rhslong );
