@@ -267,8 +267,8 @@ int main(int argc, char *argv[])
     p.launch_output_thread();
     p.init_jack();
 
-    MainWindow w;
-    w.show();
+    MainWindow *w = new MainWindow(0,&p);
+    w->show();
 
     if (optind < argc)
     {

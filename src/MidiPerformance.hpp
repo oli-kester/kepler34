@@ -343,8 +343,8 @@ class MidiPerformance
     void restore_playing_state();
 
 
-    const std::map<unsigned int,long> *get_key_events(void) const { return &key_events; };
-    const std::map<unsigned int,long> *get_key_groups(void) const { return &key_groups; };
+    const std::map<unsigned int,long> *get_key_events(void) const { return &key_events; }
+    const std::map<unsigned int,long> *get_key_groups(void) const { return &key_groups; }
 
     void set_key_event( unsigned int keycode, long sequence_slot );
     void set_key_group( unsigned int keycode, long group_slot );
@@ -355,8 +355,6 @@ class MidiPerformance
     long lookup_keyevent_seq( unsigned int keycode ) { if (key_events.count( keycode )) return key_events[keycode]; else return 0; }
     unsigned int lookup_keygroup_key( long groupnum ) { if (key_groups_rev.count( groupnum )) return key_groups_rev[groupnum]; else return '?'; }
     long lookup_keygroup_group( unsigned int keycode ) { if (key_groups.count( keycode )) return key_groups[keycode]; else return 0; }
-
-
 
     friend class MidiFile;
     friend class optionsfile;
