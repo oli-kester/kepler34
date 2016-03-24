@@ -71,7 +71,7 @@ MidiBus::MidiBus( int a_localclient,
 
     /* copy names */
     char tmp[60];
-    snprintf( tmp, 59, "[%d] seq24 %d",
+    snprintf( tmp, 59, "[%d] kepler34 %d",
 	      m_id,
 	      m_id );
 
@@ -189,7 +189,7 @@ bool MidiBus::init_in( )
 
     /* create ports */
     ret = snd_seq_create_simple_port(m_seq,
-                                     "seq24 in",
+                                     "kepler34 in",
                                      SND_SEQ_PORT_CAP_NO_EXPORT |
                                      SND_SEQ_PORT_CAP_WRITE,
                                      SND_SEQ_PORT_TYPE_MIDI_GENERIC |
@@ -239,7 +239,7 @@ bool MidiBus::init_in_sub( )
     int ret;
 
     /* create ports */
-    ret = snd_seq_create_simple_port(m_seq, "seq24 in",
+    ret = snd_seq_create_simple_port(m_seq, "kepler34 in",
             SND_SEQ_PORT_CAP_WRITE |
             SND_SEQ_PORT_CAP_SUBS_WRITE,
             SND_SEQ_PORT_TYPE_MIDI_GENERIC |
@@ -860,7 +860,7 @@ MasterMidiBus::MasterMidiBus()
     }
 
     /* set our clients name */
-    snd_seq_set_client_name(m_alsa_seq, "seq24");
+    snd_seq_set_client_name(m_alsa_seq, "kepler34");
 
     /* set up our clients queue */
     m_queue = snd_seq_alloc_queue( m_alsa_seq );
@@ -886,16 +886,14 @@ MasterMidiBus::init( )
     snd_seq_client_info_alloca(&cinfo);
     snd_seq_client_info_set_client(cinfo, -1);
 
-    //printf( "global_ports %d\n", global_manual_alsa_ports );
+//    printf( "global_ports %d\n", global_manual_alsa_ports );
 
     if ( global_manual_alsa_ports )
     {
-
         int num_buses = 16;
 
         for( int i=0; i<num_buses; ++i )
         {
-
             m_buses_out[i] =
                 new MidiBus( snd_seq_client_id( m_alsa_seq ), m_alsa_seq, i+1, m_queue );
 
@@ -916,11 +914,9 @@ MasterMidiBus::init( )
         m_buses_in_active[0] = true;
         m_buses_in_init[0] = true;
         m_num_in_buses = 1;
-
-
-    }
+    }    
     else
-    {
+    {        
         /* while the next client one the sequencer is avaiable */
         while (snd_seq_query_next_client(m_alsa_seq, cinfo) >= 0){
 

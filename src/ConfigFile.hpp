@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Perform.hpp"
+#include "MidiPerformance.hpp"
 #include <fstream>
 #include <string>
 #include <list>
@@ -30,8 +30,8 @@ class ConfigFile
     ConfigFile(const QString& a_name);
     virtual ~ConfigFile();
 
-    virtual bool parse( Perform *a_perf ) = 0;
-    virtual bool write( Perform *a_perf ) = 0;
+    virtual bool parse( MidiPerformance *a_perf ) = 0;
+    virtual bool write( MidiPerformance *a_perf ) = 0;
 
 };
 

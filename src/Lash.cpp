@@ -1,8 +1,4 @@
-#include <QString>
-
 #include "Lash.hpp"
-#include "MidiFile.hpp"
-
 
 Lash::Lash(int *argc, char ***argv)
 {
@@ -35,13 +31,14 @@ Lash::set_alsa_client_id(int id)
 
 
 void
-Lash::start(Perform* perform)
+Lash::start(MidiPerformance* perform)
 {
 #ifdef LASH_SUPPORT
     m_perform = perform;
     /* Process any LASH events every 250 msec (arbitrarily chosen interval) */
-    //TODO restore this connection
-//    Glib::signal_timeout().connect(sigc::mem_fun(*this, &lash::process_events), 250);
+    timer.start(250);
+    //FIXME lash timer slot gives error
+    QObject::connect(&timer, SIGNAL(timeout()),this, SLOT(process_events()));
 #endif // LASH_SUPPORT
 }
 
@@ -71,17 +68,17 @@ Lash::handle_event(lash_event_t* ev)
     QString     str    = (c_str == NULL) ? "" : c_str;
 
     if (type == LASH_Save_File) {
-        MidiFile f(str + "/seq24.mid");
+        MidiFile f(str + "/kepler34.mid");
         f.write(m_perform);
         lash_send_event(m_client, lash_event_new_with_type(LASH_Save_File));
     } else if (type == LASH_Restore_File) {
-        MidiFile f(str + "/seq24.mid");
+        MidiFile f(str + "/kepler34.mid");
         f.parse(m_perform, 0);
         lash_send_event(m_client, lash_event_new_with_type(LASH_Restore_File));
     } else if (type == LASH_Quit) {
         m_client = NULL;
-        //TODO restore this functionality
-//        Gtk::Main::quit();
+    QCoreApplication::exit(0);
+
     } else {
         fprintf(stderr, "Warning:  Unhandled LASH event.\n");
     }

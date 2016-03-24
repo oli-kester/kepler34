@@ -57,7 +57,7 @@ class MidiBus
     const int m_dest_addr_port;
 
     const int m_local_addr_client;
-    int m_local_addr_port;
+    int       m_local_addr_port;
 #endif
 
     /* id of queue */
@@ -204,7 +204,7 @@ class MasterMidiBus
     void init();
 
 #if HAVE_LIBASOUND	
-    snd_seq_t* get_alsa_seq( ) { return m_alsa_seq; };
+    snd_seq_t* get_alsa_seq( ) { return m_alsa_seq; }
 #endif
 
     int get_num_out_buses();

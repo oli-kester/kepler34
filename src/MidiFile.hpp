@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Perform.hpp"
+#include "MidiPerformance.hpp"
 
 #include <fstream>
 #include <list>
@@ -35,8 +35,8 @@ class MidiFile
  
     ~MidiFile();
 
-    bool parse( Perform *a_perf, int a_screen_set );
-    bool write( Perform *a_perf );
+    bool parse( MidiPerformance *a_perf, int a_screen_set );
+    bool write( MidiPerformance *a_perf );
 
 };
 

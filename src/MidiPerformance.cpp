@@ -1,6 +1,6 @@
 /* holds all the seqs and handles their playback */
 
-#include "Perform.hpp"
+#include "MidiPerformance.hpp"
 #include "MidiBus.hpp"
 #include "MidiEvent.hpp"
 #include <stdio.h>
@@ -13,16 +13,16 @@
 //For keys
 //#include <gtkmm/accelkey.h>
 
-Perform::Perform()
+MidiPerformance::MidiPerformance()
 {
     for (int i=0; i< c_max_sequence; i++) {
 
-        m_seqs[i] = NULL;
-        m_seqs_active[i] = false;
+        m_seqs[i]             = NULL;
+        m_seqs_active[i]      = false;
 
-        m_was_active_main[i] = false;
-        m_was_active_edit[i] = false;
-        m_was_active_perf[i] = false;
+        m_was_active_main[i]  = false;
+        m_was_active_edit[i]  = false;
+        m_was_active_perf[i]  = false;
         m_was_active_names[i] = false;
     }
 
@@ -45,7 +45,7 @@ Perform::Perform()
     m_right_tick = c_ppqn * 16;
     m_starting_tick = 0;
 
-    MidiControl zero = {false,false,0,0,0};
+    MidiControl zero = {false,false,0,0,0,0};
 
     for ( int i=0; i<c_midi_controls; i++ ){
 
@@ -144,27 +144,27 @@ Perform::Perform()
 //    m_key_record_upper = GDK_R;
 //    m_key_record_lower = GDK_r;
 
-    m_offset = 0;
-    m_control_status = 0;
-    m_screen_set = 0;
+    m_offset                = 0;
+    m_control_status        = 0;
+    m_screen_set            = 0;
 
-    m_jack_running = false;
-    m_jack_master = false;
+    m_jack_running          = false;
+    m_jack_master           = false;
 
-    m_out_thread_launched = false;
-    m_in_thread_launched = false;
+    m_out_thread_launched   = false;
+    m_in_thread_launched    = false;
 
-    m_playback_mode = false;
+    m_playback_mode         = false;
 }
 
 
-void Perform::init()
+void MidiPerformance::init()
 {
     m_master_bus.init( );
 }
 
 
-void Perform::init_jack()
+void MidiPerformance::init_jack()
 {
 
 #ifdef JACK_SUPPORT
@@ -232,7 +232,7 @@ void Perform::init_jack()
 }
 
 
-void Perform::deinit_jack()
+void MidiPerformance::deinit_jack()
 {
 #ifdef JACK_SUPPORT
 
@@ -260,7 +260,7 @@ void Perform::deinit_jack()
 }
 
 
-void Perform::clear_all()
+void MidiPerformance::clear_all()
 {
     reset_sequences();
 
@@ -278,18 +278,18 @@ void Perform::clear_all()
 }
 
 
-void Perform::set_mode_group_mute ()
+void MidiPerformance::set_mode_group_mute ()
 {
     m_mode_group = true;
 }
 
-void Perform::unset_mode_group_mute ()
+void MidiPerformance::unset_mode_group_mute ()
 {
     m_mode_group = false;
 }
 
 
-void Perform::set_group_mute_state (int a_g_track, bool a_mute_state)
+void MidiPerformance::set_group_mute_state (int a_g_track, bool a_mute_state)
 {
     if (a_g_track < 0)
         a_g_track = 0;
@@ -299,7 +299,7 @@ void Perform::set_group_mute_state (int a_g_track, bool a_mute_state)
 }
 
 
-bool Perform::get_group_mute_state (int a_g_track)
+bool MidiPerformance::get_group_mute_state (int a_g_track)
 {
     if (a_g_track < 0)
         a_g_track = 0;
@@ -309,7 +309,7 @@ bool Perform::get_group_mute_state (int a_g_track)
 }
 
 
-void Perform::select_group_mute (int a_g_mute)
+void MidiPerformance::select_group_mute (int a_g_mute)
 {
     int j = (a_g_mute * c_seqs_in_set);
     int k = m_playing_screen * c_seqs_in_set;
@@ -328,7 +328,7 @@ void Perform::select_group_mute (int a_g_mute)
 }
 
 
-void Perform::set_mode_group_learn ()
+void MidiPerformance::set_mode_group_learn ()
 {
     set_mode_group_mute();
     m_mode_group_learn = true;
@@ -337,7 +337,7 @@ void Perform::set_mode_group_learn ()
 }
 
 
-void Perform::unset_mode_group_learn ()
+void MidiPerformance::unset_mode_group_learn ()
 {
     for (size_t x = 0; x < m_notify.size(); ++x)
         m_notify[x]->on_grouplearnchange( false );
@@ -345,7 +345,7 @@ void Perform::unset_mode_group_learn ()
 }
 
 
-void Perform::select_mute_group ( int a_group )
+void MidiPerformance::select_mute_group ( int a_group )
 {
     int j = (a_group * c_seqs_in_set);
     int k = m_playing_screen * c_seqs_in_set;
@@ -364,7 +364,7 @@ void Perform::select_mute_group ( int a_group )
 }
 
 
-void Perform::mute_group_tracks ()
+void MidiPerformance::mute_group_tracks ()
 {
     if (m_mode_group) {
         for (int i=0; i< c_seqs_in_set; i++) {
@@ -383,14 +383,14 @@ void Perform::mute_group_tracks ()
 }
 
 
-void Perform::select_and_mute_group (int a_g_group)
+void MidiPerformance::select_and_mute_group (int a_g_group)
 {
     select_mute_group(a_g_group);
     mute_group_tracks();
 }
 
 
-void Perform::mute_all_tracks()
+void MidiPerformance::mute_all_tracks()
 {
     for (int i=0; i< c_max_sequence; i++ )
     {
@@ -401,7 +401,7 @@ void Perform::mute_all_tracks()
 }
 
 
-Perform::~Perform()
+MidiPerformance::~MidiPerformance()
 {
     m_inputing = false;
     m_outputing = false;
@@ -423,7 +423,7 @@ Perform::~Perform()
 }
 
 
-void Perform::set_left_tick( long a_tick )
+void MidiPerformance::set_left_tick( long a_tick )
 {
     m_left_tick = a_tick;
     m_starting_tick = a_tick;
@@ -434,25 +434,25 @@ void Perform::set_left_tick( long a_tick )
 }
 
 
-long Perform::get_left_tick()
+long MidiPerformance::get_left_tick()
 {
     return m_left_tick;
 }
 
 
-void Perform::set_starting_tick( long a_tick )
+void MidiPerformance::set_starting_tick( long a_tick )
 {
     m_starting_tick = a_tick;
 }
 
 
-long Perform::get_starting_tick()
+long MidiPerformance::get_starting_tick()
 {
     return m_starting_tick;
 }
 
 
-void Perform::set_right_tick( long a_tick )
+void MidiPerformance::set_right_tick( long a_tick )
 {
     if ( a_tick >= c_ppqn * 4 ){
 
@@ -466,13 +466,13 @@ void Perform::set_right_tick( long a_tick )
 }
 
 
-long Perform::get_right_tick()
+long MidiPerformance::get_right_tick()
 {
     return m_right_tick;
 }
 
 
-void Perform::add_sequence(MidiSequence *a_seq, int a_perf )
+void MidiPerformance::add_sequence(MidiSequence *a_seq, int a_perf )
 {
     /* check for perferred */
     if ( a_perf < c_max_sequence &&
@@ -500,7 +500,7 @@ void Perform::add_sequence(MidiSequence *a_seq, int a_perf )
 }
 
 
-void Perform::set_active( int a_sequence, bool a_active )
+void MidiPerformance::set_active( int a_sequence, bool a_active )
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return;
@@ -516,7 +516,7 @@ void Perform::set_active( int a_sequence, bool a_active )
 }
 
 
-void Perform::set_was_active( int a_sequence )
+void MidiPerformance::set_was_active( int a_sequence )
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return;
@@ -529,7 +529,7 @@ void Perform::set_was_active( int a_sequence )
     m_was_active_names[ a_sequence ] = true;
 }
 
-bool Perform::is_active( int a_sequence )
+bool MidiPerformance::is_active( int a_sequence )
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -537,7 +537,7 @@ bool Perform::is_active( int a_sequence )
     return m_seqs_active[ a_sequence ];
 }
 
-bool Perform::is_dirty_main (int a_sequence)
+bool MidiPerformance::is_dirty_main (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -553,7 +553,7 @@ bool Perform::is_dirty_main (int a_sequence)
     return was_active;
 }
 
-bool Perform::is_dirty_edit (int a_sequence)
+bool MidiPerformance::is_dirty_edit (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -569,7 +569,7 @@ bool Perform::is_dirty_edit (int a_sequence)
     return was_active;
 }
 
-bool Perform::is_dirty_perf (int a_sequence)
+bool MidiPerformance::is_dirty_perf (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -585,7 +585,7 @@ bool Perform::is_dirty_perf (int a_sequence)
     return was_active;
 }
 
-bool Perform::is_dirty_names (int a_sequence)
+bool MidiPerformance::is_dirty_names (int a_sequence)
 {
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
@@ -601,27 +601,27 @@ bool Perform::is_dirty_names (int a_sequence)
     return was_active;
 }
 
-MidiSequence *Perform::get_sequence(int MidiSequence )
+MidiSequence *MidiPerformance::get_sequence(int MidiSequence )
 {
     return m_seqs[MidiSequence];
 }
 
-MasterMidiBus* Perform::get_master_midi_bus( )
+MasterMidiBus* MidiPerformance::get_master_midi_bus( )
 {
     return &m_master_bus;
 }
 
-void Perform::set_running( bool a_running )
+void MidiPerformance::set_running( bool a_running )
 {
     m_running = a_running;
 }
 
-bool Perform::is_running()
+bool MidiPerformance::is_running()
 {
     return m_running;
 }
 
-void Perform::set_bpm(int a_bpm)
+void MidiPerformance::set_bpm(int a_bpm)
 {
     if ( a_bpm < 20 )  a_bpm = 20;
     if ( a_bpm > 500 ) a_bpm = 500;
@@ -631,13 +631,13 @@ void Perform::set_bpm(int a_bpm)
     }
 }
 
-int  Perform::get_bpm( )
+int  MidiPerformance::get_bpm( )
 {
     return  m_master_bus.get_bpm( );
 }
 
 
-void Perform::delete_sequence( int a_num )
+void MidiPerformance::delete_sequence( int a_num )
 {
     set_active(a_num, false);
 
@@ -650,14 +650,14 @@ void Perform::delete_sequence( int a_num )
 }
 
 
-bool Perform::is_sequence_in_edit( int a_num )
+bool MidiPerformance::is_sequence_in_edit( int a_num )
 {
     return ( m_seqs[a_num] != NULL &&
             m_seqs[a_num]->get_editing());
 
 }
 
-void Perform::new_sequence( int a_sequence )
+void MidiPerformance::new_sequence( int a_sequence )
 {
     m_seqs[ a_sequence ] = new MidiSequence();
     m_seqs[ a_sequence ]->set_master_midi_bus( &m_master_bus );
@@ -665,7 +665,7 @@ void Perform::new_sequence( int a_sequence )
 
 }
 
-MidiControl * Perform::get_midi_control_toggle( unsigned int a_seq )
+MidiControl * MidiPerformance::get_midi_control_toggle( unsigned int a_seq )
 {
     if ( a_seq >= (unsigned int) c_midi_controls )
         return NULL;
@@ -674,7 +674,7 @@ MidiControl * Perform::get_midi_control_toggle( unsigned int a_seq )
 }
 
 
-MidiControl * Perform::get_midi_control_on( unsigned int a_seq )
+MidiControl * MidiPerformance::get_midi_control_on( unsigned int a_seq )
 {
     if ( a_seq >= (unsigned int) c_midi_controls )
         return NULL;
@@ -682,7 +682,7 @@ MidiControl * Perform::get_midi_control_on( unsigned int a_seq )
 }
 
 
-MidiControl* Perform::get_midi_control_off( unsigned int a_seq )
+MidiControl* MidiPerformance::get_midi_control_off( unsigned int a_seq )
 {
     if ( a_seq >= (unsigned int) c_midi_controls )
         return NULL;
@@ -690,7 +690,7 @@ MidiControl* Perform::get_midi_control_off( unsigned int a_seq )
 }
 
 
-void Perform::print()
+void MidiPerformance::print()
 {
     //   for( int i=0; i<m_numSeq; i++ ){
 
@@ -702,20 +702,20 @@ void Perform::print()
 }
 
 
-void Perform::set_screen_set_notepad( int a_screen_set, string *a_notepad )
+void MidiPerformance::set_screen_set_notepad( int a_screen_set, string *a_notepad )
 {
     if ( a_screen_set < c_max_sets )
         m_screen_set_notepad[a_screen_set] = *a_notepad;
 }
 
 
-string * Perform::get_screen_set_notepad( int a_screen_set )
+string * MidiPerformance::get_screen_set_notepad( int a_screen_set )
 {
     return &m_screen_set_notepad[a_screen_set];
 }
 
 
-void Perform::set_screenset( int a_ss )
+void MidiPerformance::set_screenset( int a_ss )
 {
     m_screen_set = a_ss;
 
@@ -727,13 +727,13 @@ void Perform::set_screenset( int a_ss )
 }
 
 
-int Perform::get_screenset()
+int MidiPerformance::get_screenset()
 {
     return m_screen_set;
 }
 
 
-void Perform::  set_playing_screenset ()
+void MidiPerformance::  set_playing_screenset ()
 {
     for (int j, i = 0; i < c_seqs_in_set; i++) {
         j = i + m_playing_screen * c_seqs_in_set;
@@ -747,24 +747,24 @@ void Perform::  set_playing_screenset ()
 }
 
 
-int Perform::get_playing_screenset ()
+int MidiPerformance::get_playing_screenset ()
 {
     return m_playing_screen;
 }
 
 
-void Perform::set_offset( int a_offset )
+void MidiPerformance::set_offset( int a_offset )
 {
     m_offset = a_offset  * c_mainwnd_rows * c_mainwnd_cols;
 }
 
 
-void Perform::play( long a_tick )
+void MidiPerformance::play( long a_tick )
 {
 
     /* just run down the list of sequences and have them dump */
 
-    //    printf( "play [%d]\n", a_tick );
+        printf( "play [%d]\n", a_tick );
 
     m_tick = a_tick;	
 
@@ -797,7 +797,7 @@ void Perform::play( long a_tick )
 }
 
 
-void Perform::set_orig_ticks( long a_tick  )
+void MidiPerformance::set_orig_ticks( long a_tick  )
 {
     for (int i=0; i< c_max_sequence; i++ ){
 
@@ -811,7 +811,7 @@ void Perform::set_orig_ticks( long a_tick  )
 }
 
 
-void Perform::clear_sequence_triggers( int a_seq  )
+void MidiPerformance::clear_sequence_triggers( int a_seq  )
 {
     if ( is_active(a_seq) == true ){
 
@@ -822,7 +822,7 @@ void Perform::clear_sequence_triggers( int a_seq  )
 }
 
 
-void Perform::move_triggers( bool a_direction )
+void MidiPerformance::move_triggers( bool a_direction )
 {
     if ( m_left_tick < m_right_tick ){
 
@@ -841,7 +841,7 @@ void Perform::move_triggers( bool a_direction )
 }
 
 
-void Perform::push_trigger_undo()
+void MidiPerformance::push_trigger_undo()
 {
     for (int i=0; i< c_max_sequence; i++ ){
 
@@ -853,7 +853,7 @@ void Perform::push_trigger_undo()
 }
 
 
-void Perform::pop_trigger_undo()
+void MidiPerformance::pop_trigger_undo()
 {
     for (int i=0; i< c_max_sequence; i++ ){
 
@@ -866,7 +866,7 @@ void Perform::pop_trigger_undo()
 
 
 /* copies between L and R -> R */
-void Perform::copy_triggers( )
+void MidiPerformance::copy_triggers( )
 {
     if ( m_left_tick < m_right_tick ){
 
@@ -883,7 +883,7 @@ void Perform::copy_triggers( )
 }
 
 
-void Perform::start_jack(  )
+void MidiPerformance::start_jack(  )
 {
     //printf( "perform::start_jack()\n" );
 #ifdef JACK_SUPPORT
@@ -893,7 +893,7 @@ void Perform::start_jack(  )
 }
 
 
-void Perform::stop_jack(  )
+void MidiPerformance::stop_jack(  )
 {
     //printf( "perform::stop_jack()\n" );
 #ifdef JACK_SUPPORT
@@ -903,7 +903,7 @@ void Perform::stop_jack(  )
 }
 
 
-void Perform::position_jack( bool a_state )
+void MidiPerformance::position_jack( bool a_state )
 {
 
     //printf( "perform::position_jack()\n" );
@@ -967,7 +967,7 @@ void Perform::position_jack( bool a_state )
 }
 
 
-void Perform::start(bool a_state)
+void MidiPerformance::start(bool a_state)
 {
     if (m_jack_running) {
         return;
@@ -977,7 +977,7 @@ void Perform::start(bool a_state)
 }
 
 
-void Perform::stop()
+void MidiPerformance::stop()
 {
     if (m_jack_running) {
         return;
@@ -987,7 +987,7 @@ void Perform::stop()
 }
 
 
-void Perform::inner_start(bool a_state)
+void MidiPerformance::inner_start(bool a_state)
 {
     m_condition_var.lock();
 
@@ -1006,7 +1006,7 @@ void Perform::inner_start(bool a_state)
 }
 
 
-void Perform::inner_stop()
+void MidiPerformance::inner_stop()
 {
     set_running(false);
     //off_sequences();
@@ -1015,7 +1015,7 @@ void Perform::inner_stop()
 }
 
 
-void Perform::off_sequences()
+void MidiPerformance::off_sequences()
 {
     for (int i = 0; i < c_max_sequence; i++) {
 
@@ -1027,7 +1027,7 @@ void Perform::off_sequences()
 }
 
 
-void Perform::all_notes_off()
+void MidiPerformance::all_notes_off()
 {
     for (int i=0; i< c_max_sequence; i++) {
 
@@ -1041,7 +1041,7 @@ void Perform::all_notes_off()
 }
 
 
-void Perform::reset_sequences()
+void MidiPerformance::reset_sequences()
 {
     for (int i=0; i< c_max_sequence; i++) {
 
@@ -1063,7 +1063,7 @@ void Perform::reset_sequences()
 }
 
 
-void Perform::launch_output_thread()
+void MidiPerformance::launch_output_thread()
 {
     int err;
 
@@ -1076,26 +1076,26 @@ void Perform::launch_output_thread()
 }
 
 
-void Perform::set_playback_mode( bool a_playback_mode )
+void MidiPerformance::set_playback_mode( bool a_playback_mode )
 {
     m_playback_mode = a_playback_mode;
     printf("\nPlayback mode - %i\n", a_playback_mode);
 }
 
-bool Perform::get_playback_mode()
+bool MidiPerformance::get_playback_mode()
 {
     return m_playback_mode;
 }
 
-void Perform::set_song_recording(bool new_state){
+void MidiPerformance::set_song_recording(bool new_state){
     m_song_recording = new_state;
 }
 
-bool Perform::get_song_recording(){
+bool MidiPerformance::get_song_recording(){
     return m_song_recording;
 }
 
-void Perform::launch_input_thread()
+void MidiPerformance::launch_input_thread()
 {
     int err;
 
@@ -1108,7 +1108,7 @@ void Perform::launch_input_thread()
 }
 
 
-long Perform::get_max_trigger()
+long MidiPerformance::get_max_trigger()
 {
     long ret = 0, t;
 
@@ -1130,7 +1130,7 @@ long Perform::get_max_trigger()
 void* output_thread_func(void *a_pef )
 {
     /* set our performance */
-    Perform *p = (Perform *) a_pef;
+    MidiPerformance *p = (MidiPerformance *) a_pef;
     assert(p);
 
     struct sched_param schp;
@@ -1172,7 +1172,7 @@ int jack_process_callback(jack_nframes_t nframes, void* arg)
 int jack_sync_callback(jack_transport_state_t state,
         jack_position_t *pos, void *arg)
 {
-    Perform *p = (Perform *) arg;
+    MidiPerformance *p = (MidiPerformance *) arg;
 
     p->m_jack_frame_current = jack_get_current_transport_frame(p->m_jack_client);
 
@@ -1219,12 +1219,12 @@ int jack_sync_callback(jack_transport_state_t state,
 
 #ifdef JACK_SESSION
 
-bool Perform::jack_session_event()
+bool MidiPerformance::jack_session_event()
 {
     QString fname( m_jsession_ev->session_dir );
     fname += "file.mid";
 
-    QString cmd( "seq24 \"${SESSION_DIR}file.mid\" --jack_session_uuid " );
+    QString cmd( "kepler34 \"${SESSION_DIR}file.mid\" --jack_session_uuid " );
     cmd += m_jsession_ev->client_uuid;
 
     MidiFile f(fname);
@@ -1235,8 +1235,7 @@ bool Perform::jack_session_event()
     jack_session_reply( m_jack_client, m_jsession_ev );
 
     if( m_jsession_ev->type == JackSessionSaveAndQuit )
-        //TODO restore this
-//        Gtk::Main::quit();
+        QCoreApplication::exit(0);
 
     jack_session_event_free (m_jsession_ev);
 
@@ -1245,7 +1244,7 @@ bool Perform::jack_session_event()
 
 void jack_session_callback(jack_session_event_t *event, void *arg )
 {
-    Perform *p = (Perform *) arg;
+    MidiPerformance *p = (MidiPerformance *) arg;
     p->m_jsession_ev = event;
     //TODO restore
 //    Glib::signal_idle().connect( sigc::mem_fun( *p, &perform::jack_session_event) );
@@ -1255,7 +1254,7 @@ void jack_session_callback(jack_session_event_t *event, void *arg )
 #endif
 
 
-void Perform::output_func()
+void MidiPerformance::output_func()
 {
     while (m_outputing) {
 
@@ -1601,7 +1600,7 @@ void Perform::output_func()
 
                 /* play */
                 play( (long) current_tick );
-                //printf( "play[%d]\n", current_tick );
+                printf( "play[%d]\n", current_tick );
 
                 /* midi clock */
                 m_master_bus.clock( clock_tick );
@@ -1782,7 +1781,7 @@ void* input_thread_func(void *a_pef )
 {
 
     /* set our performance */
-    Perform *p = (Perform *) a_pef;
+    MidiPerformance *p = (MidiPerformance *) a_pef;
     assert(p);
 
 
@@ -1820,7 +1819,7 @@ void* input_thread_func(void *a_pef )
 }
 
 
-void Perform::handle_midi_control( int a_control, bool a_state )
+void MidiPerformance::handle_midi_control( int a_control, bool a_state )
 {
 
     switch (a_control) {
@@ -1900,7 +1899,7 @@ void Perform::handle_midi_control( int a_control, bool a_state )
 }
 
 
-void Perform::input_func()
+void MidiPerformance::input_func()
 {
     MidiEvent ev;
 
@@ -2057,7 +2056,7 @@ void Perform::input_func()
 }
 
 
-void Perform::save_playing_state()
+void MidiPerformance::save_playing_state()
 {
     for( int i=0; i<c_total_seqs; i++ ){
 
@@ -2071,7 +2070,7 @@ void Perform::save_playing_state()
 }
 
 
-void Perform::restore_playing_state()
+void MidiPerformance::restore_playing_state()
 {
     for( int i=0; i<c_total_seqs; i++ ){
 
@@ -2082,7 +2081,7 @@ void Perform::restore_playing_state()
     }
 }
 
-void Perform::set_sequence_control_status( int a_status )
+void MidiPerformance::set_sequence_control_status( int a_status )
 {
     if ( a_status & c_status_snapshot ){
         save_playing_state(  );
@@ -2092,7 +2091,7 @@ void Perform::set_sequence_control_status( int a_status )
 }
 
 
-void Perform::unset_sequence_control_status( int a_status )
+void MidiPerformance::unset_sequence_control_status( int a_status )
 {
     if ( a_status & c_status_snapshot ){
         restore_playing_state(  );
@@ -2102,7 +2101,7 @@ void Perform::unset_sequence_control_status( int a_status )
 }
 
 
-void Perform::sequence_playing_toggle( int a_sequence )
+void MidiPerformance::sequence_playing_toggle( int a_sequence )
 {
     if ( is_active(a_sequence) == true ){
         assert( m_seqs[a_sequence] );
@@ -2128,7 +2127,7 @@ void Perform::sequence_playing_toggle( int a_sequence )
     }
 }
 
-void Perform::sequence_playing_on( int a_sequence )
+void MidiPerformance::sequence_playing_on( int a_sequence )
 {
     if ( is_active(a_sequence) == true ){
         if (m_mode_group && (m_playing_screen == m_screen_set)
@@ -2150,7 +2149,7 @@ void Perform::sequence_playing_on( int a_sequence )
 }
 
 
-void Perform::sequence_playing_off( int a_sequence )
+void MidiPerformance::sequence_playing_off( int a_sequence )
 {
     if ( is_active(a_sequence) == true ){
         if (m_mode_group && (m_playing_screen == m_screen_set)
@@ -2172,7 +2171,7 @@ void Perform::sequence_playing_off( int a_sequence )
 }
 
 
-void Perform::set_key_event( unsigned int keycode, long sequence_slot )
+void MidiPerformance::set_key_event( unsigned int keycode, long sequence_slot )
 {
     // unhook previous binding...
     std::map<unsigned int,long>::iterator it1 = key_events.find( keycode );
@@ -2197,7 +2196,7 @@ void Perform::set_key_event( unsigned int keycode, long sequence_slot )
 }
 
 
-void Perform::set_key_group( unsigned int keycode, long group_slot )
+void MidiPerformance::set_key_group( unsigned int keycode, long group_slot )
 {
     // unhook previous binding...
     std::map<unsigned int,long>::iterator it1 = key_groups.find( keycode );
@@ -2235,7 +2234,7 @@ void jack_timebase_callback(jack_transport_state_t state,
 
     state_current = state;
 
-    Perform *p = (Perform *) arg;
+    MidiPerformance *p = (MidiPerformance *) arg;
     current_frame = jack_get_current_transport_frame( p->m_jack_client );
 
     //printf( "jack_timebase_callback() [%d] [%d] [%d]", state, new_pos, current_frame);
@@ -2290,7 +2289,7 @@ void jack_timebase_callback(jack_transport_state_t state,
 
 void jack_shutdown(void *arg)
 {
-    Perform *p = (Perform *) arg;
+    MidiPerformance *p = (MidiPerformance *) arg;
     p->m_jack_running = false;
 
     printf("JACK shut down.\nJACK sync Disabled.\n");

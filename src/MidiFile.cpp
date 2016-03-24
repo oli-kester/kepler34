@@ -65,7 +65,7 @@ MidiFile::read_var ()
 }
 
 
-bool MidiFile::parse (Perform * a_perf, int a_screen_set)
+bool MidiFile::parse (MidiPerformance * a_perf, int a_screen_set)
 {
     /* open binary file */
     ifstream file(m_name.toAscii().constData(), ios::in | ios::binary | ios::ate);
@@ -559,7 +559,7 @@ MidiFile::write_byte (unsigned char a_x)
     m_l.push_back (a_x);
 }
 
-bool MidiFile::write (Perform * a_perf)
+bool MidiFile::write (MidiPerformance * a_perf)
 {
     int numtracks = 0;
 

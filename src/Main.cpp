@@ -16,7 +16,7 @@
 #endif
 #include "MidiFile.hpp"
 #include "OptionsFile.hpp"
-#include "Perform.hpp"
+#include "MidiPerformance.hpp"
 #include "UserFile.hpp"
 
 /* struct for command parsing */
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
     /* the main performance object */
     /* lash must be initialized here because mastermidibus uses the global
      * lash_driver variable*/
-    Perform p;
+    MidiPerformance p;
 
     /* config DIR */
     QString config_dir = QString(getenv(HOME)) + SLASH + ".config" + SLASH + "kepler" + SLASH;
@@ -262,7 +262,6 @@ int main(int argc, char *argv[])
 
     } /* end while */
 
-
     p.init();
     p.launch_input_thread();
     p.launch_output_thread();
@@ -276,8 +275,9 @@ int main(int argc, char *argv[])
         QFile m_qfile(argv[optind]);
         if (m_qfile.exists())
         {
-            //TODO restore this
+//            TODO restore this
 //            seq24_window.open_file(argv[optind]);
+
         }
         else
             printf("File not found: %s\n", argv[optind]);

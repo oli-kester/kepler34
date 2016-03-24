@@ -25,11 +25,11 @@ SOURCES +=\
     Mutex.cpp \
     MidiBus.cpp \
     Lash.cpp \
-    Perform.cpp \
     ConfigFile.cpp \
     MidiFile.cpp \
     OptionsFile.cpp \
-    UserFile.cpp
+    UserFile.cpp \
+    MidiPerformance.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -45,12 +45,12 @@ HEADERS  += \
     MidiBus.hpp \
     Mutex.hpp \
     Lash.hpp \
-    Perform.hpp \
     UserFile.hpp \
     ConfigFile.hpp \
     Config.hpp \
     MidiFile.hpp \
-    OptionsFile.hpp
+    OptionsFile.hpp \
+    MidiPerformance.hpp
 
 FORMS    += \
     MainWindow.ui \
@@ -62,4 +62,4 @@ FORMS    += \
 RESOURCES += \
     kepler34.qrc
 
-unix:!macx: LIBS += -lasound -llash -ljack -lsigc-2.0 -lrt
+unix:!macx: LIBS += -lasound -llash -ljack -lrt

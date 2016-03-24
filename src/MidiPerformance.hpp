@@ -2,19 +2,21 @@
 
 #pragma once
 
-class Perform;
+class MidiPerformance;
 
 #include "Globals.hpp"
 #include "MidiEvent.hpp"
 #include "MidiBus.hpp"
 #include "MidiFile.hpp"
 #include "MidiSequence.hpp"
+
 #ifndef __WIN32__
 #   include <unistd.h>
 #endif
 #include <pthread.h>
-#include <QMap>
 
+#include <QMap>
+#include <QCoreApplication>
 
 /* if we have jack, include the jack headers */
 #ifdef JACK_SUPPORT
@@ -67,7 +69,7 @@ struct performcallback
     virtual void on_grouplearnchange(bool state) {}
 };
 
-class Perform
+class MidiPerformance
 {
  public:
     // do not access these directly, use set/lookup below
@@ -87,16 +89,16 @@ class Perform
     int m_playing_screen;
 
     /* vector of sequences */
-    MidiSequence *m_seqs[c_max_sequence];
+    MidiSequence *m_seqs    [ c_max_sequence ];
 
     /* holds whether each sequence is active */
-    bool m_seqs_active[ c_max_sequence ];
+    bool m_seqs_active      [ c_max_sequence ];
 
-    bool m_was_active_main[ c_max_sequence ];
-    bool m_was_active_edit[ c_max_sequence ];
-    bool m_was_active_perf[ c_max_sequence ];
-    bool m_was_active_names[ c_max_sequence ];
-    bool m_sequence_state[  c_max_sequence ];
+    bool m_was_active_main  [ c_max_sequence ];
+    bool m_was_active_edit  [ c_max_sequence ];
+    bool m_was_active_perf  [ c_max_sequence ];
+    bool m_was_active_names [ c_max_sequence ];
+    bool m_sequence_state   [ c_max_sequence ];
 
     /* our midibus */
     MasterMidiBus m_master_bus;
@@ -211,8 +213,8 @@ class Perform
 
     bool show_ui_sequence_key() const { return m_show_ui_sequence_key; }
 
-    Perform();
-    ~Perform();
+    MidiPerformance();
+    ~MidiPerformance();
 
     void init();
 
@@ -305,8 +307,7 @@ class Perform
     void set_bpm(int a_bpm);
     int  get_bpm( );
 
-    void set_looping( bool a_looping ){ m_looping = a_looping; };
-
+    void set_looping( bool a_looping ){ m_looping = a_looping; }
 
     /* set/unset the control status of the main window.
      *
@@ -374,8 +375,6 @@ class Perform
 /* located in perform.C */
 extern void *output_thread_func(void *a_p);
 extern void *input_thread_func(void *a_p);
-
-
 
 #ifdef JACK_SUPPORT
 

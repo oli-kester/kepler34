@@ -14,7 +14,7 @@ PreferencesFile::PreferencesFile(const QString& a_name) :
 }
 
 bool
-PreferencesFile::parse( Perform *a_perf )
+PreferencesFile::parse( MidiPerformance *a_perf )
 {
     /* open binary file */
     ifstream file ( m_name.toAscii().constData(), ios::in | ios::ate );
@@ -249,7 +249,7 @@ PreferencesFile::parse( Perform *a_perf )
 
 
 bool
-PreferencesFile::write( Perform *a_perf  )
+PreferencesFile::write( MidiPerformance *a_perf  )
 {
     /* open binary file */
 

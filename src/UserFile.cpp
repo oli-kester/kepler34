@@ -7,7 +7,7 @@ UserFile::UserFile( QString a_name ) :
 UserFile::~UserFile( ) { }
 
 bool
-UserFile::parse( Perform *a_perf )
+UserFile::parse( MidiPerformance *a_perf )
 {
 
     /* open binary file */
@@ -281,7 +281,7 @@ UserFile::parse( Perform *a_perf )
 
 
 bool
-UserFile::write( Perform *a_perf  )
+UserFile::write( MidiPerformance *a_perf  )
 {
     return false;
 }

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Perform.hpp"
+#include "MidiPerformance.hpp"
 #include "ConfigFile.hpp"
 
 class PreferencesFile : public ConfigFile
@@ -12,8 +12,8 @@ class PreferencesFile : public ConfigFile
 
     PreferencesFile(const QString& a_name);
 
-    bool parse( Perform *a_perf );
-    bool write( Perform *a_perf );
+    bool parse( MidiPerformance *a_perf );
+    bool write( MidiPerformance *a_perf );
 
 };
 
