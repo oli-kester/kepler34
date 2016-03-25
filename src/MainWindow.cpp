@@ -59,5 +59,7 @@ void MainWindow::stopPlaying()
 
 void MainWindow::setRecording(bool record)
 {
+    main_perf->set_song_recording(record);
+
     qDebug() << "Set recording - " << record << endl;
 }

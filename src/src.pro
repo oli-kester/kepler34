@@ -15,7 +15,6 @@ TEMPLATE = app
 SOURCES +=\
     Main.cpp \
     MainWindow.cpp \
-    BeatIndicator.cpp \
     LiveFrame.cpp \
     SongFrame.cpp \
     EditFrame.cpp \
@@ -29,11 +28,11 @@ SOURCES +=\
     MidiFile.cpp \
     OptionsFile.cpp \
     UserFile.cpp \
-    MidiPerformance.cpp
+    MidiPerformance.cpp \
+    BeatIndicator.cpp
 
 HEADERS  += \
     MainWindow.hpp \
-    BeatIndicator.hpp \
     LiveFrame.hpp \
     SongFrame.hpp \
     EditFrame.hpp \
@@ -50,7 +49,8 @@ HEADERS  += \
     Config.hpp \
     MidiFile.hpp \
     OptionsFile.hpp \
-    MidiPerformance.hpp
+    MidiPerformance.hpp \
+    BeatIndicator.hpp
 
 FORMS    += \
     MainWindow.ui \
