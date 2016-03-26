@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
     m_modified = false;
 
+    m_error_dialog = new QErrorMessage(this);
+
     m_prefs_dialog = new PreferencesDialog(this);
 
     m_live_frame = new LiveFrame(m_ui->LiveTab, m_main_perf);
@@ -105,7 +107,7 @@ void MainWindow::showOpenFileDialog()
                    "All files (*)")
                 );
 
-
+    openMidiFile(file);
 }
 
 void MainWindow::openMidiFile(const QString &path)
@@ -120,6 +122,47 @@ void MainWindow::openMidiFile(const QString &path)
 
     if (!result) {
         //TODO error
+        QString m_error_msg = "Error reading MIDI data from file: " + path;
+        m_error_dialog->showMessage(m_error_msg);
+        m_error_dialog->exec();
+        return;
     }
+
+    //set last used dir to the one we have just loaded from
+    int last_slash = path.lastIndexOf("/");
+    last_used_dir = path.left(last_slash + 1);
+    qDebug() << "New recent directory"
+             << last_used_dir << endl;
+    global_filename = path;
+
+    updateWindowTitle();
+
+    //add to recent files list
+//    m_options->add_recent_file(path);
+
+    //update recent menu
+//    redraw_menu();
+
+//    m_main_wid->reset();
+//    m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
+//                m_mainperf->get_screenset()));
+//    m_adjust_bpm->set_value( m_mainperf->get_bpm());
+
+}
+
+void MainWindow::updateWindowTitle()
+{
+    QString title;
+
+    if (global_filename == "")
+        title = ( PACKAGE ) + QString( " - [unnamed]" );
+    else
+        title =
+            ( PACKAGE )
+            + QString( " - [" )
+            + global_filename
+            + QString( "]" );
+
+    this->setWindowTitle(title);
 
 }

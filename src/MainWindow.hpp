@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QFileDialog>
+#include <QErrorMessage>
 
 #include "LiveFrame.hpp"
 #include "SongFrame.hpp"
@@ -24,9 +25,10 @@ public:
     explicit MainWindow(QWidget *parent = 0, MidiPerformance *a_p = 0);
     ~MainWindow();
 
-    void openMidiFile(const QString& path);
-
 private:
+    void openMidiFile(const QString& path);
+    void updateWindowTitle();
+
     Ui::MainWindow      *m_ui;
 
     LiveFrame           *m_live_frame;
@@ -34,6 +36,8 @@ private:
     EditFrame           *m_edit_frame;
 
     PreferencesDialog   *m_prefs_dialog;
+
+    QErrorMessage       *m_error_dialog;
 
     MidiPerformance     *m_main_perf;
 
@@ -44,7 +48,6 @@ private slots:
     void stopPlaying();
     void setRecording(bool record);
     void showOpenFileDialog();
-
 };
 
 #endif // MAINWINDOW_HPP

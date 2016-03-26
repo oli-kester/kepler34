@@ -12,7 +12,7 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     m_screenset = 0;
 }
 
-void LiveFrame::paintEvent(QPaintEvent *event)
+void LiveFrame::paintEvent(QPaintEvent *)
 {
     drawSequence(0);
 }
@@ -25,7 +25,7 @@ LiveFrame::~LiveFrame()
 void LiveFrame::drawSequence(int a_seq)
 {
     if ( a_seq >= (m_screenset  * c_mainwnd_rows * c_mainwnd_cols ) &&
-         a_seq <  ((m_screenset+1)  * c_mainwnd_rows * c_mainwnd_cols )){
+         a_seq <  ((m_screenset + 1)  * c_mainwnd_rows * c_mainwnd_cols )){
 
         int i =  (a_seq / c_mainwnd_rows) % c_mainwnd_cols;
         int j =  a_seq % c_mainwnd_rows;
