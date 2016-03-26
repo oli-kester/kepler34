@@ -29,7 +29,7 @@ private:
     void openMidiFile(const QString& path);
     void updateWindowTitle();
 
-    Ui::MainWindow      *m_ui;
+    Ui::MainWindow      *ui;
 
     LiveFrame           *m_live_frame;
     SongFrame           *m_song_frame;

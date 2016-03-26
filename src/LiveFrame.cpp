@@ -37,7 +37,10 @@ void LiveFrame::drawSequence(int a_seq)
 
         //draw outline of this seq thumbnail
         m_painter = new QPainter(this);
-        rect = new QRect(base_x, base_y, c_seqarea_x, c_seqarea_y);
+        rect = new QRect(base_x,
+                         base_y,
+                         c_seqarea_x,
+                         c_seqarea_y);
         m_painter->drawRect(*rect);
 
         //TODO add dummy seq0 to get this to trigger
@@ -60,7 +63,10 @@ void LiveFrame::drawSequence(int a_seq)
             }
 
             //draw background of thumbnail
-            rect = new QRect(base_x + 1, base_y + 1, c_seqarea_x - 2, c_seqarea_y - 2 );
+            rect = new QRect(base_x + 1,
+                             base_y + 1,
+                             c_seqarea_x - 2,
+                             c_seqarea_y - 2 );
             m_painter->setPen(*m_foreground);
             m_painter->drawRect(*rect);
         }

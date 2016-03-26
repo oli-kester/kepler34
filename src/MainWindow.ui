@@ -315,7 +315,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="spinBox">
+        <widget class="QSpinBox" name="spinBpm">
          <property name="maximumSize">
           <size>
            <width>47</width>

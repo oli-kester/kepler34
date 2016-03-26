@@ -5,10 +5,10 @@ bool is_pattern_playing = false;
 
 MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     QMainWindow(parent),
-    m_ui(new Ui::MainWindow),
+    ui(new Ui::MainWindow),
     m_main_perf(a_p)
 {
-    m_ui->setupUi(this);
+    ui->setupUi(this);
 
     m_modified = false;
 
@@ -16,33 +16,33 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
     m_prefs_dialog = new PreferencesDialog(this);
 
-    m_live_frame = new LiveFrame(m_ui->LiveTab, m_main_perf);
-    m_song_frame = new SongFrame(m_ui->SongTab);
-    m_edit_frame = new EditFrame(m_ui->EditTab);
+    m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
+    m_song_frame = new SongFrame(ui->SongTab);
+    m_edit_frame = new EditFrame(ui->EditTab);
 
-    m_ui->LiveTabLayout->addWidget(m_live_frame);
-    m_ui->SongTabLayout->addWidget(m_song_frame);
-    m_ui->EditTabLayout->addWidget(m_edit_frame);
+    ui->LiveTabLayout->addWidget(m_live_frame);
+    ui->SongTabLayout->addWidget(m_song_frame);
+    ui->EditTabLayout->addWidget(m_edit_frame);
 
     //connect GUI elements to handlers
-    QObject::connect(m_ui->actionOpen,
+    QObject::connect(ui->actionOpen,
                      SIGNAL(triggered(bool)),
                      this,
                      SLOT(showOpenFileDialog()));
-    QObject::connect(m_ui->actionPreferences,
+    QObject::connect(ui->actionPreferences,
                      SIGNAL(triggered(bool)),
                      m_prefs_dialog,
                      SLOT(show()));
 
-    QObject::connect(m_ui->btnPlay,
+    QObject::connect(ui->btnPlay,
                      SIGNAL(clicked(bool)),
                      this,
                      SLOT(startPlaying()));
-    QObject::connect(m_ui->btnStop,
+    QObject::connect(ui->btnStop,
                      SIGNAL(clicked(bool)),
                      this,
                      SLOT(stopPlaying()));
-    QObject::connect(m_ui->btnRecord,
+    QObject::connect(ui->btnRecord,
                      SIGNAL(clicked(bool)),
                      this,
                      SLOT(setRecording(bool)));
@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
 MainWindow::~MainWindow()
 {
-    delete m_ui;
+    delete ui;
 }
 
 void MainWindow::startPlaying()
@@ -71,7 +71,7 @@ void MainWindow::stopPlaying()
     m_main_perf->stop_jack();
     m_main_perf->stop();
 
-    m_ui->btnPlay->setChecked(false);
+    ui->btnPlay->setChecked(false);
 
     qDebug() << "Stop playing" << endl;
 }
@@ -137,8 +137,8 @@ void MainWindow::openMidiFile(const QString &path)
 
     updateWindowTitle();
 
-    //add to recent files list
-//    m_options->add_recent_file(path);
+//    add to recent files list
+    m_prefs_dialog->addRecentFile(path);
 
     //update recent menu
 //    redraw_menu();
@@ -146,8 +146,7 @@ void MainWindow::openMidiFile(const QString &path)
 //    m_main_wid->reset();
 //    m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
 //                m_mainperf->get_screenset()));
-//    m_adjust_bpm->set_value( m_mainperf->get_bpm());
-
+    ui->spinBpm->setValue(m_main_perf->get_bpm());
 }
 
 void MainWindow::updateWindowTitle()

@@ -66,7 +66,7 @@ const int c_status_queue    = 0x04;
 
 struct performcallback
 {
-    virtual void on_grouplearnchange(bool state) {}
+    virtual void on_grouplearnchange(bool) {}
 };
 
 class MidiPerformance
