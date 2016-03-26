@@ -19,10 +19,11 @@ public:
     ~LiveFrame();
 
 protected:
-    //override painting event to draw on the window
+    //override painting event to draw on the frame
     void paintEvent(QPaintEvent *event);
 
 private:
+    //draw a single sequence thumbnail at index
     void drawSequence(int a_seq);
 
     Ui::LiveFrame *ui;

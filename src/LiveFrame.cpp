@@ -43,7 +43,6 @@ void LiveFrame::drawSequence(int a_seq)
                          c_seqarea_y);
         m_painter->drawRect(*rect);
 
-        //TODO add dummy seq0 to get this to trigger
         if (m_main_perf->is_active(a_seq))
         {
             MidiSequence *seq = m_main_perf->get_sequence(a_seq);
@@ -67,8 +66,21 @@ void LiveFrame::drawSequence(int a_seq)
                              base_y + 1,
                              c_seqarea_x - 2,
                              c_seqarea_y - 2 );
-            m_painter->setPen(*m_foreground);
+            m_painter->setPen(*m_background);
             m_painter->drawRect(*rect);
+
+            //write seq data strings on thumbnail
+            m_painter->setPen(*m_foreground);
+            char name[20];
+            snprintf( name, sizeof name, "%.13s", seq->get_name() );
+
+            m_painter->drawText(base_x + c_text_x,
+                                base_y + 4,
+                                80,
+                                80,
+                                1,
+                                name);
+
         }
 
     }
