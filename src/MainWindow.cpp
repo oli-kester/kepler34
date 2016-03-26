@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
     prefs_dialog = new PreferencesDialog(this);
 
-    live_frame = new LiveFrame(ui->LiveTab);
+    live_frame = new LiveFrame(ui->LiveTab, main_perf);
     song_frame = new SongFrame(ui->SongTab);
     edit_frame = new EditFrame(ui->EditTab);
 

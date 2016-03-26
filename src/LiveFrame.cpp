@@ -1,9 +1,11 @@
 #include "LiveFrame.hpp"
+#include "Globals.hpp"
 #include "ui_LiveFrame.h"
 
-LiveFrame::LiveFrame(QWidget *parent) :
+LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     QFrame(parent),
-    ui(new Ui::LiveFrame)
+    ui(new Ui::LiveFrame),
+    m_main_perf(perf)
 {
     ui->setupUi(this);
 
@@ -12,48 +14,56 @@ LiveFrame::LiveFrame(QWidget *parent) :
 
 void LiveFrame::paintEvent(QPaintEvent *event)
 {
-    static const QPoint points[4] = {
-        QPoint(10, 80),
-        QPoint(20, 10),
-        QPoint(80, 30),
-        QPoint(90, 70)
-    };
-
-    QRect rect(10, 20, 80, 60);
-
-    QPainterPath path;
-    path.moveTo(20, 80);
-    path.lineTo(20, 30);
-    path.cubicTo(80, 0, 50, 50, 80, 80);
-
-    int startAngle = 20 * 16;
-    int arcLength = 120 * 16;
-
-    QPainter painter(this);
-//    painter.setPen(m_pen);
-//    painter.setBrush(m_brush);
-
-    for (int x = 0; x < width(); x += 100) {
-        for (int y = 0; y < height(); y += 100) {
-            painter.save();
-            painter.translate(x, y);
-                painter.translate(50, 50);
-                painter.rotate(60.0);
-                painter.scale(0.6, 0.9);
-                painter.translate(-50, -50);
-
-                painter.drawRect(rect);
-            painter.restore();
-        }
-    }
-
-    painter.setRenderHint(QPainter::Antialiasing, false);
-    painter.setPen(palette().dark().color());
-    painter.setBrush(Qt::NoBrush);
-    painter.drawRect(QRect(0, 0, width() - 1, height() - 1));
+    drawSequence(0);
 }
 
 LiveFrame::~LiveFrame()
 {
     delete ui;
+}
+
+void LiveFrame::drawSequence(int a_seq)
+{
+    if ( a_seq >= (m_screenset  * c_mainwnd_rows * c_mainwnd_cols ) &&
+         a_seq <  ((m_screenset+1)  * c_mainwnd_rows * c_mainwnd_cols )){
+
+        int i =  (a_seq / c_mainwnd_rows) % c_mainwnd_cols;
+        int j =  a_seq % c_mainwnd_rows;
+
+        int base_x = (c_mainwid_border +
+                      (c_seqarea_x + c_mainwid_spacing) * i);
+        int base_y = (c_mainwid_border +
+                      (c_seqarea_y + c_mainwid_spacing) * j);
+
+        //draw outline of this seq thumbnail
+        m_painter = new QPainter(this);
+        rect = new QRect(base_x, base_y, c_seqarea_x, c_seqarea_y);
+        m_painter->drawRect(*rect);
+
+        //TODO add dummy seq0 to get this to trigger
+        if (m_main_perf->is_active(a_seq))
+        {
+            MidiSequence *seq = m_main_perf->get_sequence(a_seq);
+
+            //set foreground/background colours based on seq's play state
+            if (seq->get_playing())
+            {
+                m_last_playing[a_seq] = true;
+                m_background = new QPen(Qt::black);
+                m_foreground = new QPen(Qt::white);
+            }
+            else
+            {
+                m_last_playing[a_seq] = false;
+                m_background = new QPen(Qt::white);
+                m_foreground = new QPen(Qt::black);
+            }
+
+            //draw background of thumbnail
+            rect = new QRect(base_x + 1, base_y + 1, c_seqarea_x - 2, c_seqarea_y - 2 );
+            m_painter->setPen(*m_foreground);
+            m_painter->drawRect(*rect);
+        }
+
+    }
 }

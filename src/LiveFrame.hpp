@@ -1,6 +1,8 @@
 #ifndef LIVEFRAME_HPP
 #define LIVEFRAME_HPP
 
+#include "MidiPerformance.hpp"
+
 #include <QFrame>
 #include <QPainter>
 
@@ -13,7 +15,7 @@ class LiveFrame : public QFrame
     Q_OBJECT
 
 public:
-    explicit LiveFrame(QWidget *parent = 0);
+    explicit LiveFrame(QWidget *parent = 0, MidiPerformance *perf = 0);
     ~LiveFrame();
 
 protected:
@@ -21,13 +23,20 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
+    void drawSequence(int a_seq);
+
     Ui::LiveFrame *ui;
 
-    int m_screenset;
+    MidiPerformance *m_main_perf;
 
     QPainter    *m_painter;
-    QPen        *m_pen;
-    QBrush      *m_brush;
+    QPen        *m_background;
+    QPen        *m_foreground;
+    QRect       *rect;
+
+    int     m_screenset;
+    bool    m_last_playing[c_max_sequence];
+
 };
 
 #endif // LIVEFRAME_HPP
