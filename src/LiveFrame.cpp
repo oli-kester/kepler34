@@ -14,7 +14,8 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
 
 void LiveFrame::paintEvent(QPaintEvent *)
 {
-    drawSequence(0);
+    drawAllSequences();
+    //    drawSequence(0);
 }
 
 LiveFrame::~LiveFrame()
@@ -80,8 +81,16 @@ void LiveFrame::drawSequence(int a_seq)
                                 80,
                                 1,
                                 name);
-
         }
+    }
+}
 
+void LiveFrame::drawAllSequences()
+{
+    for (int i=0; i < (c_mainwnd_rows * c_mainwnd_cols); i++){
+
+        drawSequence(i + (m_screenset * c_mainwnd_rows * c_mainwnd_cols));
+
+        m_last_tick_x[i + (m_screenset * c_mainwnd_rows * c_mainwnd_cols)] = 0;
     }
 }

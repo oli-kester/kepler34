@@ -26,6 +26,9 @@ private:
     //draw a single sequence thumbnail at index
     void drawSequence(int a_seq);
 
+    //draw all sequences
+    void drawAllSequences();
+
     Ui::LiveFrame *ui;
 
     MidiPerformance *m_main_perf;
@@ -36,6 +39,7 @@ private:
     QRect       *rect;
 
     int     m_screenset;
+    long    m_last_tick_x[c_max_sequence];
     bool    m_last_playing[c_max_sequence];
 
 };

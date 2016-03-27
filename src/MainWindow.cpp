@@ -29,19 +29,23 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
                      SIGNAL(triggered(bool)),
                      this,
                      SLOT(showOpenFileDialog()));
+
     QObject::connect(ui->actionPreferences,
                      SIGNAL(triggered(bool)),
                      m_prefs_dialog,
                      SLOT(show()));
 
+
     QObject::connect(ui->btnPlay,
                      SIGNAL(clicked(bool)),
                      this,
                      SLOT(startPlaying()));
+
     QObject::connect(ui->btnStop,
                      SIGNAL(clicked(bool)),
                      this,
                      SLOT(stopPlaying()));
+
     QObject::connect(ui->btnRecord,
                      SIGNAL(clicked(bool)),
                      this,
@@ -107,7 +111,8 @@ void MainWindow::showOpenFileDialog()
                    "All files (*)")
                 );
 
-    openMidiFile(file);
+    if (!file.isEmpty())
+        openMidiFile(file);
 }
 
 void MainWindow::openMidiFile(const QString &path)
