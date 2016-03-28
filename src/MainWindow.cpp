@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_song_frame = new SongFrame(ui->SongTab);
     m_edit_frame = new EditFrame(ui->EditTab);
 
+    m_beat_ind = new BeatIndicator(this);
+
     ui->LiveTabLayout->addWidget(m_live_frame);
     ui->SongTabLayout->addWidget(m_song_frame);
     ui->EditTabLayout->addWidget(m_edit_frame);
@@ -93,15 +95,6 @@ void MainWindow::showOpenFileDialog()
 
     QFileDialog dialog(this);
     QString file;
-    //    dialog.setFileMode(QFileDialog::ExistingFile);
-    //    dialog.setNameFilter(tr(
-    //                             "MIDI files (*.midi *.mid);;"
-    //                             "All files (*)"));
-    //    dialog.setDirectory(last_used_dir);
-    //    dialog.setViewMode(QFileDialog::Detail);
-
-    //    if (dialog.exec())
-    //        files=dialog.selectedFiles();
 
     file = QFileDialog::getOpenFileName(
                 this,
@@ -111,6 +104,7 @@ void MainWindow::showOpenFileDialog()
                    "All files (*)")
                 );
 
+    //don't bother trying to open if the user cancels
     if (!file.isEmpty())
         openMidiFile(file);
 }
@@ -142,15 +136,15 @@ void MainWindow::openMidiFile(const QString &path)
 
     updateWindowTitle();
 
-//    add to recent files list
+    //    add to recent files list
     m_prefs_dialog->addRecentFile(path);
 
     //update recent menu
-//    redraw_menu();
+    //    redraw_menu();
 
-//    m_main_wid->reset();
-//    m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
-//                m_mainperf->get_screenset()));
+    //    m_main_wid->reset();
+    //    m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
+    //                m_mainperf->get_screenset()));
     ui->spinBpm->setValue(m_main_perf->get_bpm());
 }
 
@@ -161,11 +155,17 @@ void MainWindow::updateWindowTitle()
     if (global_filename == "")
         title = ( PACKAGE ) + QString( " - [unnamed]" );
     else
-        title =
-            ( PACKAGE )
-            + QString( " - [" )
-            + global_filename
-            + QString( "]" );
+    {
+        //give us a title with just the MIDI filename, after the last slash
+        int last_slash = global_filename.lastIndexOf("/");
+        title = global_filename.right(
+                    global_filename.length() - last_slash - 1);
+        qDebug() << "New window title - " << title << endl;
+        title = ( PACKAGE )
+                + QString( " - [" )
+                + title
+                + QString( "]" );
+    }
 
     this->setWindowTitle(title);
 

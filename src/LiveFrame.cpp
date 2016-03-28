@@ -15,7 +15,6 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
 void LiveFrame::paintEvent(QPaintEvent *)
 {
     drawAllSequences();
-    //    drawSequence(0);
 }
 
 LiveFrame::~LiveFrame()

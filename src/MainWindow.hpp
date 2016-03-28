@@ -12,6 +12,7 @@
 #include "PreferencesDialog.hpp"
 #include "MidiPerformance.hpp"
 #include "MidiFile.hpp"
+#include "BeatIndicator.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +35,8 @@ private:
     LiveFrame           *m_live_frame;
     SongFrame           *m_song_frame;
     EditFrame           *m_edit_frame;
+
+    Beat
 
     PreferencesDialog   *m_prefs_dialog;
 
