@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QErrorMessage>
+#include <QTimer>
 
 #include "LiveFrame.hpp"
 #include "SongFrame.hpp"
@@ -13,6 +14,8 @@
 #include "MidiPerformance.hpp"
 #include "MidiFile.hpp"
 #include "BeatIndicator.hpp"
+
+//the main window of Kepler34
 
 namespace Ui {
 class MainWindow;
@@ -36,21 +39,21 @@ private:
     SongFrame           *m_song_frame;
     EditFrame           *m_edit_frame;
 
-    BeatIndicator       *m_beat_ind;
-
-    PreferencesDialog   *m_prefs_dialog;
-
     QErrorMessage       *m_error_dialog;
+    QTimer              *m_timer;
 
     MidiPerformance     *m_main_perf;
+    BeatIndicator       *m_beat_ind;
+    PreferencesDialog   *m_prefs_dialog;
 
-    bool                m_modified;
+    bool                 m_modified;
 
 private slots:
     void startPlaying();
     void stopPlaying();
     void setRecording(bool record);
     void showOpenFileDialog();
+    void redraw(); //redraw certain GUI elements
 };
 
 #endif // MAINWINDOW_HPP

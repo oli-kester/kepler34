@@ -20,13 +20,22 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_song_frame = new SongFrame(ui->SongTab);
     m_edit_frame = new EditFrame(ui->EditTab);
 
-    m_beat_ind = new BeatIndicator(this,m_main_perf,4,4);
+    m_beat_ind = new BeatIndicator(this, m_main_perf, 4, 4);
     
     ui->layoutTransport->addWidget(m_beat_ind);
 
     ui->LiveTabLayout->addWidget(m_live_frame);
     ui->SongTabLayout->addWidget(m_song_frame);
     ui->EditTabLayout->addWidget(m_edit_frame);
+
+    //timer to refresh GUI elements every few ms
+    m_timer = new QTimer(this);
+    m_timer->setInterval(50);
+    QObject::connect(m_timer,
+                     SIGNAL(timeout()),
+                     this,
+                     SLOT(redraw()));
+    m_timer->start();
 
     //connect GUI elements to handlers
     QObject::connect(ui->actionOpen,
@@ -171,4 +180,9 @@ void MainWindow::updateWindowTitle()
 
     this->setWindowTitle(title);
 
+}
+
+void MainWindow::redraw()
+{
+    m_beat_ind->update();
 }

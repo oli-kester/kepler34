@@ -14,7 +14,11 @@ class BeatIndicator : public QWidget
     Q_OBJECT
 
 public:
-    BeatIndicator(QWidget *parent, MidiPerformance *perf, int beats_per_measure, int beat_width);
+    BeatIndicator(QWidget *parent,
+                  MidiPerformance *perf,
+                  int beats_per_measure,
+                  int beat_width);
+
     ~BeatIndicator();
 
     QSize sizeHint() const;
@@ -34,8 +38,8 @@ private:
 
     QPainter    *m_painter;
 
-    int     m_beats_per_measure;
-    int     m_beat_width;
+    int         m_beats_per_measure;
+    int         m_beat_width;
 
 };
 

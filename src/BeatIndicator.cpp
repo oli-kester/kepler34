@@ -1,24 +1,31 @@
 #include "BeatIndicator.hpp"
 
-BeatIndicator::BeatIndicator(QWidget *parent, MidiPerformance *perf, int beats_per_measure, int beat_width):
+BeatIndicator::BeatIndicator(QWidget *parent,
+                             MidiPerformance *perf,
+                             int beats_per_measure,
+                             int beat_width):
     QWidget(parent),
     m_main_perf(perf),
     m_beats_per_measure(beats_per_measure),
     m_beat_width(beat_width)
 {
-    m_painter = new QPainter(this);
 
-    m_painter->drawText(0, 0, "text");
 }
 
 QSize BeatIndicator::sizeHint() const
 {
-    return QSize(500, 500);
+    return QSize(500,10);
 }
 
 void BeatIndicator::paintEvent(QPaintEvent *)
 {
     long tick = m_main_perf->get_tick();
+
+    m_painter = new QPainter(this);
+
+    m_painter->setPen(Qt::black);
+
+    m_painter->drawText(5, 20, QString::number(tick));
 
     qDebug() << "BeatIndicator.cpp - paintEvent, Current tick: " << tick << endl;
 }
