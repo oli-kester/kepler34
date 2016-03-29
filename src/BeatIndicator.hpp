@@ -7,13 +7,17 @@
 
 #include "MidiPerformance.hpp"
 
+//A beat indicator widget.
+
 class BeatIndicator : public QWidget
 {
     Q_OBJECT
 
 public:
-     BeatIndicator(MidiPerformance *perf, int beats_per_measure, int beat_width);
-     ~BeatIndicator();
+    BeatIndicator(QWidget *parent, MidiPerformance *perf, int beats_per_measure, int beat_width);
+    ~BeatIndicator();
+
+    QSize sizeHint() const;
     
     int getBeatsPerMeasure() const;
     void setBeatsPerMeasure(int beats_per_measure);

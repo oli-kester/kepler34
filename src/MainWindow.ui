@@ -149,8 +149,8 @@
      <rect>
       <x>430</x>
       <y>-3</y>
-      <width>251</width>
-      <height>31</height>
+      <width>274</width>
+      <height>29</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="layoutTransport">

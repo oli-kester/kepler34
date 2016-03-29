@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_song_frame = new SongFrame(ui->SongTab);
     m_edit_frame = new EditFrame(ui->EditTab);
 
-    m_beat_ind = new BeatIndicator(m_main_perf,4,4);
+    m_beat_ind = new BeatIndicator(this,m_main_perf,4,4);
     
     ui->layoutTransport->addWidget(m_beat_ind);
 
