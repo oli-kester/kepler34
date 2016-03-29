@@ -36,7 +36,7 @@ private:
     SongFrame           *m_song_frame;
     EditFrame           *m_edit_frame;
 
-    Beat
+    BeatIndicator       *m_beat_ind;
 
     PreferencesDialog   *m_prefs_dialog;
 
