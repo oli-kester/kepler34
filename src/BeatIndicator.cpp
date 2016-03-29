@@ -10,7 +10,13 @@ BeatIndicator::BeatIndicator(MidiPerformance *perf, int beats_per_measure, int b
 
 void BeatIndicator::paintEvent(QPaintEvent *)
 {
+    long tick = m_main_perf->get_tick();
 
+    m_painter = new QPainter(this);
+
+    m_painter->drawText(100,100,"text");
+
+    qDebug() << "BeatIndicator.cpp - Current tick: " << tick << endl;
 }
 
 int BeatIndicator::getbeatWidth() const
@@ -33,8 +39,7 @@ void BeatIndicator::setBeatsPerMeasure(int beats_per_measure)
     m_beats_per_measure = beats_per_measure;
 }
 
-//BeatIndicator::~BeatIndicator()
-//{
+BeatIndicator::~BeatIndicator()
+{
 
-//}
-
+}

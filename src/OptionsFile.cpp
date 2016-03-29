@@ -17,7 +17,7 @@ bool
 PreferencesFile::parse( MidiPerformance *a_perf )
 {
     /* open binary file */
-    ifstream file ( m_name.toAscii().constData(), ios::in | ios::ate );
+    ifstream file ( m_name.toUtf8().constData(), ios::in | ios::ate );
 
     if( ! file.is_open() )
         return false;
@@ -253,7 +253,7 @@ PreferencesFile::write( MidiPerformance *a_perf  )
 {
     /* open binary file */
 
-    ofstream file ( m_name.toAscii().constData(), ios::out | ios::trunc  );
+    ofstream file ( m_name.toUtf8().constData(), ios::out | ios::trunc  );
     char outs[1024];
 
     if( ! file.is_open() )

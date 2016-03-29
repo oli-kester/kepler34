@@ -184,7 +184,7 @@ void MidiPerformance::init_jack()
 		m_jack_client = jack_client_open(PACKAGE, JackNullOption, NULL);
 	    else
 		m_jack_client = jack_client_open(PACKAGE, JackSessionID, NULL,
-                        global_jack_session_uuid.toAscii().constData());
+                        global_jack_session_uuid.toUtf8().constData());
 #else
 	    m_jack_client = jack_client_open(PACKAGE, JackNullOption, NULL );
 #endif
@@ -1230,7 +1230,7 @@ bool MidiPerformance::jack_session_event()
     MidiFile f(fname);
     f.write(this);
 
-    m_jsession_ev->command_line = strdup( cmd.toAscii().constData() );
+    m_jsession_ev->command_line = strdup( cmd.toUtf8().constData() );
 
     jack_session_reply( m_jack_client, m_jsession_ev );
 

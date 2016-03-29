@@ -68,7 +68,7 @@ MidiFile::read_var ()
 bool MidiFile::parse (MidiPerformance * a_perf, int a_screen_set)
 {
     /* open binary file */
-    ifstream file(m_name.toAscii().constData(), ios::in | ios::binary | ios::ate);
+    ifstream file(m_name.toUtf8().constData(), ios::in | ios::binary | ios::ate);
 
     if (!file.is_open ()) {
         fprintf(stderr, "Error opening MIDI file\n");
@@ -652,7 +652,7 @@ bool MidiFile::write (MidiPerformance * a_perf)
     }
 
     /* open binary file */
-    ofstream file (m_name.toAscii().constData(), ios::out | ios::binary | ios::trunc);
+    ofstream file (m_name.toUtf8().constData(), ios::out | ios::binary | ios::trunc);
 
     if (!file.is_open ())
         return false;

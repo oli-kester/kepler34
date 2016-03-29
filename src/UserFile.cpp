@@ -11,7 +11,7 @@ UserFile::parse( MidiPerformance *a_perf )
 {
 
     /* open binary file */
-    ifstream file ( m_name.toAscii().constData(), ios::in | ios::ate );
+    ifstream file ( m_name.toUtf8().constData(), ios::in | ios::ate );
 
     if( ! file.is_open() )
         return false;

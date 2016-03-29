@@ -121,7 +121,8 @@ int main(int argc, char *argv[])
     m_qdir.setPath(config_dir);
 
     if (!m_qdir.exists()) {
-        printf( "No config directory detected. Creating ... [%s]\n", config_dir.toAscii().constData());
+        qDebug() << "No config directory detected. Creating ... ["
+                 << config_dir << "]" << endl;
         m_qdir.mkdir(config_dir);
     }
 
@@ -134,13 +135,13 @@ int main(int argc, char *argv[])
         QFile m_qfile(total_file);
         if (m_qfile.exists())
         {
-            printf( "Reading [%s]\n", total_file.toAscii().constData());
+            qDebug() << "Reading [" << total_file << "]" << endl;
 
             PreferencesFile options( total_file );
             UserFile user( total_file );
 
             if ( !options.parse( &p ) || !user.parse( &p )){
-                printf( "Error Reading [%s]\n", total_file.toAscii().constData());
+                qDebug() << "Error Reading [" << total_file << "]" << endl;
             }
         }
     }
@@ -298,12 +299,12 @@ int main(int argc, char *argv[])
     {
         string home( getenv( HOME ));
         QString total_file = config_dir + config_filename;
-        printf( "Writing [%s]\n", total_file.toAscii().constData());
+        qDebug() << "Writing [" << total_file << "]" << endl;
 
         PreferencesFile options( total_file );
 
         if (!options.write( &p))
-            printf( "Error writing [%s]\n", total_file.toAscii().constData());
+            qDebug() << "Error writing [" << total_file << "]" << endl;
     }
     else
     {
