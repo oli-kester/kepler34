@@ -26,8 +26,8 @@ public:
     int getBeatsPerMeasure() const;
     void setBeatsPerMeasure(int beats_per_measure);
     
-    int getbeatWidth() const;
-    void setbeatWidth(int beat_width);
+    int getBeatWidth() const;
+    void setBeatWidth(int beat_width);
     
 protected:
     //override painting event to draw on the frame

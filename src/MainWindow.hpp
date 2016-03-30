@@ -52,6 +52,7 @@ private slots:
     void startPlaying();
     void stopPlaying();
     void setRecording(bool record);
+    void updateBpm(int newBpm);
     void showOpenFileDialog();
     void redraw(); //redraw certain GUI elements
 };

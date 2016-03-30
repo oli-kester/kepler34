@@ -64,6 +64,11 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
                      this,
                      SLOT(setRecording(bool)));
 
+    QObject::connect(ui->spinBpm,
+                     SIGNAL(valueChanged(int)),
+                     this,
+                     SLOT(updateBpm(int)));
+
     show();
 }
 
@@ -100,9 +105,15 @@ void MainWindow::setRecording(bool record)
     qDebug() << "Set recording - " << record << endl;
 }
 
+void MainWindow::updateBpm(int newBpm)
+{
+    m_main_perf->set_bpm(newBpm);
+    m_modified = true;
+}
+
 void MainWindow::showOpenFileDialog()
 {
-    //TODO check if file is saved before opening new
+    //TODO check if file is saved before opening anew
 
     QFileDialog dialog(this);
     QString file;
