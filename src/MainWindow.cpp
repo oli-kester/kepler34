@@ -38,6 +38,12 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_timer->start();
 
     //connect GUI elements to handlers
+
+    QObject::connect(ui->actionNew,
+                     SIGNAL(triggered(bool)),
+                     this,
+                     SLOT(newFile()));
+
     QObject::connect(ui->actionOpen,
                      SIGNAL(triggered(bool)),
                      this,
@@ -196,4 +202,29 @@ void MainWindow::updateWindowTitle()
 void MainWindow::redraw()
 {
     m_beat_ind->update();
+}
+
+bool MainWindow::saveCheck()
+{
+    bool result = false;
+
+    if (m_modified) {
+        int choice = query_save_changes();
+        switch (choice) {
+            case Gtk::RESPONSE_YES:
+                if (save_file())
+                    result = true;
+                break;
+            case Gtk::RESPONSE_NO:
+                result = true;
+                break;
+            case Gtk::RESPONSE_CANCEL:
+            default:
+                break;
+        }
+    }
+    else
+        result = true;
+
+    return result;
 }

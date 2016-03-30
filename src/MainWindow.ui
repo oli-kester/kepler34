@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
+    <width>800</width>
     <height>450</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>700</width>
+    <width>800</width>
     <height>450</height>
    </size>
   </property>
@@ -43,7 +43,7 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>681</width>
+      <width>781</width>
       <height>411</height>
      </rect>
     </property>
@@ -80,7 +80,7 @@
        <rect>
         <x>9</x>
         <y>9</y>
-        <width>661</width>
+        <width>761</width>
         <height>361</height>
        </rect>
       </property>
@@ -106,7 +106,7 @@
        <rect>
         <x>9</x>
         <y>9</y>
-        <width>661</width>
+        <width>761</width>
         <height>361</height>
        </rect>
       </property>
@@ -132,7 +132,7 @@
        <rect>
         <x>9</x>
         <y>9</y>
-        <width>661</width>
+        <width>761</width>
         <height>361</height>
        </rect>
       </property>
@@ -147,9 +147,9 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>520</x>
       <y>-3</y>
-      <width>274</width>
+      <width>270</width>
       <height>29</height>
      </rect>
     </property>
@@ -234,7 +234,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btnPlay_2">
+        <widget class="QPushButton" name="btnSongPlay">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -346,7 +346,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>700</width>
+     <width>800</width>
      <height>27</height>
     </rect>
    </property>

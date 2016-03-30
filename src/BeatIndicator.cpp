@@ -25,17 +25,16 @@ void BeatIndicator::paintEvent(QPaintEvent *)
 
     m_painter->setPen(Qt::black);
 
+    //beat indicator calculations from seq24
 //    int tick_x = ((tick % c_ppqn) * (c_mainwid_x - 1) ) / c_ppqn;
 //    int bar_x = (((tick / 16) % c_ppqn) * 4) / c_ppqn;
 
     //TODO refactor this equation
     int metro = ((((tick / getBeatsPerMeasure()) % c_ppqn) * getBeatWidth()) / c_ppqn) + 1;
 
-//    int metro = ((tick / 1000) % getBeatsPerMeasure()) + 1;
-
     m_painter->drawText(5, 20, QString::number(metro));
 
-    qDebug() << "BeatIndicator, paintEvent, Current tick: " << tick << endl;
+//    qDebug() << "BeatIndicator, paintEvent, Current tick: " << tick << endl;
 }
 
 int BeatIndicator::getBeatWidth() const

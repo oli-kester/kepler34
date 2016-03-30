@@ -26,12 +26,22 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+
     explicit MainWindow(QWidget *parent = 0, MidiPerformance *a_p = 0);
     ~MainWindow();
 
 private:
+
+    //check if the file has been modified.
+    //if modified, ask the user whether to save changes
+    bool saveCheck();
+
+    //open the file at the given path
     void openMidiFile(const QString& path);
+
+    //update window title from the global filename
     void updateWindowTitle();
+
 
     Ui::MainWindow      *ui;
 
@@ -46,14 +56,25 @@ private:
     BeatIndicator       *m_beat_ind;
     PreferencesDialog   *m_prefs_dialog;
 
+
     bool                 m_modified;
 
 private slots:
+
+    //TODO recent files function
     void startPlaying();
     void stopPlaying();
     void setRecording(bool record);
     void updateBpm(int newBpm);
+    void updateShownSet(int newSet);
+    void updateSetName(QString newName);
+    void newFile();
+    void saveFile();
+    void saveFileAs();
+    void showImportDialog();
     void showOpenFileDialog();
+    void showAboutDialog();
+    void showAboutQtDialog();
     void redraw(); //redraw certain GUI elements
 };
 
