@@ -12,18 +12,15 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
     m_modified = false;
 
-    m_error_dialog = new QErrorMessage(this);
-
+    m_error_message = new QErrorMessage(this);
+    m_message_box = new QMessageBox(this);
     m_prefs_dialog = new PreferencesDialog(this);
-
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     m_song_frame = new SongFrame(ui->SongTab);
     m_edit_frame = new EditFrame(ui->EditTab);
-
     m_beat_ind = new BeatIndicator(this, m_main_perf, 4, 4);
     
     ui->layoutTransport->addWidget(m_beat_ind);
-
     ui->LiveTabLayout->addWidget(m_live_frame);
     ui->SongTabLayout->addWidget(m_song_frame);
     ui->EditTabLayout->addWidget(m_edit_frame);
@@ -38,7 +35,6 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_timer->start();
 
     //connect GUI elements to handlers
-
     QObject::connect(ui->actionNew,
                      SIGNAL(triggered(bool)),
                      this,
@@ -150,8 +146,8 @@ void MainWindow::openMidiFile(const QString &path)
     if (!result) {
         //TODO error
         QString m_error_msg = "Error reading MIDI data from file: " + path;
-        m_error_dialog->showMessage(m_error_msg);
-        m_error_dialog->exec();
+        m_error_msg->showMessage(m_error_msg);
+        m_error_msg->exec();
         return;
     }
 
@@ -211,14 +207,14 @@ bool MainWindow::saveCheck()
     if (m_modified) {
         int choice = query_save_changes();
         switch (choice) {
-            case Gtk::RESPONSE_YES:
+            case SAVECHOICES::save:
                 if (save_file())
                     result = true;
                 break;
-            case Gtk::RESPONSE_NO:
+            case SAVECHOICES::discard:
                 result = true;
                 break;
-            case Gtk::RESPONSE_CANCEL:
+            case SAVECHOICES::cancel:
             default:
                 break;
         }

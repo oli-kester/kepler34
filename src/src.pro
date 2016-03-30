@@ -29,8 +29,7 @@ SOURCES +=\
     OptionsFile.cpp \
     UserFile.cpp \
     MidiPerformance.cpp \
-    BeatIndicator.cpp \
-    SaveChangesDialog.cpp
+    BeatIndicator.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -51,16 +50,14 @@ HEADERS  += \
     MidiFile.hpp \
     OptionsFile.hpp \
     MidiPerformance.hpp \
-    BeatIndicator.hpp \
-    SaveChangesDialog.hpp
+    BeatIndicator.hpp
 
 FORMS    += \
     MainWindow.ui \
     LiveFrame.ui \
     SongFrame.ui \
     EditFrame.ui \
-    PreferencesDialog.ui \
-    SaveChangesDialog.ui
+    PreferencesDialog.ui
 
 RESOURCES += \
     kepler34.qrc
