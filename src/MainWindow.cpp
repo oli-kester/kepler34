@@ -12,9 +12,15 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
     m_modified = false;
 
-    m_error_message = new QErrorMessage(this);
-    m_message_box = new QMessageBox(this);
-    m_prefs_dialog = new PreferencesDialog(this);
+    m_msg_error = new QErrorMessage(this);
+
+    m_msg_save_changes = new QMessageBox(this);
+    m_msg_save_changes->setText(tr("Unsaved changes detected."));
+    m_msg_save_changes->setInformativeText(tr("Do you want to save them?"));
+    m_msg_save_changes->setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    m_msg_save_changes->setDefaultButton(QMessageBox::Save);
+
+    m_dialog_prefs = new PreferencesDialog(this);
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     m_song_frame = new SongFrame(ui->SongTab);
     m_edit_frame = new EditFrame(ui->EditTab);
@@ -47,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
     QObject::connect(ui->actionPreferences,
                      SIGNAL(triggered(bool)),
-                     m_prefs_dialog,
+                     m_dialog_prefs,
                      SLOT(show()));
 
 
@@ -144,10 +150,9 @@ void MainWindow::openMidiFile(const QString &path)
     m_modified = !result;
 
     if (!result) {
-        //TODO error
-        QString m_error_msg = "Error reading MIDI data from file: " + path;
-        m_error_msg->showMessage(m_error_msg);
-        m_error_msg->exec();
+        QString msg_text = "Error reading MIDI data from file: " + path;
+        m_msg_error->showMessage(msg_text);
+        m_msg_error->exec();
         return;
     }
 
@@ -161,7 +166,7 @@ void MainWindow::openMidiFile(const QString &path)
     updateWindowTitle();
 
     //    add to recent files list
-    m_prefs_dialog->addRecentFile(path);
+    m_dialog_prefs->addRecentFile(path);
 
     //update recent menu
     //    redraw_menu();
@@ -205,22 +210,96 @@ bool MainWindow::saveCheck()
     bool result = false;
 
     if (m_modified) {
-        int choice = query_save_changes();
+        int choice = m_msg_save_changes->exec();
         switch (choice) {
-            case SAVECHOICES::save:
-                if (save_file())
-                    result = true;
-                break;
-            case SAVECHOICES::discard:
+        case QMessageBox::Save:
+            if (saveFile())
                 result = true;
-                break;
-            case SAVECHOICES::cancel:
-            default:
-                break;
+            break;
+        case QMessageBox::Discard:
+            result = true;
+            break;
+        case QMessageBox::Cancel:
+        default:
+            break;
         }
     }
     else
         result = true;
 
     return result;
+}
+
+void MainWindow::updateShownSet(int newSet)
+{
+
+}
+
+void MainWindow::updateSetName(QString newName)
+{
+
+}
+
+void MainWindow::newFile()
+{
+    if (saveCheck())
+    {
+        m_main_perf->clear_all();
+
+        //TODO reinstate these
+//        m_main_wid->reset();
+//        m_entry_notes->set_text( * m_mainperf->get_screen_set_notepad(
+//                                     m_mainperf->get_screenset() ));
+
+        global_filename = "";
+        updateWindowTitle();
+        m_modified = false;
+    }
+}
+
+bool MainWindow::saveFile()
+{
+    bool result = false;
+
+    if (global_filename == "") {
+        saveFileAs();
+        return true;
+    }
+
+    MidiFile f(global_filename);
+    result = f.write(m_main_perf);
+
+    if (!result) {
+        m_msg_error->showMessage("Error writing file.");
+        m_msg_error->exec();
+    } else {
+        /* add to recent files list */
+        m_dialog_prefs->addRecentFile(global_filename);
+        /* update recent menu */
+        //TODO reinstate this
+        //        redraw_menu();
+    }
+    m_modified = !result;
+    return result;
+
+}
+
+void MainWindow::saveFileAs()
+{
+
+}
+
+void MainWindow::showImportDialog()
+{
+
+}
+
+void MainWindow::showAboutDialog()
+{
+
+}
+
+void MainWindow::showAboutQtDialog()
+{
+
 }

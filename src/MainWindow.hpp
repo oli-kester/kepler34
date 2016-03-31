@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QErrorMessage>
 #include <QTimer>
+#include <QMessageBox>
 
 #include "LiveFrame.hpp"
 #include "SongFrame.hpp"
@@ -49,12 +50,13 @@ private:
     SongFrame           *m_song_frame;
     EditFrame           *m_edit_frame;
 
-    QErrorMessage       *m_error_dialog;
+    QErrorMessage       *m_msg_error;
+    QMessageBox         *m_msg_save_changes;
     QTimer              *m_timer;
 
     MidiPerformance     *m_main_perf;
     BeatIndicator       *m_beat_ind;
-    PreferencesDialog   *m_prefs_dialog;
+    PreferencesDialog   *m_dialog_prefs;
 
 
     bool                 m_modified;
@@ -69,7 +71,7 @@ private slots:
     void updateShownSet(int newSet);
     void updateSetName(QString newName);
     void newFile();
-    void saveFile();
+    bool saveFile();
     void saveFileAs();
     void showImportDialog();
     void showOpenFileDialog();
