@@ -189,15 +189,13 @@ void MainWindow::openMidiFile(const QString &path)
 
     updateWindowTitle();
 
-    //    add to recent files list
+    //add to recent files list
     m_dialog_prefs->addRecentFile(path);
 
     //update recent menu
     //    redraw_menu();
 
-    //    m_main_wid->reset();
-    //    m_entry_notes->set_text(*m_mainperf->get_screen_set_notepad(
-    //                m_mainperf->get_screenset()));
+    m_live_frame->redraw();
     ui->spinBpm->setValue(m_main_perf->get_bpm());
 }
 
@@ -261,9 +259,9 @@ void MainWindow::newFile()
         m_main_perf->clear_all();
 
         //TODO reinstate these
-//        m_main_wid->reset();
-//        m_entry_notes->set_text( * m_mainperf->get_screen_set_notepad(
-//                                     m_mainperf->get_screenset() ));
+        //        m_main_wid->reset();
+        //        m_entry_notes->set_text( * m_mainperf->get_screen_set_notepad(
+        //                                     m_mainperf->get_screenset() ));
 
         global_filename = "";
         updateWindowTitle();

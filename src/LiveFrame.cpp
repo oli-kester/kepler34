@@ -106,10 +106,7 @@ void LiveFrame::drawAllSequences()
 }
 
 void LiveFrame::setBank(int newBank)
-{
-    QString bankName = (*m_main_perf->getBankName(newBank)).c_str();
-    ui->txtBankName->setPlainText(bankName);
-    
+{    
     m_bank = newBank;
     
     if (m_bank < 0)
@@ -119,6 +116,9 @@ void LiveFrame::setBank(int newBank)
         m_bank = 0;
     
     m_main_perf->set_offset(m_bank);
+
+    QString bankName = (*m_main_perf->getBankName(newBank)).c_str();
+    ui->txtBankName->setPlainText(bankName);
     
     redraw();
     
@@ -144,11 +144,17 @@ void LiveFrame::updateBank(int newBank)
 
 void LiveFrame::updateBankName()
 {
-    string *newName = new string(
-                ui->txtBankName->document()->toPlainText().toStdString());
-
-    m_main_perf->setBankName(m_main_perf->getBank(),
-                             newName);
-
+    banknameConvertDisplay();
     m_main_perf->setModified(true);
+}
+
+void LiveFrame::banknameConvertDisplay()
+{
+    string newName =
+                ui->txtBankName->document()->toPlainText().toStdString();
+
+    qDebug() << "LiveFrame.cpp, New bank name is - "
+             << QString(newName.c_str()) << endl;
+
+    m_main_perf->setBankName(m_bank, m_main_perf->getBankName(m_bank));
 }

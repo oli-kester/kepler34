@@ -19,13 +19,15 @@ public:
     explicit LiveFrame(QWidget *parent = 0, MidiPerformance *perf = 0);
     ~LiveFrame();
 
+    //redraw frame contents
+    void redraw();
+
+    //set bank of sequences displayed
     void setBank(int newBank);
 
 protected:
     //override painting event to draw on the frame
     void paintEvent(QPaintEvent *event);
-    //redraw frame contents
-    void redraw();
 
 private:
     //draw a single sequence thumbnail at index
@@ -33,6 +35,10 @@ private:
 
     //draw all sequences
     void drawAllSequences();
+
+    //used to grab std::string bank name and
+    //convert it to QString for display
+    void banknameConvertDisplay();
 
     Ui::LiveFrame *ui;
 
