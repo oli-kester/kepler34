@@ -46,10 +46,35 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
                      this,
                      SLOT(newFile()));
 
+    QObject::connect(ui->actionSave,
+                     SIGNAL(triggered(bool)),
+                     this,
+                     SLOT(saveFile()));
+
+    QObject::connect(ui->actionSave_As,
+                     SIGNAL(triggered(bool)),
+                     this,
+                     SLOT(saveFileAs()));
+
+    QObject::connect(ui->actionImport_MIDI,
+                     SIGNAL(triggered(bool)),
+                     this,
+                     SLOT(showImportDialog()));
+
     QObject::connect(ui->actionOpen,
                      SIGNAL(triggered(bool)),
                      this,
                      SLOT(showOpenFileDialog()));
+
+    QObject::connect(ui->actionAbout,
+                     SIGNAL(triggered(bool)),
+                     this,
+                     SLOT(showAboutDialog()));
+
+    QObject::connect(ui->actionAbout_Qt,
+                     SIGNAL(triggered(bool)),
+                     this,
+                     SLOT(showAboutQtDialog()));
 
     QObject::connect(ui->actionPreferences,
                      SIGNAL(triggered(bool)),
@@ -76,6 +101,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
                      SIGNAL(valueChanged(int)),
                      this,
                      SLOT(updateBpm(int)));
+
 
     show();
 }
@@ -122,8 +148,6 @@ void MainWindow::updateBpm(int newBpm)
 void MainWindow::showOpenFileDialog()
 {
     //TODO check if file is saved before opening anew
-
-    QFileDialog dialog(this);
     QString file;
 
     file = QFileDialog::getOpenFileName(
@@ -266,8 +290,8 @@ bool MainWindow::saveFile()
         return true;
     }
 
-    MidiFile f(global_filename);
-    result = f.write(m_main_perf);
+    MidiFile file(global_filename);
+    result = file.write(m_main_perf);
 
     if (!result) {
         m_msg_error->showMessage("Error writing file.");
@@ -286,9 +310,33 @@ bool MainWindow::saveFile()
 
 void MainWindow::saveFileAs()
 {
+    QString file;
 
+    file = QFileDialog::getSaveFileName(
+                this,
+                tr("Save MIDI file as..."),
+                last_used_dir,
+                tr("MIDI files (*.midi *.mid);;"
+                   "All files (*)")
+                );
+
+    if (!file.isEmpty())
+    {
+        QFileInfo fileInfo(file);
+        QString suffix = fileInfo.completeSuffix();
+
+        if ((suffix != "midi") && (suffix != "mid"))
+        {
+            file += ".midi";
+        }
+
+        global_filename = file;
+        updateWindowTitle();
+        saveFile();
+    }
 }
 
+//TODO
 void MainWindow::showImportDialog()
 {
 
