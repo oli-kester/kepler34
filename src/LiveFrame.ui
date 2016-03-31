@@ -78,7 +78,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="plainTextEdit">
+       <widget class="QPlainTextEdit" name="txtBankName">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -135,7 +135,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="spinBox_4">
+       <widget class="QSpinBox" name="spinBank">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -160,7 +160,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>spinBox_4</sender>
+   <sender>spinBank</sender>
    <signal>valueChanged(int)</signal>
    <receiver>stackedWidget</receiver>
    <slot>setCurrentIndex(int)</slot>

@@ -273,7 +273,7 @@ void MidiPerformance::clear_all()
     string e( "" );
 
     for (int i=0; i<c_max_sets; i++ ){
-        set_screen_set_notepad( i, &e );
+        setBankName( i, &e );
     }
 }
 
@@ -611,6 +611,16 @@ MasterMidiBus* MidiPerformance::get_master_midi_bus( )
     return &m_master_bus;
 }
 
+bool MidiPerformance::getModified()
+{
+    return m_modified;
+}
+
+void MidiPerformance::setModified(bool modified)
+{
+    m_modified = modified;
+}
+
 void MidiPerformance::set_running( bool a_running )
 {
     m_running = a_running;
@@ -702,22 +712,22 @@ void MidiPerformance::print()
 }
 
 
-void MidiPerformance::set_screen_set_notepad( int a_screen_set, string *a_notepad )
+void MidiPerformance::setBankName(int bankNum, string *a_notepad )
 {
-    if ( a_screen_set < c_max_sets )
-        m_screen_set_notepad[a_screen_set] = *a_notepad;
+    if ( bankNum < c_max_sets )
+        m_screen_set_notepad[bankNum] = *a_notepad;
 }
 
 
-string * MidiPerformance::get_screen_set_notepad( int a_screen_set )
+string *MidiPerformance::getBankName(int bank_num )
 {
-    return &m_screen_set_notepad[a_screen_set];
+    return &m_screen_set_notepad[bank_num];
 }
 
 
-void MidiPerformance::set_screenset( int a_ss )
+void MidiPerformance::setBank(int newBank )
 {
-    m_screen_set = a_ss;
+    m_screen_set = newBank;
 
     if ( m_screen_set < 0 )
         m_screen_set = c_max_sets - 1;
@@ -727,13 +737,13 @@ void MidiPerformance::set_screenset( int a_ss )
 }
 
 
-int MidiPerformance::get_screenset()
+int MidiPerformance::getBank()
 {
     return m_screen_set;
 }
 
 
-void MidiPerformance::  set_playing_screenset ()
+void MidiPerformance::  setPlayingBank ()
 {
     for (int j, i = 0; i < c_seqs_in_set; i++) {
         j = i + m_playing_screen * c_seqs_in_set;
@@ -747,7 +757,7 @@ void MidiPerformance::  set_playing_screenset ()
 }
 
 
-int MidiPerformance::get_playing_screenset ()
+int MidiPerformance::getPlayingBank ()
 {
     return m_playing_screen;
 }
@@ -1836,12 +1846,12 @@ void MidiPerformance::handle_midi_control( int a_control, bool a_state )
 
         case c_midi_control_ss_up:
             //printf ( "ss up\n" );
-            set_screenset( get_screenset() + 1 );
+            setBank( getBank() + 1 );
             break;
 
         case c_midi_control_ss_dn:
             //printf ( "ss dn\n" );
-            set_screenset( get_screenset() - 1 );
+            setBank( getBank() - 1 );
             break;
 
         case c_midi_control_mod_replace:
@@ -1886,7 +1896,7 @@ void MidiPerformance::handle_midi_control( int a_control, bool a_state )
 
         case c_midi_control_play_ss:
             //printf ( "play_ss\n" );
-            set_playing_screenset();
+            setPlayingBank();
             break;
 
         default:

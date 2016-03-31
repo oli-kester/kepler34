@@ -8,8 +8,19 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     m_main_perf(perf)
 {
     ui->setupUi(this);
+    
+    setBank(0);
 
-    m_screenset = 0;
+    QObject::connect(ui->spinBank,
+                     SIGNAL(valueChanged(int)),
+                     this,
+                     SLOT(updateBank(int)));
+    
+    QObject::connect(ui->txtBankName,
+                     SIGNAL(textChanged()),
+                     this,
+                     SLOT(updateBankName()));
+
 }
 
 void LiveFrame::paintEvent(QPaintEvent *)
@@ -24,17 +35,17 @@ LiveFrame::~LiveFrame()
 
 void LiveFrame::drawSequence(int a_seq)
 {
-    if ( a_seq >= (m_screenset  * c_mainwnd_rows * c_mainwnd_cols ) &&
-         a_seq <  ((m_screenset + 1)  * c_mainwnd_rows * c_mainwnd_cols )){
-
+    if ( a_seq >= (m_bank  * c_mainwnd_rows * c_mainwnd_cols ) &&
+         a_seq <  ((m_bank + 1)  * c_mainwnd_rows * c_mainwnd_cols )){
+        
         int i =  (a_seq / c_mainwnd_rows) % c_mainwnd_cols;
         int j =  a_seq % c_mainwnd_rows;
-
+        
         int base_x = (c_mainwid_border +
                       (c_seqarea_x + c_mainwid_spacing) * i);
         int base_y = (c_mainwid_border +
                       (c_seqarea_y + c_mainwid_spacing) * j);
-
+        
         //draw outline of this seq thumbnail
         m_painter = new QPainter(this);
         rect = new QRect(base_x,
@@ -42,11 +53,11 @@ void LiveFrame::drawSequence(int a_seq)
                          c_seqarea_x,
                          c_seqarea_y);
         m_painter->drawRect(*rect);
-
+        
         if (m_main_perf->is_active(a_seq))
         {
             MidiSequence *seq = m_main_perf->get_sequence(a_seq);
-
+            
             //set foreground/background colours based on seq's play state
             if (seq->get_playing())
             {
@@ -60,7 +71,7 @@ void LiveFrame::drawSequence(int a_seq)
                 m_background = new QPen(Qt::white);
                 m_foreground = new QPen(Qt::black);
             }
-
+            
             //draw background of thumbnail
             rect = new QRect(base_x + 1,
                              base_y + 1,
@@ -68,12 +79,12 @@ void LiveFrame::drawSequence(int a_seq)
                              c_seqarea_y - 2 );
             m_painter->setPen(*m_background);
             m_painter->drawRect(*rect);
-
+            
             //write seq data strings on thumbnail
             m_painter->setPen(*m_foreground);
             char name[20];
             snprintf( name, sizeof name, "%.13s", seq->get_name() );
-
+            
             m_painter->drawText(base_x + c_text_x,
                                 base_y + 4,
                                 80,
@@ -87,9 +98,57 @@ void LiveFrame::drawSequence(int a_seq)
 void LiveFrame::drawAllSequences()
 {
     for (int i=0; i < (c_mainwnd_rows * c_mainwnd_cols); i++){
-
-        drawSequence(i + (m_screenset * c_mainwnd_rows * c_mainwnd_cols));
-
-        m_last_tick_x[i + (m_screenset * c_mainwnd_rows * c_mainwnd_cols)] = 0;
+        
+        drawSequence(i + (m_bank * c_mainwnd_rows * c_mainwnd_cols));
+        
+        m_last_tick_x[i + (m_bank * c_mainwnd_rows * c_mainwnd_cols)] = 0;
     }
+}
+
+void LiveFrame::setBank(int newBank)
+{
+    QString bankName = (*m_main_perf->getBankName(newBank)).c_str();
+    ui->txtBankName->setPlainText(bankName);
+    
+    m_bank = newBank;
+    
+    if (m_bank < 0)
+        m_bank = c_max_sets - 1;
+    
+    if (m_bank >= c_max_sets)
+        m_bank = 0;
+    
+    m_main_perf->set_offset(m_bank);
+    
+    redraw();
+    
+    qDebug() << "Newly selected bank" << endl
+             << "Name - " << bankName << endl
+             << "ID - " << m_bank << endl;
+    
+}
+
+void LiveFrame::redraw()
+{
+    drawAllSequences();
+}
+
+void LiveFrame::updateBank(int newBank)
+{
+    setBank(newBank);
+
+    m_main_perf->setBank(newBank);
+
+    m_main_perf->setModified(true);
+}
+
+void LiveFrame::updateBankName()
+{
+    string *newName = new string(
+                ui->txtBankName->document()->toPlainText().toStdString());
+
+    m_main_perf->setBankName(m_main_perf->getBank(),
+                             newName);
+
+    m_main_perf->setModified(true);
 }

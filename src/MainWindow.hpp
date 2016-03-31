@@ -58,7 +58,7 @@ private:
     BeatIndicator       *m_beat_ind;
     PreferencesDialog   *m_dialog_prefs;
 
-
+    //TODO fully move this into main performance
     bool                 m_modified;
 
 private slots:
@@ -68,8 +68,6 @@ private slots:
     void stopPlaying();
     void setRecording(bool record);
     void updateBpm(int newBpm);
-    void updateShownSet(int newSet);
-    void updateSetName(QString newName);
     void newFile();
     bool saveFile();
     void saveFileAs();
@@ -77,7 +75,7 @@ private slots:
     void showOpenFileDialog();
     void showAboutDialog();
     void showAboutQtDialog();
-    void redraw(); //redraw certain GUI elements
+    void refresh(); //redraw certain GUI elements
 };
 
 #endif // MAINWINDOW_HPP

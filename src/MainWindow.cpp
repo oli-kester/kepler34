@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     QObject::connect(m_timer,
                      SIGNAL(timeout()),
                      this,
-                     SLOT(redraw()));
+                     SLOT(refresh()));
     m_timer->start();
 
     //connect GUI elements to handlers
@@ -224,7 +224,7 @@ void MainWindow::updateWindowTitle()
 
 }
 
-void MainWindow::redraw()
+void MainWindow::refresh()
 {
     m_beat_ind->update();
 }
@@ -252,16 +252,6 @@ bool MainWindow::saveCheck()
         result = true;
 
     return result;
-}
-
-void MainWindow::updateShownSet(int newSet)
-{
-
-}
-
-void MainWindow::updateSetName(QString newName)
-{
-
 }
 
 void MainWindow::newFile()

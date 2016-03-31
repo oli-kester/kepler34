@@ -119,6 +119,8 @@ class MidiPerformance
     //TODO replace with enum
     bool m_playback_mode;
 
+    bool m_modified;
+
     int thread_trigger_width_ms;
 
     long m_left_tick;
@@ -256,14 +258,14 @@ class MidiPerformance
 
     void handle_midi_control( int a_control, bool a_state );
 
-    void set_screen_set_notepad( int a_screen_set, string *a_note );
-    string *get_screen_set_notepad( int a_screen_set );
+    void setBankName( int bankNum, string *a_note );
+    string *getBankName( int bank_num );
 
-    void set_screenset( int a_ss );
-    int  get_screenset();
+    void setBank( int newBank );
+    int  getBank();
 
-    void set_playing_screenset();
-    int get_playing_screenset();
+    void setPlayingBank();
+    int getPlayingBank();
 
     void mute_group_tracks ();
     void select_and_mute_group (int a_g_group);
@@ -342,6 +344,8 @@ class MidiPerformance
     void save_playing_state();
     void restore_playing_state();
 
+    bool getModified();
+    void setModified(bool modified);
 
     const std::map<unsigned int,long> *get_key_events(void) const { return &key_events; }
     const std::map<unsigned int,long> *get_key_groups(void) const { return &key_groups; }

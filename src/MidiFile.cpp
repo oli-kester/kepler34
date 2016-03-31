@@ -492,7 +492,7 @@ bool MidiFile::parse (MidiPerformance * a_perf, int a_screen_set)
                 for (unsigned int i = 0; i < len; i++)
                     notess += read_byte();
 
-                a_perf->set_screen_set_notepad (x, &notess);
+                a_perf->setBankName (x, &notess);
             }
         }
     }
@@ -626,7 +626,7 @@ bool MidiFile::write (MidiPerformance * a_perf)
 
     for (int i = 0; i < c_max_sets; i++)
     {
-        string * note = a_perf->get_screen_set_notepad (i);
+        string * note = a_perf->getBankName (i);
         write_short (note->length ());
 
         for (unsigned int j = 0; j < note->length (); j++)
