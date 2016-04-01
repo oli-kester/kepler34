@@ -25,6 +25,7 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
 
 void LiveFrame::paintEvent(QPaintEvent *)
 {
+    drawBackground();
     drawAllSequences();
 }
 
@@ -35,8 +36,8 @@ LiveFrame::~LiveFrame()
 
 void LiveFrame::drawSequence(int a_seq)
 {
-    if ( a_seq >= (m_bank  * c_mainwnd_rows * c_mainwnd_cols ) &&
-         a_seq <  ((m_bank + 1)  * c_mainwnd_rows * c_mainwnd_cols )){
+    if ( a_seq >= (m_bank_id  * c_mainwnd_rows * c_mainwnd_cols ) &&
+         a_seq <  ((m_bank_id + 1)  * c_mainwnd_rows * c_mainwnd_cols )){
         
         int i =  (a_seq / c_mainwnd_rows) % c_mainwnd_cols;
         int j =  a_seq % c_mainwnd_rows;
@@ -99,23 +100,23 @@ void LiveFrame::drawAllSequences()
 {
     for (int i=0; i < (c_mainwnd_rows * c_mainwnd_cols); i++){
         
-        drawSequence(i + (m_bank * c_mainwnd_rows * c_mainwnd_cols));
+        drawSequence(i + (m_bank_id * c_mainwnd_rows * c_mainwnd_cols));
         
-        m_last_tick_x[i + (m_bank * c_mainwnd_rows * c_mainwnd_cols)] = 0;
+        m_last_tick_x[i + (m_bank_id * c_mainwnd_rows * c_mainwnd_cols)] = 0;
     }
 }
 
 void LiveFrame::setBank(int newBank)
 {    
-    m_bank = newBank;
+    m_bank_id = newBank;
     
-    if (m_bank < 0)
-        m_bank = c_max_sets - 1;
+    if (m_bank_id < 0)
+        m_bank_id = c_max_sets - 1;
     
-    if (m_bank >= c_max_sets)
-        m_bank = 0;
+    if (m_bank_id >= c_max_sets)
+        m_bank_id = 0;
     
-    m_main_perf->set_offset(m_bank);
+    m_main_perf->set_offset(m_bank_id);
 
     QString bankName = (*m_main_perf->getBankName(newBank)).c_str();
     ui->txtBankName->setPlainText(bankName);
@@ -124,7 +125,7 @@ void LiveFrame::setBank(int newBank)
     
     qDebug() << "Newly selected bank" << endl
              << "Name - " << bankName << endl
-             << "ID - " << m_bank << endl;
+             << "ID - " << m_bank_id << endl;
     
 }
 
@@ -151,10 +152,159 @@ void LiveFrame::updateBankName()
 void LiveFrame::banknameConvertDisplay()
 {
     string newName =
-                ui->txtBankName->document()->toPlainText().toStdString();
+            ui->txtBankName->document()->toPlainText().toStdString();
 
     qDebug() << "LiveFrame.cpp, New bank name is - "
              << QString(newName.c_str()) << endl;
 
-    m_main_perf->setBankName(m_bank, m_main_perf->getBankName(m_bank));
+    m_main_perf->setBankName(m_bank_id, m_main_perf->getBankName(m_bank_id));
+}
+
+void LiveFrame::drawBackground()
+{
+    //    m_painter = new QPainter(this);
+
+    //    rect = new QRect(0,
+    //                     0,
+    //                     c_mainwid_x,
+    //                     c_mainwid_y);
+
+    //    m_painter->setPen(Qt::black);
+
+    //    m_painter->drawRect(*rect);
+}
+
+int LiveFrame::seqIDFromClickXY(int click_x, int click_y)
+{
+    /* adjust for border */
+    int x = click_x - c_mainwid_border;
+    int y = click_y - c_mainwid_border;
+
+    /* is it in the box ? */
+    if ( x < 0
+         || x >= ((c_seqarea_x + c_mainwid_spacing ) * c_mainwnd_cols )
+         || y < 0
+         || y >= ((c_seqarea_y + c_mainwid_spacing ) * c_mainwnd_rows )){
+
+        return -1;
+    }
+
+    /* gives us in box corrdinates */
+    int box_test_x = x % (c_seqarea_x + c_mainwid_spacing);
+    int box_test_y = y % (c_seqarea_y + c_mainwid_spacing);
+
+    /* right inactive side of area */
+    if ( box_test_x > c_seqarea_x
+         || box_test_y > c_seqarea_y ){
+
+        return -1;
+    }
+
+    x /= (c_seqarea_x + c_mainwid_spacing);
+    y /= (c_seqarea_y + c_mainwid_spacing);
+
+    int seqId =  ( (x * c_mainwnd_rows + y)
+                   + ( m_bank_id * c_mainwnd_rows * c_mainwnd_cols ));
+
+    return seqId;
+
+}
+
+void LiveFrame::mousePressEvent(QMouseEvent *event)
+{
+    m_current_seq = seqIDFromClickXY(
+                event->x(), event->y());
+
+    if ( m_current_seq != -1
+         && event->button() == Qt::LeftButton )
+    {
+        m_button_down = true;
+    }
+}
+
+void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
+{
+    /* get the sequence number we clicked on */
+    m_current_seq = seqIDFromClickXY(
+                event->x(), event->y());
+
+    m_button_down = false;
+
+    /* if we're on a valid sequence, hit the left mouse button,
+     * and are not dragging a sequence - toggle playing*/
+    if ( m_current_seq != -1
+         && event->button() == Qt::LeftButton
+         && !m_moving ){
+
+        if ( m_main_perf->is_active( m_current_seq )){
+
+            m_main_perf->sequence_playing_toggle( m_current_seq );
+
+//            drawSequence(m_current_seq);
+            update();
+        }
+    }
+
+    /* if left mouse button & we're moving a seq between slots */
+    if (event->button() == Qt::LeftButton
+            && m_moving )
+    {
+        m_moving = false;
+
+        if (!m_main_perf->is_active(m_current_seq)
+                && m_current_seq != -1
+                && !m_main_perf->is_sequence_in_edit(m_current_seq))
+        {
+            m_main_perf->new_sequence(m_current_seq);
+            *(m_main_perf->get_sequence( m_current_seq )) = m_moving_seq;
+
+//            drawSequence(m_current_seq);
+            update();
+
+        }
+        else
+        {
+            m_main_perf->new_sequence( m_old_seq  );
+            *(m_main_perf->get_sequence( m_old_seq )) = m_moving_seq;
+
+//            drawSequence(m_old_seq);
+            update();
+        }
+    }
+
+    //TODO
+    /* check for right mouse click - this launches the popup menu */
+    if (m_current_seq != -1
+            && event->button() == Qt::RightButton)
+    {
+
+    }
+}
+
+void LiveFrame::mouseMoveEvent(QMouseEvent *event)
+{
+    int seqId = seqIDFromClickXY(event->x(), event->y());
+
+    if ( m_button_down )
+    {
+        if (seqId != m_current_seq
+                && !m_moving
+                && !m_main_perf->is_sequence_in_edit(m_current_seq)){
+
+            /* lets drag a sequence between slots */
+            if ( m_main_perf->is_active( m_current_seq )){
+
+                m_old_seq = m_current_seq;
+                m_moving = true;
+
+                /* save the sequence and clear the old slot */
+                m_moving_seq = *(m_main_perf->get_sequence( m_current_seq ));
+                m_main_perf->delete_sequence( m_current_seq );
+
+                /* redraw the old slot */
+                update();
+//                drawSequence(m_current_seq);
+            }
+        }
+    }
 }
