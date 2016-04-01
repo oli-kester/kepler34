@@ -75,7 +75,13 @@ private slots:
     void showOpenFileDialog();
     void showAboutDialog();
     void showAboutQtDialog();
-    void refresh(); //redraw certain GUI elements
+
+    //redraw certain GUI elements
+    void refresh();
+
+    //set the editor to a specific seq
+    //and switch tab to it
+    void loadEditor(MidiSequence *seq);
 };
 
 #endif // MAINWINDOW_HPP

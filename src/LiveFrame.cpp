@@ -239,10 +239,15 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
         if ( m_main_perf->is_active( m_current_seq )){
 
             m_main_perf->sequence_playing_toggle( m_current_seq );
-
-//            drawSequence(m_current_seq);
-            update();
         }
+        else //add new sequence, open the editor
+        {
+            m_main_perf->new_sequence(m_current_seq);
+            m_main_perf->get_sequence( m_current_seq )->set_dirty();
+            callEditor(m_main_perf->get_sequence(m_current_seq));
+        }
+
+        update();
     }
 
     /* if left mouse button & we're moving a seq between slots */

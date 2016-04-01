@@ -289,7 +289,10 @@ class MidiPerformance
 
     void set_active(int a_sequence, bool a_active);
     void set_was_active( int a_sequence );
+
+    //returns if this a valid sequence ID
     bool is_active(int a_sequence);
+
     bool is_dirty_main (int a_sequence);
     bool is_dirty_edit (int a_sequence);
     bool is_dirty_perf (int a_sequence);

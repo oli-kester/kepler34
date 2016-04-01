@@ -23,13 +23,13 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_dialog_prefs = new PreferencesDialog(this);
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     m_song_frame = new SongFrame(ui->SongTab);
-    m_edit_frame = new EditFrame(ui->EditTab);
+//        m_edit_frame = new EditFrame(ui->EditTab,m_main_perf,);
     m_beat_ind = new BeatIndicator(this, m_main_perf, 4, 4);
     
     ui->layoutTransport->addWidget(m_beat_ind);
     ui->LiveTabLayout->addWidget(m_live_frame);
     ui->SongTabLayout->addWidget(m_song_frame);
-    ui->EditTabLayout->addWidget(m_edit_frame);
+//    ui->EditTabLayout->addWidget(m_edit_frame);
 
     //timer to refresh GUI elements every few ms
     m_timer = new QTimer(this);
@@ -102,6 +102,10 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
                      this,
                      SLOT(updateBpm(int)));
 
+    QObject::connect(m_live_frame,
+                     SIGNAL(callEditor(MidiSequence*)),
+                     this,
+                     SLOT(loadEditor(MidiSequence*)));
 
     show();
 }
@@ -338,4 +342,11 @@ void MainWindow::showAboutDialog()
 void MainWindow::showAboutQtDialog()
 {
 
+}
+
+void MainWindow::loadEditor(MidiSequence *seq)
+{
+    m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
+    ui->EditTabLayout->addWidget(m_edit_frame);
+    ui->tabWidget->setCurrentIndex(2);
 }

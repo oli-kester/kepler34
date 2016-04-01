@@ -1,8 +1,10 @@
 #include "EditFrame.hpp"
 #include "ui_EditFrame.h"
 
-EditFrame::EditFrame(QWidget *parent) :
+EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) :
     QFrame(parent),
+    m_perf(perf),
+    m_seq(seq),
     ui(new Ui::EditFrame)
 {
     ui->setupUi(this);

@@ -86,6 +86,10 @@ private slots:
 
     void updateBank(int newBank);
     void updateBankName();
+
+signals:
+
+    void callEditor(MidiSequence *seq);
 };
 
 #endif // LIVEFRAME_HPP
