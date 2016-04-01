@@ -54,6 +54,9 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     ui->cmb_scale->insertItem(1,"Major");
     ui->cmb_scale->insertItem(2,"Minor");
 
+    //pull data from sequence object
+    ui->txt_seq_name->setPlainText(m_seq->get_name());
+
 }
 
 EditFrame::~EditFrame()

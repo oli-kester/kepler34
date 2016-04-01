@@ -38,7 +38,10 @@ Lash::start(MidiPerformance* perform)
     /* Process any LASH events every 250 msec (arbitrarily chosen interval) */
     timer.start(250);
     //FIXME lash timer slot gives error
-    QObject::connect(&timer, SIGNAL(timeout()),this, SLOT(process_events()));
+    QObject::connect(&timer,
+                     SIGNAL(timeout()),
+                     this,
+                     SLOT(process_events()));
 #endif // LASH_SUPPORT
 }
 

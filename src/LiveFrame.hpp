@@ -7,6 +7,7 @@
 #include <QFrame>
 #include <QPainter>
 #include <QDebug>
+#include <QMenu>
 
 namespace Ui {
 class LiveFrame;
@@ -40,15 +41,10 @@ protected:
     void mouseReleaseEvent(QMouseEvent * event);
     void mouseMoveEvent(QMouseEvent * event);
 
-
-
 private:
 
     //draw a single sequence thumbnail at index
     void drawSequence(int a_seq);
-
-    //draw window background
-    void drawBackground();
 
     //draw all sequences
     void drawAllSequences();
@@ -69,6 +65,7 @@ private:
     QPen        *m_background;
     QPen        *m_foreground;
     QRect       *rect;
+    QMenu       *m_popup;
 
     int     m_bank_id;
 
@@ -86,6 +83,8 @@ private slots:
 
     void updateBank(int newBank);
     void updateBankName();
+    void newSeq();
+    void editSeq();
 
 signals:
 

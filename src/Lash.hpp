@@ -23,7 +23,8 @@
 
 class Lash : public QObject
 {
-//   TODO get this working Q_OBJECT
+//   TODO get this working
+//    Q_OBJECT
 
 private:
 #ifdef LASH_SUPPORT

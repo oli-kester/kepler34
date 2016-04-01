@@ -8,7 +8,7 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     m_main_perf(perf)
 {
     ui->setupUi(this);
-    
+
     setBank(0);
 
     QObject::connect(ui->spinBank,
@@ -21,11 +21,11 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
                      this,
                      SLOT(updateBankName()));
 
+
 }
 
 void LiveFrame::paintEvent(QPaintEvent *)
 {
-    drawBackground();
     drawAllSequences();
 }
 
@@ -160,20 +160,6 @@ void LiveFrame::banknameConvertDisplay()
     m_main_perf->setBankName(m_bank_id, m_main_perf->getBankName(m_bank_id));
 }
 
-void LiveFrame::drawBackground()
-{
-    //    m_painter = new QPainter(this);
-
-    //    rect = new QRect(0,
-    //                     0,
-    //                     c_mainwid_x,
-    //                     c_mainwid_y);
-
-    //    m_painter->setPen(Qt::black);
-
-    //    m_painter->drawRect(*rect);
-}
-
 int LiveFrame::seqIDFromClickXY(int click_x, int click_y)
 {
     /* adjust for border */
@@ -240,11 +226,9 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
 
             m_main_perf->sequence_playing_toggle( m_current_seq );
         }
-        else //add new sequence, open the editor
+        else
         {
-            m_main_perf->new_sequence(m_current_seq);
-            m_main_perf->get_sequence( m_current_seq )->set_dirty();
-            callEditor(m_main_perf->get_sequence(m_current_seq));
+            newSeq();
         }
 
         update();
@@ -263,7 +247,6 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
             m_main_perf->new_sequence(m_current_seq);
             *(m_main_perf->get_sequence( m_current_seq )) = m_moving_seq;
 
-//            drawSequence(m_current_seq);
             update();
 
         }
@@ -272,17 +255,35 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
             m_main_perf->new_sequence( m_old_seq  );
             *(m_main_perf->get_sequence( m_old_seq )) = m_moving_seq;
 
-//            drawSequence(m_old_seq);
             update();
         }
     }
 
-    //TODO
     /* check for right mouse click - this launches the popup menu */
     if (m_current_seq != -1
             && event->button() == Qt::RightButton)
     {
+        m_popup = new QMenu(this);
 
+        QAction *actionNew = new QAction("New sequence", m_popup);
+        m_popup->addAction(actionNew);
+        QObject::connect(actionNew,
+                         SIGNAL(triggered(bool)),
+                         this,
+                         SLOT(newSeq()));
+
+        if (m_main_perf->is_active(m_current_seq))
+        {
+            QAction *actionEdit = new QAction("Edit sequence", m_popup);
+            m_popup->addAction(actionEdit);
+            QObject::connect(actionEdit,
+                             SIGNAL(triggered(bool)),
+                             this,
+                             SLOT(editSeq()));
+
+        }
+
+        m_popup->exec(QCursor::pos());
     }
 }
 
@@ -306,10 +307,25 @@ void LiveFrame::mouseMoveEvent(QMouseEvent *event)
                 m_moving_seq = *(m_main_perf->get_sequence( m_current_seq ));
                 m_main_perf->delete_sequence( m_current_seq );
 
-                /* redraw the old slot */
                 update();
-//                drawSequence(m_current_seq);
             }
         }
     }
+}
+
+void LiveFrame::newSeq()
+{
+    //TODO if this is already a sequence,
+    //check that we want to replace it
+    m_main_perf->new_sequence(m_current_seq);
+    m_main_perf->get_sequence( m_current_seq )->set_dirty();
+    callEditor(m_main_perf->get_sequence(m_current_seq));
+
+}
+
+void LiveFrame::editSeq()
+{
+    callEditor(m_main_perf->get_sequence(m_current_seq));
+
+    newSeq();
 }
