@@ -346,7 +346,9 @@ void MainWindow::showAboutQtDialog()
 
 void MainWindow::loadEditor(MidiSequence *seq)
 {
-    delete m_edit_frame;
+    //FIXME we're double drawing, but the below causes mem corruption
+//    delete m_edit_frame;
+    ui->EditTabLayout->removeWidget(m_edit_frame);
     m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
     ui->EditTabLayout->addWidget(m_edit_frame);
     ui->tabWidget->setCurrentIndex(2);

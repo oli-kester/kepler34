@@ -9,7 +9,7 @@ class UserFile  : public ConfigFile
 
  public:
 
-    UserFile(QString a_name );
+    UserFile(QString a_name);
     ~UserFile( );
 
     bool parse( MidiPerformance *a_perf );

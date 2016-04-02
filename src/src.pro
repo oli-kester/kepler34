@@ -29,7 +29,10 @@ SOURCES +=\
     OptionsFile.cpp \
     UserFile.cpp \
     MidiPerformance.cpp \
-    BeatIndicator.cpp
+    BeatIndicator.cpp \
+    EditKeys.cpp \
+    EditTimeBar.cpp \
+    EditNoteRoll.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -50,7 +53,10 @@ HEADERS  += \
     MidiFile.hpp \
     OptionsFile.hpp \
     MidiPerformance.hpp \
-    BeatIndicator.hpp
+    BeatIndicator.hpp \
+    EditKeys.hpp \
+    EditTimeBar.hpp \
+    EditNoteRoll.hpp
 
 FORMS    += \
     MainWindow.ui \

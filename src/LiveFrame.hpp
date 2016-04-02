@@ -32,7 +32,6 @@ public:
 
 
 protected:
-
     //override painting event to draw on the frame
     void paintEvent(QPaintEvent *event);
 

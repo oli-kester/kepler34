@@ -57,6 +57,19 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     //pull data from sequence object
     ui->txt_seq_name->setPlainText(m_seq->get_name());
 
+    m_seq->set_editing(true);
+
+    m_seqkeys_wid = new EditKeys(this);
+    m_seqtime_wid = new EditTimeBar(m_seq, this);
+    m_seqroll_wid = new EditNoteRoll(this);
+
+    m_lay1 = new QHBoxLayout(this);
+
+    m_lay1->addWidget(m_seqkeys_wid);
+    m_lay1->addWidget(m_seqroll_wid);
+
+    ui->verticalLayout->addWidget(m_seqtime_wid);
+    ui->verticalLayout->addItem(m_lay1);
 }
 
 EditFrame::~EditFrame()
