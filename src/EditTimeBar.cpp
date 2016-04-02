@@ -25,8 +25,10 @@ EditTimeBar::EditTimeBar(MidiSequence *a_seq, QWidget *parent):
 void EditTimeBar::paintEvent(QPaintEvent *)
 {
     m_painter = new QPainter(this);
-    m_pen = new QPen(Qt::white);
+    m_pen = new QPen(Qt::black);
+    m_font.setPointSize(6);
     m_painter->setPen(*m_pen);
+    m_painter->setFont(m_font);
 
     m_rect = QRect(0,
                    0,
@@ -34,7 +36,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
                    m_window_y);
     m_painter->drawRect(m_rect);
 
-    m_pen->setColor(Qt::black);
+    m_pen->setColor(Qt::white);
     m_rect.setRect(0,
                    m_window_y - 1,
                    m_window_x,
@@ -94,15 +96,13 @@ void EditTimeBar::paintEvent(QPaintEvent *)
                    19,
                    8);
     m_painter->drawRect(m_rect);
-    m_rect.setRect(end_x + 1,
-                   9,
-                   19,
-                   8);
+    m_point.setX(end_x + 1);
+    m_point.setY(9);
 
     m_pen->setColor(Qt::white);
-    m_painter->drawText(m_rect,
-                        "END");
-
+    m_point = QPoint(end_x + 1, 17);
+    m_painter->drawText(m_point,
+                        tr("END"));
 
 }
 

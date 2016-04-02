@@ -35,6 +35,8 @@ private:
     QPen        *m_pen;
     QPainter    *m_painter;
     QRect        m_rect;
+    QPoint       m_point;
+    QFont        m_font;
     QLine        m_line;
 
     int m_zoom;

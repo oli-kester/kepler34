@@ -64,6 +64,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     m_seqroll_wid = new EditNoteRoll(this);
 
     m_lay1 = new QHBoxLayout(this);
+//    m_lay1->setSizeConstraint(Qt::e);
 
     m_lay1->addWidget(m_seqkeys_wid);
     m_lay1->addWidget(m_seqroll_wid);
