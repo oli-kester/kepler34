@@ -17,7 +17,7 @@ public:
 
 protected:
     //override painting event to draw on the frame
-    void paintEvent         (QPaintEvent *event);
+    void paintEvent         (QPaintEvent *);
 
     //override mouse events for interaction
     void mousePressEvent    (QMouseEvent * event);
@@ -27,12 +27,21 @@ protected:
 signals:
 
 private slots:
-    void refresh();
 
 private:
     MidiSequence *m_seq;
 
-    QTimer  *m_timer;
+    QTimer      *m_timer;
+    QPen        *m_pen;
+    QPainter    *m_painter;
+    QRect        m_rect;
+    QLine        m_line;
+
+    int m_zoom;
+    int m_scroll_offset_ticks;
+    int m_scroll_offset_x;
+    int m_window_x, m_window_y;
+
 };
 
 #endif // EDITTIMEBAR_HPP
