@@ -6,6 +6,7 @@
 #include "EditKeys.hpp"
 #include "EditTimeBar.hpp"
 #include "EditNoteRoll.hpp"
+#include "ContainerWidget.hpp"
 
 #include <QFrame>
 #include <QLayout>

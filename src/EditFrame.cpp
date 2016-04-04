@@ -60,7 +60,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     m_seq->set_editing(true);
 
     m_scroll_area = new QScrollArea(this);
-    m_scroll_area->setBackgroundRole(QPalette::Shadow);
+    m_scroll_area->setBackgroundRole(QPalette::Light);
     ui->vbox_centre->addWidget(m_scroll_area);
 
     m_container = new QWidget(m_scroll_area);
@@ -69,13 +69,13 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
 
     m_seqkeys_wid = new EditKeys(m_seq, m_container);
     m_seqtime_wid = new EditTimeBar(m_seq, m_container);
-//    m_seqroll_wid = new EditNoteRoll(this);
+    m_seqroll_wid = new EditNoteRoll(m_container);
 
     m_layout_grid->addWidget(m_seqkeys_wid, 1, 0, 1, 1);
     m_layout_grid->addWidget(m_seqtime_wid, 0, 1, 1, 1);
-//    m_hbox->addWidget(m_seqroll_wid,Qt::AlignCenter);
+    m_layout_grid->addWidget(m_seqroll_wid, 1, 1, 1, 1);
 
-
+    m_scroll_area->setWidget(m_container);
 }
 
 EditFrame::~EditFrame()

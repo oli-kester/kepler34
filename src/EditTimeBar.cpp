@@ -127,5 +127,5 @@ void EditTimeBar::mouseMoveEvent(QMouseEvent *event)
 
 QSize EditTimeBar::sizeHint() const
 {
-    return QSize(5000,50);
+    return QSize(5000,18);
 }

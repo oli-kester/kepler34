@@ -611,6 +611,19 @@ p, li { white-space: pre-wrap; }
       <property name="sizeConstraint">
        <enum>QLayout::SetNoConstraint</enum>
       </property>
+      <item>
+       <widget class="QComboBox" name="cmb_grid_snap_2">
+        <property name="maximumSize">
+         <size>
+          <width>55</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
