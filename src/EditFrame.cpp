@@ -64,15 +64,15 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     ui->vbox_centre->addWidget(m_scroll_area);
 
     m_container = new QWidget(m_scroll_area);
-    m_hbox = new QHBoxLayout(m_container);
-    m_container->setLayout(m_hbox);
+    m_layout_grid = new QGridLayout(m_container);
+    m_container->setLayout(m_layout_grid);
 
-//    m_seqkeys_wid = new EditKeys(m_seq, this);
-    m_seqtime_wid = new EditTimeBar(m_seq, this);
+    m_seqkeys_wid = new EditKeys(m_seq, m_container);
+    m_seqtime_wid = new EditTimeBar(m_seq, m_container);
 //    m_seqroll_wid = new EditNoteRoll(this);
 
-//    m_hbox->addWidget(m_seqkeys_wid, Qt::AlignLeft);
-    m_hbox->addWidget(m_seqtime_wid,Qt::AlignRight);
+    m_layout_grid->addWidget(m_seqkeys_wid, 1, 0, 1, 1);
+    m_layout_grid->addWidget(m_seqtime_wid, 0, 1, 1, 1);
 //    m_hbox->addWidget(m_seqroll_wid,Qt::AlignCenter);
 
 
