@@ -20,6 +20,10 @@ EditTimeBar::EditTimeBar(MidiSequence *a_seq, QWidget *parent):
     m_zoom = 5;
     m_window_x = 800;
     m_window_y = 700;
+
+    setSizePolicy(QSizePolicy::MinimumExpanding,
+                  QSizePolicy::Fixed);
+
 }
 
 void EditTimeBar::paintEvent(QPaintEvent *)
@@ -119,4 +123,9 @@ void EditTimeBar::mouseReleaseEvent(QMouseEvent *event)
 void EditTimeBar::mouseMoveEvent(QMouseEvent *event)
 {
 
+}
+
+QSize EditTimeBar::sizeHint() const
+{
+    return QSize(5000,50);
 }

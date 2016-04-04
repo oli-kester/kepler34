@@ -54,23 +54,28 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     ui->cmb_scale->insertItem(1,"Major");
     ui->cmb_scale->insertItem(2,"Minor");
 
-    //pull data from sequence object
+    // pull data from sequence object
     ui->txt_seq_name->setPlainText(m_seq->get_name());
 
     m_seq->set_editing(true);
 
-    m_seqkeys_wid = new EditKeys(this);
+    m_scroll_area = new QScrollArea(this);
+    m_scroll_area->setBackgroundRole(QPalette::Shadow);
+    ui->vbox_centre->addWidget(m_scroll_area);
+
+    m_container = new QWidget(m_scroll_area);
+    m_hbox = new QHBoxLayout(m_container);
+    m_container->setLayout(m_hbox);
+
+//    m_seqkeys_wid = new EditKeys(m_seq, this);
     m_seqtime_wid = new EditTimeBar(m_seq, this);
-    m_seqroll_wid = new EditNoteRoll(this);
+//    m_seqroll_wid = new EditNoteRoll(this);
 
-    m_lay1 = new QHBoxLayout(this);
-//    m_lay1->setSizeConstraint(Qt::e);
+//    m_hbox->addWidget(m_seqkeys_wid, Qt::AlignLeft);
+    m_hbox->addWidget(m_seqtime_wid,Qt::AlignRight);
+//    m_hbox->addWidget(m_seqroll_wid,Qt::AlignCenter);
 
-    m_lay1->addWidget(m_seqkeys_wid);
-    m_lay1->addWidget(m_seqroll_wid);
 
-    ui->verticalLayout->addWidget(m_seqtime_wid);
-    ui->verticalLayout->addItem(m_lay1);
 }
 
 EditFrame::~EditFrame()

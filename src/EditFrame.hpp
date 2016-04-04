@@ -10,6 +10,8 @@
 #include <QFrame>
 #include <QLayout>
 #include <qmath.h>
+#include <QScrollBar>
+#include <QScrollArea>
 
 namespace Ui {
 class EditFrame;
@@ -26,7 +28,11 @@ public:
 private:
     Ui::EditFrame *ui;
 
-    QHBoxLayout     *m_lay1;
+    QHBoxLayout     *m_hbox;
+    QScrollArea     *m_scroll_area;
+    QScrollBar      *m_scroll_horiz;
+    QScrollBar      *m_scroll_vert;
+    QWidget         *m_container;
 
     MidiSequence       * const m_seq;
     MidiPerformance    * const m_perf;

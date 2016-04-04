@@ -11,6 +11,7 @@
 class EditTimeBar : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit EditTimeBar(MidiSequence *a_seq,
                          QWidget *parent);
@@ -23,6 +24,9 @@ protected:
     void mousePressEvent    (QMouseEvent * event);
     void mouseReleaseEvent  (QMouseEvent * event);
     void mouseMoveEvent     (QMouseEvent * event);
+
+    //override the sizehint to set our own defaults
+    QSize sizeHint() const;
 
 signals:
 

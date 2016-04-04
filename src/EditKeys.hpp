@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QPainter>
 #include <QPen>
+#include <QSizePolicy>
 
 class EditKeys : public QWidget
 {
@@ -24,6 +25,9 @@ protected:
     void mouseReleaseEvent  (QMouseEvent * event);
     void mouseMoveEvent     (QMouseEvent * event);
 
+    //override the sizehint to set our own defaults
+    QSize sizeHint() const;
+
 signals:
 
 public slots:
@@ -38,6 +42,8 @@ private:
     QPoint       m_point;
     QFont        m_font;
     QLine        m_line;
+
+    int m_key;
 
 };
 
