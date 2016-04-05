@@ -14,7 +14,17 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
     m_snap(1),
     m_old_progress_x(0),
     m_background_sequence(0),
-    m_drawing_background_seq(false)
+    m_drawing_background_seq(false),
+    m_selecting(false),
+    m_adding(false),
+    m_moving(false),
+    m_moving_init(false),
+    m_growing(false),
+    m_painting(false),
+    m_paste(false),
+    m_is_drag_pasting(false),
+    m_is_drag_pasting_start(false),
+    m_justselected_one(false)
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
@@ -118,9 +128,12 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
             int i_snap = i - (i % m_snap);
 
-            if( i == i_snap ){
+            if ( i == i_snap )
+            {
                 m_pen->setColor(Qt::darkGray);
-            } else {
+            }
+            else
+            {
                 m_pen->setColor(Qt::gray);
             }
         }
@@ -132,6 +145,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                             base_line,
                             m_size_y * 8);
     }
+
     /* reset line style */
     m_pen->setColor(Qt::black);
     m_pen->setStyle(Qt::SolidLine);
@@ -145,8 +159,8 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
     m_old_progress_x = ((m_seq->get_last_tick() * 3) / m_zoom);
 
-    if ( m_old_progress_x != 0 ){
-
+    if ( m_old_progress_x != 0 )
+    {
         m_pen->setColor(Qt::black);
         m_painter->setPen(*m_pen);
         m_painter->drawLine(m_old_progress_x,
@@ -176,20 +190,27 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
     MidiSequence *seq = NULL;
 
-    for( int method=0; method<2; ++method )	{
+    for( int method = 0; method < 2; ++method )	{
 
         if ( method == 0 && m_drawing_background_seq  ){
 
-            if ( m_perform->is_active( m_background_sequence )){
+            if ( m_perform->is_active( m_background_sequence ))
+            {
                 seq = m_perform->get_sequence( m_background_sequence );
-            } else {
+            }
+            else
+            {
                 method++;
             }
-        } else if ( method == 0 ){
+        }
+
+        else if ( method == 0 )
+        {
             method++;
         }
 
-        if ( method==1){
+        if ( method==1)
+        {
             seq = m_seq;
         }
 
@@ -216,12 +237,17 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                 {
                     if (tick_f >= tick_s) {
                         note_width = (tick_f - tick_s) / m_zoom;
-                        if ( note_width < 1 ) note_width = 1;
-                    } else {
+                        if ( note_width < 1 )
+                            note_width = 1;
+                    }
+                    else
+                    {
                         note_width = (m_seq->get_length() - tick_s) / m_zoom;
                     }
 
-                } else {
+                }
+                else
+                {
                     note_width = 16 / m_zoom;
                 }
 
@@ -242,7 +268,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                 if ( method == 0 )
                     m_pen->setColor(Qt::darkGray);
 
-                //draw outer note boundary
+                //draw outer note boundary (shadow)
                 m_brush->setStyle(Qt::SolidPattern);
                 m_brush->setColor(Qt::black);
                 m_painter->setBrush(*m_brush);
@@ -252,8 +278,8 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                                     note_width,
                                     note_height);
 
-                if (tick_f < tick_s) {
-
+                if (tick_f < tick_s)
+                {
                     //                    m_painter->setPen(*m_pen);
                     //                    m_painter->drawRect(0,
                     //                                        note_y,
@@ -262,21 +288,26 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                 }
 
                 /* draw inside box if there is room */
-                if ( note_width > 3 ){
-
+                if ( note_width > 3 )
+                {
                     if ( selected )
                         m_brush->setColor(Qt::red);
                     else
                         m_brush->setColor(Qt::white);
 
                     m_painter->setBrush(*m_brush);
-                    if ( method == 1 ) {
-                        if (tick_f >= tick_s) {
+                    if ( method == 1 )
+                    {
+                        if (tick_f >= tick_s)
+                        {
+                            //draw inner note (highlight)
                             m_painter->drawRect(note_x + in_shift,
                                                 note_y,
                                                 note_width - 1 + length_add,
                                                 note_height - 1 );
-                        } else {
+                        }
+                        else
+                        {
                             m_painter->drawRect(note_x + in_shift,
                                                 note_y,
                                                 note_width ,
@@ -296,15 +327,323 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
 void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 {
+    int numsel;
 
+    long tick_s;
+    long tick_f;
+    int note_h;
+    int note_l;
+
+    int norm_x, norm_y, snapped_x, snapped_y;
+
+    bool needs_update = false;
+
+    snapped_x = norm_x = event->x();
+    snapped_y = norm_y = event->y();
+
+    snap_x( &snapped_x );
+    snap_y( &snapped_y );
+
+    /* y is always snapped */
+    m_current_y = m_drop_y = snapped_y;
+
+    if ( m_paste ){
+
+        convert_xy( snapped_x, snapped_y, &tick_s, &note_h );
+        m_paste = false;
+        m_seq->push_undo();
+        m_seq->paste_selected( tick_s, note_h );
+
+        needs_update = true;
+
+    } else {
+
+        /*  left mouse button     */
+        if ( event->button() == Qt::LeftButton )
+        {
+            /* selection, normal x */
+            m_current_x = m_drop_x = norm_x;
+
+            /* turn x,y in to tick/note */
+            convert_xy( m_drop_x, m_drop_y, &tick_s, &note_h );
+
+            if ( m_adding )
+            {
+                /* start the paint job */
+                m_painting = true;
+
+                /* adding, snapped x */
+                m_current_x = m_drop_x = snapped_x;
+                convert_xy( m_drop_x, m_drop_y, &tick_s, &note_h );
+
+                // test if a note is already there
+                // fake select, if so, no add
+                if ( ! m_seq->select_note_events( tick_s, note_h,
+                                                  tick_s, note_h,
+                                                  MidiSequence::e_would_select ))
+                {
+
+                    /* add note, length = little less than snap */
+                    m_seq->push_undo();
+                    m_seq->add_note( tick_s, m_note_length - 2, note_h, true );
+
+                    needs_update = true;
+                }
+
+            }
+            else /* selecting */
+            {
+
+
+                if ( !m_seq->select_note_events( tick_s, note_h,
+                                                 tick_s, note_h,
+                                                 MidiSequence::e_is_selected ))
+                {
+                    if ( ! (event->modifiers()) & Qt::ControlModifier)
+                    {
+                        m_seq->unselect();
+                    }
+
+
+                    /* on direct click select only one event */
+                    numsel = m_seq->select_note_events( tick_s,note_h,tick_s,note_h,
+                                                        MidiSequence::e_select_one );
+
+                    /* none selected, start selection box */
+                    if ( numsel == 0 )
+                    {
+                        if ( event->button() == Qt::LeftButton )
+                            m_selecting = true;
+                    }
+                    else
+                    {
+                        needs_update = true;
+                    }
+                }
+
+
+                if ( m_seq->select_note_events(tick_s, note_h,
+                                               tick_s, note_h,
+                                               MidiSequence::e_is_selected ))
+                {
+                    // moving - left click only
+                    if ( event->button() == Qt::LeftButton && !(event->modifiers()) & Qt::ControlModifier)
+                    {
+                        m_moving_init = true;
+                        needs_update = true;
+
+
+                        /* get the box that selected elements are in */
+                        m_seq->get_selected_box( &tick_s, &note_h,
+                                                 &tick_f, &note_l );
+
+
+                        //                        convert_tn_box_to_rect( tick_s, tick_f, note_h, note_l,
+                        //                                                &m_selected.x,
+                        //                                                &m_selected.y,
+                        //                                                &m_selected.width,
+                        //                                                &m_selected.height );
+
+                        /* save offset that we get from the snap above */
+                        //                        int adjusted_selected_x = m_selected.x;
+                        //                        snap_x( &adjusted_selected_x );
+                        //                        m_move_snap_offset_x = ( m_selected.x - adjusted_selected_x);
+
+                        /* align selection for drawing */
+                        //                        snap_x( &m_selected.x );
+
+                        m_current_x = m_drop_x = snapped_x;
+                    }
+
+                    /* middle mouse button, or left-ctrl click (for 2button mice) */
+                    if (event->button() == Qt::MiddleButton ||
+                            (event->button() == Qt::LeftButton &&
+                             (event->modifiers() & Qt::ControlModifier)) ){
+
+                        /* moving, normal x */
+                        //m_current_x = m_drop_x = norm_x;
+                        //convert_xy( m_drop_x, m_drop_y, &tick_s, &note_h );
+
+                        m_growing = true;
+
+                        /* get the box that selected elements are in */
+                        m_seq->get_selected_box( &tick_s, &note_h,
+                                                 &tick_f, &note_l );
+
+                        //                        convert_tn_box_to_rect( tick_s, tick_f, note_h, note_l,
+                        //                                                &m_selected.x,
+                        //                                                &m_selected.y,
+                        //                                                &m_selected.width,
+                        //                                                &m_selected.height );
+
+                    }
+                }
+            }
+        }
+
+        /*     right mouse button      */
+        if ( event->button() == Qt::RightButton ){
+            set_adding(true);
+        }
+
+    }
+
+    /* if they clicked, something changed */
+    if ( needs_update )
+    {
+        m_seq->set_dirty();
+    }
 }
 
 void EditNoteRoll::mouseReleaseEvent(QMouseEvent *event)
 {
+    long tick_s;
+    long tick_f;
+    int note_h;
+    int note_l;
+    int x,y,w,h;
 
+    bool needs_update = false;
+
+    m_current_x = event->x();
+    m_current_y = event->y();;
+
+    snap_y ( &m_current_y );
+
+    if ( m_moving )
+        snap_x( &m_current_x );
+
+    int delta_x = m_current_x - m_drop_x;
+    int delta_y = m_current_y - m_drop_y;
+
+    long delta_tick;
+    int delta_note;
+
+    if ( event->button() == Qt::LeftButton ){
+
+        if ( m_selecting ){
+
+            //            xy_to_rect ( m_drop_x,
+            //                             m_drop_y,
+            //                             m_current_x,
+            //                             m_current_y,
+            //                             &x, &y,
+            //                             &w, &h );
+
+            convert_xy( x,     y, &tick_s, &note_h );
+            convert_xy( x+w, y+h, &tick_f, &note_l );
+
+            m_seq->select_note_events( tick_s, note_h, tick_f, note_l, MidiSequence::e_select );
+
+            needs_update = true;
+        }
+
+        if (  m_moving  ){
+
+            /* adjust for snap */
+            delta_x -= m_move_snap_offset_x;
+
+            /* convert deltas into screen corridinates */
+            convert_xy( delta_x, delta_y, &delta_tick, &delta_note );
+
+            /* since delta_note was from delta_y, it will be filpped
+               ( delta_y[0] = note[127], etc.,so we have to adjust */
+            delta_note = delta_note - (c_num_keys-1);
+
+            m_seq->push_undo();
+            m_seq->move_selected_notes( delta_tick, delta_note );
+            needs_update = true;
+        }
+
+    }
+
+    if (event->button() == Qt::LeftButton || event->button() == Qt::MiddleButton){
+
+        if ( m_growing ){
+
+            /* convert deltas into screen corridinates */
+            convert_xy( delta_x, delta_y, &delta_tick, &delta_note );
+            m_seq->push_undo();
+
+            if ( event->modifiers() & Qt::ShiftModifier )
+            {
+                m_seq->stretch_selected( delta_tick );
+            }
+            else
+            {
+                m_seq->grow_selected( delta_tick );
+            }
+
+            needs_update = true;
+        }
+    }
+
+    if ( event->button() == Qt::RightButton ){
+        set_adding(false);
+    }
+
+    /* turn off */
+    m_selecting = false;
+    m_moving = false;
+    m_growing = false;
+    m_paste = false;
+    m_moving_init = false;
+    m_painting = false;
+
+    m_seq->unpaint_all();
+
+    /* if they clicked, something changed */
+    if (  needs_update )
+    {
+        m_seq->set_dirty();
+    }
 }
 
 void EditNoteRoll::mouseMoveEvent(QMouseEvent *event)
+{
+    m_current_x = event->x();
+    m_current_y = event->y();
+
+    int note;
+    long tick;
+
+    if ( m_moving_init )
+    {
+        m_moving_init = false;
+        m_moving = true;
+    }
+
+
+    snap_y( &m_current_y );
+    convert_xy( 0, m_current_y, &tick, &note );
+
+//    m_seqkeys_wid->set_hint_key( note );
+
+    if ( m_selecting || m_moving || m_growing || m_paste ){
+
+        if ( m_moving || m_paste ){
+            snap_x( &m_current_x );
+        }
+
+//        draw_selection_on_window();
+
+    }
+
+    if ( m_painting )
+    {
+        snap_x( &m_current_x );
+        convert_xy( m_current_x, m_current_y, &tick, &note );
+
+        m_seq->add_note( tick, m_note_length - 2, note, true );
+    }
+}
+
+void EditNoteRoll::keyPressEvent(QKeyEvent *event)
+{
+
+}
+
+void EditNoteRoll::keyReleaseEvent(QKeyEvent *event)
 {
 
 }
@@ -312,4 +651,42 @@ void EditNoteRoll::mouseMoveEvent(QMouseEvent *event)
 QSize EditNoteRoll::sizeHint() const
 {
     return QSize(m_size_x * 0.1, m_size_y * 8);
+}
+
+void EditNoteRoll::snap_y( int *a_y )
+{
+    *a_y = *a_y - (*a_y % c_key_y);
+}
+
+void EditNoteRoll::snap_x( int *a_x )
+{
+    //snap = number pulses to snap to
+    //m_zoom = number of pulses per pixel
+    //so snap / m_zoom  = number pixels to snap to
+    int mod = (m_snap / m_zoom);
+    if ( mod <= 0 )
+        mod = 1;
+
+    *a_x = *a_x - (*a_x % mod );
+}
+
+void EditNoteRoll::convert_xy( int a_x, int a_y, long *a_tick, int *a_note)
+{
+    *a_tick = a_x * m_zoom;
+    *a_note = (c_rollarea_y - a_y - 2) / c_key_y;
+}
+
+void EditNoteRoll::set_adding(bool a_adding)
+{
+    if ( a_adding )
+    {
+        //TODO
+        //    get_window()->set_cursor(  Gdk::Cursor( Gdk::PENCIL ));
+        m_adding = true;
+
+    } else
+    {
+        //    get_window()->set_cursor( Gdk::Cursor( Gdk::LEFT_PTR ));
+        m_adding = false;
+    }
 }
