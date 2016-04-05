@@ -33,9 +33,11 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
 void EditNoteRoll::paintEvent(QPaintEvent *)
 {
     m_painter = new QPainter(this);
+    m_brush = new QBrush(Qt::NoBrush);
     m_pen = new QPen(Qt::black);
     m_font.setPointSize(6);
     m_painter->setPen(*m_pen);
+    m_painter->setBrush(*m_brush);
     m_painter->setFont(m_font);
 
     //draw background
@@ -56,18 +58,18 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     for ( int i=0; i <= c_num_keys; i++ )
     {
         //set line colour dependent on the note row we're on
-//        if (0 == (((c_num_keys - i) + ( 12 - m_key )) % 12))
-//        {
-//            m_pen->setColor(Qt::darkGray);
-//            m_pen->setStyle(Qt::SolidLine);
-//            m_painter->setPen(*m_pen);
-//        }
-//        else if (11 == (((c_num_keys - i) + ( 12 - m_key )) % 12))
-//        {
-//            m_pen->setColor(Qt::darkGray);
-//            m_pen->setStyle(Qt::SolidLine);
-//            m_painter->setPen(*m_pen);
-//        }
+        //        if (0 == (((c_num_keys - i) + ( 12 - m_key )) % 12))
+        //        {
+        //            m_pen->setColor(Qt::darkGray);
+        //            m_pen->setStyle(Qt::SolidLine);
+        //            m_painter->setPen(*m_pen);
+        //        }
+        //        else if (11 == (((c_num_keys - i) + ( 12 - m_key )) % 12))
+        //        {
+        //            m_pen->setColor(Qt::darkGray);
+        //            m_pen->setStyle(Qt::SolidLine);
+        //            m_painter->setPen(*m_pen);
+        //        }
 
         //draw horizontal grid lines
         m_painter->drawLine(0,
@@ -235,15 +237,15 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                     length_add = 1;
                 }
 
-//                note_x -= m_scroll_offset_x;
-//                note_y -= m_scroll_offset_y;
-
                 m_pen->setColor(Qt::black);
 
                 if ( method == 0 )
                     m_pen->setColor(Qt::darkGray);
 
-                /* draw boxes from sequence */
+                //draw outer note boundary
+                m_brush->setStyle(Qt::SolidPattern);
+                m_brush->setColor(Qt::black);
+                m_painter->setBrush(*m_brush);
                 m_painter->setPen(*m_pen);
                 m_painter->drawRect(note_x,
                                     note_y,
@@ -252,38 +254,38 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
                 if (tick_f < tick_s) {
 
-                    m_painter->setPen(*m_pen);
-                    m_painter->drawRect(0,
-                                        note_y,
-                                        tick_f / m_zoom,
-                                        note_height);
+                    //                    m_painter->setPen(*m_pen);
+                    //                    m_painter->drawRect(0,
+                    //                                        note_y,
+                    //                                        tick_f / m_zoom,
+                    //                                        note_height);
                 }
 
                 /* draw inside box if there is room */
                 if ( note_width > 3 ){
 
                     if ( selected )
-                        m_pen->setColor(Qt::red);
+                        m_brush->setColor(Qt::red);
                     else
-                        m_pen->setColor(Qt::white);
+                        m_brush->setColor(Qt::white);
 
+                    m_painter->setBrush(*m_brush);
                     if ( method == 1 ) {
                         if (tick_f >= tick_s) {
-                            m_painter->setPen(*m_pen);
-                            m_painter->drawRect(note_x + 1 + in_shift,
-                                                note_y + 1,
-                                                note_width - 3 + length_add,
-                                                note_height - 3);
+                            m_painter->drawRect(note_x + in_shift,
+                                                note_y,
+                                                note_width - 1 + length_add,
+                                                note_height - 1 );
                         } else {
-                            m_painter->setPen(*m_pen);
-                            m_painter->drawRect(note_x + 1 + in_shift,
-                                                note_y + 1,
+                            m_painter->drawRect(note_x + in_shift,
+                                                note_y,
                                                 note_width ,
-                                                note_height - 3);
+                                                note_height - 1);
+
                             m_painter->drawRect(0,
-                                                note_y + 1,
+                                                note_y,
                                                 (tick_f/m_zoom) - 3 + length_add,
-                                                note_height - 3);
+                                                note_height - 1);
                         }
                     }
                 }
