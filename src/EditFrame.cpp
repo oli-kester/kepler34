@@ -69,11 +69,12 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
 
     m_seqkeys_wid = new EditKeys(m_seq, m_container);
     m_seqtime_wid = new EditTimeBar(m_seq, m_container);
-    m_seqroll_wid = new EditNoteRoll(m_container);
+    m_seqroll_wid = new EditNoteRoll(m_perf, m_seq, m_container);
 
     m_layout_grid->addWidget(m_seqkeys_wid, 1, 0, 1, 1);
     m_layout_grid->addWidget(m_seqtime_wid, 0, 1, 1, 1);
     m_layout_grid->addWidget(m_seqroll_wid, 1, 1, 1, 1);
+    m_layout_grid->setAlignment(m_seqroll_wid, Qt::AlignTop);
 
     m_scroll_area->setWidget(m_container);
 }

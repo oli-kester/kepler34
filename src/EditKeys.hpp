@@ -12,6 +12,7 @@
 class EditKeys : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit EditKeys(MidiSequence *a_seq,
                       QWidget *parent);

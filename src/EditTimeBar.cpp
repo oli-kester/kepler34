@@ -30,21 +30,16 @@ void EditTimeBar::paintEvent(QPaintEvent *)
 {
     m_painter = new QPainter(this);
     m_pen = new QPen(Qt::black);
+    m_brush = new QBrush(Qt::white, Qt::SolidPattern),
     m_font.setPointSize(6);
     m_painter->setPen(*m_pen);
+    m_painter->setBrush(*m_brush);
     m_painter->setFont(m_font);
 
     m_rect = QRect(0,
                    0,
                    m_window_x,
                    m_window_y);
-    m_painter->drawRect(m_rect);
-
-    m_pen->setColor(Qt::white);
-    m_rect.setRect(0,
-                   m_window_y - 1,
-                   m_window_x,
-                   m_window_y - 1);
     m_painter->drawRect(m_rect);
 
     int measure_length_32nds =  m_seq->get_bpm() * 32 /
@@ -68,6 +63,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
 
     /* draw vert lines */
     m_pen->setColor(Qt::black);
+    m_painter->setPen(*m_pen);
     for (int i = start_tick; i < end_tick; i += ticks_per_step)
     {
         int base_line = i / m_zoom;
@@ -84,6 +80,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
         snprintf(bar, sizeof(bar), "%d", (i/ ticks_per_measure ) + 1);
 
         m_pen->setColor(Qt::black);
+        m_painter->setPen(*m_pen);
         m_rect.setRect(base_line + 2 - m_scroll_offset_x,
                        0,
                        100,
@@ -95,15 +92,19 @@ void EditTimeBar::paintEvent(QPaintEvent *)
     long end_x = m_seq->get_length() / m_zoom - m_scroll_offset_x;
 
     m_pen->setColor(Qt::black);
+    m_brush->setColor(Qt::black);
+    m_painter->setBrush(*m_brush);
+    m_painter->setPen(*m_pen);
     m_rect.setRect(end_x,
                    9,
                    19,
                    8);
     m_painter->drawRect(m_rect);
+
     m_point.setX(end_x + 1);
     m_point.setY(9);
-
     m_pen->setColor(Qt::white);
+    m_painter->setPen(*m_pen);
     m_point = QPoint(end_x + 1, 17);
     m_painter->drawText(m_point,
                         tr("END"));

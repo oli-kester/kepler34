@@ -37,6 +37,7 @@ private:
 
     QTimer      *m_timer;
     QPen        *m_pen;
+    QBrush      *m_brush;
     QPainter    *m_painter;
     QRect        m_rect;
     QPoint       m_point;
