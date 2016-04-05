@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QPen>
+#include <QTimer>
 
 class EditNoteRoll : public QWidget
 {
@@ -39,6 +40,7 @@ private:
     QPoint       m_point;
     QFont        m_font;
     QLine        m_line;
+    QTimer      *m_timer;
 
     int m_window_x, m_window_y;
 

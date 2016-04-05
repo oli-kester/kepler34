@@ -48,7 +48,6 @@ void EditKeys::paintEvent(QPaintEvent *)
              key == 8 ||
              key == 10 )
         {
-
             //draw black keys
             m_pen->setColor(Qt::black);
             m_brush->setColor(Qt::black);
@@ -72,6 +71,7 @@ void EditKeys::paintEvent(QPaintEvent *)
 
             snprintf(notes, sizeof(notes), "%2s%1d", c_key_text[key], octave);
 
+            //draw "Cx" octave labels
             m_pen->setColor(Qt::black);
             m_painter->setPen(*m_pen);
             m_point = QPoint(2, c_key_y * i + 9);
