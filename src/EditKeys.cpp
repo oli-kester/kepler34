@@ -13,28 +13,26 @@ void EditKeys::paintEvent(QPaintEvent *)
 {
     m_painter = new QPainter(this);
     m_pen = new QPen(Qt::black);
+    m_brush = new QBrush(Qt::NoBrush);
     m_font.setPointSize(6);
     m_painter->setPen(*m_pen);
     m_painter->setFont(m_font);
 
+    //draw keyboard border
     m_rect = QRect(0,
                    0,
                    c_keyarea_x,
                    c_keyarea_y);
     m_painter->drawRect(m_rect);
 
-    m_pen = new QPen(Qt::white);
-    m_painter->setPen(*m_pen);
-    m_rect = QRect(1,
-                   1,
-                   c_keyoffset_x - 1,
-                   c_keyarea_y - 2  );
-    m_painter->drawRect(m_rect);
-
     for ( int i = 0; i < c_num_keys; i++ )
     {
-        m_pen = new QPen(Qt::white);
+        //draw white keys
+        m_pen->setColor(Qt::black);
         m_painter->setPen(*m_pen);
+        m_brush->setColor(Qt::white);
+        m_brush->setStyle(Qt::SolidPattern);
+        m_painter->setBrush(*m_brush);
         m_rect = QRect(c_keyoffset_x + 1,
                        (c_key_y * i) + 1,
                        c_key_x - 2,
@@ -51,12 +49,15 @@ void EditKeys::paintEvent(QPaintEvent *)
              key == 10 )
         {
 
-            m_pen = new QPen(Qt::black);
+            //draw black keys
+            m_pen->setColor(Qt::black);
+            m_brush->setColor(Qt::black);
             m_painter->setPen(*m_pen);
+            m_painter->setBrush(*m_brush);
             m_rect = QRect(c_keyoffset_x + 1,
-                           (c_key_y * i) + 2,
-                           c_key_x - 3,
-                           c_key_y - 3 );
+                           (c_key_y * i) + 3,
+                           c_key_x - 4,
+                           c_key_y - 5);
             m_painter->drawRect(m_rect);
         }
 
@@ -71,7 +72,7 @@ void EditKeys::paintEvent(QPaintEvent *)
 
             snprintf(notes, sizeof(notes), "%2s%1d", c_key_text[key], octave);
 
-            m_pen = new QPen(Qt::black);
+            m_pen->setColor(Qt::black);
             m_painter->setPen(*m_pen);
             m_point = QPoint(2, c_key_y * i + 9);
             m_painter->drawText(m_point, notes);
