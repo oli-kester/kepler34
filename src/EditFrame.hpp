@@ -42,6 +42,21 @@ private:
     EditTimeBar  *m_seqtime_wid;
     EditNoteRoll *m_seqroll_wid;
 
+private slots:
+    void updateSeqName ();
+    void updateGridSnap ();
+    void updateMidiBus ();
+    void updateMidiChannel ();
+    void undo();
+    void redo();
+    void showTools();
+    void updateNoteLength();
+    void zoomIn();
+    void zoomOut();
+    void updateKey();
+    void updateSeqLength();
+    void updateScale();
+    void updateBackgroundSeq();
 };
 
 #endif // EDITFRAME_HPP

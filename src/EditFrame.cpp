@@ -84,3 +84,73 @@ EditFrame::~EditFrame()
 {
     delete ui;
 }
+
+void EditFrame::updateSeqName()
+{
+
+}
+
+void EditFrame::updateGridSnap()
+{
+
+}
+
+void EditFrame::updateMidiBus()
+{
+
+}
+
+void EditFrame::updateMidiChannel()
+{
+
+}
+
+void EditFrame::undo()
+{
+
+}
+
+void EditFrame::redo()
+{
+
+}
+
+void EditFrame::showTools()
+{
+
+}
+
+void EditFrame::updateNoteLength()
+{
+
+}
+
+void EditFrame::zoomIn()
+{
+
+}
+
+void EditFrame::zoomOut()
+{
+
+}
+
+void EditFrame::updateKey()
+{
+
+}
+
+void EditFrame::updateSeqLength()
+{
+
+}
+
+void EditFrame::updateScale()
+{
+
+}
+
+void EditFrame::updateBackgroundSeq()
+{
+
+}
