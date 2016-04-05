@@ -20,8 +20,6 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
                      SIGNAL(textChanged()),
                      this,
                      SLOT(updateBankName()));
-
-
 }
 
 void LiveFrame::paintEvent(QPaintEvent *)
@@ -326,6 +324,4 @@ void LiveFrame::newSeq()
 void LiveFrame::editSeq()
 {
     callEditor(m_main_perf->get_sequence(m_current_seq));
-
-    newSeq();
 }

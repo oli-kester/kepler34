@@ -210,8 +210,8 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                 int in_shift = 0;
                 int length_add = 0;
 
-                if ( dt == DRAW_NORMAL_LINKED ){
-
+                if ( dt == DRAW_NORMAL_LINKED )
+                {
                     if (tick_f >= tick_s) {
                         note_width = (tick_f - tick_s) / m_zoom;
                         if ( note_width < 1 ) note_width = 1;
@@ -223,12 +223,14 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                     note_width = 16 / m_zoom;
                 }
 
-                if ( dt == DRAW_NOTE_ON ){
+                if ( dt == DRAW_NOTE_ON )
+                {
                     in_shift = 0;
                     length_add = 2;
                 }
 
-                if ( dt == DRAW_NOTE_OFF ){
+                if ( dt == DRAW_NOTE_OFF )
+                {
                     in_shift = -1;
                     length_add = 1;
                 }
