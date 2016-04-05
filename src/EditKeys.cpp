@@ -98,5 +98,5 @@ void EditKeys::mouseMoveEvent(QMouseEvent *event)
 
 QSize EditKeys::sizeHint() const
 {
-    return QSize(40,5000);
+    return QSize(40,1050);
 }

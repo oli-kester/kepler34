@@ -17,7 +17,7 @@ EditTimeBar::EditTimeBar(MidiSequence *a_seq, QWidget *parent):
                      SLOT(update()));
     m_timer->start();
 
-    m_zoom = 5;
+    m_zoom = 4;
     m_window_x = 800;
     m_window_y = 700;
 
@@ -45,21 +45,14 @@ void EditTimeBar::paintEvent(QPaintEvent *)
     int measure_length_32nds =  m_seq->get_bpm() * 32 /
             m_seq->get_bw();
 
-    //printf ( "measure_length_32nds[%d]\n", measure_length_32nds );
-
     int measures_per_line = (128 / measure_length_32nds) / (32 / m_zoom);
     if ( measures_per_line <= 0 )
         measures_per_line = 1;
-
-    //printf( "measures_per_line[%d]\n", measures_per_line );
 
     int ticks_per_measure =  m_seq->get_bpm() * (4 * c_ppqn) / m_seq->get_bw();
     int ticks_per_step =  ticks_per_measure * measures_per_line;
     int start_tick = m_scroll_offset_ticks - (m_scroll_offset_ticks % ticks_per_step );
     int end_tick = (m_window_x * m_zoom) + m_scroll_offset_ticks;
-
-    //printf ( "ticks_per_step[%d] start_tick[%d] end_tick[%d]\n",
-    //         ticks_per_step, start_tick, end_tick );
 
     /* draw vert lines */
     m_pen->setColor(Qt::black);
@@ -128,5 +121,5 @@ void EditTimeBar::mouseMoveEvent(QMouseEvent *event)
 
 QSize EditTimeBar::sizeHint() const
 {
-    return QSize(5000,18);
+    return QSize(500, 18);
 }

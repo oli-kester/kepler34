@@ -71,6 +71,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     m_seqtime_wid = new EditTimeBar(m_seq, m_container);
     m_seqroll_wid = new EditNoteRoll(m_perf, m_seq, m_container);
 
+    m_layout_grid->setSpacing(0);
     m_layout_grid->addWidget(m_seqkeys_wid, 1, 0, 1, 1);
     m_layout_grid->addWidget(m_seqtime_wid, 0, 1, 1, 1);
     m_layout_grid->addWidget(m_seqroll_wid, 1, 1, 1, 1);

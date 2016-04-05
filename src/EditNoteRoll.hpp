@@ -42,17 +42,13 @@ private:
     QLine        m_line;
     QTimer      *m_timer;
 
-    int m_window_x, m_window_y;
-
-    int m_scroll_offset_ticks;
-    int m_scroll_offset_key;
-    int m_scroll_offset_x;
-    int m_scroll_offset_y;
-
     int m_scale;
     int m_key;
     int m_zoom;
     int m_snap;
+
+    int m_size_x;
+    int m_size_y;
 
     int m_old_progress_x;
 
