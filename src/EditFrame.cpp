@@ -17,22 +17,6 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     }
     ui->cmb_grid_snap->setCurrentIndex(3);
 
-    // fill options for beats per measure combo box and set default
-    for (int i = 0; i < 16; i++)
-    {
-        QString combo_text = QString::number(i + 1);
-        ui->cmb_beat_measure->insertItem(i, combo_text);
-    }
-    ui->cmb_beat_measure->setCurrentIndex(3);
-
-    // fill options for beat length combo box and set default
-    for (int i = 0; i < 5; i++)
-    {
-        QString combo_text = QString::number(pow(2, i));
-        ui->cmb_beat_length->insertItem(i, combo_text);
-    }
-    ui->cmb_beat_length->setCurrentIndex(2);
-
     // fill options for MIDI channel numbers
     for (int i = 0; i <= 15; i++)
     {
@@ -56,7 +40,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
 
     // pull data from sequence object
     ui->txt_seq_name->setPlainText(m_seq->get_name());
-    ui->cmb_midi_chan->setCurrentIndex(m_seq->get_midi_channel() - 1);
+    ui->cmb_midi_chan->setCurrentIndex(m_seq->get_midi_channel());
 
     m_seq->set_editing(true);
 

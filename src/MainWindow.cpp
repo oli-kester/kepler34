@@ -12,6 +12,26 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
     m_modified = false;
 
+    // fill options for beats per measure combo box and set default
+    for (int i = 0; i < 16; i++)
+    {
+        QString combo_text = QString::number(i + 1);
+        ui->cmb_beat_measure->insertItem(i, combo_text);
+    }
+    ui->cmb_beat_measure->setCurrentIndex(3);
+
+    // fill options for beat length combo box and set default
+    for (int i = 0; i < 5; i++)
+    {
+        QString combo_text = QString::number(pow(2, i));
+        ui->cmb_beat_length->insertItem(i, combo_text);
+    }
+    ui->cmb_beat_length->setCurrentIndex(2);
+
+    //keyboard shortcuts
+    ui->btnPlay->setShortcut(tr("Space"));
+    ui->btnStop->setShortcut(tr("Esc"));
+
     m_msg_error = new QErrorMessage(this);
 
     m_msg_save_changes = new QMessageBox(this);
@@ -23,89 +43,99 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_dialog_prefs = new PreferencesDialog(this);
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     m_song_frame = new SongFrame(ui->SongTab);
-//        m_edit_frame = new EditFrame(ui->EditTab,m_main_perf,);
+    //        m_edit_frame = new EditFrame(ui->EditTab,m_main_perf,);
     m_beat_ind = new BeatIndicator(this, m_main_perf, 4, 4);
     
     ui->layoutTransport->addWidget(m_beat_ind);
     ui->LiveTabLayout->addWidget(m_live_frame);
     ui->SongTabLayout->addWidget(m_song_frame);
-//    ui->EditTabLayout->addWidget(m_edit_frame);
+    //    ui->EditTabLayout->addWidget(m_edit_frame);
 
     //timer to refresh GUI elements every few ms
     m_timer = new QTimer(this);
     m_timer->setInterval(50);
-    QObject::connect(m_timer,
-                     SIGNAL(timeout()),
-                     this,
-                     SLOT(refresh()));
+    connect(m_timer,
+            SIGNAL(timeout()),
+            this,
+            SLOT(refresh()));
     m_timer->start();
 
     //connect GUI elements to handlers
-    QObject::connect(ui->actionNew,
-                     SIGNAL(triggered(bool)),
-                     this,
-                     SLOT(newFile()));
+    connect(ui->actionNew,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(newFile()));
 
-    QObject::connect(ui->actionSave,
-                     SIGNAL(triggered(bool)),
-                     this,
-                     SLOT(saveFile()));
+    connect(ui->actionSave,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(saveFile()));
 
-    QObject::connect(ui->actionSave_As,
-                     SIGNAL(triggered(bool)),
-                     this,
-                     SLOT(saveFileAs()));
+    connect(ui->actionSave_As,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(saveFileAs()));
 
-    QObject::connect(ui->actionImport_MIDI,
-                     SIGNAL(triggered(bool)),
-                     this,
-                     SLOT(showImportDialog()));
+    connect(ui->actionImport_MIDI,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(showImportDialog()));
 
-    QObject::connect(ui->actionOpen,
-                     SIGNAL(triggered(bool)),
-                     this,
-                     SLOT(showOpenFileDialog()));
+    connect(ui->actionOpen,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(showOpenFileDialog()));
 
-    QObject::connect(ui->actionAbout,
-                     SIGNAL(triggered(bool)),
-                     this,
-                     SLOT(showAboutDialog()));
+    connect(ui->actionAbout,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(showAboutDialog()));
 
-    QObject::connect(ui->actionAbout_Qt,
-                     SIGNAL(triggered(bool)),
-                     this,
-                     SLOT(showAboutQtDialog()));
+    connect(ui->actionAbout_Qt,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(showAboutQtDialog()));
 
-    QObject::connect(ui->actionPreferences,
-                     SIGNAL(triggered(bool)),
-                     m_dialog_prefs,
-                     SLOT(show()));
+    connect(ui->actionPreferences,
+            SIGNAL(triggered(bool)),
+            m_dialog_prefs,
+            SLOT(show()));
 
 
-    QObject::connect(ui->btnPlay,
-                     SIGNAL(clicked(bool)),
-                     this,
-                     SLOT(startPlaying()));
+    connect(ui->btnPlay,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(startPlaying()));
 
-    QObject::connect(ui->btnStop,
-                     SIGNAL(clicked(bool)),
-                     this,
-                     SLOT(stopPlaying()));
+    connect(ui->btnStop,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(stopPlaying()));
 
-    QObject::connect(ui->btnRecord,
-                     SIGNAL(clicked(bool)),
-                     this,
-                     SLOT(setRecording(bool)));
+    connect(ui->btnRecord,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(setRecording(bool)));
 
-    QObject::connect(ui->spinBpm,
-                     SIGNAL(valueChanged(int)),
-                     this,
-                     SLOT(updateBpm(int)));
+    connect(ui->spinBpm,
+            SIGNAL(valueChanged(int)),
+            this,
+            SLOT(updateBpm(int)));
 
-    QObject::connect(m_live_frame,
-                     SIGNAL(callEditor(MidiSequence*)),
-                     this,
-                     SLOT(loadEditor(MidiSequence*)));
+    connect(m_live_frame,
+            SIGNAL(callEditor(MidiSequence*)),
+            this,
+            SLOT(loadEditor(MidiSequence*)));
+
+    connect(ui->cmb_beat_length,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateBeatLength(int)));
+
+    connect(ui->cmb_beat_measure,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateBeatsPerMeasure(int)));
 
     show();
 }
@@ -353,4 +383,14 @@ void MainWindow::loadEditor(MidiSequence *seq)
     m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
     ui->EditTabLayout->addWidget(m_edit_frame);
     ui->tabWidget->setCurrentIndex(2);
+}
+
+void MainWindow::updateBeatLength(int blIndex)
+{
+
+}
+
+void MainWindow::updateBeatsPerMeasure(int bmIndex)
+{
+
 }

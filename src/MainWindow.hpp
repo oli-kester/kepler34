@@ -68,6 +68,8 @@ private slots:
     void stopPlaying();
     void setRecording(bool record);
     void updateBpm(int newBpm);
+    void updateBeatsPerMeasure(int bmIndex);
+    void updateBeatLength(int blIndex);
     void newFile();
     bool saveFile();
     void saveFileAs();
