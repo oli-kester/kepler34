@@ -12,6 +12,7 @@
 #include <qmath.h>
 #include <QScrollBar>
 #include <QScrollArea>
+#include <QPalette>
 
 namespace Ui {
 class EditFrame;
@@ -33,6 +34,7 @@ private:
     QScrollBar      *m_scroll_horiz;
     QScrollBar      *m_scroll_vert;
     QWidget         *m_container;
+    QPalette        *m_palette;
 
     MidiSequence       * const m_seq;
     MidiPerformance    * const m_perf;

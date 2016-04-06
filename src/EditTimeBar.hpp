@@ -39,15 +39,12 @@ private:
     QPen        *m_pen;
     QBrush      *m_brush;
     QPainter    *m_painter;
-    QRect        m_rect;
-    QPoint       m_point;
     QFont        m_font;
-    QLine        m_line;
 
     int m_zoom;
-    int m_scroll_offset_ticks;
-    int m_scroll_offset_x;
-    int m_window_x, m_window_y;
+//    int m_scroll_offset_ticks;
+//    int m_scroll_offset_x;
+//    int m_window_x, m_window_y;
 
 };
 

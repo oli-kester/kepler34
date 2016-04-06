@@ -8,10 +8,11 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
     m_seq(a_seq),
     m_scale(0),
     m_key(0),
-    m_zoom(12),
+    m_zoom(1),
     m_size_x(5000),
     m_size_y(c_num_keys),
     m_snap(1),
+    m_note_length(200),
     m_old_progress_x(0),
     m_background_sequence(0),
     m_drawing_background_seq(false),
@@ -87,9 +88,9 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                             m_size_x,
                             i * c_key_y);
 
-        if ( m_scale != c_scale_off ){
-
-            if ( !c_scales_policy[m_scale][ ((c_num_keys - i) - 1 + ( 12 - m_key )) % 12] )
+        if ( m_scale != c_scale_off )
+        {
+            if (!c_scales_policy[m_scale][ ((c_num_keys - i) - 1 + ( 12 - m_key )) % 12] )
                 m_painter->drawRect(0,
                                     i * c_key_y + 1,
                                     m_size_x,
@@ -386,7 +387,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                     /* add note, length = little less than snap */
                     m_seq->push_undo();
 //                    m_seq->add_note( tick_s, m_note_length - 2, note, true );
-                    m_seq->add_note(tick_s, 100, note, true );
+                    m_seq->add_note(tick_s, m_note_length, note, true );
 
                     needs_update = true;
                 }

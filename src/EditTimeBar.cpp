@@ -3,10 +3,10 @@
 EditTimeBar::EditTimeBar(MidiSequence *a_seq, QWidget *parent):
     QWidget(parent),
 
-    m_seq(a_seq),
+    m_seq(a_seq)
 
-    m_scroll_offset_ticks(0),
-    m_scroll_offset_x(0)
+//    m_scroll_offset_ticks(0),
+//    m_scroll_offset_x(0)
 {
     //start refresh timer to queue regular redraws
     m_timer = new QTimer(this);
@@ -17,30 +17,29 @@ EditTimeBar::EditTimeBar(MidiSequence *a_seq, QWidget *parent):
                      SLOT(update()));
     m_timer->start();
 
-    m_zoom = 4;
-    m_window_x = 800;
-    m_window_y = 700;
+    m_zoom = 1;
+//    m_window_x = 800;
+//    m_window_y = 700;
 
-    setSizePolicy(QSizePolicy::MinimumExpanding,
+    setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
-
 }
 
 void EditTimeBar::paintEvent(QPaintEvent *)
 {
     m_painter = new QPainter(this);
-    m_pen = new QPen(Qt::black);
-    m_brush = new QBrush(Qt::white, Qt::SolidPattern),
+    m_pen = new QPen(Qt::white);
+    m_brush = new QBrush(Qt::white, Qt::NoBrush),
     m_font.setPointSize(6);
     m_painter->setPen(*m_pen);
     m_painter->setBrush(*m_brush);
     m_painter->setFont(m_font);
 
-    m_rect = QRect(0,
-                   0,
-                   m_window_x,
-                   m_window_y);
-    m_painter->drawRect(m_rect);
+    //draw time bar border
+    m_painter->drawRect(0,
+                        0,
+                        size().width(),
+                        size().height());
 
     int measure_length_32nds =  m_seq->get_bpm() * 32 /
             m_seq->get_bw();
@@ -50,58 +49,53 @@ void EditTimeBar::paintEvent(QPaintEvent *)
         measures_per_line = 1;
 
     int ticks_per_measure =  m_seq->get_bpm() * (4 * c_ppqn) / m_seq->get_bw();
-    int ticks_per_step =  ticks_per_measure * measures_per_line;
-    int start_tick = m_scroll_offset_ticks - (m_scroll_offset_ticks % ticks_per_step );
-    int end_tick = (m_window_x * m_zoom) + m_scroll_offset_ticks;
+    int ticks_per_beat =  ticks_per_measure * measures_per_line;
+    int start_tick = 0;
+    int end_tick = (m_seq->get_length());
 
-    /* draw vert lines */
-    m_pen->setColor(Qt::black);
+    m_pen->setColor(Qt::white);
     m_painter->setPen(*m_pen);
-    for (int i = start_tick; i < end_tick; i += ticks_per_step)
+    for (int i = start_tick; i <= end_tick; i += ticks_per_beat)
     {
-        int base_line = i / m_zoom;
+//        int zoomedX = i / m_zoom;
+        int zoomedX = i;
 
-        /* beat */
-        m_line = QLine(base_line - m_scroll_offset_x,
-                       0,
-                       base_line - m_scroll_offset_x,
-                       m_window_y);
-        m_painter->drawLine(m_line);
-
+        //vertical line at each beat
+        m_painter->drawLine(zoomedX,
+                            0,
+                            zoomedX,
+                            size().height());
 
         char bar[5];
         snprintf(bar, sizeof(bar), "%d", (i/ ticks_per_measure ) + 1);
 
-        m_pen->setColor(Qt::black);
+        //number each beat
+        m_pen->setColor(Qt::white);
         m_painter->setPen(*m_pen);
-        m_rect.setRect(base_line + 2 - m_scroll_offset_x,
-                       0,
-                       100,
-                       100);
-        m_painter->drawText(m_rect, bar);
+        m_painter->drawText(zoomedX + 3,
+                            10,
+                            bar);
 
     }
 
-    long end_x = m_seq->get_length() / m_zoom - m_scroll_offset_x;
+    long end_x = m_seq->get_length() / m_zoom;
 
-    m_pen->setColor(Qt::black);
-    m_brush->setColor(Qt::black);
+    //draw end of seq label
+    //label background
+    m_pen->setColor(Qt::white);
+    m_brush->setColor(Qt::white);
+    m_brush->setStyle(Qt::SolidPattern);
     m_painter->setBrush(*m_brush);
     m_painter->setPen(*m_pen);
-    m_rect.setRect(end_x,
-                   9,
-                   19,
-                   8);
-    m_painter->drawRect(m_rect);
-
-    m_point.setX(end_x + 1);
-    m_point.setY(9);
-    m_pen->setColor(Qt::white);
+    m_painter->drawRect(end_x,
+                        13,
+                        19,
+                        8);
+    //label text
+    m_pen->setColor(Qt::black);
     m_painter->setPen(*m_pen);
-    m_point = QPoint(end_x + 1, 17);
-    m_painter->drawText(m_point,
+    m_painter->drawText(end_x + 1, 21,
                         tr("END"));
-
 }
 
 void EditTimeBar::mousePressEvent(QMouseEvent *event)
@@ -121,5 +115,5 @@ void EditTimeBar::mouseMoveEvent(QMouseEvent *event)
 
 QSize EditTimeBar::sizeHint() const
 {
-    return QSize(500, 18);
+    return QSize(m_seq->get_length() + 100, 22);
 }

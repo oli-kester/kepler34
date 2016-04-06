@@ -45,12 +45,15 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     m_seq->set_editing(true);
 
     m_scroll_area = new QScrollArea(this);
-    m_scroll_area->setBackgroundRole(QPalette::Light);
     ui->vbox_centre->addWidget(m_scroll_area);
 
     m_container = new QWidget(m_scroll_area);
     m_layout_grid = new QGridLayout(m_container);
     m_container->setLayout(m_layout_grid);
+
+    m_palette = new QPalette();
+    m_palette->setColor(QPalette::Background, Qt::darkGray);
+    m_container->setPalette(*m_palette);
 
     m_seqkeys_wid = new EditKeys(m_seq, m_container);
     m_seqtime_wid = new EditTimeBar(m_seq, m_container);
