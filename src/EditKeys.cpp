@@ -13,17 +13,18 @@ void EditKeys::paintEvent(QPaintEvent *)
 {
     m_painter = new QPainter(this);
     m_pen = new QPen(Qt::black);
-    m_brush = new QBrush(Qt::NoBrush);
+    m_brush = new QBrush(Qt::SolidPattern);
+    m_brush->setColor(Qt::lightGray);
     m_font.setPointSize(6);
     m_painter->setPen(*m_pen);
+    m_painter->setBrush(*m_brush);
     m_painter->setFont(m_font);
 
     //draw keyboard border
-    m_rect = QRect(0,
-                   0,
-                   c_keyarea_x,
-                   c_keyarea_y);
-    m_painter->drawRect(m_rect);
+    m_painter->drawRect(0,
+                        0,
+                        c_keyarea_x,
+                        c_keyarea_y);
 
     for ( int i = 0; i < c_num_keys; i++ )
     {
@@ -33,11 +34,10 @@ void EditKeys::paintEvent(QPaintEvent *)
         m_brush->setColor(Qt::white);
         m_brush->setStyle(Qt::SolidPattern);
         m_painter->setBrush(*m_brush);
-        m_rect = QRect(c_keyoffset_x + 1,
-                       (c_key_y * i) + 1,
-                       c_key_x - 2,
-                       c_key_y - 1 );
-        m_painter->drawRect(m_rect);
+        m_painter->drawRect(c_keyoffset_x + 1,
+                            c_key_y * i + 1,
+                            c_key_x - 2,
+                            c_key_y - 1);
 
         /* the the key in the octave */
         int key = (c_num_keys - i - 1) % 12;
@@ -53,11 +53,10 @@ void EditKeys::paintEvent(QPaintEvent *)
             m_brush->setColor(Qt::black);
             m_painter->setPen(*m_pen);
             m_painter->setBrush(*m_brush);
-            m_rect = QRect(c_keyoffset_x + 1,
-                           (c_key_y * i) + 3,
-                           c_key_x - 4,
-                           c_key_y - 5);
-            m_painter->drawRect(m_rect);
+            m_painter->drawRect(c_keyoffset_x + 1,
+                                c_key_y * i + 3,
+                                c_key_x - 4,
+                                c_key_y - 5);
         }
 
         char notes[20];
@@ -74,8 +73,7 @@ void EditKeys::paintEvent(QPaintEvent *)
             //draw "Cx" octave labels
             m_pen->setColor(Qt::black);
             m_painter->setPen(*m_pen);
-            m_point = QPoint(2, c_key_y * i + 9);
-            m_painter->drawText(m_point, notes);
+            m_painter->drawText(7, c_key_y * i + 8, notes);
         }
 
     }
@@ -98,5 +96,5 @@ void EditKeys::mouseMoveEvent(QMouseEvent *event)
 
 QSize EditKeys::sizeHint() const
 {
-    return QSize(40,1050);
+    return QSize(36, 1050);
 }

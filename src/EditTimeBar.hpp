@@ -42,9 +42,6 @@ private:
     QFont        m_font;
 
     int m_zoom;
-//    int m_scroll_offset_ticks;
-//    int m_scroll_offset_x;
-//    int m_window_x, m_window_y;
 
 };
 

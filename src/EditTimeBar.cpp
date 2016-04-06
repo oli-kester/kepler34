@@ -4,9 +4,6 @@ EditTimeBar::EditTimeBar(MidiSequence *a_seq, QWidget *parent):
     QWidget(parent),
 
     m_seq(a_seq)
-
-//    m_scroll_offset_ticks(0),
-//    m_scroll_offset_x(0)
 {
     //start refresh timer to queue regular redraws
     m_timer = new QTimer(this);
@@ -18,8 +15,6 @@ EditTimeBar::EditTimeBar(MidiSequence *a_seq, QWidget *parent):
     m_timer->start();
 
     m_zoom = 1;
-//    m_window_x = 800;
-//    m_window_y = 700;
 
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
@@ -28,8 +23,8 @@ EditTimeBar::EditTimeBar(MidiSequence *a_seq, QWidget *parent):
 void EditTimeBar::paintEvent(QPaintEvent *)
 {
     m_painter = new QPainter(this);
-    m_pen = new QPen(Qt::white);
-    m_brush = new QBrush(Qt::white, Qt::NoBrush),
+    m_pen = new QPen(Qt::black);
+    m_brush = new QBrush(Qt::lightGray, Qt::SolidPattern),
     m_font.setPointSize(6);
     m_painter->setPen(*m_pen);
     m_painter->setBrush(*m_brush);
@@ -53,12 +48,11 @@ void EditTimeBar::paintEvent(QPaintEvent *)
     int start_tick = 0;
     int end_tick = (m_seq->get_length());
 
-    m_pen->setColor(Qt::white);
+    m_pen->setColor(Qt::black);
     m_painter->setPen(*m_pen);
     for (int i = start_tick; i <= end_tick; i += ticks_per_beat)
     {
-//        int zoomedX = i / m_zoom;
-        int zoomedX = i;
+        int zoomedX = i / m_zoom;
 
         //vertical line at each beat
         m_painter->drawLine(zoomedX,
@@ -70,7 +64,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
         snprintf(bar, sizeof(bar), "%d", (i/ ticks_per_measure ) + 1);
 
         //number each beat
-        m_pen->setColor(Qt::white);
+        m_pen->setColor(Qt::black);
         m_painter->setPen(*m_pen);
         m_painter->drawText(zoomedX + 3,
                             10,
@@ -87,9 +81,9 @@ void EditTimeBar::paintEvent(QPaintEvent *)
     m_brush->setStyle(Qt::SolidPattern);
     m_painter->setBrush(*m_brush);
     m_painter->setPen(*m_pen);
-    m_painter->drawRect(end_x,
+    m_painter->drawRect(end_x + 1,
                         13,
-                        19,
+                        15,
                         8);
     //label text
     m_pen->setColor(Qt::black);
