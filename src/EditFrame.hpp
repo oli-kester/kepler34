@@ -6,7 +6,6 @@
 #include "EditKeys.hpp"
 #include "EditTimeBar.hpp"
 #include "EditNoteRoll.hpp"
-#include "ContainerWidget.hpp"
 
 #include <QFrame>
 #include <QLayout>
@@ -42,21 +41,24 @@ private:
     EditTimeBar  *m_seqtime_wid;
     EditNoteRoll *m_seqroll_wid;
 
+    /* set snap to in pulses, off = 1 */
+    int         m_snap;
+
 private slots:
-    void updateSeqName ();
-    void updateGridSnap ();
-    void updateMidiBus ();
-    void updateMidiChannel ();
+    void updateSeqName();
+    void updateGridSnap(int newSnap);
+    void updateMidiBus(int newIndex);
+    void updateMidiChannel(int newIndex);
     void undo();
     void redo();
     void showTools();
-    void updateNoteLength();
+    void updateNoteLength(int newIndex);
     void zoomIn();
     void zoomOut();
-    void updateKey();
-    void updateSeqLength();
-    void updateScale();
-    void updateBackgroundSeq();
+    void updateKey(int newIndex);
+    void updateSeqLength(int newIndex);
+    void updateScale(int newIndex);
+    void updateBackgroundSeq(int newIndex);
 };
 
 #endif // EDITFRAME_HPP

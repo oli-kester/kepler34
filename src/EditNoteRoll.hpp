@@ -25,6 +25,8 @@ public:
                           MidiSequence *a_seq,
                           QWidget *parent = 0);
 
+    void set_snap(int newSnapIndex);
+
 protected:
     //override painting event to draw on the frame
     void paintEvent         (QPaintEvent *);

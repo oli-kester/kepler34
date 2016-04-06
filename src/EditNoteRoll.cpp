@@ -680,13 +680,20 @@ void EditNoteRoll::set_adding(bool a_adding)
 {
     if ( a_adding )
     {
-        //TODO
-        //    get_window()->set_cursor(  Gdk::Cursor( Gdk::PENCIL ));
+        setCursor(Qt::PointingHandCursor);
+
         m_adding = true;
 
-    } else
+    }
+    else
     {
-        //    get_window()->set_cursor( Gdk::Cursor( Gdk::LEFT_PTR ));
+        setCursor(Qt::ArrowCursor);
+
         m_adding = false;
     }
+}
+
+void EditNoteRoll::set_snap(int newSnapIndex)
+{
+    m_snap = newSnapIndex;
 }

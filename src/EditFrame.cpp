@@ -20,7 +20,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     // fill options for beats per measure combo box and set default
     for (int i = 0; i < 16; i++)
     {
-        QString combo_text = QString::number(i+1);
+        QString combo_text = QString::number(i + 1);
         ui->cmb_beat_measure->insertItem(i, combo_text);
     }
     ui->cmb_beat_measure->setCurrentIndex(3);
@@ -28,7 +28,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     // fill options for beat length combo box and set default
     for (int i = 0; i < 5; i++)
     {
-        QString combo_text = QString::number(pow(2,i));
+        QString combo_text = QString::number(pow(2, i));
         ui->cmb_beat_length->insertItem(i, combo_text);
     }
     ui->cmb_beat_length->setCurrentIndex(2);
@@ -56,6 +56,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
 
     // pull data from sequence object
     ui->txt_seq_name->setPlainText(m_seq->get_name());
+    ui->cmb_midi_chan->setCurrentIndex(m_seq->get_midi_channel() - 1);
 
     m_seq->set_editing(true);
 
@@ -78,6 +79,77 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     m_layout_grid->setAlignment(m_seqroll_wid, Qt::AlignTop);
 
     m_scroll_area->setWidget(m_container);
+
+    //connect all the UI signals
+    connect(ui->txt_seq_name,
+            SIGNAL(textChanged()),
+            this,
+            SLOT(updateSeqName()));
+
+    connect(ui->cmb_grid_snap,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateGridSnap(int)));
+
+    connect(ui->cmb_midi_bus,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateMidiBus(int)));
+
+    connect(ui->cmb_midi_chan,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateMidiChannel(int)));
+
+    connect(ui->btn_undo,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(undo()));
+
+    connect(ui->btn_redo,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(redo()));
+
+    connect(ui->btn_tools,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(showTools()));
+
+    connect(ui->cmb_note_len,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateNoteLength(int)));
+
+    connect(ui->btn_zoom_in,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(zoomIn()));
+
+    connect(ui->btn_zoom_out,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(zoomOut()));
+
+    connect(ui->cmb_key,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateKey(int)));
+
+    connect(ui->cmb_seq_len,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateSeqLength(int)));
+
+    connect(ui->cmb_scale,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateScale(int)));
+
+    connect(ui->cmb_back,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateBackgroundSeq(int)));
 }
 
 EditFrame::~EditFrame()
@@ -87,22 +159,28 @@ EditFrame::~EditFrame()
 
 void EditFrame::updateSeqName()
 {
+    m_seq->set_name(ui->txt_seq_name->document()->toPlainText().toStdString());
+}
+
+void EditFrame::updateGridSnap(int newSnap)
+{
+    //add one as the UI elements are indexed
+    //from zero
+//    m_snap = newSnap + 1;
+//    m_seqroll_wid->set_snap(m_snap);
+//    m_seqevent_wid->set_snap(newSnap);
+//    m_seq->set_snap_tick(newSnap);
 
 }
 
-void EditFrame::updateGridSnap()
+void EditFrame::updateMidiBus(int newIndex)
 {
 
 }
 
-void EditFrame::updateMidiBus()
+void EditFrame::updateMidiChannel(int newIndex)
 {
-
-}
-
-void EditFrame::updateMidiChannel()
-{
-
+    m_seq->set_midi_channel(newIndex + 1);
 }
 
 void EditFrame::undo()
@@ -120,7 +198,7 @@ void EditFrame::showTools()
 
 }
 
-void EditFrame::updateNoteLength()
+void EditFrame::updateNoteLength(int newIndex)
 {
 
 }
@@ -135,22 +213,22 @@ void EditFrame::zoomOut()
 
 }
 
-void EditFrame::updateKey()
+void EditFrame::updateKey(int newIndex)
 {
 
 }
 
-void EditFrame::updateSeqLength()
+void EditFrame::updateSeqLength(int newIndex)
 {
 
 }
 
-void EditFrame::updateScale()
+void EditFrame::updateScale(int newIndex)
 {
 
 }
 
-void EditFrame::updateBackgroundSeq()
+void EditFrame::updateBackgroundSeq(int newIndex)
 {
 
 }

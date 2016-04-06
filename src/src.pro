@@ -32,8 +32,7 @@ SOURCES +=\
     BeatIndicator.cpp \
     EditKeys.cpp \
     EditTimeBar.cpp \
-    EditNoteRoll.cpp \
-    ContainerWidget.cpp
+    EditNoteRoll.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -57,8 +56,7 @@ HEADERS  += \
     BeatIndicator.hpp \
     EditKeys.hpp \
     EditTimeBar.hpp \
-    EditNoteRoll.hpp \
-    ContainerWidget.hpp
+    EditNoteRoll.hpp
 
 FORMS    += \
     MainWindow.ui \
