@@ -331,12 +331,12 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
     long tick_s;
     long tick_f;
-    int note_h;
+    int note;
     int note_l;
 
-    int norm_x, norm_y, snapped_x, snapped_y;
-
     bool needs_update = false;
+
+    int norm_x, norm_y, snapped_x, snapped_y;
 
     snapped_x = norm_x = event->x();
     snapped_y = norm_y = event->y();
@@ -349,10 +349,10 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
     if ( m_paste ){
 
-        convert_xy( snapped_x, snapped_y, &tick_s, &note_h );
+        convert_xy( snapped_x, snapped_y, &tick_s, &note );
         m_paste = false;
         m_seq->push_undo();
-        m_seq->paste_selected( tick_s, note_h );
+        m_seq->paste_selected( tick_s, note );
 
         needs_update = true;
 
@@ -365,7 +365,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
             m_current_x = m_drop_x = norm_x;
 
             /* turn x,y in to tick/note */
-            convert_xy( m_drop_x, m_drop_y, &tick_s, &note_h );
+            convert_xy( m_drop_x, m_drop_y, &tick_s, &note );
 
             if ( m_adding )
             {
@@ -374,29 +374,30 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
                 /* adding, snapped x */
                 m_current_x = m_drop_x = snapped_x;
-                convert_xy( m_drop_x, m_drop_y, &tick_s, &note_h );
+                convert_xy( m_drop_x, m_drop_y, &tick_s, &note );
 
                 // test if a note is already there
                 // fake select, if so, no add
-                if ( ! m_seq->select_note_events( tick_s, note_h,
-                                                  tick_s, note_h,
+                if ( ! m_seq->select_note_events( tick_s, note,
+                                                  tick_s, note,
                                                   MidiSequence::e_would_select ))
                 {
 
                     /* add note, length = little less than snap */
                     m_seq->push_undo();
-                    m_seq->add_note( tick_s, m_note_length - 2, note_h, true );
+//                    m_seq->add_note( tick_s, m_note_length - 2, note, true );
+                    m_seq->add_note(tick_s, 100, note, true );
 
                     needs_update = true;
                 }
 
             }
-            else /* selecting */
+            else /* we're selecting */
             {
 
 
-                if ( !m_seq->select_note_events( tick_s, note_h,
-                                                 tick_s, note_h,
+                if ( !m_seq->select_note_events( tick_s, note,
+                                                 tick_s, note,
                                                  MidiSequence::e_is_selected ))
                 {
                     if ( ! (event->modifiers()) & Qt::ControlModifier)
@@ -406,7 +407,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
 
                     /* on direct click select only one event */
-                    numsel = m_seq->select_note_events( tick_s,note_h,tick_s,note_h,
+                    numsel = m_seq->select_note_events( tick_s,note,tick_s,note,
                                                         MidiSequence::e_select_one );
 
                     /* none selected, start selection box */
@@ -422,8 +423,8 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                 }
 
 
-                if ( m_seq->select_note_events(tick_s, note_h,
-                                               tick_s, note_h,
+                if ( m_seq->select_note_events(tick_s, note,
+                                               tick_s, note,
                                                MidiSequence::e_is_selected ))
                 {
                     // moving - left click only
@@ -434,7 +435,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
 
                         /* get the box that selected elements are in */
-                        m_seq->get_selected_box( &tick_s, &note_h,
+                        m_seq->get_selected_box( &tick_s, &note,
                                                  &tick_f, &note_l );
 
 
@@ -467,7 +468,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                         m_growing = true;
 
                         /* get the box that selected elements are in */
-                        m_seq->get_selected_box( &tick_s, &note_h,
+                        m_seq->get_selected_box( &tick_s, &note,
                                                  &tick_f, &note_l );
 
                         //                        convert_tn_box_to_rect( tick_s, tick_f, note_h, note_l,
@@ -482,7 +483,8 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
         }
 
         /*     right mouse button      */
-        if ( event->button() == Qt::RightButton ){
+        if ( event->button() == Qt::RightButton )
+        {
             set_adding(true);
         }
 
@@ -617,7 +619,7 @@ void EditNoteRoll::mouseMoveEvent(QMouseEvent *event)
     snap_y( &m_current_y );
     convert_xy( 0, m_current_y, &tick, &note );
 
-//    m_seqkeys_wid->set_hint_key( note );
+    //    m_seqkeys_wid->set_hint_key( note );
 
     if ( m_selecting || m_moving || m_growing || m_paste ){
 
@@ -625,7 +627,7 @@ void EditNoteRoll::mouseMoveEvent(QMouseEvent *event)
             snap_x( &m_current_x );
         }
 
-//        draw_selection_on_window();
+        //        draw_selection_on_window();
 
     }
 
