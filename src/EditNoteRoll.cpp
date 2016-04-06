@@ -51,22 +51,15 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     m_painter->setBrush(*m_brush);
     m_painter->setFont(m_font);
 
-    //draw background
+    //draw border
+//    m_painter->drawRect(0, 0, width(), height());
 
-    /* clear background */
-    //    m_pen->setColor(Qt::white);
-    //    m_rect = QRect(0,
-    //                   0,
-    //                   m_window_x,
-    //                   m_window_y);
-    //    m_painter->drawRect(m_rect);
-
-    m_pen->setColor(Qt::gray);
-    m_pen->setStyle(Qt::SolidLine);
+    m_pen->setColor(Qt::lightGray);
+    m_pen->setStyle(Qt::DashLine);
     m_painter->setPen(*m_pen);
 
     //for each note row in our grid
-    for ( int i=0; i <= c_num_keys; i++ )
+    for ( int i=1; i <= c_num_keys; i++ )
     {
         //set line colour dependent on the note row we're on
         //        if (0 == (((c_num_keys - i) + ( 12 - m_key )) % 12))
@@ -91,10 +84,10 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         if ( m_scale != c_scale_off )
         {
             if (!c_scales_policy[m_scale][ ((c_num_keys - i) - 1 + ( 12 - m_key )) % 12] )
-                m_painter->drawRect(0,
+                /*m_painter->drawRect(0,
                                     i * c_key_y + 1,
                                     m_size_x,
-                                    c_key_y - 1);
+                                    c_key_y - 1)*/;
         }
     }
 
@@ -144,7 +137,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         m_painter->drawLine(base_line,
                             0,
                             base_line,
-                            m_size_y * 8);
+                            c_keyarea_y);
     }
 
     /* reset line style */
@@ -158,7 +151,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                         m_old_progress_x,
                         m_size_y * 8);
 
-    m_old_progress_x = ((m_seq->get_last_tick() * 3) / m_zoom);
+    m_old_progress_x = (m_seq->get_last_tick() / m_zoom);
 
     if ( m_old_progress_x != 0 )
     {
@@ -386,7 +379,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
                     /* add note, length = little less than snap */
                     m_seq->push_undo();
-//                    m_seq->add_note( tick_s, m_note_length - 2, note, true );
+                    //                    m_seq->add_note( tick_s, m_note_length - 2, note, true );
                     m_seq->add_note(tick_s, m_note_length, note, true );
 
                     needs_update = true;
@@ -653,7 +646,7 @@ void EditNoteRoll::keyReleaseEvent(QKeyEvent *event)
 
 QSize EditNoteRoll::sizeHint() const
 {
-    return QSize(m_size_x * 0.1, m_size_y * 8);
+    return QSize(m_seq->get_length() + 100, c_keyarea_y + 1);
 }
 
 void EditNoteRoll::snap_y( int *a_y )

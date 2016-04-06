@@ -61,9 +61,7 @@ private:
     QPen        *m_pen;
     QBrush      *m_brush;
     QPainter    *m_painter;
-    QPoint       m_point;
     QFont        m_font;
-    QLine        m_line;
     QTimer      *m_timer;
 
     int m_scale;
