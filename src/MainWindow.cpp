@@ -10,6 +10,9 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 {
     ui->setupUi(this);
 
+    //maximize by default
+    setWindowState(Qt::WindowMaximized);
+
     m_modified = false;
 
     // fill options for beats per measure combo box and set default

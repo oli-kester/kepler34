@@ -3246,6 +3246,11 @@ MidiSequence::print_triggers()
 }
 
 
+long MidiSequence::getSnap_tick() const
+{
+    return m_snap_tick;
+}
+
 void
 MidiSequence::put_event_on_bus( MidiEvent *a_e )
 {

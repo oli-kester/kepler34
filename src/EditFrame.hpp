@@ -53,7 +53,7 @@ private:
 
 private slots:
     void updateSeqName();
-    void updateGridSnap(int newSnap);
+    void updateGridSnap(int snapIndex);
     void updateMidiBus(int newIndex);
     void updateMidiChannel(int newIndex);
     void undo();

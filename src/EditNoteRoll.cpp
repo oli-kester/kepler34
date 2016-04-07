@@ -686,6 +686,16 @@ void EditNoteRoll::set_adding(bool a_adding)
     }
 }
 
+int EditNoteRoll::note_length() const
+{
+    return m_note_length;
+}
+
+void EditNoteRoll::setNote_length(int note_length)
+{
+    m_note_length = note_length;
+}
+
 void EditNoteRoll::set_snap(int newSnapIndex)
 {
     m_snap = newSnapIndex;

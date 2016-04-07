@@ -443,6 +443,7 @@ class MidiSequence
              long a_snap_tick, int a_divide, bool a_linked =
              false);
     void transpose_notes (int a_steps, int a_scale);
+    long getSnap_tick() const;
 };
 
 

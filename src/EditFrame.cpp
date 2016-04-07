@@ -12,15 +12,32 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     setSizePolicy(QSizePolicy::Expanding,
                   QSizePolicy::Expanding);
 
-    // fill options for grid snap combo box and set default
-    for (int i = 0; i < 5; i++)
+    /* fill options for grid snap & note length
+     * combo box and set their defaults */
+
+    //16th intervals
+    for (int i = 0; i < 8; i++)
     {
         QString combo_text = "1/" + QString::number(pow(2,i));
         ui->cmb_grid_snap->insertItem(i, combo_text);
+        ui->cmb_note_len->insertItem(i, combo_text);
+    }
+
+    ui->cmb_grid_snap->insertSeparator(8);
+    ui->cmb_note_len->insertSeparator(8);
+
+    //triplet intervals
+    for (int i = 1; i < 8; i++)
+    {
+        QString combo_text = "1/" +
+                QString::number(pow(2, i) * 1.5);
+        ui->cmb_grid_snap->insertItem(i + 9, combo_text);
+        ui->cmb_note_len->insertItem(i + 9, combo_text);
     }
     ui->cmb_grid_snap->setCurrentIndex(3);
+    ui->cmb_note_len->setCurrentIndex(3);
 
-    // fill options for MIDI channel numbers
+    /* fill options for MIDI channel numbers */
     for (int i = 0; i <= 15; i++)
     {
         QString combo_text = QString::number(i+1);
@@ -41,10 +58,17 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     ui->cmb_scale->insertItem(1,"Major");
     ui->cmb_scale->insertItem(2,"Minor");
 
-    // pull data from sequence object
+    /* pull data from sequence object */
     ui->txt_seq_name->setPlainText(mSeq->get_name());
     ui->cmb_midi_chan->setCurrentIndex(mSeq->get_midi_channel());
-    ui->cmb_seq_len->setCurrentIndex(mSeq->getNumMeasures() - 1);
+
+    QString snapText("1/");
+    snapText.append(QString::number(c_ppqn * 4 / mSeq->getSnap_tick()));
+    ui->cmb_grid_snap->setCurrentText(snapText);
+
+    QString noteLenText("1/");
+    noteLenText.append(QString::number(c_ppqn * 4 / mSeq->getSnap_tick()));
+    ui->cmb_note_len->setCurrentText(noteLenText);
 
     mSeq->set_editing(true);
 
@@ -153,14 +177,61 @@ void EditFrame::updateSeqName()
     mSeq->set_name(ui->txt_seq_name->document()->toPlainText().toStdString());
 }
 
-void EditFrame::updateGridSnap(int newSnap)
+void EditFrame::updateGridSnap(int snapIndex)
 {
-    //add one as the UI elements are indexed
-    //from zero
-//    m_snap = newSnap + 1;
-//    m_seqroll_wid->set_snap(m_snap);
-//    m_seqevent_wid->set_snap(newSnap);
-//    m_seq->set_snap_tick(newSnap);
+    int snap;
+    switch (snapIndex)
+    {
+    case 0:
+        snap = c_ppqn * 4;
+        break;
+    case 1:
+        snap = c_ppqn * 2;
+        break;
+    case 2:
+        snap = c_ppqn * 1;
+        break;
+    case 3:
+        snap = c_ppqn / 2;
+        break;
+    case 4:
+        snap = c_ppqn / 4;
+        break;
+    case 5:
+        snap = c_ppqn / 8;
+        break;
+    case 6:
+        snap = c_ppqn / 16;
+        break;
+    case 7:
+        snap = c_ppqn / 32;
+        break;
+        //ignore index 8 as it's a separator
+    case 9:
+        snap = c_ppqn * 4  / 3;
+        break;
+    case 10:
+        snap = c_ppqn * 2  / 3;
+        break;
+    case 11:
+        snap = c_ppqn * 1 / 3;
+        break;
+    case 12:
+        snap = c_ppqn / 2 / 3;
+        break;
+    case 13:
+        snap = c_ppqn / 4 / 3;
+        break;
+    case 14:
+        snap = c_ppqn / 8 / 3;
+        break;
+    case 15:
+        snap = c_ppqn / 16 / 3;
+        break;
+    }
+
+    mNoteGrid->set_snap(snap);
+    mSeq->set_snap_tick(snap);
 
 }
 
@@ -191,7 +262,58 @@ void EditFrame::showTools()
 
 void EditFrame::updateNoteLength(int newIndex)
 {
+    int length;
+    switch (newIndex)
+    {
+    case 0:
+        length = c_ppqn * 4;
+        break;
+    case 1:
+        length = c_ppqn * 2;
+        break;
+    case 2:
+        length = c_ppqn * 1;
+        break;
+    case 3:
+        length = c_ppqn / 2;
+        break;
+    case 4:
+        length = c_ppqn / 4;
+        break;
+    case 5:
+        length = c_ppqn / 8;
+        break;
+    case 6:
+        length = c_ppqn / 16;
+        break;
+    case 7:
+        length = c_ppqn / 32;
+        break;
+        //ignore index 8 as it's a separator
+    case 9:
+        length = c_ppqn * 4  / 3;
+        break;
+    case 10:
+        length = c_ppqn * 2  / 3;
+        break;
+    case 11:
+        length = c_ppqn * 1 / 3;
+        break;
+    case 12:
+        length = c_ppqn / 2 / 3;
+        break;
+    case 13:
+        length = c_ppqn / 4 / 3;
+        break;
+    case 14:
+        length = c_ppqn / 8 / 3;
+        break;
+    case 15:
+        length = c_ppqn / 16 / 3;
+        break;
+    }
 
+    mNoteGrid->setNote_length(length);
 }
 
 void EditFrame::zoomIn()

@@ -27,6 +27,9 @@ public:
 
     void set_snap(int newSnapIndex);
 
+    int note_length() const;
+    void setNote_length(int note_length);
+
 protected:
     //override painting event to draw on the frame
     void paintEvent         (QPaintEvent *);

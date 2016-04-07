@@ -130,14 +130,29 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <widget class="QComboBox" name="cmb_grid_snap">
-         <property name="maximumSize">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
           <size>
            <width>55</width>
            <height>25</height>
           </size>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>99999</height>
+          </size>
+         </property>
          <property name="currentIndex">
           <number>-1</number>
+         </property>
+         <property name="sizeAdjustPolicy">
+          <enum>QComboBox::AdjustToContents</enum>
          </property>
         </widget>
        </item>
@@ -163,10 +178,22 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <widget class="QComboBox" name="cmb_note_len">
-         <property name="maximumSize">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
           <size>
            <width>55</width>
            <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>9999</height>
           </size>
          </property>
          <property name="currentIndex">
