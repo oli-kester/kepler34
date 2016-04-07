@@ -36,17 +36,17 @@ void EditTimeBar::paintEvent(QPaintEvent *)
                         size().width(),
                         size().height());
 
-    int measure_length_32nds =  m_seq->get_bpm() * 32 /
-            m_seq->get_bw();
+    int measure_length_32nds =  m_seq->getBeatsPerMeasure() * 32 /
+            m_seq->getBeatWidth();
 
     int measures_per_line = (128 / measure_length_32nds) / (32 / m_zoom);
     if ( measures_per_line <= 0 )
         measures_per_line = 1;
 
-    int ticks_per_measure =  m_seq->get_bpm() * (4 * c_ppqn) / m_seq->get_bw();
+    int ticks_per_measure =  m_seq->getBeatsPerMeasure() * (4 * c_ppqn) / m_seq->getBeatWidth();
     int ticks_per_beat =  ticks_per_measure * measures_per_line;
     int start_tick = 0;
-    int end_tick = (m_seq->get_length());
+    int end_tick = (m_seq->getLength());
 
     m_pen->setColor(Qt::black);
     m_painter->setPen(*m_pen);
@@ -72,7 +72,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
 
     }
 
-    long end_x = m_seq->get_length() / m_zoom;
+    long end_x = m_seq->getLength() / m_zoom;
 
     //draw end of seq label
     //label background
@@ -109,5 +109,5 @@ void EditTimeBar::mouseMoveEvent(QMouseEvent *event)
 
 QSize EditTimeBar::sizeHint() const
 {
-    return QSize(m_seq->get_length() + 100, 22);
+    return QSize(m_seq->getLength() + 100, 22);
 }

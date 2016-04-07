@@ -291,8 +291,8 @@ bool MidiFile::parse (MidiPerformance * a_perf, int a_screen_set)
 
                                     else if (proprietary == c_timesig)
                                     {
-                                        seq->set_bpm (read_byte());
-                                        seq->set_bw (read_byte());
+                                        seq->setBeatsPerMeasure (read_byte());
+                                        seq->setBeatWidth (read_byte());
                                         len -= 2;
                                     }
 

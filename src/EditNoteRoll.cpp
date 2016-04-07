@@ -90,8 +90,8 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     }
 
     int measures_per_line = 1;
-    int ticks_per_measure =  m_seq->get_bpm() * (4 * c_ppqn) / m_seq->get_bw();
-    int ticks_per_beat =  (4 * c_ppqn) / m_seq->get_bw();
+    int ticks_per_measure =  m_seq->getBeatsPerMeasure() * (4 * c_ppqn) / m_seq->getBeatWidth();
+    int ticks_per_beat =  (4 * c_ppqn) / m_seq->getBeatWidth();
     int ticks_per_step = 6 * m_zoom;
     int ticks_per_m_line =  ticks_per_measure * measures_per_line;
 
@@ -233,7 +233,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                     }
                     else
                     {
-                        note_width = (m_seq->get_length() - tick_s) / m_zoom;
+                        note_width = (m_seq->getLength() - tick_s) / m_zoom;
                     }
 
                 }
@@ -643,7 +643,7 @@ void EditNoteRoll::keyReleaseEvent(QKeyEvent *event)
 
 QSize EditNoteRoll::sizeHint() const
 {
-    return QSize(m_seq->get_length() + 100, c_keyarea_y + 1);
+    return QSize(m_seq->getLength() + 100, c_keyarea_y + 1);
 }
 
 void EditNoteRoll::snap_y( int *a_y )

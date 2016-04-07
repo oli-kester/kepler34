@@ -163,16 +163,16 @@ class MidiSequence
     void set_name (string a_name);
     void set_name (char *a_name);
 
-    void set_measures (long a_length_measures);
-    long get_measures ();
+    void setNumMeasures (long measures);
+    long getNumMeasures ();
 
-    void set_bpm (long a_beats_per_measure);
-    long get_bpm ();
+    void setBeatsPerMeasure (long a_beats_per_measure);
+    long getBeatsPerMeasure ();
 
-    void set_bw (long a_beat_width);
-    long get_bw ();
+    void setBeatWidth (long a_beat_width);
+    long getBeatWidth ();
+
     void set_rec_vol (long a_rec_vol);
-
     void set_song_mute (bool a_mute);
     bool get_song_mute ();
 
@@ -210,7 +210,7 @@ class MidiSequence
 
     /* length in ticks */
     void set_length (long a_len, bool a_adjust_triggers = true);
-    long get_length ();
+    long getLength ();
 
     /* returns last tick played..  used by
        editors idle function */

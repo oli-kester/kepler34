@@ -153,7 +153,7 @@ MidiSequence::get_song_mute()
 }
 
 void
-MidiSequence::set_bpm( long a_beats_per_measure )
+MidiSequence::setBeatsPerMeasure( long a_beats_per_measure )
 {
     lock();
     m_time_beats_per_measure = a_beats_per_measure;
@@ -162,13 +162,13 @@ MidiSequence::set_bpm( long a_beats_per_measure )
 }
 
 long
-MidiSequence::get_bpm()
+MidiSequence::getBeatsPerMeasure()
 {
     return m_time_beats_per_measure;
 }
 
 void
-MidiSequence::set_bw( long a_beat_width )
+MidiSequence::setBeatWidth( long a_beat_width )
 {
     lock();
     m_time_beat_width = a_beat_width;
@@ -185,7 +185,7 @@ MidiSequence::set_rec_vol( long a_rec_vol )
 }
 
 long
-MidiSequence::get_bw()
+MidiSequence::getBeatWidth()
 {
     return m_time_beat_width;
 }
@@ -3080,7 +3080,7 @@ MidiSequence::set_length( long a_len, bool a_adjust_triggers )
 
 
 long
-MidiSequence::get_length( )
+MidiSequence::getLength( )
 {
     return m_length;
 }
@@ -3693,4 +3693,20 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
 //     a_list->push_front( 0x05 );
 //     addLongList( a_list, c_triggersmidibus );
 
+long MidiSequence::getNumMeasures()
+{
+   long units = ((getBeatsPerMeasure() * (c_ppqn * 4)) / getBeatWidth() );
 
+   long measures = (getLength() / units);
+
+   if (getLength() % units != 0)
+       measures++;
+
+   return measures;
+
+}
+
+void MidiSequence::setNumMeasures(long measures)
+{
+    set_length(measures * getBeatsPerMeasure() * ((c_ppqn * 4) / getBeatWidth()));
+}

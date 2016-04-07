@@ -44,6 +44,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     // pull data from sequence object
     ui->txt_seq_name->setPlainText(m_seq->get_name());
     ui->cmb_midi_chan->setCurrentIndex(m_seq->get_midi_channel());
+    ui->cmb_seq_len->setCurrentIndex(m_seq->getNumMeasures() - 1);
 
     m_seq->set_editing(true);
 
@@ -129,7 +130,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     connect(ui->cmb_seq_len,
             SIGNAL(currentIndexChanged(int)),
             this,
-            SLOT(updateSeqLength(int)));
+            SLOT(updateSeqLength()));
 
     connect(ui->cmb_scale,
             SIGNAL(currentIndexChanged(int)),
@@ -208,9 +209,10 @@ void EditFrame::updateKey(int newIndex)
 
 }
 
-void EditFrame::updateSeqLength(int newIndex)
+void EditFrame::updateSeqLength()
 {
-
+    int measures = ui->cmb_seq_len->currentText().toInt();
+    m_seq->setNumMeasures(measures);
 }
 
 void EditFrame::updateScale(int newIndex)

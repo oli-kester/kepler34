@@ -23,7 +23,6 @@ public:
                   int beat_width);
 
     ~BeatIndicator();
-
     
     int getBeatsPerMeasure() const;
     void setBeatsPerMeasure(int beats_per_measure);

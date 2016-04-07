@@ -8,6 +8,11 @@
 #include <QPainter>
 #include <QPen>
 
+///
+/// \brief The EditTimeBar class
+///
+/// The timebar for the sequence editor
+
 class EditTimeBar : public QWidget
 {
     Q_OBJECT

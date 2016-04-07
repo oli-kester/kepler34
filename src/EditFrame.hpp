@@ -18,6 +18,11 @@ namespace Ui {
 class EditFrame;
 }
 
+///
+/// \brief The EditFrame class
+///
+/// Holds tools for editing an individual MIDI sequence
+
 class EditFrame : public QFrame
 {
     Q_OBJECT
@@ -27,7 +32,9 @@ public:
     ~EditFrame();
 
 private:
-    Ui::EditFrame *ui;
+    long getMeasures();
+
+    Ui::EditFrame   *ui;
 
     QGridLayout     *m_layout_grid;
     QScrollArea     *m_scroll_area;
@@ -58,7 +65,7 @@ private slots:
     void zoomIn();
     void zoomOut();
     void updateKey(int newIndex);
-    void updateSeqLength(int newIndex);
+    void updateSeqLength();
     void updateScale(int newIndex);
     void updateBackgroundSeq(int newIndex);
 };
