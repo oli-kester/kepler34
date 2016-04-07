@@ -9,6 +9,9 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
 {
     ui->setupUi(this);
 
+    setSizePolicy(QSizePolicy::Expanding,
+                  QSizePolicy::Expanding);
+
     // fill options for grid snap combo box and set default
     for (int i = 0; i < 5; i++)
     {
