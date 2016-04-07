@@ -32,26 +32,24 @@ public:
     ~EditFrame();
 
 private:
-    long getMeasures();
-
     Ui::EditFrame   *ui;
 
     QGridLayout     *m_layout_grid;
     QScrollArea     *m_scroll_area;
     QScrollBar      *m_scroll_horiz;
     QScrollBar      *m_scroll_vert;
-    QWidget         *m_container;
+    QWidget         *mContainer;
     QPalette        *m_palette;
 
-    MidiSequence       * const m_seq;
-    MidiPerformance    * const m_perf;
+    MidiSequence       * const mSeq;
+    MidiPerformance    * const mPerformance;
 
-    EditKeys     *m_seqkeys_wid;
-    EditTimeBar  *m_seqtime_wid;
-    EditNoteRoll *m_seqroll_wid;
+    EditKeys     *mKeyboard;
+    EditTimeBar  *mTimeBar;
+    EditNoteRoll *mNoteGrid;
 
     /* set snap to in pulses, off = 1 */
-    int         m_snap;
+    int         mSnap;
 
 private slots:
     void updateSeqName();

@@ -3,8 +3,8 @@
 
 EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) :
     QFrame(parent),
-    m_perf(perf),
-    m_seq(seq),
+    mPerformance(perf),
+    mSeq(seq),
     ui(new Ui::EditFrame)
 {
     ui->setupUi(this);
@@ -42,34 +42,34 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     ui->cmb_scale->insertItem(2,"Minor");
 
     // pull data from sequence object
-    ui->txt_seq_name->setPlainText(m_seq->get_name());
-    ui->cmb_midi_chan->setCurrentIndex(m_seq->get_midi_channel());
-    ui->cmb_seq_len->setCurrentIndex(m_seq->getNumMeasures() - 1);
+    ui->txt_seq_name->setPlainText(mSeq->get_name());
+    ui->cmb_midi_chan->setCurrentIndex(mSeq->get_midi_channel());
+    ui->cmb_seq_len->setCurrentIndex(mSeq->getNumMeasures() - 1);
 
-    m_seq->set_editing(true);
+    mSeq->set_editing(true);
 
     m_scroll_area = new QScrollArea(this);
     ui->vbox_centre->addWidget(m_scroll_area);
 
-    m_container = new QWidget(m_scroll_area);
-    m_layout_grid = new QGridLayout(m_container);
-    m_container->setLayout(m_layout_grid);
+    mContainer = new QWidget(m_scroll_area);
+    m_layout_grid = new QGridLayout(mContainer);
+    mContainer->setLayout(m_layout_grid);
 
     m_palette = new QPalette();
     m_palette->setColor(QPalette::Background, Qt::darkGray);
-    m_container->setPalette(*m_palette);
+    mContainer->setPalette(*m_palette);
 
-    m_seqkeys_wid = new EditKeys(m_seq, m_container);
-    m_seqtime_wid = new EditTimeBar(m_seq, m_container);
-    m_seqroll_wid = new EditNoteRoll(m_perf, m_seq, m_container);
+    mKeyboard = new EditKeys(mSeq, mContainer);
+    mTimeBar = new EditTimeBar(mSeq, mContainer);
+    mNoteGrid = new EditNoteRoll(mPerformance, mSeq, mContainer);
 
     m_layout_grid->setSpacing(0);
-    m_layout_grid->addWidget(m_seqkeys_wid, 1, 0, 1, 1);
-    m_layout_grid->addWidget(m_seqtime_wid, 0, 1, 1, 1);
-    m_layout_grid->addWidget(m_seqroll_wid, 1, 1, 1, 1);
-    m_layout_grid->setAlignment(m_seqroll_wid, Qt::AlignTop);
+    m_layout_grid->addWidget(mKeyboard, 1, 0, 1, 1);
+    m_layout_grid->addWidget(mTimeBar, 0, 1, 1, 1);
+    m_layout_grid->addWidget(mNoteGrid, 1, 1, 1, 1);
+    m_layout_grid->setAlignment(mNoteGrid, Qt::AlignTop);
 
-    m_scroll_area->setWidget(m_container);
+    m_scroll_area->setWidget(mContainer);
 
     //connect all the UI signals
     connect(ui->txt_seq_name,
@@ -150,7 +150,7 @@ EditFrame::~EditFrame()
 
 void EditFrame::updateSeqName()
 {
-    m_seq->set_name(ui->txt_seq_name->document()->toPlainText().toStdString());
+    mSeq->set_name(ui->txt_seq_name->document()->toPlainText().toStdString());
 }
 
 void EditFrame::updateGridSnap(int newSnap)
@@ -171,7 +171,7 @@ void EditFrame::updateMidiBus(int newIndex)
 
 void EditFrame::updateMidiChannel(int newIndex)
 {
-    m_seq->set_midi_channel(newIndex + 1);
+    mSeq->set_midi_channel(newIndex + 1);
 }
 
 void EditFrame::undo()
@@ -212,7 +212,10 @@ void EditFrame::updateKey(int newIndex)
 void EditFrame::updateSeqLength()
 {
     int measures = ui->cmb_seq_len->currentText().toInt();
-    m_seq->setNumMeasures(measures);
+    mSeq->setNumMeasures(measures);
+    mTimeBar->updateGeometry();
+    mNoteGrid->updateGeometry();
+    mContainer->adjustSize();
 }
 
 void EditFrame::updateScale(int newIndex)
