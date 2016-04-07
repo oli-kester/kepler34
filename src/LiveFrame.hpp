@@ -50,7 +50,7 @@ private:
 
     //used to grab std::string bank name and
     //convert it to QString for display
-    void banknameConvertDisplay();
+    void bankNameUpdateInternal();
 
     //converts the XY coordinates of a click into a seq ID
     int seqIDFromClickXY(int click_x, int click_y);

@@ -9,12 +9,13 @@ BeatIndicator::BeatIndicator(QWidget *parent,
     m_beats_per_measure(beats_per_measure),
     m_beat_width(beat_width)
 {
-
+    setSizePolicy(QSizePolicy::Fixed,
+                  QSizePolicy::Fixed);
 }
 
 QSize BeatIndicator::sizeHint() const
 {
-    return QSize(500,10);
+    return QSize(30,20);
 }
 
 void BeatIndicator::paintEvent(QPaintEvent *)

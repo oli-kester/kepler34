@@ -71,9 +71,6 @@ private:
 
     int m_note_length;
 
-    int m_size_x;
-    int m_size_y;
-
     /* when highlighting a bunch of events */
     bool m_selecting;
     bool m_adding;

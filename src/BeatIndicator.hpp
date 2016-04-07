@@ -7,7 +7,10 @@
 
 #include "MidiPerformance.hpp"
 
-//A beat indicator widget.
+///
+/// \brief The BeatIndicator class
+///
+/// A beat indicator widget
 
 class BeatIndicator : public QWidget
 {
@@ -21,7 +24,6 @@ public:
 
     ~BeatIndicator();
 
-    QSize sizeHint() const;
     
     int getBeatsPerMeasure() const;
     void setBeatsPerMeasure(int beats_per_measure);
@@ -32,6 +34,9 @@ public:
 protected:
     //override painting event to draw on the frame
     void paintEvent(QPaintEvent *event);
+
+    //override the sizehint to set our own defaults
+    QSize sizeHint() const;
 
 private:
     MidiPerformance     * const m_main_perf;

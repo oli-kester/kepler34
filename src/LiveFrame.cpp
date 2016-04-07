@@ -92,6 +92,7 @@ void LiveFrame::drawSequence(int a_seq)
                                 name);
         }
     }
+    update();
 }
 
 void LiveFrame::drawAllSequences()
@@ -134,20 +135,18 @@ void LiveFrame::redraw()
 
 void LiveFrame::updateBank(int newBank)
 {
-    setBank(newBank);
-
     m_main_perf->setBank(newBank);
-
+    setBank(newBank);
     m_main_perf->setModified(true);
 }
 
 void LiveFrame::updateBankName()
 {
-    banknameConvertDisplay();
+    bankNameUpdateInternal();
     m_main_perf->setModified(true);
 }
 
-void LiveFrame::banknameConvertDisplay()
+void LiveFrame::bankNameUpdateInternal()
 {
     string newName =
             ui->txtBankName->document()->toPlainText().toStdString();
@@ -155,7 +154,7 @@ void LiveFrame::banknameConvertDisplay()
     qDebug() << "LiveFrame.cpp, New bank name is - "
              << QString(newName.c_str()) << endl;
 
-    m_main_perf->setBankName(m_bank_id, m_main_perf->getBankName(m_bank_id));
+    m_main_perf->setBankName(m_bank_id, &newName);
 }
 
 int LiveFrame::seqIDFromClickXY(int click_x, int click_y)

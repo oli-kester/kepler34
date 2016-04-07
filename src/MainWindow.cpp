@@ -185,7 +185,8 @@ void MainWindow::showOpenFileDialog()
     file = QFileDialog::getOpenFileName(
                 this,
                 tr("Open MIDI file"),
-                last_used_dir,
+//                "/",
+                "last_used_dir",
                 tr("MIDI files (*.midi *.mid);;"
                    "All files (*)")
                 );

@@ -9,8 +9,6 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
     m_scale(0),
     m_key(0),
     m_zoom(1),
-    m_size_x(5000),
-    m_size_y(c_num_keys),
     m_snap(1),
     m_note_length(200),
     m_old_progress_x(0),
@@ -52,7 +50,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     m_painter->setFont(m_font);
 
     //draw border
-//    m_painter->drawRect(0, 0, width(), height());
+    //    m_painter->drawRect(0, 0, width(), height());
 
     m_pen->setColor(Qt::lightGray);
     m_pen->setStyle(Qt::DashLine);
@@ -78,7 +76,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         //draw horizontal grid lines
         m_painter->drawLine(0,
                             i * c_key_y,
-                            m_size_x,
+                            width(),
                             i * c_key_y);
 
         if ( m_scale != c_scale_off )
@@ -97,15 +95,14 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     int ticks_per_step = 6 * m_zoom;
     int ticks_per_m_line =  ticks_per_measure * measures_per_line;
 
-    m_pen->setColor(Qt::gray);
-
-    for ( int i = 0; i < m_size_x; i += ticks_per_step )
+    //start drawing vertical grid lines
+    for ( int i = 0; i < width(); i += ticks_per_step )
     {
         int base_line = i / m_zoom;
 
         if ( i % ticks_per_m_line == 0 ){
 
-            /* solid line on every beat */
+            //solid line on every beat
             m_pen->setColor(Qt::black);
             m_pen->setStyle(Qt::SolidLine);
 
@@ -113,26 +110,28 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         else if (i % ticks_per_beat == 0 )
         {
 
-            m_pen->setColor(Qt::darkGray);
-            m_pen->setStyle(Qt::SolidLine);
+            m_pen->setColor(Qt::DashLine);
         }
         else
         {
-            m_pen->setStyle(Qt::DashLine);
+            //faint step lines
+            m_pen->setColor(Qt::lightGray);
+            m_pen->setStyle(Qt::DotLine);
 
             int i_snap = i - (i % m_snap);
 
             if ( i == i_snap )
             {
-                m_pen->setColor(Qt::darkGray);
+//                m_pen->setColor(Qt::darkGray);
             }
             else
             {
-                m_pen->setColor(Qt::gray);
+//                m_pen->setColor(Qt::gray);
             }
         }
 
         //draw vertical grid lines
+        m_pen->setStyle(Qt::SolidLine);
         m_painter->setPen(*m_pen);
         m_painter->drawLine(base_line,
                             0,
@@ -140,28 +139,26 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                             c_keyarea_y);
     }
 
-    /* reset line style */
-    m_pen->setColor(Qt::black);
-    m_pen->setStyle(Qt::SolidLine);
-
     //draw playhead
+    m_pen->setColor(Qt::red);
+    m_pen->setStyle(Qt::SolidLine);
     m_painter->setPen(*m_pen);
     m_painter->drawLine(m_old_progress_x,
                         0,
                         m_old_progress_x,
-                        m_size_y * 8);
+                        height() * 8);
 
     m_old_progress_x = (m_seq->get_last_tick() / m_zoom);
 
-    if ( m_old_progress_x != 0 )
-    {
-        m_pen->setColor(Qt::black);
-        m_painter->setPen(*m_pen);
-        m_painter->drawLine(m_old_progress_x,
-                            0,
-                            m_old_progress_x,
-                            m_size_y);
-    }
+//    if ( m_old_progress_x != 0 )
+//    {
+//        m_pen->setColor(Qt::black);
+//        m_painter->setPen(*m_pen);
+//        m_painter->drawLine(m_old_progress_x,
+//                            0,
+//                            m_old_progress_x,
+//                            m_size_y);
+//    }
 
     //draw events
     long tick_s;
@@ -180,7 +177,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     draw_type dt;
 
     int start_tick = 0;
-    int end_tick = (m_size_x * m_zoom);
+    int end_tick = (width() * m_zoom);
 
     MidiSequence *seq = NULL;
 
