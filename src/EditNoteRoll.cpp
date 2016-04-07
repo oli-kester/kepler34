@@ -9,9 +9,8 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
     m_scale(0),
     m_key(0),
     m_zoom(1),
-    m_snap(1),
-    m_note_length(200),
     m_old_progress_x(0),
+    m_note_length(c_ppqn * 4 / 16),
     m_background_sequence(0),
     m_drawing_background_seq(false),
     m_selecting(false),
@@ -25,6 +24,8 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
     m_is_drag_pasting_start(false),
     m_justselected_one(false)
 {
+    set_snap(m_seq->getSnap_tick());
+
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
 
@@ -686,17 +687,17 @@ void EditNoteRoll::set_adding(bool a_adding)
     }
 }
 
-int EditNoteRoll::note_length() const
+int EditNoteRoll::length() const
 {
     return m_note_length;
 }
 
-void EditNoteRoll::setNote_length(int note_length)
+void EditNoteRoll::setNote_length(int length)
 {
-    m_note_length = note_length;
+    m_note_length = length;
 }
 
-void EditNoteRoll::set_snap(int newSnapIndex)
+void EditNoteRoll::set_snap(int snap)
 {
-    m_snap = newSnapIndex;
+    m_snap = snap;
 }

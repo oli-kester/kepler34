@@ -25,10 +25,10 @@ public:
                           MidiSequence *a_seq,
                           QWidget *parent = 0);
 
-    void set_snap(int newSnapIndex);
+    void set_snap(int snap);
 
-    int note_length() const;
-    void setNote_length(int note_length);
+    int length() const;
+    void setNote_length(int length);
 
 protected:
     //override painting event to draw on the frame

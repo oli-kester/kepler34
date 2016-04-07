@@ -70,6 +70,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     noteLenText.append(QString::number(c_ppqn * 4 / mSeq->getSnap_tick()));
     ui->cmb_note_len->setCurrentText(noteLenText);
 
+    /* set out our custom elements */
     mSeq->set_editing(true);
 
     m_scroll_area = new QScrollArea(this);
