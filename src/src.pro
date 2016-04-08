@@ -32,7 +32,10 @@ SOURCES +=\
     BeatIndicator.cpp \
     EditKeys.cpp \
     EditTimeBar.cpp \
-    EditNoteRoll.cpp
+    EditNoteRoll.cpp \
+    SongTimeBar.cpp \
+    SongSequenceNames.cpp \
+    SongSequenceGrid.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -56,7 +59,10 @@ HEADERS  += \
     BeatIndicator.hpp \
     EditKeys.hpp \
     EditTimeBar.hpp \
-    EditNoteRoll.hpp
+    EditNoteRoll.hpp \
+    SongTimeBar.hpp \
+    SongSequenceNames.hpp \
+    SongSequenceGrid.hpp
 
 FORMS    += \
     MainWindow.ui \

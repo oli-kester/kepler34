@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
     m_dialog_prefs = new PreferencesDialog(this);
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
-    m_song_frame = new SongFrame(ui->SongTab);
+    m_song_frame = new SongFrame(m_main_perf, ui->SongTab);
     m_beat_ind = new BeatIndicator(this, m_main_perf, 4, 4);
     
     ui->lay_bpm->addWidget(m_beat_ind);

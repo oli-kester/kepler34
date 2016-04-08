@@ -36,8 +36,6 @@ private:
 
     QGridLayout     *m_layout_grid;
     QScrollArea     *m_scroll_area;
-    QScrollBar      *m_scroll_horiz;
-    QScrollBar      *m_scroll_vert;
     QWidget         *mContainer;
     QPalette        *m_palette;
 

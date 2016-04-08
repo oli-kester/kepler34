@@ -66,8 +66,7 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     snapText.append(QString::number(c_ppqn * 4 / mSeq->getSnap_tick()));
     ui->cmb_grid_snap->setCurrentText(snapText);
 
-    QString noteLenText("1/");
-    noteLenText.append(QString::number(c_ppqn * 4 / mSeq->getSnap_tick()));
+    QString noteLenText("1/16");
     ui->cmb_note_len->setCurrentText(noteLenText);
 
     /* set out our custom elements */
