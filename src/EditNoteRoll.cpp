@@ -151,16 +151,6 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
     m_old_progress_x = (m_seq->get_last_tick() / m_zoom);
 
-    //    if ( m_old_progress_x != 0 )
-    //    {
-    //        m_pen->setColor(Qt::black);
-    //        m_painter->setPen(*m_pen);
-    //        m_painter->drawLine(m_old_progress_x,
-    //                            0,
-    //                            m_old_progress_x,
-    //                            m_size_y);
-    //    }
-
     //draw notes
     long tick_s;
     long tick_f;
@@ -272,16 +262,17 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
                 if (tick_f < tick_s)
                 {
-                    //                    m_painter->setPen(*m_pen);
-                    //                    m_painter->drawRect(0,
-                    //                                        note_y,
-                    //                                        tick_f / m_zoom,
-                    //                                        note_height);
+                    mPainter->setPen(*mPen);
+                    mPainter->drawRect(0,
+                                       note_y,
+                                       tick_f / m_zoom,
+                                       note_height);
                 }
 
                 /* draw inside box if there is room */
                 if ( note_width > 3 )
                 {
+                    //red noted selected, otherwise plain white
                     if ( selected )
                         mBrush->setColor(Qt::red);
                     else
@@ -455,8 +446,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
                     /* add note, length = little less than snap */
                     m_seq->push_undo();
-                    //                    m_seq->add_note( tick_s, m_note_length - 2, note, true );
-                    m_seq->add_note(tick_s, m_note_length, note, true );
+                    m_seq->add_note( tick_s, m_note_length - 2, note, true );
 
                     needs_update = true;
                 }
@@ -470,10 +460,8 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                                                  tick_s, note,
                                                  MidiSequence::e_is_selected ))
                 {
-                    if ( ! (event->modifiers()) & Qt::ControlModifier)
-                    {
+                    if ( ! (event->modifiers() & Qt::ControlModifier))
                         m_seq->unselect();
-                    }
 
 
                     /* on direct click select only one event */
@@ -498,7 +486,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                                                MidiSequence::e_is_selected ))
                 {
                     // moving - left click only
-                    if ( event->button() == Qt::LeftButton && !(event->modifiers()) & Qt::ControlModifier)
+                    if ( event->button() == Qt::LeftButton && !(event->modifiers() & Qt::ControlModifier))
                     {
                         m_moving_init = true;
                         needs_update = true;
@@ -509,16 +497,16 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                                                  &tick_f, &note_l );
 
 
-                        //                        convert_tn_box_to_rect( tick_s, tick_f, note_h, note_l,
-                        //                                                &m_selected.x,
-                        //                                                &m_selected.y,
-                        //                                                &m_selected.width,
-                        //                                                &m_selected.height );
+                        convert_tn_box_to_rect( tick_s, tick_f, note, note_l,
+                                                &m_selected.x,
+                                                &m_selected.y,
+                                                &m_selected.width,
+                                                &m_selected.height );
 
                         /* save offset that we get from the snap above */
-                        //                        int adjusted_selected_x = m_selected.x;
-                        //                        snap_x( &adjusted_selected_x );
-                        //                        m_move_snap_offset_x = ( m_selected.x - adjusted_selected_x);
+                        int adjusted_selected_x = m_selected.x;
+                        snap_x( &adjusted_selected_x );
+                        m_move_snap_offset_x = ( m_selected.x - adjusted_selected_x);
 
                         /* align selection for drawing */
                         //                        snap_x( &m_selected.x );
@@ -532,8 +520,6 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                              (event->modifiers() & Qt::ControlModifier)) ){
 
                         /* moving, normal x */
-                        //m_current_x = m_drop_x = norm_x;
-                        //convert_xy( m_drop_x, m_drop_y, &tick_s, &note_h );
 
                         m_growing = true;
 
@@ -541,11 +527,11 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                         m_seq->get_selected_box( &tick_s, &note,
                                                  &tick_f, &note_l );
 
-                        //                        convert_tn_box_to_rect( tick_s, tick_f, note_h, note_l,
-                        //                                                &m_selected.x,
-                        //                                                &m_selected.y,
-                        //                                                &m_selected.width,
-                        //                                                &m_selected.height );
+                        convert_tn_box_to_rect( tick_s, tick_f, note, note_l,
+                                                &m_selected.x,
+                                                &m_selected.y,
+                                                &m_selected.width,
+                                                &m_selected.height );
 
                     }
                 }
@@ -596,12 +582,12 @@ void EditNoteRoll::mouseReleaseEvent(QMouseEvent *event)
 
         if ( m_selecting ){
 
-            //            xy_to_rect ( m_drop_x,
-            //                             m_drop_y,
-            //                             m_current_x,
-            //                             m_current_y,
-            //                             &x, &y,
-            //                             &w, &h );
+            xy_to_rect (m_drop_x,
+                        m_drop_y,
+                        m_current_x,
+                        m_current_y,
+                        &x, &y,
+                        &w, &h );
 
             convert_xy( x,     y, &tick_s, &note_h );
             convert_xy( x+w, y+h, &tick_f, &note_l );
@@ -695,8 +681,6 @@ void EditNoteRoll::mouseMoveEvent(QMouseEvent *event)
         if ( m_moving || m_paste ){
             snap_x( &m_current_x );
         }
-
-        //        draw_selection_on_window();
 
     }
 
