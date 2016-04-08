@@ -11,6 +11,18 @@
 #include <QMouseEvent>
 
 ///
+/// \brief The rect class
+///
+/// Simple rect class from seq24.
+/// TODO replace with QRect
+
+class rect
+{
+ public:
+    int x, y, height, width;
+};
+
+///
 /// \brief The EditNoteRoll class
 ///
 /// The MIDI note grid in the sequence editor
@@ -56,16 +68,31 @@ private:
     /* takes screen corrdinates, give us notes and ticks */
     void convert_xy( int a_x, int a_y, long *a_ticks, int *a_note);
 
+    void convert_tn( long a_ticks, int a_note, int *a_x, int *a_y);
+
+    void xy_to_rect( int a_x1,  int a_y1,
+                     int a_x2,  int a_y2,
+                     int *a_x,  int *a_y,
+                     int *a_w,  int *a_h );
+
+    void convert_tn_box_to_rect( long a_tick_s, long a_tick_f,
+                                 int a_note_h, int a_note_l,
+                                 int *a_x, int *a_y,
+                                 int *a_w, int *a_h );
+
     void set_adding(bool a_adding);
 
     MidiPerformance *m_perform;
     MidiSequence    *m_seq;
 
-    QPen        *m_pen;
-    QBrush      *m_brush;
-    QPainter    *m_painter;
-    QFont        m_font;
-    QTimer      *m_timer;
+    class rect    m_old;
+    class rect    m_selected;
+
+    QPen        *mPen;
+    QBrush      *mBrush;
+    QPainter    *mPainter;
+    QFont        mFont;
+    QTimer      *mTimer;
 
     int m_scale;
     int m_key;

@@ -30,32 +30,32 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
                   QSizePolicy::Fixed);
 
     //start refresh timer to queue regular redraws
-    m_timer = new QTimer(this);
-    m_timer->setInterval(50);
-    QObject::connect(m_timer,
+    mTimer = new QTimer(this);
+    mTimer->setInterval(1);
+    QObject::connect(mTimer,
                      SIGNAL(timeout()),
                      this,
                      SLOT(update()));
-    m_timer->start();
+    mTimer->start();
 
 }
 
 void EditNoteRoll::paintEvent(QPaintEvent *)
 {
-    m_painter = new QPainter(this);
-    m_brush = new QBrush(Qt::NoBrush);
-    m_pen = new QPen(Qt::black);
-    m_font.setPointSize(6);
-    m_painter->setPen(*m_pen);
-    m_painter->setBrush(*m_brush);
-    m_painter->setFont(m_font);
+    mPainter = new QPainter(this);
+    mBrush = new QBrush(Qt::NoBrush);
+    mPen = new QPen(Qt::black);
+    mFont.setPointSize(6);
+    mPainter->setPen(*mPen);
+    mPainter->setBrush(*mBrush);
+    mPainter->setFont(mFont);
 
     //draw border
     //    m_painter->drawRect(0, 0, width(), height());
 
-    m_pen->setColor(Qt::lightGray);
-    m_pen->setStyle(Qt::DashLine);
-    m_painter->setPen(*m_pen);
+    mPen->setColor(Qt::lightGray);
+    mPen->setStyle(Qt::DashLine);
+    mPainter->setPen(*mPen);
 
     //for each note row in our grid
     for ( int i=1; i <= c_num_keys; i++ )
@@ -75,10 +75,10 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         //        }
 
         //draw horizontal grid lines
-        m_painter->drawLine(0,
-                            i * c_key_y,
-                            width(),
-                            i * c_key_y);
+        mPainter->drawLine(0,
+                           i * c_key_y,
+                           width(),
+                           i * c_key_y);
 
         if ( m_scale != c_scale_off )
         {
@@ -104,64 +104,64 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         if ( i % ticks_per_m_line == 0 ){
 
             //solid line on every beat
-            m_pen->setColor(Qt::black);
-            m_pen->setStyle(Qt::SolidLine);
+            mPen->setColor(Qt::black);
+            mPen->setStyle(Qt::SolidLine);
 
         }
         else if (i % ticks_per_beat == 0 )
         {
 
-            m_pen->setColor(Qt::DashLine);
+            mPen->setColor(Qt::DashLine);
         }
         else
         {
             //faint step lines
-            m_pen->setColor(Qt::lightGray);
-            m_pen->setStyle(Qt::DotLine);
+            mPen->setColor(Qt::lightGray);
+            mPen->setStyle(Qt::DotLine);
 
             int i_snap = i - (i % m_snap);
 
             if ( i == i_snap )
             {
-//                m_pen->setColor(Qt::darkGray);
+                //                m_pen->setColor(Qt::darkGray);
             }
             else
             {
-//                m_pen->setColor(Qt::gray);
+                //                m_pen->setColor(Qt::gray);
             }
         }
 
         //draw vertical grid lines
-        m_pen->setStyle(Qt::SolidLine);
-        m_painter->setPen(*m_pen);
-        m_painter->drawLine(base_line,
-                            0,
-                            base_line,
-                            c_keyarea_y);
+        mPen->setStyle(Qt::SolidLine);
+        mPainter->setPen(*mPen);
+        mPainter->drawLine(base_line,
+                           0,
+                           base_line,
+                           c_keyarea_y);
     }
 
-    //draw playhead
-    m_pen->setColor(Qt::red);
-    m_pen->setStyle(Qt::SolidLine);
-    m_painter->setPen(*m_pen);
-    m_painter->drawLine(m_old_progress_x,
-                        0,
-                        m_old_progress_x,
-                        height() * 8);
+    //draw the playhead
+    mPen->setColor(Qt::red);
+    mPen->setStyle(Qt::SolidLine);
+    mPainter->setPen(*mPen);
+    mPainter->drawLine(m_old_progress_x,
+                       0,
+                       m_old_progress_x,
+                       height() * 8);
 
     m_old_progress_x = (m_seq->get_last_tick() / m_zoom);
 
-//    if ( m_old_progress_x != 0 )
-//    {
-//        m_pen->setColor(Qt::black);
-//        m_painter->setPen(*m_pen);
-//        m_painter->drawLine(m_old_progress_x,
-//                            0,
-//                            m_old_progress_x,
-//                            m_size_y);
-//    }
+    //    if ( m_old_progress_x != 0 )
+    //    {
+    //        m_pen->setColor(Qt::black);
+    //        m_painter->setPen(*m_pen);
+    //        m_painter->drawLine(m_old_progress_x,
+    //                            0,
+    //                            m_old_progress_x,
+    //                            m_size_y);
+    //    }
 
-    //draw events
+    //draw notes
     long tick_s;
     long tick_f;
     int note;
@@ -207,8 +207,8 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         }
 
         /* draw boxes from sequence */
-        m_pen->setColor(Qt::black);
-        m_pen->setStyle(Qt::SolidLine);
+        mPen->setColor(Qt::black);
+        mPen->setStyle(Qt::SolidLine);
         seq->reset_draw_marker();
 
         while ( (dt = seq->get_next_note_event( &tick_s, &tick_f, &note, &selected, &velocity )) != DRAW_FIN ) {
@@ -255,20 +255,20 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                     length_add = 1;
                 }
 
-                m_pen->setColor(Qt::black);
+                mPen->setColor(Qt::black);
 
                 if ( method == 0 )
-                    m_pen->setColor(Qt::darkGray);
+                    mPen->setColor(Qt::darkGray);
 
                 //draw outer note boundary (shadow)
-                m_brush->setStyle(Qt::SolidPattern);
-                m_brush->setColor(Qt::black);
-                m_painter->setBrush(*m_brush);
-                m_painter->setPen(*m_pen);
-                m_painter->drawRect(note_x,
-                                    note_y,
-                                    note_width,
-                                    note_height);
+                mBrush->setStyle(Qt::SolidPattern);
+                mBrush->setColor(Qt::black);
+                mPainter->setBrush(*mBrush);
+                mPainter->setPen(*mPen);
+                mPainter->drawRect(note_x,
+                                   note_y,
+                                   note_width,
+                                   note_height);
 
                 if (tick_f < tick_s)
                 {
@@ -283,37 +283,115 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                 if ( note_width > 3 )
                 {
                     if ( selected )
-                        m_brush->setColor(Qt::red);
+                        mBrush->setColor(Qt::red);
                     else
-                        m_brush->setColor(Qt::white);
+                        mBrush->setColor(Qt::white);
 
-                    m_painter->setBrush(*m_brush);
+                    mPainter->setBrush(*mBrush);
                     if ( method == 1 )
                     {
                         if (tick_f >= tick_s)
                         {
                             //draw inner note (highlight)
-                            m_painter->drawRect(note_x + in_shift,
-                                                note_y,
-                                                note_width - 1 + length_add,
-                                                note_height - 1 );
+                            mPainter->drawRect(note_x + in_shift,
+                                               note_y,
+                                               note_width - 1 + length_add,
+                                               note_height - 1 );
                         }
                         else
                         {
-                            m_painter->drawRect(note_x + in_shift,
-                                                note_y,
-                                                note_width ,
-                                                note_height - 1);
+                            mPainter->drawRect(note_x + in_shift,
+                                               note_y,
+                                               note_width ,
+                                               note_height - 1);
 
-                            m_painter->drawRect(0,
-                                                note_y,
-                                                (tick_f/m_zoom) - 3 + length_add,
-                                                note_height - 1);
+                            mPainter->drawRect(0,
+                                               note_y,
+                                               (tick_f/m_zoom) - 3 + length_add,
+                                               note_height - 1);
                         }
                     }
                 }
             }
         }
+    }
+
+    /* draw selections */
+    int x,y,w,h;
+
+    //painter reset
+    mBrush->setStyle(Qt::NoBrush);
+    mPainter->setBrush(*mBrush);
+
+    if ( m_selecting  ||  m_moving
+         || m_paste ||  m_growing )
+        mPen->setStyle(Qt::SolidLine);
+
+    if ( m_selecting ){
+
+        xy_to_rect ( m_drop_x,
+                     m_drop_y,
+                     m_current_x,
+                     m_current_y,
+                     &x, &y,
+                     &w, &h );
+
+        m_old.x = x;
+        m_old.y = y;
+        m_old.width = w;
+        m_old.height = h + c_key_y;
+
+        mPen->setColor(Qt::black);
+        mPainter->setPen(*mPen);
+        mPainter->drawRect(x,
+                           y,
+                           w,
+                           h + c_key_y );
+    }
+
+    if ( m_moving || m_paste ){
+
+        int delta_x = m_current_x - m_drop_x;
+        int delta_y = m_current_y - m_drop_y;
+
+        x = m_selected.x + delta_x;
+        y = m_selected.y + delta_y;
+
+        mPen->setColor(Qt::black);
+        mPainter->setPen(*mPen);
+        mPainter->drawRect(x,
+                           y,
+                           m_selected.width,
+                           m_selected.height );
+        m_old.x = x;
+        m_old.y = y;
+        m_old.width = m_selected.width;
+        m_old.height = m_selected.height;
+    }
+
+    if ( m_growing ){
+
+        int delta_x = m_current_x - m_drop_x;
+        int width = delta_x + m_selected.width;
+
+        if ( width < 1 )
+            width = 1;
+
+        x = m_selected.x;
+        y = m_selected.y;
+
+        mPen->setColor(Qt::black);
+        mPainter->setPen(*mPen);
+        mPainter->drawRect(x,
+                           y,
+                           width,
+                           m_selected.height );
+
+        m_old.x = x;
+        m_old.y = y;
+        m_old.width = width;
+        m_old.height = m_selected.height;
+
     }
 }
 
@@ -482,11 +560,12 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
     }
 
-    /* if they clicked, something changed */
+    //set seq dirty if something's changed
     if ( needs_update )
     {
         m_seq->set_dirty();
     }
+
 }
 
 void EditNoteRoll::mouseReleaseEvent(QMouseEvent *event)
@@ -611,8 +690,6 @@ void EditNoteRoll::mouseMoveEvent(QMouseEvent *event)
     snap_y( &m_current_y );
     convert_xy( 0, m_current_y, &tick, &note );
 
-    //    m_seqkeys_wid->set_hint_key( note );
-
     if ( m_selecting || m_moving || m_growing || m_paste ){
 
         if ( m_moving || m_paste ){
@@ -670,6 +747,44 @@ void EditNoteRoll::convert_xy( int a_x, int a_y, long *a_tick, int *a_note)
     *a_note = (c_rollarea_y - a_y - 2) / c_key_y;
 }
 
+void EditNoteRoll::convert_tn(long a_ticks, int a_note, int *a_x, int *a_y)
+{
+    *a_x = a_ticks /  m_zoom;
+    *a_y = c_rollarea_y - ((a_note + 1) * c_key_y) - 1;
+}
+
+void EditNoteRoll::xy_to_rect(int a_x1, int a_y1, int a_x2, int a_y2, int *a_x, int *a_y, int *a_w, int *a_h)
+{
+    if ( a_x1 < a_x2 ){
+        *a_x = a_x1;
+        *a_w = a_x2 - a_x1;
+    } else {
+        *a_x = a_x2;
+        *a_w = a_x1 - a_x2;
+    }
+
+    if ( a_y1 < a_y2 ){
+        *a_y = a_y1;
+        *a_h = a_y2 - a_y1;
+    } else {
+        *a_y = a_y2;
+        *a_h = a_y1 - a_y2;
+    }
+}
+
+void EditNoteRoll::convert_tn_box_to_rect(long a_tick_s, long a_tick_f, int a_note_h, int a_note_l, int *a_x, int *a_y, int *a_w, int *a_h)
+{
+    int x1, y1, x2, y2;
+
+    /* convert box to X,Y values */
+    convert_tn( a_tick_s, a_note_h, &x1, &y1 );
+    convert_tn( a_tick_f, a_note_l, &x2, &y2 );
+
+    xy_to_rect( x1, y1, x2, y2, a_x, a_y, a_w, a_h );
+
+    *a_h += c_key_y;
+}
+
 void EditNoteRoll::set_adding(bool a_adding)
 {
     if ( a_adding )
@@ -701,3 +816,4 @@ void EditNoteRoll::set_snap(int snap)
 {
     m_snap = snap;
 }
+
