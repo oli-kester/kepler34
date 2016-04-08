@@ -9,10 +9,6 @@
 #endif
 #include <sched.h>
 
-//TODO restore this
-//For keys
-//#include <gtkmm/accelkey.h>
-
 MidiPerformance::MidiPerformance()
 {
     for (int i=0; i< c_max_sequence; i++) {
@@ -542,7 +538,7 @@ bool MidiPerformance::is_dirty_main (int a_sequence)
     if ( a_sequence < 0 || a_sequence >= c_max_sequence )
         return false;
 
-    if ( is_active(a_sequence) )
+    if (is_active(a_sequence))
     {
         return m_seqs[a_sequence]->is_dirty_main();
     }

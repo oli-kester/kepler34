@@ -1,7 +1,14 @@
 #ifndef SONGTIMEBAR_HPP
 #define SONGTIMEBAR_HPP
 
+#include "Globals.hpp"
+#include "MidiPerformance.hpp"
+
 #include <QWidget>
+#include <QTimer>
+#include <QPainter>
+#include <QObject>
+#include <QPen>
 
 ///
 /// \brief The SongTimeBar class
@@ -12,7 +19,8 @@ class SongTimeBar : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SongTimeBar(QWidget *parent = 0);
+    explicit SongTimeBar(MidiPerformance *a_perf,
+                         QWidget *parent);
 
 protected:
     //override painting event to draw on the frame
@@ -27,13 +35,17 @@ protected:
     QSize sizeHint() const;
 
 private:
+    MidiPerformance *m_mainperf;
 
-    QTimer      *m_timer;
-    QPen        *m_pen;
-    QBrush      *m_brush;
-    QPainter    *m_painter;
-    QFont        m_font;
+    QTimer      *mTimer;
+    QPen        *mPen;
+    QBrush      *mBrush;
+    QPainter    *mPainter;
+    QFont        mFont;
 
+    int m_4bar_offset;
+
+    int m_snap, m_measure_length;
 
 signals:
 

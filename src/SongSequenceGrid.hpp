@@ -2,6 +2,10 @@
 #define SONGSEQUENCEGRID_HPP
 
 #include <QWidget>
+#include <QTimer>
+#include <QObject>
+#include <QPainter>
+#include <QPen>
 
 class SongSequenceGrid : public QWidget
 {

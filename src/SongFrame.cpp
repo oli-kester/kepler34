@@ -31,9 +31,9 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
     m_palette->setColor(QPalette::Background, Qt::darkGray);
     mContainer->setPalette(*m_palette);
 
-    m_perfnames = new SongSequenceNames(mContainer);
+    m_perfnames = new SongSequenceNames(m_mainperf, mContainer);
     m_perfroll = new SongSequenceGrid(mContainer);
-    m_perftime = new SongTimeBar(mContainer);
+    m_perftime = new SongTimeBar(m_mainperf, mContainer);
 
     m_layout_grid->setSpacing(0);
     m_layout_grid->addWidget(m_perfnames, 1, 0, 1, 1);

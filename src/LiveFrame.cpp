@@ -35,8 +35,8 @@ LiveFrame::~LiveFrame()
 void LiveFrame::drawSequence(int a_seq)
 {
     if ( a_seq >= (m_bank_id  * c_mainwnd_rows * c_mainwnd_cols ) &&
-         a_seq <  ((m_bank_id + 1)  * c_mainwnd_rows * c_mainwnd_cols )){
-        
+         a_seq <  ((m_bank_id + 1)  * c_mainwnd_rows * c_mainwnd_cols ))
+    {
         int i =  (a_seq / c_mainwnd_rows) % c_mainwnd_cols;
         int j =  a_seq % c_mainwnd_rows;
         
@@ -97,8 +97,7 @@ void LiveFrame::drawSequence(int a_seq)
 
 void LiveFrame::drawAllSequences()
 {
-    for (int i=0; i < (c_mainwnd_rows * c_mainwnd_cols); i++){
-        
+    for (int i=0; i < (c_mainwnd_rows * c_mainwnd_cols); i++){        
         drawSequence(i + (m_bank_id * c_mainwnd_rows * c_mainwnd_cols));
         
         m_last_tick_x[i + (m_bank_id * c_mainwnd_rows * c_mainwnd_cols)] = 0;

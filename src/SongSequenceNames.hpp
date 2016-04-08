@@ -1,13 +1,25 @@
 #ifndef SONGSEQUENCENAMES_HPP
 #define SONGSEQUENCENAMES_HPP
 
+#include <MidiPerformance.hpp>
+#include <MidiSequence.hpp>
+#include <Globals.hpp>
+
 #include <QWidget>
+#include <QPainter>
+#include <QPen>
+
+///
+/// \brief The SongSequenceNames class
+///
+/// Sequence labels for the side of the song editor
 
 class SongSequenceNames : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SongSequenceNames(QWidget *parent = 0);
+    explicit SongSequenceNames(MidiPerformance *a_perf,
+                               QWidget *parent);
 
 protected:
     //override painting event to draw on the frame
@@ -25,13 +37,16 @@ signals:
 
 public slots:
 
-private:
+private:    
+    MidiPerformance *m_mainperf;
 
-    QTimer      *m_timer;
-    QPen        *m_pen;
-    QBrush      *m_brush;
-    QPainter    *m_painter;
-    QFont        m_font;
+    QTimer      *mTimer;
+    QPen        *mPen;
+    QBrush      *mBrush;
+    QPainter    *mPainter;
+    QFont        mFont;
+
+    bool         m_sequence_active[c_total_seqs];
 };
 
 #endif // SONGSEQUENCENAMES_HPP
