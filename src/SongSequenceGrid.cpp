@@ -35,38 +35,43 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     mPainter = new QPainter(this);
     mBrush = new QBrush(Qt::NoBrush);
     mPen = new QPen(Qt::black);
-    mPen->setStyle(Qt::DashLine);
+    mPen->setStyle(Qt::SolidLine);
     mFont.setPointSize(6);
     mPainter->setPen(*mPen);
     mPainter->setBrush(*mBrush);
     mPainter->setFont(mFont);
 
-    /* draw horz grey lines */
-
-    mPainter->drawLine(0,
+    //draw border
+    mPainter->drawRect(0,
                        0,
-                       c_perfroll_background_x,
-                       0);
+                       width(),
+                       height());
 
     int beats = m_measure_length / m_beat_length;
 
     /* draw vert lines */
-    for ( int i=0; i< beats ; ){
-
-        if ( i == 0 ){
+    for (int i = 0; i < width();)
+    {
+        /* solid line on every beat */
+        if ( i % beats == 0 ){
             mPen->setStyle(Qt::SolidLine);
+            mPen->setColor(Qt::black);
         }
         else
         {
+            mPen->setColor(Qt::lightGray);
             mPen->setStyle(Qt::DashLine);
         }
 
-        /* solid line on every beat */
         mPainter->setPen(*mPen);
-        mPainter->drawRect(i * m_beat_length / c_perf_scale_x,
-                           0,
+        mPainter->drawLine(i * m_beat_length / c_perf_scale_x,
+                           1,
                            i * m_beat_length / c_perf_scale_x,
-                           c_names_y);
+                           height());
+//        mPainter->drawRect(i * m_beat_length / c_perf_scale_x,
+//                           1,
+//                           i * m_beat_length / c_perf_scale_x,
+//                           height());
 
         // jump 2 if 16th notes
         if ( m_beat_length < c_ppqn/2 )
@@ -87,8 +92,8 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
     mPen->setColor(Qt::black);
     mPainter->setPen(*mPen);
-    mPainter->drawLine(progress_x, 0,
-                       progress_x, height());
+//    mPainter->drawLine(progress_x, 0,
+//                       progress_x, height());
 
     //draw background
 
@@ -115,10 +120,10 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
         mPen->setColor(Qt::white);
         mPainter->setPen(*mPen);
-        mPainter->drawRect(0,
-                           y,
-                           width(),
-                           h);
+//        mPainter->drawRect(0,
+//                           y,
+//                           width(),
+//                           h);
 
         mPen->setColor(Qt::black);
         mPainter->setPen(*mPen);
@@ -175,29 +180,29 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
                             mPen->setColor(Qt::gray);
 
                         mPainter->setPen(*mPen);
-                        mPainter->drawRect(x,
-                                           y,
-                                           w,
-                                           h);
+//                        mPainter->drawRect(x,
+//                                           y,
+//                                           w,
+//                                           h);
 
                         mPen->setColor(Qt::gray);
                         mPainter->setPen(*mPen);
-                        mPainter->drawRect(x,
-                                           y,
-                                           w,
-                                           h);
+//                        mPainter->drawRect(x,
+//                                           y,
+//                                           w,
+//                                           h);
 
                         mPen->setColor(Qt::black);
                         mPainter->setPen(*mPen);
-                        mPainter->drawRect(x,
-                                           y,
-                                           c_perfroll_size_box_w,
-                                           c_perfroll_size_box_w);
+//                        mPainter->drawRect(x,
+//                                           y,
+//                                           c_perfroll_size_box_w,
+//                                           c_perfroll_size_box_w);
 
-                        mPainter->drawRect(x+w-c_perfroll_size_box_w,
-                                           y+h-c_perfroll_size_box_w,
-                                           c_perfroll_size_box_w,
-                                           c_perfroll_size_box_w);
+//                        mPainter->drawRect(x+w-c_perfroll_size_box_w,
+//                                           y+h-c_perfroll_size_box_w,
+//                                           c_perfroll_size_box_w,
+//                                           c_perfroll_size_box_w);
 
                         mPen->setColor(Qt::black);
                         mPainter->setPen(*mPen);
@@ -215,10 +220,10 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
                                 mPen->setColor(Qt::lightGray);
                                 mPainter->setPen(*mPen);
-                                mPainter->drawRect(tick_marker_x,
-                                                   y+4,
-                                                   1,
-                                                   h-8);
+//                                mPainter->drawRect(tick_marker_x,
+//                                                   y+4,
+//                                                   1,
+//                                                   h-8);
                             }
 
                             int lowest_note = seq->get_lowest_note_event( );
@@ -266,10 +271,10 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
                                 }
 
                                 if ( tick_f_x >= x && tick_s_x <= x+w )
-                                    mPainter->drawLine(tick_s_x,
+                                    /*mPainter->drawLine(tick_s_x,
                                                        y + note_y,
                                                        tick_f_x,
-                                                       y + note_y);
+                                                       y + note_y)*/;
                             }
 
                             tick_marker += seq_length;
@@ -293,7 +298,7 @@ void SongSequenceGrid::setSnap(int snap)
 
 QSize SongSequenceGrid::sizeHint() const
 {
-    return QSize(5000, 5000);
+    return QSize(5000, c_names_y * c_max_sequence);
 }
 
 void SongSequenceGrid::mousePressEvent(QMouseEvent *event)

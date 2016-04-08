@@ -140,7 +140,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
 
 QSize SongSequenceNames::sizeHint() const
 {
-    return QSize(c_names_x, 30000);
+    return QSize(c_names_x, c_names_y * c_max_sequence + 20);
 }
 
 void SongSequenceNames::mousePressEvent(QMouseEvent *event)

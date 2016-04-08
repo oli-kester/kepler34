@@ -210,9 +210,6 @@ const int c_scales_transpose_up[c_scale_size][12] =
 
 };
 
-
-
-
 const int c_scales_transpose_dn[c_scale_size][12] =
 {
     /* off = chromatic */
