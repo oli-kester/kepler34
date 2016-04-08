@@ -381,7 +381,7 @@ void MainWindow::loadEditor(MidiSequence *seq)
     //FIXME we were double drawing edit frames here.
     //Check if it's still happening
     ui->EditTabLayout->removeWidget(m_edit_frame);
-    delete m_edit_frame;
+//    delete m_edit_frame;
     m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
     ui->EditTabLayout->addWidget(m_edit_frame);
     ui->tabWidget->setCurrentIndex(2);

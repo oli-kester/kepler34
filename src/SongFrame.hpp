@@ -36,13 +36,13 @@ private:
     int m_bpm;
     int m_bw;
 
-    void set_bpm( int a_beats_per_measure );
-    void set_bw( int a_beat_width );
-    void set_snap (int a_snap);
+    void setBeatsPerMeasure( int a_beats_per_measure );
+    void setBeatWidth( int a_beat_width );
+    void setSnap (int a_snap);
 
-    void set_guides();
+    void setGuides();
 
-    void grow ();
+    void grow();
 
     Ui::SongFrame *ui;
 

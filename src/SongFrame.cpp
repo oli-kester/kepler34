@@ -32,7 +32,7 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
     mContainer->setPalette(*m_palette);
 
     m_perfnames = new SongSequenceNames(m_mainperf, mContainer);
-    m_perfroll = new SongSequenceGrid(mContainer);
+    m_perfroll = new SongSequenceGrid(m_mainperf, mContainer);
     m_perftime = new SongTimeBar(m_mainperf, mContainer);
 
     m_layout_grid->setSpacing(0);
@@ -47,6 +47,11 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateGridSnap(int)));
+
+    setSnap( 8 );
+    setBeatsPerMeasure( 4 );
+    setBeatWidth( 4 );
+
 }
 
 SongFrame::~SongFrame()
@@ -57,4 +62,44 @@ SongFrame::~SongFrame()
 void SongFrame::updateGridSnap(int snap)
 {
 
+}
+
+void SongFrame::setSnap( int a_snap  )
+{
+    char b[10];
+    snprintf( b, sizeof(b), "1/%d", a_snap );
+    ui->combo_grid_snap->setCurrentText(b);
+
+    m_snap = a_snap;
+    setGuides();
+}
+
+void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
+{
+//    char b[10];
+//    snprintf(b, sizeof(b), "%d", a_beats_per_measure );
+//    m_entry_bpm->set_text(b);
+
+    m_bpm = a_beats_per_measure;
+    setGuides();
+}
+
+
+void SongFrame::setBeatWidth( int a_beat_width )
+{
+//    char b[10];
+//    snprintf(b, sizeof(b), "%d", a_beat_width );
+//    m_entry_bw->set_text(b);
+
+    m_bw = a_beat_width;
+    setGuides();
+}
+
+void SongFrame::setGuides()
+{
+    long measure_ticks = (c_ppqn * 4) * m_bpm / m_bw;
+    long snap_ticks =  measure_ticks / m_snap;
+    long beat_ticks = (c_ppqn * 4) / m_bw;
+    m_perfroll->set_guides( snap_ticks, measure_ticks, beat_ticks );
+//    m_perftime->set_guides( snap_ticks, measure_ticks );
 }
