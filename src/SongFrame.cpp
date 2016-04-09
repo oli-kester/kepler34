@@ -65,13 +65,17 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
 
     setSnap( 8 );
     setBeatsPerMeasure( 4 );
-    setBeatWidth( 4 );
-
+    setBeatLength( 4 );
 }
 
 SongFrame::~SongFrame()
 {
     delete ui;
+}
+
+int SongFrame::getBeatLength() const
+{
+    return mBeatLength;
 }
 
 void SongFrame::updateGridSnap(int snapIndex)
@@ -119,26 +123,31 @@ void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
     //    snprintf(b, sizeof(b), "%d", a_beats_per_measure );
     //    m_entry_bpm->set_text(b);
 
-    m_bpm = a_beats_per_measure;
+    mBeatsPerMeasure = a_beats_per_measure;
     setGuides();
 }
 
+int SongFrame::getBeatsPerMeasure() const
+{
+    return mBeatsPerMeasure;
+}
 
-void SongFrame::setBeatWidth( int a_beat_width )
+
+void SongFrame::setBeatLength( int a_beat_width )
 {
     //    char b[10];
     //    snprintf(b, sizeof(b), "%d", a_beat_width );
     //    m_entry_bw->set_text(b);
 
-    m_bw = a_beat_width;
+    mBeatLength = a_beat_width;
     setGuides();
 }
 
 void SongFrame::setGuides()
 {
-    long measure_ticks = (c_ppqn * 4) * m_bpm / m_bw;
+    long measure_ticks = (c_ppqn * 4) * mBeatsPerMeasure / mBeatLength;
     long snap_ticks =  measure_ticks / m_snap;
-    long beat_ticks = (c_ppqn * 4) / m_bw;
+    long beat_ticks = (c_ppqn * 4) / mBeatLength;
     m_perfroll->set_guides( snap_ticks, measure_ticks, beat_ticks );
     //    m_perftime->set_guides( snap_ticks, measure_ticks );
 }

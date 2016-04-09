@@ -42,6 +42,9 @@ public:
     int length() const;
     void setNote_length(int length);
 
+    void zoomIn();
+    void zoomOut();
+
 protected:
     //override painting event to draw on the frame
     void paintEvent         (QPaintEvent *);

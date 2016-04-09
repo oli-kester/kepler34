@@ -20,6 +20,8 @@ class EditTimeBar : public QWidget
 public:
     explicit EditTimeBar(MidiSequence *a_seq,
                          QWidget *parent);
+    void zoomIn();
+    void zoomOut();
 
 protected:
     //override painting event to draw on the frame

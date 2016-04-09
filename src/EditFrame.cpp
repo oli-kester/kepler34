@@ -66,8 +66,8 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     snapText.append(QString::number(c_ppqn * 4 / mSeq->getSnap_tick()));
     ui->cmb_grid_snap->setCurrentText(snapText);
 
-    QString noteLenText("1/16");
-    ui->cmb_note_len->setCurrentText(noteLenText);
+    QString seqLenText(QString::number(mSeq->getNumMeasures()));
+    ui->cmb_seq_len->setCurrentText(seqLenText);
 
     /* set out our custom elements */
     mSeq->set_editing(true);
@@ -318,12 +318,16 @@ void EditFrame::updateNoteLength(int newIndex)
 
 void EditFrame::zoomIn()
 {
-
+    mNoteGrid->zoomIn();
+    mTimeBar->zoomIn();
+    updateDrawGeometry();
 }
 
 void EditFrame::zoomOut()
 {
-
+    mNoteGrid->zoomOut();
+    mTimeBar->zoomOut();
+    updateDrawGeometry();
 }
 
 void EditFrame::updateKey(int newIndex)
@@ -348,4 +352,11 @@ void EditFrame::updateScale(int newIndex)
 void EditFrame::updateBackgroundSeq(int newIndex)
 {
 
+}
+
+void EditFrame::updateDrawGeometry()
+{
+    mTimeBar->updateGeometry();
+    mNoteGrid->updateGeometry();
+    mContainer->adjustSize();
 }

@@ -31,6 +31,8 @@ public:
     explicit EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq);
     ~EditFrame();
 
+    void updateDrawGeometry();
+
 private:
     Ui::EditFrame   *ui;
 

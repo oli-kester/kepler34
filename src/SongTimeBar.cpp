@@ -36,7 +36,6 @@ void SongTimeBar::paintEvent(QPaintEvent *)
                        width(),
                        height());
 
-
     /* draw vert lines */
 
     //    long tick_offset = (m_4bar_offset * 16 * c_ppqn);

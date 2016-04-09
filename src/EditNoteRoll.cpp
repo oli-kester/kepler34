@@ -101,7 +101,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     //start drawing vertical grid lines
     for ( int i = 0; i < width(); i += ticks_per_step )
     {
-        int base_line = i / m_zoom;
+        int base_line = i;
 
         if ( i % ticks_per_m_line == 0 ){
 
@@ -758,7 +758,7 @@ void EditNoteRoll::keyReleaseEvent(QKeyEvent *event)
 
 QSize EditNoteRoll::sizeHint() const
 {
-    return QSize(m_seq->getLength() + 100, c_keyarea_y + 1);
+    return QSize(m_seq->getLength() / m_zoom + 100, c_keyarea_y + 1);
 }
 
 void EditNoteRoll::snap_y( int *a_y )
@@ -884,4 +884,14 @@ void EditNoteRoll::start_paste( )
     m_selected.y += (m_drop_y - m_selected.y);
 }
 
+void EditNoteRoll::zoomIn()
+{
+    if (m_zoom > 1)
+        m_zoom *= 0.5;
+}
 
+void EditNoteRoll::zoomOut()
+{
+    if (m_zoom < 32)
+        m_zoom *= 2;
+}

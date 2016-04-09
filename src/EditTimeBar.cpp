@@ -25,7 +25,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
     m_painter = new QPainter(this);
     m_pen = new QPen(Qt::black);
     m_brush = new QBrush(Qt::lightGray, Qt::SolidPattern),
-    m_font.setPointSize(6);
+            m_font.setPointSize(6);
     m_painter->setPen(*m_pen);
     m_painter->setBrush(*m_brush);
     m_painter->setFont(m_font);
@@ -109,5 +109,17 @@ void EditTimeBar::mouseMoveEvent(QMouseEvent *event)
 
 QSize EditTimeBar::sizeHint() const
 {
-    return QSize(m_seq->getLength() + 100, 22);
+    return QSize(m_seq->getLength() / m_zoom + 100, 22);
+}
+
+void EditTimeBar::zoomIn()
+{
+    if (m_zoom > 1)
+        m_zoom *= 0.5;
+}
+
+void EditTimeBar::zoomOut()
+{
+    if (m_zoom < 32)
+        m_zoom *= 2;
 }

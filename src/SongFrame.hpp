@@ -29,15 +29,19 @@ public:
                        QWidget *parent);
     ~SongFrame();
 
+    int getBeatLength() const;
+    void setBeatLength( int a_beat_width );
+
+    int getBeatsPerMeasure() const;
+    void setBeatsPerMeasure( int a_beats_per_measure );
+
 private:
     /* set snap to in pulses */
     int m_snap;
 
-    int m_bpm;
-    int m_bw;
+    int mBeatsPerMeasure;
+    int mBeatLength;
 
-    void setBeatsPerMeasure( int a_beats_per_measure );
-    void setBeatWidth( int a_beat_width );
     void setSnap (int a_snap);
 
     void setGuides();

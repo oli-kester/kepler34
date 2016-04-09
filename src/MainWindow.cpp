@@ -52,6 +52,10 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     ui->LiveTabLayout->addWidget(m_live_frame);
     ui->SongTabLayout->addWidget(m_song_frame);
 
+    QString beatLengthText("1/");
+    beatLengthText.append(m_song_frame->getBeatLength());
+    ui->cmb_beat_length->setCurrentText(beatLengthText);
+
     //timer to refresh GUI elements every few ms
     m_timer = new QTimer(this);
     m_timer->setInterval(50);
@@ -203,7 +207,7 @@ void MainWindow::showOpenFileDialog()
     file = QFileDialog::getOpenFileName(
                 this,
                 tr("Open MIDI file"),
-//                "/",
+                //                "/",
                 last_used_dir,
                 tr("MIDI files (*.midi *.mid);;"
                    "All files (*)"),
@@ -400,7 +404,7 @@ void MainWindow::loadEditor(MidiSequence *seq)
     //FIXME we were double drawing edit frames here.
     //Check if it's still happening
     ui->EditTabLayout->removeWidget(m_edit_frame);
-//    delete m_edit_frame;
+    //    delete m_edit_frame;
     m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
     ui->EditTabLayout->addWidget(m_edit_frame);
     ui->tabWidget->setCurrentIndex(2);
@@ -408,10 +412,61 @@ void MainWindow::loadEditor(MidiSequence *seq)
 
 void MainWindow::updateBeatLength(int blIndex)
 {
+    int bl;
+    switch (blIndex)
+    {
+    case 0:
+        bl = 1;
+        break;
+    case 1:
+        bl = 2;
+        break;
+    case 2:
+        bl = 4;
+        break;
+    case 3:
+        bl = 8;
+        break;
+    case 4:
+        bl = 16;
+        break;
+    }
 
+    m_song_frame->setBeatLength(bl);
+
+    //also set beat length for all sequences
+    for (int i = 0; i < c_max_sequence; i++)
+    {
+        if (m_main_perf->is_active(i))
+        {
+            MidiSequence *seq =  m_main_perf->get_sequence(i);
+            seq->setBeatWidth(bl);
+            //reset number of measures, causing length to adjust to new b/m
+            seq->setNumMeasures(seq->getNumMeasures());
+//            seq->set_length(seq->getNumMeasures() * seq->getBeatsPerMeasure() * ((c_ppqn * 4) / bl));
+        }
+    }
+    m_edit_frame->updateDrawGeometry();
 }
 
 void MainWindow::updateBeatsPerMeasure(int bmIndex)
 {
+    int bm = bmIndex + 1;
+    m_song_frame->setBeatLength(bm);
 
+    //also set beat length for all sequences
+    for (int i = 0; i < c_max_sequence; i++)
+    {
+        if (m_main_perf->is_active(i))
+        {
+            MidiSequence *seq =  m_main_perf->get_sequence(i);
+            seq->setBeatsPerMeasure(bmIndex + 1);
+            //reset number of measures, causing length to adjust to new b/m
+            seq->setNumMeasures(seq->getNumMeasures());
+
+//            seq->set_length(seq->getNumMeasures() * bm * ((c_ppqn * 4) / seq->getBeatWidth()));
+
+        }
+    }
+    m_edit_frame->updateDrawGeometry();
 }
