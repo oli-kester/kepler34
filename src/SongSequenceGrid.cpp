@@ -41,12 +41,6 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     mPainter->setBrush(*mBrush);
     mPainter->setFont(mFont);
 
-    //draw border
-    mPainter->drawRect(0,
-                       0,
-                       width(),
-                       height());
-
     int beats = m_measure_length / m_beat_length;
 
     /* draw vert lines */
@@ -67,12 +61,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
         mPainter->drawLine(i * m_beat_length / c_perf_scale_x,
                            1,
                            i * m_beat_length / c_perf_scale_x,
-                           height());
-//        mPainter->drawRect(i * m_beat_length / c_perf_scale_x,
-//                           1,
-//                           i * m_beat_length / c_perf_scale_x,
-//                           height());
-
+                           height() - 1);
         // jump 2 if 16th notes
         if ( m_beat_length < c_ppqn/2 )
         {
@@ -90,10 +79,11 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
     int progress_x = tick / c_perf_scale_x ;
 
-    mPen->setColor(Qt::black);
+    mPen->setColor(Qt::red);
+    mPen->setStyle(Qt::SolidLine);
     mPainter->setPen(*mPen);
-//    mPainter->drawLine(progress_x, 0,
-//                       progress_x, height());
+    mPainter->drawLine(progress_x, 0,
+                       progress_x, height());
 
     //draw background
 
@@ -284,6 +274,16 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
             }
         }
     }
+
+    //draw border
+    mPen->setStyle(Qt::SolidLine);
+    mPen->setColor(Qt::black);
+    mPainter->setPen(*mPen);
+    mPainter->drawRect(0,
+                       0,
+                       width(),
+                       height() - 1);
+
 }
 
 int SongSequenceGrid::getSnap() const
@@ -298,7 +298,7 @@ void SongSequenceGrid::setSnap(int snap)
 
 QSize SongSequenceGrid::sizeHint() const
 {
-    return QSize(5000, c_names_y * c_max_sequence);
+    return QSize(5000, c_names_y * c_max_sequence + 2);
 }
 
 void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
