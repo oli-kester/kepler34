@@ -356,6 +356,8 @@ void EditFrame::updateBackgroundSeq(int newIndex)
 
 void EditFrame::updateDrawGeometry()
 {
+    QString seqLenText(QString::number(mSeq->getNumMeasures()));
+    ui->cmb_seq_len->setCurrentText(seqLenText);
     mTimeBar->updateGeometry();
     mNoteGrid->updateGeometry();
     mContainer->adjustSize();

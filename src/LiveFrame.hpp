@@ -29,16 +29,18 @@ public:
     //set bank of sequences displayed
     void setBank(int newBank);
 
-
-
 protected:
     //override painting event to draw on the frame
-    void paintEvent(QPaintEvent *event);
+    void paintEvent         (QPaintEvent *event);
 
     //override mouse events for interaction
-    void mousePressEvent(QMouseEvent * event);
-    void mouseReleaseEvent(QMouseEvent * event);
-    void mouseMoveEvent(QMouseEvent * event);
+    void mousePressEvent    (QMouseEvent * event);
+    void mouseReleaseEvent  (QMouseEvent * event);
+    void mouseMoveEvent     (QMouseEvent * event);
+
+    //override keyboard events for interaction
+    void keyPressEvent      (QKeyEvent * event);
+    void keyReleaseEvent    (QKeyEvent * event);
 
 private:
 

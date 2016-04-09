@@ -7,6 +7,8 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     ui(new Ui::LiveFrame),
     m_main_perf(perf)
 {
+    setFocusPolicy(Qt::StrongFocus);
+
     ui->setupUi(this);
 
     setBank(0);
@@ -116,8 +118,10 @@ void LiveFrame::setBank(int newBank)
     
     m_main_perf->set_offset(m_bank_id);
 
-    QString bankName = (*m_main_perf->getBankName(newBank)).c_str();
+    QString bankName = (*m_main_perf->getBankName(m_bank_id)).c_str();
     ui->txtBankName->setPlainText(bankName);
+
+    ui->spinBank->setValue(m_bank_id);
     
     redraw();
     
@@ -322,4 +326,22 @@ void LiveFrame::newSeq()
 void LiveFrame::editSeq()
 {
     callEditor(m_main_perf->get_sequence(m_current_seq));
+}
+
+void LiveFrame::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_BracketLeft:
+        setBank(m_bank_id - 1);
+        break;
+    case Qt::Key_BracketRight:
+        setBank(m_bank_id + 1);
+        break;
+    }
+}
+
+void LiveFrame::keyReleaseEvent(QKeyEvent *event)
+{
+
 }
