@@ -11,8 +11,8 @@
 
 MidiPerformance::MidiPerformance()
 {
-    for (int i=0; i< c_max_sequence; i++) {
-
+    for (int i=0; i< c_max_sequence; i++)
+    {
         m_seqs[i]             = NULL;
         m_seqs_active[i]      = false;
 
@@ -43,102 +43,14 @@ MidiPerformance::MidiPerformance()
 
     MidiControl zero = {false,false,0,0,0,0};
 
-    for ( int i=0; i<c_midi_controls; i++ ){
-
+    for ( int i=0; i<c_midi_controls; i++ )
+    {
         m_midi_cc_toggle[i] = zero;
         m_midi_cc_on[i] = zero;
         m_midi_cc_off[i] = zero;
     }
 
     m_show_ui_sequence_key = true;
-
-    //TODO restore this
-    //    set_key_event( GDK_1, 0 );
-    //    set_key_event( GDK_q, 1 );
-    //    set_key_event( GDK_a, 2 );
-    //    set_key_event( GDK_z, 3 );
-    //    set_key_event( GDK_2, 4 );
-    //    set_key_event( GDK_w, 5 );
-    //    set_key_event( GDK_s, 6 );
-    //    set_key_event( GDK_x, 7 );
-    //    set_key_event( GDK_3, 8 );
-    //    set_key_event( GDK_e, 9 );
-    //    set_key_event( GDK_d, 10 );
-    //    set_key_event( GDK_c, 11 );
-    //    set_key_event( GDK_4, 12 );
-    //    set_key_event( GDK_r, 13 );
-    //    set_key_event( GDK_f, 14 );
-    //    set_key_event( GDK_v, 15 );
-    //    set_key_event( GDK_5, 16 );
-    //    set_key_event( GDK_t, 17 );
-    //    set_key_event( GDK_g, 18 );
-    //    set_key_event( GDK_b, 19 );
-    //    set_key_event( GDK_6, 20 );
-    //    set_key_event( GDK_y, 21 );
-    //    set_key_event( GDK_h, 22 );
-    //    set_key_event( GDK_n, 23 );
-    //    set_key_event( GDK_7, 24 );
-    //    set_key_event( GDK_u, 25 );
-    //    set_key_event( GDK_j, 26 );
-    //    set_key_event( GDK_m, 27 );
-    //    set_key_event( GDK_8, 28 );
-    //    set_key_event( GDK_i, 29 );
-    //    set_key_event( GDK_k, 30 );
-    //    set_key_event( GDK_comma, 31 );
-
-    //    set_key_group( GDK_exclam,  0 );
-    //    set_key_group( GDK_quotedbl,  1  );
-    //    set_key_group( GDK_numbersign,  2  );
-    //    set_key_group( GDK_dollar,  3  );
-    //    set_key_group( GDK_percent,  4  );
-    //    set_key_group( GDK_ampersand,  5  );
-    //    set_key_group( GDK_parenleft,  7  );
-    //    set_key_group( GDK_slash,  6  );
-    //    set_key_group( GDK_semicolon,  31 );
-    //    set_key_group( GDK_A,  16 );
-    //    set_key_group( GDK_B,  28 );
-    //    set_key_group( GDK_C,  26 );
-    //    set_key_group( GDK_D,  18 );
-    //    set_key_group( GDK_E,  10 );
-    //    set_key_group( GDK_F,  19 );
-    //    set_key_group( GDK_G,  20 );
-    //    set_key_group( GDK_H,  21 );
-    //    set_key_group( GDK_I,  15 );
-    //    set_key_group( GDK_J,  22 );
-    //    set_key_group( GDK_K,  23 );
-    //    set_key_group( GDK_M,  30 );
-    //    set_key_group( GDK_N,  29 );
-    //    set_key_group( GDK_Q,  8  );
-    //    set_key_group( GDK_R,  11 );
-    //    set_key_group( GDK_S,  17 );
-    //    set_key_group( GDK_T,  12 );
-    //    set_key_group( GDK_U,  14 );
-    //    set_key_group( GDK_V,  27 );
-    //    set_key_group( GDK_W,  9  );
-    //    set_key_group( GDK_X,  25 );
-    //    set_key_group( GDK_Y,  13 );
-    //    set_key_group( GDK_Z,  24 );
-
-    //    m_key_bpm_up = GDK_apostrophe;
-    //    m_key_bpm_dn = GDK_semicolon;
-
-    //    m_key_replace = GDK_Control_L;
-    //    m_key_queue = GDK_Control_R;
-    //    m_key_snapshot_1 = GDK_Alt_L;
-    //    m_key_snapshot_2 = GDK_Alt_R;
-    //    m_key_keep_queue = GDK_backslash;
-
-    //    m_key_screenset_up = GDK_bracketright;
-    //    m_key_screenset_dn = GDK_bracketleft;
-    //    m_key_set_playing_screenset = GDK_Home;
-    //    m_key_group_on = GDK_igrave;
-    //    m_key_group_off = GDK_apostrophe;
-    //    m_key_group_learn = GDK_Insert;
-
-    //    m_key_start  = GDK_space;
-    //    m_key_stop   = GDK_Escape;
-    //    m_key_record_upper = GDK_R;
-    //    m_key_record_lower = GDK_r;
 
     m_offset                = 0;
     m_control_status        = 0;
@@ -165,8 +77,8 @@ void MidiPerformance::init_jack()
 
 #ifdef JACK_SUPPORT
 
-    if ( global_with_jack_transport  && !m_jack_running){
-
+    if ( global_with_jack_transport  && !m_jack_running)
+    {
         m_jack_running = true;
         m_jack_master = true;
 
@@ -329,19 +241,19 @@ void MidiPerformance::set_mode_group_learn ()
     set_mode_group_mute();
     m_mode_group_learn = true;
     for (size_t x = 0; x < m_notify.size(); ++x)
-        m_notify[x]->on_grouplearnchange( true );
+        m_notify[x]->on_grouplearnchange(true);
 }
 
 
 void MidiPerformance::unset_mode_group_learn ()
 {
     for (size_t x = 0; x < m_notify.size(); ++x)
-        m_notify[x]->on_grouplearnchange( false );
+        m_notify[x]->on_grouplearnchange(false);
     m_mode_group_learn = false;
 }
 
 
-void MidiPerformance::select_mute_group ( int a_group )
+void MidiPerformance::select_mute_group (int a_group)
 {
     int j = (a_group * c_seqs_in_set);
     int k = m_playing_screen * c_seqs_in_set;
@@ -2112,13 +2024,14 @@ void MidiPerformance::sequence_playing_toggle( int a_sequence )
     if ( is_active(a_sequence) == true ){
         assert( m_seqs[a_sequence] );
 
-        if ( m_control_status & c_status_queue ){
+        if ( m_control_status & c_status_queue )
+        {
             m_seqs[a_sequence]->toggle_queued();
         }
-
-        else {
-
-            if (  m_control_status & c_status_replace ){
+        else
+        {
+            if (  m_control_status & c_status_replace )
+            {
                 unset_sequence_control_status( c_status_replace );
                 off_sequences( );
             }
@@ -2127,15 +2040,17 @@ void MidiPerformance::sequence_playing_toggle( int a_sequence )
 
         /* if we're in song playback, temporarily block the events
          * till the next seq boundary */
-        if (m_playback_mode){
+        if (m_playback_mode)
+        {
             m_seqs[a_sequence]->set_song_playback_block(true);
         }
 
-        if ( is_active( a_sequence )){
+        if (is_active(a_sequence))
+        {
             /* if we're recording,
              * add seq playback changes to the song data */
-            if ( get_song_recording() ) {
-
+            if (get_song_recording())
+            {
                 long seq_length = get_sequence( a_sequence )->getLength();
 
                 long tick = get_tick();
@@ -2145,7 +2060,7 @@ void MidiPerformance::sequence_playing_toggle( int a_sequence )
                 MidiSequence *seq = get_sequence( a_sequence );
 
                 /* if sequence already playing */
-                if ( trigger_state )
+                if (trigger_state)
                 {
                     /* if this play is us recording live, end the new trigger block here */
                     if (seq->get_song_recording())
@@ -2156,7 +2071,6 @@ void MidiPerformance::sequence_playing_toggle( int a_sequence )
                         seq->exact_split_trigger( tick );
                         seq->del_trigger( tick );
                     }
-
                 }
 
                 /* if not playing, start recording a new strip */

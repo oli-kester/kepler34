@@ -20,7 +20,7 @@ SongSequenceGrid::SongSequenceGrid(MidiPerformance *a_perf,
     m_roll_length_ticks = m_mainperf->get_max_trigger();
     m_roll_length_ticks = m_roll_length_ticks -
             ( m_roll_length_ticks % ( c_ppqn * 16 ));
-    m_roll_length_ticks +=  c_ppqn * 4096;
+    m_roll_length_ticks +=  c_ppqn * 16;
 
     //start refresh timer to queue regular redraws
     mTimer = new QTimer(this);
@@ -49,7 +49,8 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     for (int i = 0; i < width();)
     {
         /* solid line on every beat */
-        if ( i % beats == 0 ){
+        if ( i % beats == 0 )
+        {
             mPen->setStyle(Qt::SolidLine);
             mPen->setColor(Qt::black);
         }
@@ -64,6 +65,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
                            1,
                            i * m_beat_length / c_perf_scale_x,
                            height() - 1);
+
         // jump 2 if 16th notes
         if ( m_beat_length < c_ppqn/2 )
         {
@@ -101,18 +103,16 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     long offset;
     bool selected;
 
-    long tick_offset = c_ppqn * 16;
+//    long tick_offset = c_ppqn * 16;
+    long tick_offset = 0;
     long x_offset = tick_offset / c_perf_scale_x;
 
     for ( int y = y_s; y <= y_f; y++ )
     {
         int a_sequence = y;
 
-//        y = c_names_y * a_sequence;
-//        int h = c_names_y;
-
-        if ( a_sequence < c_total_seqs ){
-
+        if ( a_sequence < c_total_seqs )
+        {
             if ( m_mainperf->is_active( a_sequence )){
 
                 m_sequence_active[a_sequence] = true;
@@ -281,8 +281,6 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     mPainter->setPen(*mPen);
     mPainter->drawLine(progress_x, 1,
                        progress_x, height());
-
-
 }
 
 int SongSequenceGrid::getSnap() const
@@ -297,7 +295,7 @@ void SongSequenceGrid::setSnap(int snap)
 
 QSize SongSequenceGrid::sizeHint() const
 {
-    return QSize(5000, c_names_y * c_max_sequence + 2);
+    return QSize(m_roll_length_ticks, c_names_y * c_max_sequence + 2);
 }
 
 void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
@@ -313,26 +311,26 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
     convert_xy( m_drop_x, m_drop_y, &m_drop_tick, &m_drop_sequence );
 
     /* left mouse button */
-    if ( event->button() == Qt::LeftButton ){
+    if ( event->button() == Qt::LeftButton){
 
         long tick = m_drop_tick;
 
         /* add a new seq instance if we didnt select anything,
          * and are holding the right mouse btn */
-        if (  m_adding ){
+        if (m_adding){
 
             m_adding_pressed = true;
 
-            if ( m_mainperf->is_active( m_drop_sequence )){
+            if (m_mainperf->is_active(m_drop_sequence)){
 
                 long seq_length = m_mainperf->get_sequence( m_drop_sequence )->getLength();
 
-                bool trigger_state = m_mainperf->get_sequence( m_drop_sequence )->get_trigger_state( tick );
+                bool trigger_state = m_mainperf->get_sequence(m_drop_sequence)->get_trigger_state(tick);
 
-                if ( trigger_state )
+                if (trigger_state)
                 {
                     m_mainperf->push_trigger_undo();
-                    m_mainperf->get_sequence( m_drop_sequence )->del_trigger( tick );
+                    m_mainperf->get_sequence(m_drop_sequence)->del_trigger( tick );
                 }
                 else
                 {
@@ -391,15 +389,16 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
     }
 
     /* right mouse button */
-    if ( event->button() == Qt::RightButton ){
+    if (event->button() == Qt::RightButton)
+    {
         set_adding(true);
     }
 
     /* middle mouse button, split seq under cursor */
     if ( event->button() == Qt::MiddleButton )
     {
-        if ( m_mainperf->is_active( m_drop_sequence )){
-
+        if ( m_mainperf->is_active( m_drop_sequence ))
+        {
             bool state = m_mainperf->get_sequence( m_drop_sequence )->get_trigger_state( m_drop_tick );
 
             if ( state )
@@ -413,14 +412,16 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
 
 void SongSequenceGrid::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton){
-
-        if ( m_adding ){
+    if (event->button() == Qt::LeftButton)
+    {
+        if ( m_adding )
+        {
             m_adding_pressed = false;
         }
     }
 
-    if (event->button() == Qt::RightButton){
+    if (event->button() == Qt::RightButton)
+    {
         m_adding_pressed = false;
         set_adding(false);
     }
@@ -506,7 +507,8 @@ void SongSequenceGrid::snap_x( int *a_x )
 void SongSequenceGrid::convert_x( int a_x, long *a_tick )
 {
 
-    long tick_offset = c_ppqn * 16;
+//    long tick_offset = c_ppqn * 16;
+    long tick_offset = 0;
     *a_tick = a_x * c_perf_scale_x;
     *a_tick += tick_offset;
 }
@@ -515,7 +517,8 @@ void SongSequenceGrid::convert_x( int a_x, long *a_tick )
 void SongSequenceGrid::convert_xy( int a_x, int a_y, long *a_tick, int *a_seq)
 {
 
-    long tick_offset =  c_ppqn * 16;
+//    long tick_offset =  c_ppqn * 16;
+    long tick_offset =  0;
 
     *a_tick = a_x * c_perf_scale_x;
     *a_seq = a_y / c_names_y;
