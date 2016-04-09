@@ -7,7 +7,9 @@ SongSequenceGrid::SongSequenceGrid(MidiPerformance *a_perf,
     m_roll_length_ticks(0),
     m_drop_sequence(0),
     m_moving(false),
-    m_growing(false)
+    m_growing(false),
+    m_adding(false),
+    m_adding_pressed(false)
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
@@ -119,16 +121,6 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
                 seq->reset_draw_trigger_marker();
 
-                //draw seq background
-                mPen->setColor(Qt::white);
-                mPainter->setPen(*mPen);
-                mPainter->drawRect(0,
-                                   y,
-                                   width(),
-                                   h);
-
-                mPen->setColor(Qt::black);
-                mPainter->setPen(*mPen);
                 for ( int i = first_measure;
                       i < first_measure +
                       (width() * c_perf_scale_x /
@@ -137,15 +129,6 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
                       i++ )
                 {
                     int x_pos = (i * m_measure_length) / c_perf_scale_x;
-
-                    //            a_draw->draw_drawable(m_gc, m_background,
-                    //                                  0,
-                    //                                  0,
-                    //                                  x_pos,
-                    //                                  y,
-                    //                                  c_perfroll_background_x,
-                    //                                  c_names_y );
-
                 }
 
                 long seq_length = seq->getLength();
@@ -167,40 +150,41 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
                         x = x - x_offset;
 
                         if ( selected )
-                            mPen->setColor(Qt::gray);
+                            mPen->setColor(Qt::red);
                         else
-                            mPen->setColor(Qt::gray);
+                            mPen->setColor(Qt::black);
 
+                        //main seq icon box
+                        mPen->setStyle(Qt::SolidLine);
+                        mBrush->setColor(Qt::white);
+                        mBrush->setStyle(Qt::SolidPattern);
+                        mPainter->setBrush(*mBrush);
                         mPainter->setPen(*mPen);
-//                        mPainter->drawRect(x,
-//                                           y,
-//                                           w,
-//                                           h);
+                        mPainter->drawRect(x,
+                                           y,
+                                           w,
+                                           h);
 
-                        mPen->setColor(Qt::gray);
-                        mPainter->setPen(*mPen);
-//                        mPainter->drawRect(x,
-//                                           y,
-//                                           w,
-//                                           h);
-
+                        //little seq grab handle - left hand side
+                        mBrush->setStyle(Qt::NoBrush);
+                        mPainter->setBrush(*mBrush);
                         mPen->setColor(Qt::black);
                         mPainter->setPen(*mPen);
-//                        mPainter->drawRect(x,
-//                                           y,
-//                                           c_perfroll_size_box_w,
-//                                           c_perfroll_size_box_w);
+                        mPainter->drawRect(x,
+                                           y,
+                                           c_perfroll_size_box_w,
+                                           c_perfroll_size_box_w);
 
-//                        mPainter->drawRect(x+w-c_perfroll_size_box_w,
-//                                           y+h-c_perfroll_size_box_w,
-//                                           c_perfroll_size_box_w,
-//                                           c_perfroll_size_box_w);
+                        //seq grab handle - right side
+                        mPainter->drawRect(x+w-c_perfroll_size_box_w,
+                                           y+h-c_perfroll_size_box_w,
+                                           c_perfroll_size_box_w,
+                                           c_perfroll_size_box_w);
 
                         mPen->setColor(Qt::black);
                         mPainter->setPen(*mPen);
 
                         long length_marker_first_tick = ( tick_on - (tick_on % seq_length) + (offset % seq_length) - seq_length);
-
 
                         long tick_marker = length_marker_first_tick;
 
@@ -210,12 +194,13 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
                             if ( tick_marker > tick_on ){
 
+                                //lines to break up the seq at each tick
                                 mPen->setColor(Qt::lightGray);
                                 mPainter->setPen(*mPen);
-//                                mPainter->drawRect(tick_marker_x,
-//                                                   y+4,
-//                                                   1,
-//                                                   h-8);
+                                mPainter->drawRect(tick_marker_x,
+                                                   y+4,
+                                                   1,
+                                                   h-8);
                             }
 
                             int lowest_note = seq->get_lowest_note_event( );
@@ -263,10 +248,10 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
                                 }
 
                                 if ( tick_f_x >= x && tick_s_x <= x+w )
-                                    /*mPainter->drawLine(tick_s_x,
+                                    mPainter->drawLine(tick_s_x,
                                                        y + note_y,
                                                        tick_f_x,
-                                                       y + note_y)*/;
+                                                       y + note_y);
                             }
 
                             tick_marker += seq_length;
@@ -317,17 +302,179 @@ QSize SongSequenceGrid::sizeHint() const
 
 void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
 {
+    if ( m_mainperf->is_active( m_drop_sequence ))
+    {
+        m_mainperf->get_sequence( m_drop_sequence )->unselect_triggers( );
+    }
+
+    m_drop_x = event->x();
+    m_drop_y = event->y();
+
+    convert_xy( m_drop_x, m_drop_y, &m_drop_tick, &m_drop_sequence );
+
+    /* left mouse button */
+    if ( event->button() == Qt::LeftButton ){
+
+        long tick = m_drop_tick;
+
+        /* add a new seq instance if we didnt select anything,
+         * and are holding the right mouse btn */
+        if (  m_adding ){
+
+            m_adding_pressed = true;
+
+            if ( m_mainperf->is_active( m_drop_sequence )){
+
+                long seq_length = m_mainperf->get_sequence( m_drop_sequence )->getLength();
+
+                bool trigger_state = m_mainperf->get_sequence( m_drop_sequence )->get_trigger_state( tick );
+
+                if ( trigger_state )
+                {
+                    m_mainperf->push_trigger_undo();
+                    m_mainperf->get_sequence( m_drop_sequence )->del_trigger( tick );
+                }
+                else
+                {
+                    // snap to length of sequence
+                    tick = tick - (tick % seq_length);
+
+                    m_mainperf->push_trigger_undo();
+                    m_mainperf->get_sequence( m_drop_sequence )->add_trigger( tick, seq_length );
+
+                }
+            }
+        }
+        /* we aren't holding the right mouse btn */
+        else {
+
+            if ( m_mainperf->is_active( m_drop_sequence )){
+
+                m_mainperf->push_trigger_undo();
+                m_mainperf->get_sequence( m_drop_sequence )->select_trigger( tick );
+
+                long start_tick = m_mainperf->get_sequence( m_drop_sequence )->get_selected_trigger_start_tick();
+                long end_tick = m_mainperf->get_sequence( m_drop_sequence )->get_selected_trigger_end_tick();
+
+                if ( tick >= start_tick &&
+                     tick <= start_tick + (c_perfroll_size_box_click_w * c_perf_scale_x) &&
+                     (m_drop_y % c_names_y) <= c_perfroll_size_box_click_w + 1 )
+                {
+                    m_growing = true;
+                    m_grow_direction = true;
+                    m_drop_tick_trigger_offset = m_drop_tick -
+                            m_mainperf->get_sequence( m_drop_sequence )->
+                            get_selected_trigger_start_tick( );
+                }
+                else
+                    if ( tick >= end_tick - (c_perfroll_size_box_click_w * c_perf_scale_x) &&
+                         tick <= end_tick &&
+                         (m_drop_y % c_names_y) >= c_names_y - c_perfroll_size_box_click_w - 1 )
+                    {
+                        m_growing = true;
+                        m_grow_direction = false;
+                        m_drop_tick_trigger_offset =
+                                m_drop_tick -
+                                m_mainperf->get_sequence( m_drop_sequence )->get_selected_trigger_end_tick( );
+                    }
+                    else
+                    {
+                        m_moving = true;
+                        m_drop_tick_trigger_offset = m_drop_tick -
+                                m_mainperf->get_sequence( m_drop_sequence )->
+                                get_selected_trigger_start_tick( );
+
+                    }
+
+            }
+        }
+    }
+
+    /* right mouse button */
+    if ( event->button() == Qt::RightButton ){
+        set_adding(true);
+    }
+
+    /* middle mouse button, split seq under cursor */
+    if ( event->button() == Qt::MiddleButton )
+    {
+        if ( m_mainperf->is_active( m_drop_sequence )){
+
+            bool state = m_mainperf->get_sequence( m_drop_sequence )->get_trigger_state( m_drop_tick );
+
+            if ( state )
+            {
+                half_split_trigger(m_drop_sequence, m_drop_tick);
+            }
+        }
+    }
 
 }
 
 void SongSequenceGrid::mouseReleaseEvent(QMouseEvent *event)
 {
+    if (event->button() == Qt::LeftButton){
 
+        if ( m_adding ){
+            m_adding_pressed = false;
+        }
+    }
+
+    if (event->button() == Qt::RightButton){
+        m_adding_pressed = false;
+        set_adding(false);
+    }
+
+    m_moving = false;
+    m_growing = false;
+    m_adding_pressed = false;
 }
 
 void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
 {
+    long tick;
+    int x = event->x();
 
+    if (  m_adding && m_adding_pressed ){
+
+        convert_x( x, &tick );
+
+        if ( m_mainperf->is_active( m_drop_sequence )){
+
+            long seq_length = m_mainperf->get_sequence( m_drop_sequence )->getLength();
+            tick = tick - (tick % seq_length);
+
+            long length = seq_length;
+
+            m_mainperf->get_sequence( m_drop_sequence )
+                    ->grow_trigger( m_drop_tick, tick, length);
+        }
+    }
+    else if ( m_moving || m_growing ){
+
+        if ( m_mainperf->is_active( m_drop_sequence)){
+
+            convert_x( x, &tick );
+            tick -= m_drop_tick_trigger_offset;
+
+            tick = tick - tick % m_snap;
+
+            if ( m_moving )
+            {
+                m_mainperf->get_sequence( m_drop_sequence )
+                        ->move_selected_triggers_to( tick, true );
+            }
+            if ( m_growing )
+            {
+                if ( m_grow_direction )
+                    m_mainperf->get_sequence( m_drop_sequence )
+                            ->move_selected_triggers_to( tick, false, 0 );
+                else
+                    m_mainperf->get_sequence( m_drop_sequence )
+                            ->move_selected_triggers_to( tick-1, false, 1 );
+            }
+        }
+    }
 }
 
 void SongSequenceGrid::keyPressEvent(QKeyEvent *event)
@@ -394,4 +541,21 @@ void SongSequenceGrid::set_guides( int a_snap, int a_measure, int a_beat )
     m_snap = a_snap;
     m_measure_length = a_measure;
     m_beat_length = a_beat;
+}
+
+void SongSequenceGrid::set_adding(bool a_adding)
+{
+    if ( a_adding )
+    {
+        setCursor(Qt::PointingHandCursor);
+
+        m_adding = true;
+
+    }
+    else
+    {
+        setCursor(Qt::ArrowCursor);
+
+        m_adding = false;
+    }
 }

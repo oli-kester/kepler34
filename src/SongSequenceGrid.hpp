@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QPainter>
 #include <QPen>
+#include <QMouseEvent>
 
 const int c_perfroll_background_x = (c_ppqn * 4 * 16) / c_perf_scale_x;
 const int c_perfroll_size_box_w = 3;
@@ -58,6 +59,7 @@ private:
     void convert_x(int a_x, long *a_ticks);
     void snap_x(int *a_x);
     void half_split_trigger(int a_sequence, long a_tick);
+    void set_adding(bool a_adding);
 
     MidiPerformance *m_mainperf;
 
@@ -79,6 +81,8 @@ private:
     bool    m_moving;
     bool    m_growing;
     bool    m_grow_direction;
+    bool    m_adding;
+    bool    m_adding_pressed;
 
 };
 
