@@ -279,7 +279,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     mPen->setColor(Qt::red);
     mPen->setStyle(Qt::SolidLine);
     mPainter->setPen(*mPen);
-    mPainter->drawLine(progress_x, 0,
+    mPainter->drawLine(progress_x, 1,
                        progress_x, height());
 
 

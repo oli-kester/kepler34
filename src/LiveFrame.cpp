@@ -97,7 +97,7 @@ void LiveFrame::drawSequence(int a_seq)
 
 void LiveFrame::drawAllSequences()
 {
-    for (int i=0; i < (c_mainwnd_rows * c_mainwnd_cols); i++){        
+    for (int i=0; i < (c_mainwnd_rows * c_mainwnd_cols); i++){
         drawSequence(i + (m_bank_id * c_mainwnd_rows * c_mainwnd_cols));
         
         m_last_tick_x[i + (m_bank_id * c_mainwnd_rows * c_mainwnd_cols)] = 0;

@@ -2131,40 +2131,43 @@ void MidiPerformance::sequence_playing_toggle( int a_sequence )
             m_seqs[a_sequence]->set_song_playback_block(true);
         }
 
-        //if we're recording improvisations, start adding ticks
-        if (get_song_recording()) {
+        if ( is_active( a_sequence )){
+            /* if we're recording,
+             * add seq playback changes to the song data */
+            if ( get_song_recording() ) {
 
-            long seq_length = get_sequence( a_sequence )->getLength();
+                long seq_length = get_sequence( a_sequence )->getLength();
 
-            long tick = get_tick();
+                long tick = get_tick();
 
-            bool trigger_state = get_sequence( a_sequence )->get_trigger_state( tick );
+                bool trigger_state = get_sequence( a_sequence )->get_trigger_state( tick );
 
-            MidiSequence *seq = get_sequence( a_sequence );
+                MidiSequence *seq = get_sequence( a_sequence );
 
-            /* if sequence already playing */
-            if ( trigger_state )
-            {
-                /* if this play is us recording live, end the new trigger block here */
-                if (seq->get_song_recording())
-                    seq->song_recording_stop();
+                /* if sequence already playing */
+                if ( trigger_state )
+                {
+                    /* if this play is us recording live, end the new trigger block here */
+                    if (seq->get_song_recording())
+                        seq->song_recording_stop();
 
-                /* ...else we need to trim the block already in place */
-                else {
-                    seq->exact_split_trigger( tick );
-                    seq->del_trigger( tick );
+                    /* ...else we need to trim the block already in place */
+                    else {
+                        seq->exact_split_trigger( tick );
+                        seq->del_trigger( tick );
+                    }
+
                 }
 
-            }
+                /* if not playing, start recording a new strip */
+                else
+                {
+                    //                 snap to length of sequence
+                    //                tick = tick - (tick % seq_length);
 
-            /* if not playing, start recording a new strip */
-            else
-            {
-                //                 snap to length of sequence
-                //                tick = tick - (tick % seq_length);
-
-                push_trigger_undo();
-                seq->song_recording_start( tick );
+                    push_trigger_undo();
+                    seq->song_recording_start( tick );
+                }
             }
         }
     }

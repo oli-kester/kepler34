@@ -152,6 +152,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::startPlaying()
 {
+    m_main_perf->set_playback_mode(false);
     m_main_perf->position_jack(false);
     m_main_perf->start(false);
     m_main_perf->start_jack();
@@ -166,6 +167,7 @@ void MainWindow::stopPlaying()
     m_main_perf->stop();
 
     ui->btnPlay->setChecked(false);
+    ui->btnSongPlay->setChecked(false);
 
     qDebug() << "Stop playing" << endl;
 }
@@ -179,7 +181,10 @@ void MainWindow::setRecording(bool record)
 
 void MainWindow::setSongPlayback(bool playSongData)
 {
-    m_main_perf->set_playback_mode(playSongData);
+    m_main_perf->set_playback_mode(true);
+    m_main_perf->position_jack(true);
+    m_main_perf->start_jack();
+    m_main_perf->start(true);
 
     qDebug() << "Song data playback - " << playSongData << endl;
 }
