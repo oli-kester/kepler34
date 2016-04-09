@@ -22,11 +22,11 @@ SongSequenceGrid::SongSequenceGrid(MidiPerformance *a_perf,
     m_roll_length_ticks = m_mainperf->get_max_trigger();
     m_roll_length_ticks = m_roll_length_ticks -
             ( m_roll_length_ticks % ( c_ppqn * 16 ));
-    m_roll_length_ticks +=  c_ppqn * 16;
+    m_roll_length_ticks +=  c_ppqn * 64;
 
     //start refresh timer to queue regular redraws
     mTimer = new QTimer(this);
-    mTimer->setInterval(1);
+    mTimer->setInterval(50);
     QObject::connect(mTimer,
                      SIGNAL(timeout()),
                      this,

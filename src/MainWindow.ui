@@ -71,18 +71,21 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>28</width>
-          <height>19</height>
+          <width>999</width>
+          <height>999</height>
          </size>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>B/M </string>
+         <string>B/M</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="margin">
+         <number>2</number>
         </property>
        </widget>
       </item>
@@ -112,15 +115,18 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>1000</width>
-          <height>1000</height>
+          <width>999</width>
+          <height>999</height>
          </size>
         </property>
         <property name="text">
          <string>BL</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="margin">
+         <number>2</number>
         </property>
        </widget>
       </item>

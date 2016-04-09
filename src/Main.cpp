@@ -276,9 +276,7 @@ int main(int argc, char *argv[])
         QFile m_qfile(argv[optind]);
         if (m_qfile.exists())
         {
-//            TODO restore this
-//            seq24_window.open_file(argv[optind]);
-
+            w->openMidiFile(argv[optind]);
         }
         else
             printf("File not found: %s\n", argv[optind]);

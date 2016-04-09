@@ -1165,7 +1165,7 @@ void jack_session_callback(jack_session_event_t *event, void *arg )
     MidiPerformance *p = (MidiPerformance *) arg;
     p->m_jsession_ev = event;
     //TODO restore
-    //    Glib::signal_idle().connect( sigc::mem_fun( *p, &perform::jack_session_event) );
+//        Glib::signal_idle().connect( sigc::mem_fun( *p, &perform::jack_session_event) );
 }
 
 #endif

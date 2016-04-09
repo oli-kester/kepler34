@@ -57,6 +57,9 @@ private:
     //converts the XY coordinates of a click into a seq ID
     int seqIDFromClickXY(int click_x, int click_y);
 
+    /* set/unset sequences with key presses */
+    void sequence_key( int a_seq );
+
     Ui::LiveFrame *ui;
 
     MidiPerformance *m_main_perf;

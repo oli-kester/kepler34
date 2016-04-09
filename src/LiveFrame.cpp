@@ -338,10 +338,25 @@ void LiveFrame::keyPressEvent(QKeyEvent *event)
     case Qt::Key_BracketRight:
         setBank(m_bank_id + 1);
         break;
+    default: //sequence mute toggling
+        if (m_main_perf->get_key_events()->count( event->nativeScanCode()) != 0)
+            sequence_key(m_main_perf->lookup_keyevent_seq(event->nativeScanCode()));
+        break;
     }
 }
 
 void LiveFrame::keyReleaseEvent(QKeyEvent *event)
 {
 
+}
+
+void LiveFrame::sequence_key( int a_seq )
+{
+    /* add screen set offset */
+    a_seq += m_main_perf->getBank() * c_mainwnd_rows * c_mainwnd_cols;
+
+    if ( m_main_perf->is_active( a_seq ) ){
+
+        m_main_perf->sequence_playing_toggle( a_seq );
+    }
 }

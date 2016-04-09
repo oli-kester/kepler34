@@ -20,6 +20,7 @@ class SongSequenceNames : public QWidget
 public:
     explicit SongSequenceNames(MidiPerformance *a_perf,
                                QWidget *parent);
+    ~SongSequenceNames();
 
 protected:
     //override painting event to draw on the frame

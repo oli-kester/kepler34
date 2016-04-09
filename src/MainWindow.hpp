@@ -31,14 +31,14 @@ public:
     explicit MainWindow(QWidget *parent = 0, MidiPerformance *a_p = 0);
     ~MainWindow();
 
+    //open the file at the given path
+    void openMidiFile(const QString& path);
+
 private:
 
     //check if the file has been modified.
     //if modified, ask the user whether to save changes
     bool saveCheck();
-
-    //open the file at the given path
-    void openMidiFile(const QString& path);
 
     //update window title from the global filename
     void updateWindowTitle();

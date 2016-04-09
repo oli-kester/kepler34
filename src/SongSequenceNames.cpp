@@ -16,8 +16,9 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
 {
     mPainter = new QPainter(this);
     mPen = new QPen(Qt::black);
-    mBrush = new QBrush(Qt::SolidPattern);
-    mBrush->setColor(Qt::black);
+    mBrush = new QBrush(Qt::black);
+    mPen->setStyle(Qt::SolidLine);
+    mBrush->setStyle((Qt::NoBrush));
     mFont.setPointSize(6);
     mPainter->setPen(*mPen);
     mPainter->setBrush(*mBrush);
@@ -26,6 +27,12 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
     int y_s = 0;
     int y_f = height() / c_names_y;
 
+    //draw border
+    mPainter->drawRect(0,
+                       0,
+                       width(),
+                       height());
+
     for ( int y = y_s; y <= y_f; y++ )
     {
         int sequence = y;
@@ -33,18 +40,20 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
         if (sequence < c_total_seqs)
         {
             int i = sequence;
-
-            //black boxes to mark each bank
-            mPen->setColor(Qt::black);
-            mPainter->setPen(*mPen);
-            mPainter->drawRect(0,
-                               (c_names_y * i),
-                               c_names_x,
-                               c_names_y + 1);
-
-            //if first seq bank
+            //if first seq in bank
             if ( sequence % c_seqs_in_set == 0 )
             {
+                //black boxes to mark each bank
+                mPen->setColor(Qt::black);
+                mBrush->setColor(Qt::black);
+                mBrush->setStyle(Qt::SolidPattern);
+                mPainter->setPen(*mPen);
+                mPainter->setBrush(*mBrush);
+                mPainter->drawRect(1,
+                                   (c_names_y * i) + 1,
+                                   15,
+                                   c_names_y + 3);
+
                 char ss[3];
                 snprintf(ss, sizeof(ss), "%2d", sequence / c_seqs_in_set );
                 //draw bank number here
@@ -62,23 +71,25 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                 mPainter->setPen(*mPen);
                 mPainter->setBrush(*mBrush);
                 mPainter->drawRect(1,
-                                   (c_names_y * (i)),
-                                   (6*2) + 1,
-                                   c_names_y);
+                                   (c_names_y * (i) + 1),
+                                   15,
+                                   c_names_y + 1);
             }
 
             mPen->setStyle(Qt::SolidLine);
+            mPen->setColor(Qt::black);
             if ( m_mainperf->is_active( sequence ))
-                mPen->setColor(Qt::white);
+                mBrush->setColor(Qt::white);
             else
-                mPen->setColor(Qt::gray);
+                mBrush->setColor(Qt::lightGray);
 
             // fill seq label background
             mPainter->setPen(*mPen);
+            mPainter->setBrush(*mBrush);
             mPainter->drawRect(6 * 2 + 4,
-                               (c_names_y * i) + 1,
-                               c_names_x - 3 - (6*2),
-                               c_names_y - 1);
+                               (c_names_y * i),
+                               c_names_x - 15,
+                               c_names_y);
 
             if ( m_mainperf->is_active( sequence )){
 
@@ -135,6 +146,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
             }
         }
     }
+    delete mPen,mPainter,mBrush;
 }
 
 
@@ -156,4 +168,9 @@ void SongSequenceNames::mouseReleaseEvent(QMouseEvent *event)
 void SongSequenceNames::mouseMoveEvent(QMouseEvent *event)
 {
 
+}
+
+SongSequenceNames::~SongSequenceNames()
+{
+    delete mPen,mPainter,mBrush;
 }
