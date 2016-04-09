@@ -29,6 +29,8 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
 
+    setFocusPolicy(Qt::StrongFocus);
+
     //start refresh timer to queue regular redraws
     mTimer = new QTimer(this);
     mTimer->setInterval(1);
@@ -695,9 +697,60 @@ void EditNoteRoll::mouseMoveEvent(QMouseEvent *event)
 
 void EditNoteRoll::keyPressEvent(QKeyEvent *event)
 {
+    if (event->key() == Qt::Key_Delete ||
+            event->key() == Qt::Key_Backspace)
+    {
+        //delete selected notes
+        m_seq->push_undo();
+        m_seq->mark_selected();
+        m_seq->remove_marked();
+    }
 
+    if (!is_pattern_playing) {
+        if (event->key() == Qt::Key_Home){
+            m_seq->set_orig_tick(0);
+        }
+        if (event->key() == Qt::Key_Left){
+            m_seq->set_orig_tick(m_seq->get_last_tick()- m_snap);
+        }
+        if (event->key() == Qt::Key_Right){
+            m_seq->set_orig_tick(m_seq->get_last_tick() + m_snap);
+        }
+    }
+
+    //Ctrl + ... events
+    if(event->modifiers() & Qt::ControlModifier)
+    {
+        switch (event->key())
+        {
+        case Qt::Key_X:
+            m_seq->push_undo();
+            m_seq->copy_selected();
+            m_seq->mark_selected();
+            m_seq->remove_marked();
+            break;
+
+        case Qt::Key_C:
+            m_seq->copy_selected();
+            break;
+
+        case Qt::Key_V:
+            start_paste();
+            break;
+
+        case Qt::Key_Z:
+            if (event->modifiers() & Qt::ShiftModifier)
+                m_seq->pop_redo();
+            else
+                m_seq->pop_undo();
+            break;
+
+        case Qt::Key_A:
+            m_seq->select_all();
+            break;
+        }
+    }
 }
-
 void EditNoteRoll::keyReleaseEvent(QKeyEvent *event)
 {
 
@@ -800,4 +853,35 @@ void EditNoteRoll::set_snap(int snap)
 {
     m_snap = snap;
 }
+
+void EditNoteRoll::start_paste( )
+{
+    long tick_s;
+    long tick_f;
+    int note_h;
+    int note_l;
+
+    snap_x( &m_current_x );
+    snap_y( &m_current_x );
+
+    m_drop_x = m_current_x;
+    m_drop_y = m_current_y;
+
+    m_paste = true;
+
+    /* get the box that selected elements are in */
+    m_seq->get_clipboard_box( &tick_s, &note_h,
+                              &tick_f, &note_l );
+
+    convert_tn_box_to_rect( tick_s, tick_f, note_h, note_l,
+                            &m_selected.x,
+                            &m_selected.y,
+                            &m_selected.width,
+                            &m_selected.height );
+
+    /* adjust for clipboard being shifted to tick 0 */
+    m_selected.x += m_drop_x;
+    m_selected.y += (m_drop_y - m_selected.y);
+}
+
 

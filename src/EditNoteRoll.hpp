@@ -82,6 +82,8 @@ private:
 
     void set_adding(bool a_adding);
 
+    void start_paste();
+
     MidiPerformance *m_perform;
     MidiSequence    *m_seq;
 

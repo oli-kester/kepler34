@@ -247,12 +247,12 @@ void EditFrame::updateMidiChannel(int newIndex)
 
 void EditFrame::undo()
 {
-
+    mSeq->pop_undo();
 }
 
 void EditFrame::redo()
 {
-
+    mSeq->pop_redo();
 }
 
 void EditFrame::showTools()

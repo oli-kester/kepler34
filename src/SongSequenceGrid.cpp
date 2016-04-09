@@ -14,6 +14,8 @@ SongSequenceGrid::SongSequenceGrid(MidiPerformance *a_perf,
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
 
+    setFocusPolicy(Qt::StrongFocus);
+
     for( int i=0; i<c_total_seqs; ++i )
         m_sequence_active[i]=false;
 
@@ -103,7 +105,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     long offset;
     bool selected;
 
-//    long tick_offset = c_ppqn * 16;
+    //    long tick_offset = c_ppqn * 16;
     long tick_offset = 0;
     long x_offset = tick_offset / c_perf_scale_x;
 
@@ -121,15 +123,15 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
                 seq->reset_draw_trigger_marker();
 
-//                for ( int i = first_measure;
-//                      i < first_measure +
-//                      (width() * c_perf_scale_x /
-//                       (m_measure_length)) + 1;
+                //                for ( int i = first_measure;
+                //                      i < first_measure +
+                //                      (width() * c_perf_scale_x /
+                //                       (m_measure_length)) + 1;
 
-//                      i++ )
-//                {
-//                    int x_pos = (i * m_measure_length) / c_perf_scale_x;
-//                }
+                //                      i++ )
+                //                {
+                //                    int x_pos = (i * m_measure_length) / c_perf_scale_x;
+                //                }
 
                 long seq_length = seq->getLength();
                 int length_w = seq_length / c_perf_scale_x;
@@ -480,9 +482,43 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
 
 void SongSequenceGrid::keyPressEvent(QKeyEvent *event)
 {
+    if (event->key() == Qt::Key_Delete ||
+            event->key() == Qt::Key_Backspace)
+    {
+        //delete selected notes
+        m_mainperf->push_trigger_undo();
+        m_mainperf->get_sequence( m_drop_sequence )->del_selected_trigger();
+    }
+
+    //Ctrl + ... events
+    if(event->modifiers() & Qt::ControlModifier)
+    {
+        switch (event->key())
+        {
+        case Qt::Key_X:
+            m_mainperf->push_trigger_undo();
+            m_mainperf->get_sequence( m_drop_sequence )->cut_selected_trigger();
+            break;
+
+        case Qt::Key_C:
+            m_mainperf->get_sequence( m_drop_sequence )->copy_selected_trigger();
+            break;
+
+        case Qt::Key_V:
+            m_mainperf->push_trigger_undo();
+            m_mainperf->get_sequence( m_drop_sequence )->paste_trigger();
+            break;
+
+        case Qt::Key_Z:
+            if (event->modifiers() & Qt::ShiftModifier)
+                /*m_mainperf->pop_trigger_redo()*/;
+            else
+                m_mainperf->pop_trigger_undo();
+            break;
+        }
+    }
 
 }
-
 void SongSequenceGrid::keyReleaseEvent(QKeyEvent *event)
 {
 
@@ -507,7 +543,7 @@ void SongSequenceGrid::snap_x( int *a_x )
 void SongSequenceGrid::convert_x( int a_x, long *a_tick )
 {
 
-//    long tick_offset = c_ppqn * 16;
+    //    long tick_offset = c_ppqn * 16;
     long tick_offset = 0;
     *a_tick = a_x * c_perf_scale_x;
     *a_tick += tick_offset;
@@ -517,7 +553,7 @@ void SongSequenceGrid::convert_x( int a_x, long *a_tick )
 void SongSequenceGrid::convert_xy( int a_x, int a_y, long *a_tick, int *a_seq)
 {
 
-//    long tick_offset =  c_ppqn * 16;
+    //    long tick_offset =  c_ppqn * 16;
     long tick_offset =  0;
 
     *a_tick = a_x * c_perf_scale_x;
