@@ -107,6 +107,11 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
             this,
             SLOT(startPlaying()));
 
+    connect(ui->btnSongPlay,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(setSongPlayback(bool)));
+
     connect(ui->btnStop,
             SIGNAL(clicked(bool)),
             this,
@@ -147,13 +152,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::startPlaying()
 {
-    m_main_perf->set_playback_mode(false);
     m_main_perf->position_jack(false);
     m_main_perf->start(false);
     m_main_perf->start_jack();
     is_pattern_playing = true;
 
-    qDebug() << "Start playing (Live)" << endl;
+    qDebug() << "Start playing" << endl;
 }
 
 void MainWindow::stopPlaying()
@@ -171,6 +175,13 @@ void MainWindow::setRecording(bool record)
     m_main_perf->set_song_recording(record);
 
     qDebug() << "Set recording - " << record << endl;
+}
+
+void MainWindow::setSongPlayback(bool playSongData)
+{
+    m_main_perf->set_playback_mode(playSongData);
+
+    qDebug() << "Song data playback - " << playSongData << endl;
 }
 
 void MainWindow::updateBpm(int newBpm)

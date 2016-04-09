@@ -53,92 +53,92 @@ MidiPerformance::MidiPerformance()
     m_show_ui_sequence_key = true;
 
     //TODO restore this
-//    set_key_event( GDK_1, 0 );
-//    set_key_event( GDK_q, 1 );
-//    set_key_event( GDK_a, 2 );
-//    set_key_event( GDK_z, 3 );
-//    set_key_event( GDK_2, 4 );
-//    set_key_event( GDK_w, 5 );
-//    set_key_event( GDK_s, 6 );
-//    set_key_event( GDK_x, 7 );
-//    set_key_event( GDK_3, 8 );
-//    set_key_event( GDK_e, 9 );
-//    set_key_event( GDK_d, 10 );
-//    set_key_event( GDK_c, 11 );
-//    set_key_event( GDK_4, 12 );
-//    set_key_event( GDK_r, 13 );
-//    set_key_event( GDK_f, 14 );
-//    set_key_event( GDK_v, 15 );
-//    set_key_event( GDK_5, 16 );
-//    set_key_event( GDK_t, 17 );
-//    set_key_event( GDK_g, 18 );
-//    set_key_event( GDK_b, 19 );
-//    set_key_event( GDK_6, 20 );
-//    set_key_event( GDK_y, 21 );
-//    set_key_event( GDK_h, 22 );
-//    set_key_event( GDK_n, 23 );
-//    set_key_event( GDK_7, 24 );
-//    set_key_event( GDK_u, 25 );
-//    set_key_event( GDK_j, 26 );
-//    set_key_event( GDK_m, 27 );
-//    set_key_event( GDK_8, 28 );
-//    set_key_event( GDK_i, 29 );
-//    set_key_event( GDK_k, 30 );
-//    set_key_event( GDK_comma, 31 );
+    //    set_key_event( GDK_1, 0 );
+    //    set_key_event( GDK_q, 1 );
+    //    set_key_event( GDK_a, 2 );
+    //    set_key_event( GDK_z, 3 );
+    //    set_key_event( GDK_2, 4 );
+    //    set_key_event( GDK_w, 5 );
+    //    set_key_event( GDK_s, 6 );
+    //    set_key_event( GDK_x, 7 );
+    //    set_key_event( GDK_3, 8 );
+    //    set_key_event( GDK_e, 9 );
+    //    set_key_event( GDK_d, 10 );
+    //    set_key_event( GDK_c, 11 );
+    //    set_key_event( GDK_4, 12 );
+    //    set_key_event( GDK_r, 13 );
+    //    set_key_event( GDK_f, 14 );
+    //    set_key_event( GDK_v, 15 );
+    //    set_key_event( GDK_5, 16 );
+    //    set_key_event( GDK_t, 17 );
+    //    set_key_event( GDK_g, 18 );
+    //    set_key_event( GDK_b, 19 );
+    //    set_key_event( GDK_6, 20 );
+    //    set_key_event( GDK_y, 21 );
+    //    set_key_event( GDK_h, 22 );
+    //    set_key_event( GDK_n, 23 );
+    //    set_key_event( GDK_7, 24 );
+    //    set_key_event( GDK_u, 25 );
+    //    set_key_event( GDK_j, 26 );
+    //    set_key_event( GDK_m, 27 );
+    //    set_key_event( GDK_8, 28 );
+    //    set_key_event( GDK_i, 29 );
+    //    set_key_event( GDK_k, 30 );
+    //    set_key_event( GDK_comma, 31 );
 
-//    set_key_group( GDK_exclam,  0 );
-//    set_key_group( GDK_quotedbl,  1  );
-//    set_key_group( GDK_numbersign,  2  );
-//    set_key_group( GDK_dollar,  3  );
-//    set_key_group( GDK_percent,  4  );
-//    set_key_group( GDK_ampersand,  5  );
-//    set_key_group( GDK_parenleft,  7  );
-//    set_key_group( GDK_slash,  6  );
-//    set_key_group( GDK_semicolon,  31 );
-//    set_key_group( GDK_A,  16 );
-//    set_key_group( GDK_B,  28 );
-//    set_key_group( GDK_C,  26 );
-//    set_key_group( GDK_D,  18 );
-//    set_key_group( GDK_E,  10 );
-//    set_key_group( GDK_F,  19 );
-//    set_key_group( GDK_G,  20 );
-//    set_key_group( GDK_H,  21 );
-//    set_key_group( GDK_I,  15 );
-//    set_key_group( GDK_J,  22 );
-//    set_key_group( GDK_K,  23 );
-//    set_key_group( GDK_M,  30 );
-//    set_key_group( GDK_N,  29 );
-//    set_key_group( GDK_Q,  8  );
-//    set_key_group( GDK_R,  11 );
-//    set_key_group( GDK_S,  17 );
-//    set_key_group( GDK_T,  12 );
-//    set_key_group( GDK_U,  14 );
-//    set_key_group( GDK_V,  27 );
-//    set_key_group( GDK_W,  9  );
-//    set_key_group( GDK_X,  25 );
-//    set_key_group( GDK_Y,  13 );
-//    set_key_group( GDK_Z,  24 );
+    //    set_key_group( GDK_exclam,  0 );
+    //    set_key_group( GDK_quotedbl,  1  );
+    //    set_key_group( GDK_numbersign,  2  );
+    //    set_key_group( GDK_dollar,  3  );
+    //    set_key_group( GDK_percent,  4  );
+    //    set_key_group( GDK_ampersand,  5  );
+    //    set_key_group( GDK_parenleft,  7  );
+    //    set_key_group( GDK_slash,  6  );
+    //    set_key_group( GDK_semicolon,  31 );
+    //    set_key_group( GDK_A,  16 );
+    //    set_key_group( GDK_B,  28 );
+    //    set_key_group( GDK_C,  26 );
+    //    set_key_group( GDK_D,  18 );
+    //    set_key_group( GDK_E,  10 );
+    //    set_key_group( GDK_F,  19 );
+    //    set_key_group( GDK_G,  20 );
+    //    set_key_group( GDK_H,  21 );
+    //    set_key_group( GDK_I,  15 );
+    //    set_key_group( GDK_J,  22 );
+    //    set_key_group( GDK_K,  23 );
+    //    set_key_group( GDK_M,  30 );
+    //    set_key_group( GDK_N,  29 );
+    //    set_key_group( GDK_Q,  8  );
+    //    set_key_group( GDK_R,  11 );
+    //    set_key_group( GDK_S,  17 );
+    //    set_key_group( GDK_T,  12 );
+    //    set_key_group( GDK_U,  14 );
+    //    set_key_group( GDK_V,  27 );
+    //    set_key_group( GDK_W,  9  );
+    //    set_key_group( GDK_X,  25 );
+    //    set_key_group( GDK_Y,  13 );
+    //    set_key_group( GDK_Z,  24 );
 
-//    m_key_bpm_up = GDK_apostrophe;
-//    m_key_bpm_dn = GDK_semicolon;
+    //    m_key_bpm_up = GDK_apostrophe;
+    //    m_key_bpm_dn = GDK_semicolon;
 
-//    m_key_replace = GDK_Control_L;
-//    m_key_queue = GDK_Control_R;
-//    m_key_snapshot_1 = GDK_Alt_L;
-//    m_key_snapshot_2 = GDK_Alt_R;
-//    m_key_keep_queue = GDK_backslash;
+    //    m_key_replace = GDK_Control_L;
+    //    m_key_queue = GDK_Control_R;
+    //    m_key_snapshot_1 = GDK_Alt_L;
+    //    m_key_snapshot_2 = GDK_Alt_R;
+    //    m_key_keep_queue = GDK_backslash;
 
-//    m_key_screenset_up = GDK_bracketright;
-//    m_key_screenset_dn = GDK_bracketleft;
-//    m_key_set_playing_screenset = GDK_Home;
-//    m_key_group_on = GDK_igrave;
-//    m_key_group_off = GDK_apostrophe;
-//    m_key_group_learn = GDK_Insert;
+    //    m_key_screenset_up = GDK_bracketright;
+    //    m_key_screenset_dn = GDK_bracketleft;
+    //    m_key_set_playing_screenset = GDK_Home;
+    //    m_key_group_on = GDK_igrave;
+    //    m_key_group_off = GDK_apostrophe;
+    //    m_key_group_learn = GDK_Insert;
 
-//    m_key_start  = GDK_space;
-//    m_key_stop   = GDK_Escape;
-//    m_key_record_upper = GDK_R;
-//    m_key_record_lower = GDK_r;
+    //    m_key_start  = GDK_space;
+    //    m_key_stop   = GDK_Escape;
+    //    m_key_record_upper = GDK_R;
+    //    m_key_record_lower = GDK_r;
 
     m_offset                = 0;
     m_control_status        = 0;
@@ -176,13 +176,13 @@ void MidiPerformance::init_jack()
 
             /* become a new client of the JACK server */
 #ifdef JACK_SESSION
-        if (global_jack_session_uuid.isEmpty())
-		m_jack_client = jack_client_open(PACKAGE, JackNullOption, NULL);
-	    else
-		m_jack_client = jack_client_open(PACKAGE, JackSessionID, NULL,
-                        global_jack_session_uuid.toUtf8().constData());
+            if (global_jack_session_uuid.isEmpty())
+                m_jack_client = jack_client_open(PACKAGE, JackNullOption, NULL);
+            else
+                m_jack_client = jack_client_open(PACKAGE, JackSessionID, NULL,
+                                                 global_jack_session_uuid.toUtf8().constData());
 #else
-	    m_jack_client = jack_client_open(PACKAGE, JackNullOption, NULL );
+            m_jack_client = jack_client_open(PACKAGE, JackNullOption, NULL );
 #endif
 
             if (m_jack_client == 0) {
@@ -193,20 +193,20 @@ void MidiPerformance::init_jack()
 
             jack_on_shutdown( m_jack_client, jack_shutdown,(void *) this );
             jack_set_sync_callback(m_jack_client, jack_sync_callback,
-                    (void *) this );
+                                   (void *) this );
             jack_set_process_callback(m_jack_client, jack_process_callback, NULL);
 #ifdef JACK_SESSION
-	    if (jack_set_session_callback)
-		jack_set_session_callback(m_jack_client, jack_session_callback,
-			(void *) this );
+            if (jack_set_session_callback)
+                jack_set_session_callback(m_jack_client, jack_session_callback,
+                                          (void *) this );
 #endif
 
             /* true if we want to fail if there is already a master */
             bool cond = global_with_jack_master_cond;
 
             if ( global_with_jack_master &&
-                    jack_set_timebase_callback(m_jack_client, cond,
-                        jack_timebase_callback, this) == 0){
+                 jack_set_timebase_callback(m_jack_client, cond,
+                                            jack_timebase_callback, this) == 0){
 
                 printf("[JACK transport master]\n");
                 m_jack_master = true;
@@ -472,8 +472,8 @@ void MidiPerformance::add_sequence(MidiSequence *a_seq, int a_perf )
 {
     /* check for perferred */
     if ( a_perf < c_max_sequence &&
-            is_active(a_perf) == false &&
-            a_perf >= 0 ){
+         is_active(a_perf) == false &&
+         a_perf >= 0 ){
 
         m_seqs[a_perf] = a_seq;
         set_active(a_perf, true);
@@ -648,7 +648,7 @@ void MidiPerformance::delete_sequence( int a_num )
     set_active(a_num, false);
 
     if ( m_seqs[a_num] != NULL &&
-            !m_seqs[a_num]->get_editing() ){
+         !m_seqs[a_num]->get_editing() ){
 
         m_seqs[a_num]->set_playing( false );
         delete m_seqs[a_num];
@@ -770,9 +770,9 @@ void MidiPerformance::play( long a_tick )
 
     /* just run down the list of sequences and have them dump */
 
-        printf( "play [%d]\n", a_tick );
+    //        printf( "play [%d]\n", a_tick );
 
-    m_tick = a_tick;	
+    m_tick = a_tick;
 
     /* for all seqs in the array */
     for (int i=0; i< c_max_sequence; i++ ){
@@ -781,11 +781,11 @@ void MidiPerformance::play( long a_tick )
 
             assert( m_seqs[i] );
 
-//            printf( "dump seq - [%s]\n", m_seqs[i]->get_name() );
+            //            printf( "dump seq - [%s]\n", m_seqs[i]->get_name() );
 
             if ( m_seqs[i]->get_queued() &&
 
-                    m_seqs[i]->get_queued_tick() <= a_tick ){
+                 m_seqs[i]->get_queued_tick() <= a_tick ){
 
                 m_seqs[i]->play( m_seqs[i]->get_queued_tick() - 1, m_playback_mode );
 
@@ -946,14 +946,14 @@ void MidiPerformance::position_jack( bool a_state )
     current_tick *= 10;
 
     pos.bar = (int32_t) (current_tick / (long) pos.ticks_per_beat
-            / pos.beats_per_bar);
+                         / pos.beats_per_bar);
     pos.beat = (int32_t) ((current_tick / (long) pos.ticks_per_beat) % 4);
     pos.tick = (int32_t) (current_tick % (c_ppqn * 10));
 
     pos.bar_start_tick = pos.bar * pos.beats_per_bar * pos.ticks_per_beat;
     pos.frame_rate = rate;
     pos.frame = (jack_nframes_t) ( (current_tick * rate * 60.0)
-            / (pos.ticks_per_beat * pos.beats_per_minute) );
+                                   / (pos.ticks_per_beat * pos.beats_per_minute) );
 
     /*
        ticks * 10 = jack ticks;
@@ -1110,7 +1110,7 @@ void MidiPerformance::launch_input_thread()
         /*TODO: error handling*/
     }
     else
-    m_in_thread_launched = true;
+        m_in_thread_launched = true;
 }
 
 
@@ -1153,7 +1153,7 @@ void* output_thread_func(void *a_pef )
         // Not in MinGW RCB
         if (sched_setscheduler(0, SCHED_FIFO, &schp) != 0) 	{
             printf("output_thread_func: couldnt sched_setscheduler"
-                    " (FIFO), you need to be root.\n");
+                   " (FIFO), you need to be root.\n");
             pthread_exit(0);
         }
 #endif
@@ -1176,45 +1176,45 @@ int jack_process_callback(jack_nframes_t nframes, void* arg)
 {return 0;}
 
 int jack_sync_callback(jack_transport_state_t state,
-        jack_position_t *pos, void *arg)
+                       jack_position_t *pos, void *arg)
 {
     MidiPerformance *p = (MidiPerformance *) arg;
 
     p->m_jack_frame_current = jack_get_current_transport_frame(p->m_jack_client);
 
     p->m_jack_tick =
-        p->m_jack_frame_current *
-        p->m_jack_pos.ticks_per_beat *
-        p->m_jack_pos.beats_per_minute / (p->m_jack_pos.frame_rate * 60.0);
+            p->m_jack_frame_current *
+            p->m_jack_pos.ticks_per_beat *
+            p->m_jack_pos.beats_per_minute / (p->m_jack_pos.frame_rate * 60.0);
 
     p->m_jack_frame_last = p->m_jack_frame_current;
 
     p->m_jack_transport_state_last =
-        p->m_jack_transport_state =
-        state;
+            p->m_jack_transport_state =
+            state;
 
 
     switch (state) {
 
-        case JackTransportStopped:
-            //printf( "[JackTransportStopped]\n" );
-            break;
+    case JackTransportStopped:
+        //printf( "[JackTransportStopped]\n" );
+        break;
 
-        case JackTransportRolling:
-            //printf( "[JackTransportRolling]\n" );
-            break;
+    case JackTransportRolling:
+        //printf( "[JackTransportRolling]\n" );
+        break;
 
-        case JackTransportStarting:
-            //printf( "[JackTransportStarting]\n" );
-            p->inner_start( global_jack_start_mode );
-            break;
+    case JackTransportStarting:
+        //printf( "[JackTransportStarting]\n" );
+        p->inner_start( global_jack_start_mode );
+        break;
 
-        case JackTransportLooping:
-            //printf( "[JackTransportLooping]" );
-            break;
+    case JackTransportLooping:
+        //printf( "[JackTransportLooping]" );
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     //printf( "starting frame[%d] tick[%8.2f]\n", p->m_jack_frame_current, p->m_jack_tick );
@@ -1253,7 +1253,7 @@ void jack_session_callback(jack_session_event_t *event, void *arg )
     MidiPerformance *p = (MidiPerformance *) arg;
     p->m_jsession_ev = event;
     //TODO restore
-//    Glib::signal_idle().connect( sigc::mem_fun( *p, &perform::jack_session_event) );
+    //    Glib::signal_idle().connect( sigc::mem_fun( *p, &perform::jack_session_event) );
 }
 
 #endif
@@ -1343,7 +1343,7 @@ void MidiPerformance::output_func()
         /* if we are in the performance view, we care
            about starting from the offset */
         if ( m_playback_mode && !m_jack_running){
-//          if (!m_jack_running){
+            //          if (!m_jack_running){
 
             current_tick = m_starting_tick;
             clock_tick = m_starting_tick;
@@ -1438,7 +1438,7 @@ void MidiPerformance::output_func()
                 m_jack_frame_current =  jack_get_current_transport_frame( m_jack_client );
 
                 if ( m_jack_transport_state_last  ==  JackTransportStarting &&
-                        m_jack_transport_state       == JackTransportRolling ){
+                     m_jack_transport_state       == JackTransportRolling ){
 
                     m_jack_frame_last = m_jack_frame_current;
 
@@ -1446,23 +1446,23 @@ void MidiPerformance::output_func()
                     //printf ("[Start Playback]\n" );
                     dumping = true;
                     m_jack_tick =
-                        m_jack_pos.frame *
-                        m_jack_pos.ticks_per_beat *
-                        m_jack_pos.beats_per_minute / (m_jack_pos.frame_rate * 60.0);
+                            m_jack_pos.frame *
+                            m_jack_pos.ticks_per_beat *
+                            m_jack_pos.beats_per_minute / (m_jack_pos.frame_rate * 60.0);
 
 
                     /* convert ticks */
                     jack_ticks_converted =
-                        m_jack_tick * ((double) c_ppqn /
-                                (m_jack_pos.ticks_per_beat *
-                                 m_jack_pos.beat_type / 4.0  ));
+                            m_jack_tick * ((double) c_ppqn /
+                                           (m_jack_pos.ticks_per_beat *
+                                            m_jack_pos.beat_type / 4.0  ));
 
                     set_orig_ticks( (long) jack_ticks_converted );
                     current_tick = clock_tick = total_tick = jack_ticks_converted_last = jack_ticks_converted;
                     init_clock = true;
 
                     if ( m_looping && m_playback_mode ){
-//                    if (m_playback_mode){
+                        //                    if (m_playback_mode){
 
                         //printf( "left[%lf] right[%lf]\n", (double) get_left_tick(), (double) get_right_tick() );
 
@@ -1482,7 +1482,7 @@ void MidiPerformance::output_func()
                 }
 
                 if ( m_jack_transport_state_last  ==  JackTransportRolling &&
-                        m_jack_transport_state  == JackTransportStopped ){
+                     m_jack_transport_state  == JackTransportStopped ){
 
                     m_jack_transport_state_last = JackTransportStopped;
                     //printf ("[Stop Playback]\n" );
@@ -1504,9 +1504,9 @@ void MidiPerformance::output_func()
 
 
                         m_jack_tick +=
-                            (m_jack_frame_current - m_jack_frame_last)  *
-                            m_jack_pos.ticks_per_beat *
-                            m_jack_pos.beats_per_minute / (m_jack_pos.frame_rate * 60.0);
+                                (m_jack_frame_current - m_jack_frame_last)  *
+                                m_jack_pos.ticks_per_beat *
+                                m_jack_pos.beats_per_minute / (m_jack_pos.frame_rate * 60.0);
 
 
                         //printf ( "m_jack_tick += (m_jack_frame_current[%lf] - m_jack_frame_last[%lf]) *\n",
@@ -1519,8 +1519,8 @@ void MidiPerformance::output_func()
 
                     /* convert ticks */
                     jack_ticks_converted =
-                        m_jack_tick * ((double) c_ppqn /
-                                (m_jack_pos.ticks_per_beat * m_jack_pos.beat_type / 4.0  ));
+                            m_jack_tick * ((double) c_ppqn /
+                                           (m_jack_pos.ticks_per_beat * m_jack_pos.beat_type / 4.0  ));
 
                     //printf ( "jack_ticks_conv[%lf] = \n",  jack_ticks_converted );
                     //printf ( "    m_jack_tick[%lf] * ((double) c_ppqn[%lf] / \n", m_jack_tick, (double) c_ppqn );
@@ -1590,7 +1590,7 @@ void MidiPerformance::output_func()
 
             if (dumping) {
                 if ( m_looping && m_playback_mode )
-//                if ( m_looping)
+                    //                if ( m_looping)
                 {
                     if ( current_tick >= get_right_tick() )
                     {
@@ -1606,13 +1606,13 @@ void MidiPerformance::output_func()
 
                 /* play */
                 play( (long) current_tick );
-                printf( "play[%d]\n", current_tick );
+                //                printf( "play[%d]\n", current_tick );
 
                 /* midi clock */
                 m_master_bus.clock( clock_tick );
 
 
-                if ( global_stats ){	
+                if ( global_stats ){
 
                     while ( stats_total_tick <= total_tick ){
 
@@ -1736,7 +1736,7 @@ void MidiPerformance::output_func()
                     stats_min = delta_us;
 
                 stats_avg += delta_us;
-                stats_loop_index++;	
+                stats_loop_index++;
 
                 if ( stats_loop_index > 200 ){
 
@@ -1744,8 +1744,8 @@ void MidiPerformance::output_func()
                     stats_avg /= 200;
 
                     printf("stats_avg[%ld]us stats_min[%ld]us"
-                            " stats_max[%ld]us\n", stats_avg,
-                            stats_min, stats_max);
+                           " stats_max[%ld]us\n", stats_avg,
+                           stats_min, stats_max);
 
                     stats_min = 0x7FFFFFFF;
                     stats_max = 0;
@@ -1806,7 +1806,7 @@ void* input_thread_func(void *a_pef )
         if (sched_setscheduler(0, SCHED_FIFO, &schp) != 0) 	{
 
             printf("input_thread_func: couldnt sched_setscheduler"
-                    " (FIFO), you need to be root.\n");
+                   " (FIFO), you need to be root.\n");
             pthread_exit(0);
         }
 #endif
@@ -1830,77 +1830,77 @@ void MidiPerformance::handle_midi_control( int a_control, bool a_state )
 
     switch (a_control) {
 
-        case c_midi_control_bpm_up:
-            //printf ( "bpm up\n" );
-            set_bpm( get_bpm() + 1 );
-            break;
+    case c_midi_control_bpm_up:
+        //printf ( "bpm up\n" );
+        set_bpm( get_bpm() + 1 );
+        break;
 
-        case c_midi_control_bpm_dn:
-            //printf ( "bpm dn\n" );
-            set_bpm( get_bpm() - 1 );
-            break;
+    case c_midi_control_bpm_dn:
+        //printf ( "bpm dn\n" );
+        set_bpm( get_bpm() - 1 );
+        break;
 
-        case c_midi_control_ss_up:
-            //printf ( "ss up\n" );
-            setBank( getBank() + 1 );
-            break;
+    case c_midi_control_ss_up:
+        //printf ( "ss up\n" );
+        setBank( getBank() + 1 );
+        break;
 
-        case c_midi_control_ss_dn:
-            //printf ( "ss dn\n" );
-            setBank( getBank() - 1 );
-            break;
+    case c_midi_control_ss_dn:
+        //printf ( "ss dn\n" );
+        setBank( getBank() - 1 );
+        break;
 
-        case c_midi_control_mod_replace:
-            //printf ( "replace\n" );
-            if ( a_state )
-                set_sequence_control_status( c_status_replace );
-            else
-                unset_sequence_control_status( c_status_replace );
-            break;
+    case c_midi_control_mod_replace:
+        //printf ( "replace\n" );
+        if ( a_state )
+            set_sequence_control_status( c_status_replace );
+        else
+            unset_sequence_control_status( c_status_replace );
+        break;
 
-        case c_midi_control_mod_snapshot:
-            //printf ( "snapshot\n" );
-            if ( a_state )
-                set_sequence_control_status( c_status_snapshot );
-            else
-                unset_sequence_control_status( c_status_snapshot );
-            break;
+    case c_midi_control_mod_snapshot:
+        //printf ( "snapshot\n" );
+        if ( a_state )
+            set_sequence_control_status( c_status_snapshot );
+        else
+            unset_sequence_control_status( c_status_snapshot );
+        break;
 
-        case c_midi_control_mod_queue:
-            //printf ( "queue\n" );
-            if ( a_state )
-                set_sequence_control_status( c_status_queue );
-            else
-                unset_sequence_control_status( c_status_queue );
+    case c_midi_control_mod_queue:
+        //printf ( "queue\n" );
+        if ( a_state )
+            set_sequence_control_status( c_status_queue );
+        else
+            unset_sequence_control_status( c_status_queue );
 
-            //andy cases
-        case c_midi_control_mod_gmute:
-            printf ( "gmute\n" );
-            if (a_state)
-                set_mode_group_mute();
-            else
-                unset_mode_group_mute();
-            break;
+        //andy cases
+    case c_midi_control_mod_gmute:
+        printf ( "gmute\n" );
+        if (a_state)
+            set_mode_group_mute();
+        else
+            unset_mode_group_mute();
+        break;
 
-        case c_midi_control_mod_glearn:
-            //printf ( "glearn\n" );
-            if (a_state)
-                set_mode_group_learn();
-            else
-                unset_mode_group_learn();
-            break;
+    case c_midi_control_mod_glearn:
+        //printf ( "glearn\n" );
+        if (a_state)
+            set_mode_group_learn();
+        else
+            unset_mode_group_learn();
+        break;
 
-        case c_midi_control_play_ss:
-            //printf ( "play_ss\n" );
-            setPlayingBank();
-            break;
+    case c_midi_control_play_ss:
+        //printf ( "play_ss\n" );
+        setPlayingBank();
+        break;
 
-        default:
-            if ((a_control >= c_seqs_in_set) && (a_control < c_midi_track_ctrl)) {
-                //printf ( "group mute\n" );
-                select_and_mute_group(a_control - c_seqs_in_set);
-            }
-            break;
+    default:
+        if ((a_control >= c_seqs_in_set) && (a_control < c_midi_track_ctrl)) {
+            //printf ( "group mute\n" );
+            select_and_mute_group(a_control - c_seqs_in_set);
+        }
+        break;
     }
 }
 
@@ -1996,11 +1996,11 @@ void MidiPerformance::input_func()
                                 }
 
                                 if ( get_midi_control_on(i)->m_active &&
-                                        status  == get_midi_control_on(i)->m_status &&
-                                        data[0] == get_midi_control_on(i)->m_data ){
+                                     status  == get_midi_control_on(i)->m_status &&
+                                     data[0] == get_midi_control_on(i)->m_data ){
 
                                     if ( data[1] >= get_midi_control_on(i)->m_min_value &&
-                                            data[1] <= get_midi_control_on(i)->m_max_value ){
+                                         data[1] <= get_midi_control_on(i)->m_max_value ){
 
                                         if ( i <  c_seqs_in_set )
                                             sequence_playing_on( i  + m_offset);
@@ -2018,11 +2018,11 @@ void MidiPerformance::input_func()
                                 }
 
                                 if ( get_midi_control_off(i)->m_active &&
-                                        status  == get_midi_control_off(i)->m_status &&
-                                        data[0] == get_midi_control_off(i)->m_data ){
+                                     status  == get_midi_control_off(i)->m_status &&
+                                     data[0] == get_midi_control_off(i)->m_data ){
 
                                     if ( data[1] >= get_midi_control_off(i)->m_min_value &&
-                                            data[1] <= get_midi_control_off(i)->m_max_value ){
+                                         data[1] <= get_midi_control_off(i)->m_max_value ){
 
                                         if ( i <  c_seqs_in_set )
                                             sequence_playing_off(  i + m_offset );
@@ -2130,6 +2130,43 @@ void MidiPerformance::sequence_playing_toggle( int a_sequence )
         if (m_playback_mode){
             m_seqs[a_sequence]->set_song_playback_block(true);
         }
+
+        //if we're recording improvisations, start adding ticks
+        if (get_song_recording()) {
+
+            long seq_length = get_sequence( a_sequence )->getLength();
+
+            long tick = get_tick();
+
+            bool trigger_state = get_sequence( a_sequence )->get_trigger_state( tick );
+
+            MidiSequence *seq = get_sequence( a_sequence );
+
+            /* if sequence already playing */
+            if ( trigger_state )
+            {
+                /* if this play is us recording live, end the new trigger block here */
+                if (seq->get_song_recording())
+                    seq->song_recording_stop();
+
+                /* ...else we need to trim the block already in place */
+                else {
+                    seq->exact_split_trigger( tick );
+                    seq->del_trigger( tick );
+                }
+
+            }
+
+            /* if not playing, start recording a new strip */
+            else
+            {
+                //                 snap to length of sequence
+                //                tick = tick - (tick % seq_length);
+
+                push_trigger_undo();
+                seq->song_recording_start( tick );
+            }
+        }
     }
 }
 
@@ -2229,8 +2266,8 @@ void MidiPerformance::set_key_group( unsigned int keycode, long group_slot )
 
 #ifdef JACK_SUPPORT
 void jack_timebase_callback(jack_transport_state_t state,
-        jack_nframes_t nframes,
-        jack_position_t *pos, int new_pos, void *arg)
+                            jack_nframes_t nframes,
+                            jack_position_t *pos, int new_pos, void *arg)
 {
     static double jack_tick;
     //static jack_nframes_t last_frame;
@@ -2259,34 +2296,34 @@ void jack_timebase_callback(jack_transport_state_t state,
 
     // if we are in a new position
     if (  state_last    ==  JackTransportStarting &&
-            state_current ==  JackTransportRolling ){
+          state_current ==  JackTransportRolling ){
 
         // printf ( "Starting [%d] [%d]\n", last_frame, current_frame );
 
-		 double jack_delta_tick =
-            (current_frame) *
-            pos->ticks_per_beat *
-            pos->beats_per_minute / (pos->frame_rate * 60.0);
-		
-		jack_tick = (jack_delta_tick < 0) ? -jack_delta_tick : jack_delta_tick;
-		//last_frame = current_frame;
-		
-		long ptick = 0, pbeat = 0, pbar = 0;
-	
-		pbar  = (long) ((long) jack_tick / (pos->ticks_per_beat *  pos->beats_per_bar ));
+        double jack_delta_tick =
+                (current_frame) *
+                pos->ticks_per_beat *
+                pos->beats_per_minute / (pos->frame_rate * 60.0);
 
-		pbeat = (long) ((long) jack_tick % (long) (pos->ticks_per_beat *  pos->beats_per_bar ));
-		pbeat = pbeat / (long) pos->ticks_per_beat;
+        jack_tick = (jack_delta_tick < 0) ? -jack_delta_tick : jack_delta_tick;
+        //last_frame = current_frame;
 
-		ptick = (long) jack_tick % (long) pos->ticks_per_beat;
+        long ptick = 0, pbeat = 0, pbar = 0;
 
-		// printf( " bbb [%2d:%2d:%4d]\n", pos->bar, pos->beat, pos->tick );
+        pbar  = (long) ((long) jack_tick / (pos->ticks_per_beat *  pos->beats_per_bar ));
 
-		pos->bar = pbar + 1;
-		pos->beat = pbeat + 1;
-		pos->tick = ptick;
-		pos->bar_start_tick = pos->bar * pos->beats_per_bar *
-			pos->ticks_per_beat;
+        pbeat = (long) ((long) jack_tick % (long) (pos->ticks_per_beat *  pos->beats_per_bar ));
+        pbeat = pbeat / (long) pos->ticks_per_beat;
+
+        ptick = (long) jack_tick % (long) pos->ticks_per_beat;
+
+        // printf( " bbb [%2d:%2d:%4d]\n", pos->bar, pos->beat, pos->tick );
+
+        pos->bar = pbar + 1;
+        pos->beat = pbeat + 1;
+        pos->tick = ptick;
+        pos->bar_start_tick = pos->bar * pos->beats_per_bar *
+                pos->ticks_per_beat;
     }
 
     state_last = state_current;
@@ -2307,7 +2344,7 @@ void print_jack_pos( jack_position_t* jack_pos ){
     return;
     printf( "print_jack_pos()\n" );
     printf( "    bar  [%d]\n", jack_pos->bar  );
-    printf( "    beat [%d]\n", jack_pos->beat );		
+    printf( "    beat [%d]\n", jack_pos->beat );
     printf( "    tick [%d]\n", jack_pos->tick );
     printf( "    bar_start_tick   [%lf]\n", jack_pos->bar_start_tick );
     printf( "    beats_per_bar    [%f]\n", jack_pos->beats_per_bar );

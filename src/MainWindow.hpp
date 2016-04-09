@@ -66,6 +66,7 @@ private slots:
     //TODO recent files function
     void startPlaying();
     void stopPlaying();
+    void setSongPlayback(bool playSongData);
     void setRecording(bool record);
     void updateBpm(int newBpm);
     void updateBeatsPerMeasure(int bmIndex);

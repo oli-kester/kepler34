@@ -108,8 +108,8 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     {
         int a_sequence = y;
 
-        y = c_names_y * a_sequence;
-        int h = c_names_y;
+//        y = c_names_y * a_sequence;
+//        int h = c_names_y;
 
         if ( a_sequence < c_total_seqs ){
 
@@ -121,15 +121,15 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
                 seq->reset_draw_trigger_marker();
 
-                for ( int i = first_measure;
-                      i < first_measure +
-                      (width() * c_perf_scale_x /
-                       (m_measure_length)) + 1;
+//                for ( int i = first_measure;
+//                      i < first_measure +
+//                      (width() * c_perf_scale_x /
+//                       (m_measure_length)) + 1;
 
-                      i++ )
-                {
-                    int x_pos = (i * m_measure_length) / c_perf_scale_x;
-                }
+//                      i++ )
+//                {
+//                    int x_pos = (i * m_measure_length) / c_perf_scale_x;
+//                }
 
                 long seq_length = seq->getLength();
                 int length_w = seq_length / c_perf_scale_x;
