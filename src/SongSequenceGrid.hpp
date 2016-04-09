@@ -51,7 +51,9 @@ protected:
     //override the sizehint to set our own defaults
     QSize sizeHint() const;
 
-signals:
+public slots:
+    void undo();
+    void redo();
 
 private:
 

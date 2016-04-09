@@ -598,3 +598,13 @@ void SongSequenceGrid::set_adding(bool a_adding)
         m_adding = false;
     }
 }
+
+void SongSequenceGrid::undo()
+{
+    m_mainperf->pop_trigger_undo();
+}
+
+void SongSequenceGrid::redo()
+{
+
+}

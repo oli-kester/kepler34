@@ -48,6 +48,21 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
             this,
             SLOT(updateGridSnap(int)));
 
+    connect(ui->btnUndo,
+            SIGNAL(clicked(bool)),
+            m_perfroll,
+            SLOT(undo()));
+
+    connect(ui->btnRedo,
+            SIGNAL(clicked(bool)),
+            m_perfroll,
+            SLOT(redo()));
+
+    connect(ui->combo_grid_snap,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateGridSnap(int)));
+
     setSnap( 8 );
     setBeatsPerMeasure( 4 );
     setBeatWidth( 4 );
