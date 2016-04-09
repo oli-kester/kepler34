@@ -54,7 +54,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
         else
         {
             mPen->setColor(Qt::lightGray);
-            mPen->setStyle(Qt::DashLine);
+            mPen->setStyle(Qt::DotLine);
         }
 
         mPainter->setPen(*mPen);
@@ -74,16 +74,17 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
     }
 
-    //draw playhead
-    long tick = m_mainperf->get_tick();
-
-    int progress_x = tick / c_perf_scale_x ;
-
-    mPen->setColor(Qt::red);
-    mPen->setStyle(Qt::SolidLine);
-    mPainter->setPen(*mPen);
-    mPainter->drawLine(progress_x, 0,
-                       progress_x, height());
+    //draw horizontal lines
+    for (int i = 0; i < height(); i += c_names_y)
+    {
+        mPen->setColor(Qt::black);
+        mPen->setStyle(Qt::DotLine);
+        mPainter->setPen(*mPen);
+        mPainter->drawLine(0,
+                           i,
+                           width(),
+                           i);
+    }
 
     //draw background
 
@@ -108,34 +109,6 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
         y = c_names_y * a_sequence;
         int h = c_names_y;
 
-        mPen->setColor(Qt::white);
-        mPainter->setPen(*mPen);
-//        mPainter->drawRect(0,
-//                           y,
-//                           width(),
-//                           h);
-
-        mPen->setColor(Qt::black);
-        mPainter->setPen(*mPen);
-        for ( int i = first_measure;
-              i < first_measure +
-              (width() * c_perf_scale_x /
-               (m_measure_length)) + 1;
-
-              i++ )
-        {
-            int x_pos = (i * m_measure_length) / c_perf_scale_x;
-
-            //            a_draw->draw_drawable(m_gc, m_background,
-            //                                  0,
-            //                                  0,
-            //                                  x_pos,
-            //                                  y,
-            //                                  c_perfroll_background_x,
-            //                                  c_names_y );
-
-        }
-
         if ( a_sequence < c_total_seqs ){
 
             if ( m_mainperf->is_active( a_sequence )){
@@ -145,6 +118,35 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
                 MidiSequence *seq =  m_mainperf->get_sequence( a_sequence );
 
                 seq->reset_draw_trigger_marker();
+
+                //draw seq background
+                mPen->setColor(Qt::white);
+                mPainter->setPen(*mPen);
+                mPainter->drawRect(0,
+                                   y,
+                                   width(),
+                                   h);
+
+                mPen->setColor(Qt::black);
+                mPainter->setPen(*mPen);
+                for ( int i = first_measure;
+                      i < first_measure +
+                      (width() * c_perf_scale_x /
+                       (m_measure_length)) + 1;
+
+                      i++ )
+                {
+                    int x_pos = (i * m_measure_length) / c_perf_scale_x;
+
+                    //            a_draw->draw_drawable(m_gc, m_background,
+                    //                                  0,
+                    //                                  0,
+                    //                                  x_pos,
+                    //                                  y,
+                    //                                  c_perfroll_background_x,
+                    //                                  c_names_y );
+
+                }
 
                 long seq_length = seq->getLength();
                 int length_w = seq_length / c_perf_scale_x;
@@ -283,6 +285,18 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
                        0,
                        width(),
                        height() - 1);
+
+    //draw playhead
+    long tick = m_mainperf->get_tick();
+
+    int progress_x = tick / c_perf_scale_x ;
+
+    mPen->setColor(Qt::red);
+    mPen->setStyle(Qt::SolidLine);
+    mPainter->setPen(*mPen);
+    mPainter->drawLine(progress_x, 0,
+                       progress_x, height());
+
 
 }
 

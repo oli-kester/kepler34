@@ -102,7 +102,6 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
             m_dialog_prefs,
             SLOT(show()));
 
-
     connect(ui->btnPlay,
             SIGNAL(clicked(bool)),
             this,
@@ -189,9 +188,11 @@ void MainWindow::showOpenFileDialog()
                 this,
                 tr("Open MIDI file"),
 //                "/",
-                "last_used_dir",
+                last_used_dir,
                 tr("MIDI files (*.midi *.mid);;"
-                   "All files (*)")
+                   "All files (*)"),
+                0,
+                QFileDialog::DontUseNativeDialog
                 );
 
     //don't bother trying to open if the user cancels
@@ -341,7 +342,9 @@ void MainWindow::saveFileAs()
                 tr("Save MIDI file as..."),
                 last_used_dir,
                 tr("MIDI files (*.midi *.mid);;"
-                   "All files (*)")
+                   "All files (*)"),
+                0,
+                QFileDialog::DontUseNativeDialog
                 );
 
     if (!file.isEmpty())

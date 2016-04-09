@@ -58,7 +58,7 @@ private:
     SongTimeBar       *m_perftime;
 
 private slots:
-    void updateGridSnap(int snap);
+    void updateGridSnap(int snapIndex);
 };
 
 #endif // SONGFRAME_HPP

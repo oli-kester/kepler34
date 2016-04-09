@@ -52,8 +52,6 @@ protected:
 
 signals:
 
-public slots:
-
 private:
 
     void convert_xy( int a_x, int a_y, long *a_ticks, int *a_seq);

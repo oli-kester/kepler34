@@ -13,7 +13,7 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
                   QSizePolicy::Expanding);
 
     // fill options for grid snap combo box and set default
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 6; i++)
     {
         QString combo_text = "1/" + QString::number(pow(2,i));
         ui->combo_grid_snap->insertItem(i, combo_text);
@@ -59,9 +59,33 @@ SongFrame::~SongFrame()
     delete ui;
 }
 
-void SongFrame::updateGridSnap(int snap)
+void SongFrame::updateGridSnap(int snapIndex)
 {
+    int snap;
+    switch (snapIndex)
+    {
+    case 0:
+        snap = 1;
+        break;
+    case 1:
+        snap = 2;
+        break;
+    case 2:
+        snap = 4;
+        break;
+    case 3:
+        snap = 8;
+        break;
+    case 4:
+        snap = 16;
+        break;
+    case 5:
+        snap = 32;
+        break;
+    }
 
+    m_snap = snap;
+    setGuides();
 }
 
 void SongFrame::setSnap( int a_snap  )
@@ -76,9 +100,9 @@ void SongFrame::setSnap( int a_snap  )
 
 void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
 {
-//    char b[10];
-//    snprintf(b, sizeof(b), "%d", a_beats_per_measure );
-//    m_entry_bpm->set_text(b);
+    //    char b[10];
+    //    snprintf(b, sizeof(b), "%d", a_beats_per_measure );
+    //    m_entry_bpm->set_text(b);
 
     m_bpm = a_beats_per_measure;
     setGuides();
@@ -87,9 +111,9 @@ void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
 
 void SongFrame::setBeatWidth( int a_beat_width )
 {
-//    char b[10];
-//    snprintf(b, sizeof(b), "%d", a_beat_width );
-//    m_entry_bw->set_text(b);
+    //    char b[10];
+    //    snprintf(b, sizeof(b), "%d", a_beat_width );
+    //    m_entry_bw->set_text(b);
 
     m_bw = a_beat_width;
     setGuides();
@@ -101,5 +125,5 @@ void SongFrame::setGuides()
     long snap_ticks =  measure_ticks / m_snap;
     long beat_ticks = (c_ppqn * 4) / m_bw;
     m_perfroll->set_guides( snap_ticks, measure_ticks, beat_ticks );
-//    m_perftime->set_guides( snap_ticks, measure_ticks );
+    //    m_perftime->set_guides( snap_ticks, measure_ticks );
 }
