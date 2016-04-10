@@ -55,7 +55,6 @@ void LiveFrame::drawSequence(int a_seq)
     mFont.setPointSize(6);
     mFont.setLetterSpacing(QFont::AbsoluteSpacing,
                            1);
-    //    mFont.setBold(true);
     mPainter->setPen(*mPen);
     mPainter->setBrush(*mBrush);
     mPainter->setFont(mFont);
@@ -227,11 +226,11 @@ void LiveFrame::drawSequence(int a_seq)
 
             long tick_x = a_tick * rectangleW / length;
 
-//            if ( seq->get_playing() ){
-//                mPen->setColor(Qt::green);
-//            } else {
-                mPen->setColor(Qt::red);
-//            }
+            //            if ( seq->get_playing() ){
+            //                mPen->setColor(Qt::green);
+            //            } else {
+            mPen->setColor(Qt::red);
+            //            }
 
             if ( seq->get_queued()){
                 mPen->setColor(Qt::green);
@@ -244,9 +243,21 @@ void LiveFrame::drawSequence(int a_seq)
                                rectangle_x + tick_x - 1,
                                rectangle_y + rectangleH + 1);
 
-            delete mPainter, mPen, mBrush;
+
+        }
+        else
+        {
+            //no sequence present. Insert placeholder
+            mPen->setColor(Qt::black);
+            mFont.setPointSize(15);
+            mPainter->setPen(*mPen);
+            mPainter->setFont(mFont);
+            mPainter->drawText(base_x + 2,
+                               base_y + 17,
+                               "+");
         }
     }
+    delete mPainter, mPen, mBrush;
 }
 void LiveFrame::drawAllSequences()
 {
