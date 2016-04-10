@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QMenu>
+#include <QTimer>
 
 namespace Ui {
 class LiveFrame;
@@ -18,7 +19,6 @@ class LiveFrame : public QFrame
     Q_OBJECT
 
 public:
-
     explicit LiveFrame(QWidget *parent = 0, MidiPerformance *perf = 0);
 
     ~LiveFrame();
@@ -43,7 +43,6 @@ protected:
     void keyReleaseEvent    (QKeyEvent * event);
 
 private:
-
     //draw a single sequence thumbnail at index
     void drawSequence(int a_seq);
 
@@ -70,6 +69,7 @@ private:
     QPen        *mPen;
     QMenu       *mPopup;
     QFont        mFont;
+    QTimer      *mTimer;
 
     int     m_bank_id;
 
@@ -86,14 +86,12 @@ private:
     bool    m_last_playing[c_max_sequence];
 
 private slots:
-
     void updateBank(int newBank);
     void updateBankName();
     void newSeq();
     void editSeq();
 
 signals:
-
     void callEditor(MidiSequence *seq);
 };
 

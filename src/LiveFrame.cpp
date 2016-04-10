@@ -16,15 +16,25 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
 
     setBank(0);
 
-    QObject::connect(ui->spinBank,
-                     SIGNAL(valueChanged(int)),
-                     this,
-                     SLOT(updateBank(int)));
+    connect(ui->spinBank,
+            SIGNAL(valueChanged(int)),
+            this,
+            SLOT(updateBank(int)));
     
-    QObject::connect(ui->txtBankName,
-                     SIGNAL(textChanged()),
-                     this,
-                     SLOT(updateBankName()));
+    connect(ui->txtBankName,
+            SIGNAL(textChanged()),
+            this,
+            SLOT(updateBankName()));
+
+    //start refresh timer to queue regular redraws
+    mTimer = new QTimer(this);
+    mTimer->setInterval(50);
+    connect(mTimer,
+            SIGNAL(timeout()),
+            this,
+            SLOT(update()));
+    mTimer->start();
+
 }
 
 void LiveFrame::paintEvent(QPaintEvent *)
@@ -45,7 +55,7 @@ void LiveFrame::drawSequence(int a_seq)
     mFont.setPointSize(6);
     mFont.setLetterSpacing(QFont::AbsoluteSpacing,
                            1);
-//    mFont.setBold(true);
+    //    mFont.setBold(true);
     mPainter->setPen(*mPen);
     mPainter->setBrush(*mBrush);
     mPainter->setFont(mFont);
@@ -84,8 +94,8 @@ void LiveFrame::drawSequence(int a_seq)
             if (seq->get_playing())
             {
                 m_last_playing[a_seq] = true;
-                mBrush->setColor(Qt::red);
-                mPen->setColor(Qt::white);
+                mBrush->setColor(Qt::yellow);
+                mPen->setColor(Qt::black);
             }
             else
             {
@@ -209,6 +219,30 @@ void LiveFrame::drawSequence(int a_seq)
                                    rectangle_x + tick_f_x,
                                    rectangle_y + note_y );
             }
+
+            //draw playhead
+            int a_tick = m_main_perf->get_tick();
+            a_tick += (length - seq->get_trigger_offset( ));
+            a_tick %= length;
+
+            long tick_x = a_tick * rectangleW / length;
+
+//            if ( seq->get_playing() ){
+//                mPen->setColor(Qt::green);
+//            } else {
+                mPen->setColor(Qt::red);
+//            }
+
+            if ( seq->get_queued()){
+                mPen->setColor(Qt::green);
+            }
+
+            mPen->setWidth(1);
+            mPainter->setPen(*mPen);
+            mPainter->drawLine(rectangle_x + tick_x - 1,
+                               rectangle_y - 1,
+                               rectangle_x + tick_x - 1,
+                               rectangle_y + rectangleH + 1);
 
             delete mPainter, mPen, mBrush;
         }

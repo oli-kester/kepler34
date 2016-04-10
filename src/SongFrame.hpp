@@ -40,7 +40,7 @@ private:
     int m_snap;
 
     int mBeatsPerMeasure;
-    int mBeatLength;
+    int mBeatWidth;
 
     void setSnap (int a_snap);
 

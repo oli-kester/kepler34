@@ -63,6 +63,10 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
             this,
             SLOT(updateGridSnap(int)));
 
+    m_snap = 8;
+    mBeatsPerMeasure = 4;
+    mBeatWidth = 4;
+
     setSnap( 8 );
     setBeatsPerMeasure( 4 );
     setBeatLength( 4 );
@@ -75,7 +79,7 @@ SongFrame::~SongFrame()
 
 int SongFrame::getBeatLength() const
 {
-    return mBeatLength;
+    return mBeatWidth;
 }
 
 void SongFrame::updateGridSnap(int snapIndex)
@@ -104,7 +108,7 @@ void SongFrame::updateGridSnap(int snapIndex)
     }
 
     m_snap = snap;
-//    setGuides();
+        setGuides();
 }
 
 void SongFrame::setSnap( int a_snap  )
@@ -114,7 +118,7 @@ void SongFrame::setSnap( int a_snap  )
     ui->combo_grid_snap->setCurrentText(b);
 
     m_snap = a_snap;
-//    setGuides();
+        setGuides();
 }
 
 void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
@@ -124,7 +128,7 @@ void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
     //    m_entry_bpm->set_text(b);
 
     mBeatsPerMeasure = a_beats_per_measure;
-//    setGuides();
+        setGuides();
 }
 
 int SongFrame::getBeatsPerMeasure() const
@@ -139,15 +143,15 @@ void SongFrame::setBeatLength( int a_beat_width )
     //    snprintf(b, sizeof(b), "%d", a_beat_width );
     //    m_entry_bw->set_text(b);
 
-    mBeatLength = a_beat_width;
-//    setGuides();
+    mBeatWidth = a_beat_width;
+        setGuides();
 }
 
 void SongFrame::setGuides()
 {
-    long measure_ticks = (c_ppqn * 4) * mBeatsPerMeasure / mBeatLength;
+    long measure_ticks = (c_ppqn * 4) * mBeatsPerMeasure / mBeatWidth;
     long snap_ticks =  measure_ticks / m_snap;
-    long beat_ticks = (c_ppqn * 4) / mBeatLength;
+    long beat_ticks = (c_ppqn * 4) / mBeatWidth;
     m_perfroll->set_guides( snap_ticks, measure_ticks, beat_ticks );
     //    m_perftime->set_guides( snap_ticks, measure_ticks );
 }

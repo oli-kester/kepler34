@@ -404,7 +404,8 @@ void MainWindow::loadEditor(MidiSequence *seq)
     //FIXME we were double drawing edit frames here.
     //Check if it's still happening
     ui->EditTabLayout->removeWidget(m_edit_frame);
-    //    delete m_edit_frame;
+    if (!m_edit_frame)
+        delete   m_edit_frame;
     m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
     ui->EditTabLayout->addWidget(m_edit_frame);
     ui->tabWidget->setCurrentIndex(2);
@@ -443,7 +444,7 @@ void MainWindow::updateBeatLength(int blIndex)
             seq->setBeatWidth(bl);
             //reset number of measures, causing length to adjust to new b/m
             seq->setNumMeasures(seq->getNumMeasures());
-//            seq->set_length(seq->getNumMeasures() * seq->getBeatsPerMeasure() * ((c_ppqn * 4) / bl));
+            //            seq->set_length(seq->getNumMeasures() * seq->getBeatsPerMeasure() * ((c_ppqn * 4) / bl));
         }
     }
     m_edit_frame->updateDrawGeometry();
@@ -464,7 +465,7 @@ void MainWindow::updateBeatsPerMeasure(int bmIndex)
             //reset number of measures, causing length to adjust to new b/m
             seq->setNumMeasures(seq->getNumMeasures());
 
-//            seq->set_length(seq->getNumMeasures() * bm * ((c_ppqn * 4) / seq->getBeatWidth()));
+            //            seq->set_length(seq->getNumMeasures() * bm * ((c_ppqn * 4) / seq->getBeatWidth()));
 
         }
     }
