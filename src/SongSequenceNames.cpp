@@ -1,5 +1,10 @@
 #include "SongSequenceNames.hpp"
 
+///
+/// \brief The SongSequenceNames class
+///
+/// Sequence labels for the side of the song editor
+
 SongSequenceNames::SongSequenceNames(MidiPerformance *a_perf,
                                      QWidget *parent) :
     QWidget(parent),
@@ -20,6 +25,8 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
     mPen->setStyle(Qt::SolidLine);
     mBrush->setStyle((Qt::NoBrush));
     mFont.setPointSize(6);
+    mFont.setLetterSpacing(QFont::AbsoluteSpacing,
+                           1);
     mPainter->setPen(*mPen);
     mPainter->setBrush(*mBrush);
     mPainter->setFont(mFont);
@@ -31,7 +38,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
     mPainter->drawRect(0,
                        0,
                        width(),
-                       height());
+                       height() - 1);
 
     for ( int y = y_s; y <= y_f; y++ )
     {
@@ -52,16 +59,38 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                 mPainter->drawRect(1,
                                    (c_names_y * i) + 1,
                                    15,
-                                   c_names_y + 3);
+                                   c_names_y - 1);
 
                 char ss[3];
-                snprintf(ss, sizeof(ss), "%2d", sequence / c_seqs_in_set );
+                int bankId = sequence / c_seqs_in_set;
+                snprintf(ss, sizeof(ss), "%2d", bankId );
+
                 //draw bank number here
                 mPen->setColor(Qt::white);
                 mPainter->setPen(*mPen);
                 mPainter->drawText(4,
                                    c_names_y * i + 15,
                                    ss);
+
+                //offset and draw bank name sideways
+                mPen->setColor(Qt::black);
+                mPainter->setPen(*mPen);
+                mPainter->save();
+                QString bankName(m_mainperf->getBankName(bankId)->c_str());
+                mPainter->translate(12,
+                                    (c_names_y * i) +
+                                    (c_names_y * c_seqs_in_set * 0.5)
+                                    + bankName.length() * 4);
+                mPainter->rotate(270);
+                mFont.setPointSize(9);
+                mFont.setBold(true);
+                mFont.setLetterSpacing(QFont::AbsoluteSpacing,
+                                      2);
+                mPainter->setFont(mFont);
+                mPainter->drawText(0,
+                                   0,
+                                   bankName);
+                mPainter->restore();
             }
             else
             {
@@ -70,10 +99,10 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                 mBrush->setColor(Qt::lightGray);
                 mPainter->setPen(*mPen);
                 mPainter->setBrush(*mBrush);
-                mPainter->drawRect(1,
-                                   (c_names_y * (i) + 1),
-                                   15,
-                                   c_names_y + 1);
+//                mPainter->drawRect(1,
+//                                   (c_names_y * (i) + 1),
+//                                   15,
+//                                   c_names_y + 1);
             }
 
             mPen->setStyle(Qt::SolidLine);
@@ -97,14 +126,14 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
 
                 //draw seq info on label
                 char name[50];
-                snprintf(name, sizeof(name), "%-14.14s                                %2d",
+                snprintf(name, sizeof(name), "%-14.14s                        %2d",
                          m_mainperf->get_sequence(sequence)->get_name(),
                          m_mainperf->get_sequence(sequence)->get_midi_channel() + 1);
 
                 //seq name
                 mPen->setColor(Qt::black);
                 mPainter->setPen(*mPen);
-                mPainter->drawText(5 + 6*2,
+                mPainter->drawText(18,
                                    c_names_y * i + 10,
                                    name);
 
@@ -117,7 +146,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                          m_mainperf->get_sequence(sequence)->getBeatWidth());
 
                 //seq info
-                mPainter->drawText(5 + 6*2,
+                mPainter->drawText(18,
                                    c_names_y * i + 20,
                                    str);
 
@@ -152,7 +181,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
 
 QSize SongSequenceNames::sizeHint() const
 {
-    return QSize(c_names_x, c_names_y * c_max_sequence + 20);
+    return QSize(c_names_x, c_names_y * c_max_sequence + 1);
 }
 
 void SongSequenceNames::mousePressEvent(QMouseEvent *event)

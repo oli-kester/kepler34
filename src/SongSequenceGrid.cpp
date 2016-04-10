@@ -282,7 +282,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     mPen->setStyle(Qt::SolidLine);
     mPainter->setPen(*mPen);
     mPainter->drawLine(progress_x, 1,
-                       progress_x, height());
+                       progress_x, height() - 2);
 }
 
 int SongSequenceGrid::getSnap() const
@@ -297,7 +297,7 @@ void SongSequenceGrid::setSnap(int snap)
 
 QSize SongSequenceGrid::sizeHint() const
 {
-    return QSize(m_roll_length_ticks, c_names_y * c_max_sequence + 2);
+    return QSize(m_roll_length_ticks, c_names_y * c_max_sequence + 1);
 }
 
 void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
