@@ -21,9 +21,9 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
 {
     mPainter = new QPainter(this);
     mPen = new QPen(Qt::black);
-    mBrush = new QBrush(Qt::black);
+    mBrush = new QBrush(Qt::lightGray);
     mPen->setStyle(Qt::SolidLine);
-    mBrush->setStyle((Qt::NoBrush));
+    mBrush->setStyle((Qt::SolidPattern));
     mFont.setPointSize(6);
     mFont.setLetterSpacing(QFont::AbsoluteSpacing,
                            1);
@@ -92,18 +92,6 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                                    bankName);
                 mPainter->restore();
             }
-            else
-            {
-                //no number here, just plain sidebar
-                mPen->setStyle(Qt::NoPen);
-                mBrush->setColor(Qt::lightGray);
-                mPainter->setPen(*mPen);
-                mPainter->setBrush(*mBrush);
-//                mPainter->drawRect(1,
-//                                   (c_names_y * (i) + 1),
-//                                   15,
-//                                   c_names_y + 1);
-            }
 
             mPen->setStyle(Qt::SolidLine);
             mPen->setColor(Qt::black);
@@ -162,13 +150,13 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                 //seq mute state
                 if ( muted )
                 {
-                    mPainter->drawText(5 + 6*2 + 6 * 20,
+                    mPainter->drawText(4 + 6*2 + 6 * 20,
                                        c_names_y * i + 14,
                                        "M");
                 }
                 else
                 {
-                    mPainter->drawText(5 + 6*2 + 6 * 20,
+                    mPainter->drawText(4 + 6*2 + 6 * 20,
                                        c_names_y * i + 14,
                                        "M");
                 }
