@@ -57,7 +57,7 @@ const int c_seqarea_x = c_text_x * 15;
 const int c_seqarea_y =  c_text_y * 5;
 
 const int c_mainwid_border = 0;
-const int c_mainwid_spacing = 2;
+const int c_mainwid_spacing = 6;
 
 const int c_control_height = 0;
 

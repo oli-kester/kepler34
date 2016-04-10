@@ -104,7 +104,7 @@ void SongFrame::updateGridSnap(int snapIndex)
     }
 
     m_snap = snap;
-    setGuides();
+//    setGuides();
 }
 
 void SongFrame::setSnap( int a_snap  )
@@ -114,7 +114,7 @@ void SongFrame::setSnap( int a_snap  )
     ui->combo_grid_snap->setCurrentText(b);
 
     m_snap = a_snap;
-    setGuides();
+//    setGuides();
 }
 
 void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
@@ -124,7 +124,7 @@ void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
     //    m_entry_bpm->set_text(b);
 
     mBeatsPerMeasure = a_beats_per_measure;
-    setGuides();
+//    setGuides();
 }
 
 int SongFrame::getBeatsPerMeasure() const
@@ -140,7 +140,7 @@ void SongFrame::setBeatLength( int a_beat_width )
     //    m_entry_bw->set_text(b);
 
     mBeatLength = a_beat_width;
-    setGuides();
+//    setGuides();
 }
 
 void SongFrame::setGuides()

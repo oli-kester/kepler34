@@ -32,6 +32,9 @@
    <enum>QFrame::Plain</enum>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -45,7 +48,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QStackedWidget" name="stackedWidget">
+    <widget class="QFrame" name="frame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -58,10 +61,9 @@
      <property name="frameShadow">
       <enum>QFrame::Plain</enum>
      </property>
-     <property name="currentIndex">
+     <property name="lineWidth">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="page"/>
     </widget>
    </item>
    <item>
@@ -130,6 +132,18 @@
      </item>
      <item>
       <widget class="Line" name="line">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -174,22 +188,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>spinBank</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>658</x>
-     <y>348</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>548</x>
-     <y>139</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

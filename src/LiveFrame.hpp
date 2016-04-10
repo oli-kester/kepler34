@@ -52,7 +52,7 @@ private:
 
     //used to grab std::string bank name and
     //convert it to QString for display
-    void bankNameUpdateInternal();
+    void updateInternalBankName();
 
     //converts the XY coordinates of a click into a seq ID
     int seqIDFromClickXY(int click_x, int click_y);
@@ -65,13 +65,16 @@ private:
     MidiPerformance *m_main_perf;
     MidiSequence    m_moving_seq;
 
-    QPainter    *m_painter;
-    QPen        *m_background;
-    QPen        *m_foreground;
-    QRect       *rect;
-    QMenu       *m_popup;
+    QPainter    *mPainter;
+    QBrush      *mBrush;
+    QPen        *mPen;
+    QMenu       *mPopup;
+    QFont        mFont;
 
     int     m_bank_id;
+
+    int thumbW, thumbH;
+    int rectangleW, rectangleH;
 
     //mouse interaction
     int     m_current_seq;
@@ -81,7 +84,6 @@ private:
 
     long    m_last_tick_x[c_max_sequence];
     bool    m_last_playing[c_max_sequence];
-
 
 private slots:
 
