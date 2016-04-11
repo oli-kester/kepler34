@@ -364,8 +364,8 @@ class MidiPerformance
     long lookup_keygroup_group( unsigned int keycode ) { if (key_groups.count( keycode )) return key_groups[keycode]; else return 0; }
 
     friend class MidiFile;
-    friend class optionsfile;
-    friend class options;
+    friend class OptionsFile;
+    friend class PreferencesDialog;
 
 #ifdef JACK_SUPPORT
 

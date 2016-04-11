@@ -592,7 +592,7 @@ bool MidiFile::write (MidiPerformance * a_perf)
             MidiSequence * seq = a_perf->get_sequence (curTrack);
 
             //printf ("track[%d]\n", curTrack );
-            list<char> l;
+            std::list<char> l;
             seq->fill_list (&l, curTrack);
 
             /* magic number 'MTrk' */

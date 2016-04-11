@@ -126,6 +126,6 @@ class MidiEvent
     bool operator<=( const unsigned long &rhslong );
     bool operator> ( const unsigned long &rhslong );
 
-    friend class sequence;
+    friend class MidiSequence;
 };
 

@@ -46,9 +46,6 @@ MidiSequence::MidiSequence( ) :
     m_time_beats_per_measure(4),
     m_time_beat_width(4),
     m_rec_vol(0)
-
-    //m_tag(0),
-
 {
 
     /* no notes are playing */
@@ -3586,8 +3583,8 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
     a_list->push_front( e.get_status() | m_midi_channel );
 
     /* grab event data and store */
-    unsigned char *m_data[2];
-    e.get_data(m_data[0],m_data[1]);
+//    unsigned char *m_data[2];
+//    e.get_data(m_data[0],m_data[1]);
 
     switch( e.get_status() & 0xF0 ){
 
@@ -3597,8 +3594,8 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
             case 0xB0:
             case 0xE0:
 
-                a_list->push_front(  *m_data[0] );
-                a_list->push_front(  *m_data[1] );
+                a_list->push_front(  e.m_data[0] );
+                a_list->push_front(  e.m_data[1] );
 
                 //printf ( "- d[%2X %2X]\n" , e.m_data[0], e.m_data[1] );
 
@@ -3607,7 +3604,7 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
             case 0xC0:
             case 0xD0:
 
-                a_list->push_front(  *m_data[0] );
+                a_list->push_front(  e.m_data[0] );
 
                 //printf ( "- d[%2X]\n" , e.m_data[0] );
 

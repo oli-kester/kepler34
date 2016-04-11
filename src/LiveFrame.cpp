@@ -502,8 +502,6 @@ void LiveFrame::mouseDoubleClickEvent(QMouseEvent *event)
 
 void LiveFrame::newSeq()
 {
-    //TODO if this is already a sequence,
-    //check that we want to replace it
     if (m_main_perf->is_active(m_current_seq))
     {
         int choice = mMsgBoxNewSeqCheck->exec();
