@@ -1,0 +1,16 @@
+--- Kepler34 ---
+
+A minimal, yet modern MIDI sequencer for Linux.
+
+GNU General Public License v2 or later.
+
+<oli_kester@zoho.com>
+
+To build, run in this directory -
+
+1. qmake
+2. make
+
+Based heavily on the seq24 source -
+
+http://filter24.org/seq24/
