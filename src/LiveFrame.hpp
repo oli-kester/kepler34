@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QMenu>
 #include <QTimer>
+#include <QMessageBox>
 
 namespace Ui {
 class LiveFrame;
@@ -31,16 +32,17 @@ public:
 
 protected:
     //override painting event to draw on the frame
-    void paintEvent         (QPaintEvent *event);
+    void paintEvent             (QPaintEvent *event);
 
     //override mouse events for interaction
-    void mousePressEvent    (QMouseEvent * event);
-    void mouseReleaseEvent  (QMouseEvent * event);
-    void mouseMoveEvent     (QMouseEvent * event);
+    void mousePressEvent        (QMouseEvent * event);
+    void mouseReleaseEvent      (QMouseEvent * event);
+    void mouseMoveEvent         (QMouseEvent * event);
+    void mouseDoubleClickEvent  (QMouseEvent * event);
 
     //override keyboard events for interaction
-    void keyPressEvent      (QKeyEvent * event);
-    void keyReleaseEvent    (QKeyEvent * event);
+    void keyPressEvent          (QKeyEvent * event);
+    void keyReleaseEvent        (QKeyEvent * event);
 
 private:
     //draw a single sequence thumbnail at index
@@ -69,19 +71,24 @@ private:
     QPen        *mPen;
     QMenu       *mPopup;
     QFont        mFont;
-    QTimer      *mTimer;
+    QTimer      *mRedrawTimer;
+    QMessageBox *mMsgBoxNewSeqCheck;
 
     int     m_bank_id;
 
-    int thumbW, thumbH;
-    int rectangleW, rectangleH;
+    //thumbnail dimensions
+    int     thumbW, thumbH;
+
+    //internal seq MIDI preview dimensions
+    int     previewW, previewH;
 
     //mouse interaction
     int     m_current_seq;
     int     m_old_seq;
     bool    m_button_down;
-    bool    m_moving;
-
+    bool    m_moving; //are we moving bewteen slots
+    bool    mCanAddNew; /*we can add a new seq here,
+                          wait for double click*/
     long    m_last_tick_x[c_max_sequence];
     bool    m_last_playing[c_max_sequence];
 
@@ -92,7 +99,7 @@ private slots:
     void editSeq();
 
 signals:
-    void callEditor(MidiSequence *seq);
+    void callEditor(MidiSequence *seq); //call the editor tab on the given seq
 };
 
 #endif // LIVEFRAME_HPP

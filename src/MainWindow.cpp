@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_msg_error = new QErrorMessage(this);
 
     m_msg_save_changes = new QMessageBox(this);
-    m_msg_save_changes->setText(tr("Unsaved changes detected."));
+    m_msg_save_changes->setText(tr("Unsaved changes detected"));
     m_msg_save_changes->setInformativeText(tr("Do you want to save them?"));
     m_msg_save_changes->setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     m_msg_save_changes->setDefaultButton(QMessageBox::Save);
@@ -146,6 +146,11 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
             this,
             SLOT(updateBeatsPerMeasure(int)));
 
+    connect(ui->tabWidget,
+            SIGNAL(currentChanged(int)),
+            this,
+            SLOT(tabWidgetClicked(int)));
+
     show();
 }
 
@@ -207,7 +212,6 @@ void MainWindow::showOpenFileDialog()
     file = QFileDialog::getOpenFileName(
                 this,
                 tr("Open MIDI file"),
-                //                "/",
                 last_used_dir,
                 tr("MIDI files (*.midi *.mid);;"
                    "All files (*)"),
@@ -405,7 +409,7 @@ void MainWindow::loadEditor(MidiSequence *seq)
     //Check if it's still happening
     ui->EditTabLayout->removeWidget(m_edit_frame);
     if (!m_edit_frame)
-        delete   m_edit_frame;
+        delete  m_edit_frame;
     m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
     ui->EditTabLayout->addWidget(m_edit_frame);
     ui->tabWidget->setCurrentIndex(2);
@@ -470,4 +474,31 @@ void MainWindow::updateBeatsPerMeasure(int bmIndex)
         }
     }
     m_edit_frame->updateDrawGeometry();
+}
+
+void MainWindow::tabWidgetClicked(int newIndex)
+{
+    //if we've selected the edit tab,
+    //make sure it has something to edit
+    if (newIndex == 2 && !m_edit_frame)
+    {
+        for (int i = 0; i < c_max_sequence; i++)
+        {
+            if (m_main_perf->is_active(i))
+            {
+                MidiSequence *seq = m_main_perf->get_sequence(i);
+                m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
+                ui->EditTabLayout->addWidget(m_edit_frame);
+                return;
+            }
+        }
+        //no sequences found to edit, so make a new one at index 0
+        m_main_perf->new_sequence(0);
+        MidiSequence *seq = m_main_perf->get_sequence(0);
+        seq->set_dirty();
+        m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
+        ui->EditTabLayout->addWidget(m_edit_frame);
+        m_edit_frame->show();
+        update();
+    }
 }

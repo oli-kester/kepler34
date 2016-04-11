@@ -78,6 +78,7 @@ private slots:
     void showOpenFileDialog();
     void showAboutDialog();
     void showAboutQtDialog();
+    void tabWidgetClicked(int newIndex);
 
     //redraw certain GUI elements
     void refresh();

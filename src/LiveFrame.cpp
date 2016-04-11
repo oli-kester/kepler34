@@ -5,7 +5,8 @@
 LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     QFrame(parent),
     ui(new Ui::LiveFrame),
-    m_main_perf(perf)
+    m_main_perf(perf),
+    mCanAddNew(false)
 {
     setSizePolicy(QSizePolicy::Expanding,
                   QSizePolicy::Expanding);
@@ -13,6 +14,12 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     setFocusPolicy(Qt::StrongFocus);
 
     ui->setupUi(this);
+
+    mMsgBoxNewSeqCheck = new QMessageBox(this);
+    mMsgBoxNewSeqCheck->setText(tr("Sequence already present"));
+    mMsgBoxNewSeqCheck->setInformativeText(tr("There is already a sequence stored in this slot. Overwrite it and create a new blank sequence?"));
+    mMsgBoxNewSeqCheck->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    mMsgBoxNewSeqCheck->setDefaultButton(QMessageBox::No);
 
     setBank(0);
 
@@ -27,13 +34,13 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
             SLOT(updateBankName()));
 
     //start refresh timer to queue regular redraws
-    mTimer = new QTimer(this);
-    mTimer->setInterval(50);
-    connect(mTimer,
+    mRedrawTimer = new QTimer(this);
+    mRedrawTimer->setInterval(50);
+    connect(mRedrawTimer,
             SIGNAL(timeout()),
             this,
             SLOT(update()));
-    mTimer->start();
+    mRedrawTimer->start();
 
 }
 
@@ -44,7 +51,9 @@ void LiveFrame::paintEvent(QPaintEvent *)
 
 LiveFrame::~LiveFrame()
 {
-    delete ui;
+    delete ui,
+            mMsgBoxNewSeqCheck,
+            mRedrawTimer;
 }
 
 void LiveFrame::drawSequence(int a_seq)
@@ -65,8 +74,8 @@ void LiveFrame::drawSequence(int a_seq)
     thumbH = (ui->frame->height() - c_mainwid_spacing * 5)
             / c_mainwnd_rows;
 
-    rectangleW = thumbW - mFont.pointSize() * 2;
-    rectangleH = thumbH - mFont.pointSize() * 5;
+    previewW = thumbW - mFont.pointSize() * 2;
+    previewH = thumbH - mFont.pointSize() * 5;
 
     if ( a_seq >= (m_bank_id  * c_mainwnd_rows * c_mainwnd_cols ) &&
          a_seq <  ((m_bank_id + 1)  * c_mainwnd_rows * c_mainwnd_cols ))
@@ -167,8 +176,8 @@ void LiveFrame::drawSequence(int a_seq)
             mPainter->setPen(*mPen);
             mPainter->drawRect(rectangle_x - 2,
                                rectangle_y - 1,
-                               rectangleW,
-                               rectangleH);
+                               previewW,
+                               previewH);
 
             int lowest_note = seq->get_lowest_note_event( );
             int highest_note = seq->get_highest_note_event( );
@@ -190,19 +199,19 @@ void LiveFrame::drawSequence(int a_seq)
             seq->reset_draw_marker();
 
             //add padding to box measurements
-            rectangleH -= 6;
-            rectangleW -= 6;
+            previewH -= 6;
+            previewW -= 6;
             rectangle_x += 2;
             rectangle_y += 2;
 
             while ( (dt = seq->get_next_note_event( &tick_s, &tick_f, &note,
                                                     &selected, &velocity )) != DRAW_FIN ){
 
-                int note_y = rectangleH -
-                        (rectangleH  * (note + 1 - lowest_note)) / height ;
+                int note_y = previewH -
+                        (previewH  * (note + 1 - lowest_note)) / height ;
 
-                int tick_s_x = (tick_s * rectangleW)  / length;
-                int tick_f_x = (tick_f * rectangleH)  / length;
+                int tick_s_x = (tick_s * previewW)  / length;
+                int tick_f_x = (tick_f * previewH)  / length;
 
                 if ( dt == DRAW_NOTE_ON || dt == DRAW_NOTE_OFF )
                     tick_f_x = tick_s_x + 1;
@@ -224,7 +233,7 @@ void LiveFrame::drawSequence(int a_seq)
             a_tick += (length - seq->get_trigger_offset( ));
             a_tick %= length;
 
-            long tick_x = a_tick * rectangleW / length;
+            long tick_x = a_tick * previewW / length;
 
             //            if ( seq->get_playing() ){
             //                mPen->setColor(Qt::green);
@@ -241,7 +250,7 @@ void LiveFrame::drawSequence(int a_seq)
             mPainter->drawLine(rectangle_x + tick_x - 1,
                                rectangle_y - 1,
                                rectangle_x + tick_x - 1,
-                               rectangle_y + rectangleH + 1);
+                               rectangle_y + previewH + 1);
 
 
         }
@@ -382,18 +391,17 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
      * and are not dragging a sequence - toggle playing*/
     if ( m_current_seq != -1
          && event->button() == Qt::LeftButton
-         && !m_moving ){
-
-        if ( m_main_perf->is_active( m_current_seq )){
-
+         && !m_moving )
+    {
+        if ( m_main_perf->is_active( m_current_seq ))
+        {
             m_main_perf->sequence_playing_toggle( m_current_seq );
+            update();
         }
         else
         {
-            newSeq();
+            mCanAddNew = true;
         }
-
-        update();
     }
 
     /* if left mouse button & we're moving a seq between slots */
@@ -442,10 +450,17 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
                              SIGNAL(triggered(bool)),
                              this,
                              SLOT(editSeq()));
-
         }
 
         mPopup->exec(QCursor::pos());
+    }
+
+    //middle button launches seq editor
+    if (m_current_seq != -1
+            && event->button() == Qt::MiddleButton
+            && m_main_perf->is_active(m_current_seq))
+    {
+        callEditor(m_main_perf->get_sequence(m_current_seq));
     }
 }
 
@@ -475,13 +490,30 @@ void LiveFrame::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
+void LiveFrame::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (mCanAddNew)
+    {
+        newSeq();
+        mCanAddNew = false;
+    }
+
+}
+
 void LiveFrame::newSeq()
 {
     //TODO if this is already a sequence,
     //check that we want to replace it
+    if (m_main_perf->is_active(m_current_seq))
+    {
+        int choice = mMsgBoxNewSeqCheck->exec();
+        if (choice == QMessageBox::No)
+            return;
+    }
     m_main_perf->new_sequence(m_current_seq);
     m_main_perf->get_sequence( m_current_seq )->set_dirty();
-    callEditor(m_main_perf->get_sequence(m_current_seq));
+    //TODO reenable - disabled opening the editor for each new seq
+    //    callEditor(m_main_perf->get_sequence(m_current_seq));
 
 }
 
