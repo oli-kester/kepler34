@@ -43,6 +43,8 @@ private:
     //update window title from the global filename
     void updateWindowTitle();
 
+    //update the recent files menu
+    void updateRecentFiles();
 
     Ui::MainWindow      *ui;
 
@@ -53,6 +55,8 @@ private:
     QErrorMessage       *m_msg_error;
     QMessageBox         *m_msg_save_changes;
     QTimer              *m_timer;
+    QAction             *mRecentFileActions[10];
+    QMenu               *mRecentMenu;
 
     MidiPerformance     *m_main_perf;
     BeatIndicator       *m_beat_ind;
@@ -74,11 +78,22 @@ private slots:
     void newFile();
     bool saveFile();
     void saveFileAs();
+    void quit();
     void showImportDialog();
     void showOpenFileDialog();
     void showAboutDialog();
     void showAboutQtDialog();
     void tabWidgetClicked(int newIndex);
+    void load_recent_1();
+    void load_recent_2();
+    void load_recent_3();
+    void load_recent_4();
+    void load_recent_5();
+    void load_recent_6();
+    void load_recent_7();
+    void load_recent_8();
+    void load_recent_9();
+    void load_recent_10();
 
     //redraw certain GUI elements
     void refresh();

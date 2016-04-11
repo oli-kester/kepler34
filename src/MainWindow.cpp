@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_dialog_prefs = new PreferencesDialog(this);
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     m_song_frame = new SongFrame(m_main_perf, ui->SongTab);
+    m_edit_frame = NULL; //set this so we know the edit tab is empty
     m_beat_ind = new BeatIndicator(this, m_main_perf, 4, 4);
     
     ui->lay_bpm->addWidget(m_beat_ind);
@@ -55,6 +56,8 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     QString beatLengthText("1/");
     beatLengthText.append(m_song_frame->getBeatLength());
     ui->cmb_beat_length->setCurrentText(beatLengthText);
+
+    updateRecentFiles();
 
     //timer to refresh GUI elements every few ms
     m_timer = new QTimer(this);
@@ -90,6 +93,11 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
             SIGNAL(triggered(bool)),
             this,
             SLOT(showOpenFileDialog()));
+
+    connect(ui->actionQuit,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(quit()));
 
     connect(ui->actionAbout,
             SIGNAL(triggered(bool)),
@@ -254,7 +262,7 @@ void MainWindow::openMidiFile(const QString &path)
     m_dialog_prefs->addRecentFile(path);
 
     //update recent menu
-    //    redraw_menu();
+    updateRecentFiles();
 
     m_live_frame->redraw();
     ui->spinBpm->setValue(m_main_perf->get_bpm());
@@ -405,14 +413,14 @@ void MainWindow::showAboutQtDialog()
 
 void MainWindow::loadEditor(MidiSequence *seq)
 {
-    //FIXME we were double drawing edit frames here.
-    //Check if it's still happening
     ui->EditTabLayout->removeWidget(m_edit_frame);
-    if (!m_edit_frame)
+    if (m_edit_frame)
         delete  m_edit_frame;
     m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
     ui->EditTabLayout->addWidget(m_edit_frame);
+    m_edit_frame->show();
     ui->tabWidget->setCurrentIndex(2);
+    m_modified = true;
 }
 
 void MainWindow::updateBeatLength(int blIndex)
@@ -451,7 +459,11 @@ void MainWindow::updateBeatLength(int blIndex)
             //            seq->set_length(seq->getNumMeasures() * seq->getBeatsPerMeasure() * ((c_ppqn * 4) / bl));
         }
     }
-    m_edit_frame->updateDrawGeometry();
+    m_modified = true;
+
+    //update the edit frame if it exists
+    if (m_edit_frame->isWidgetType())
+        m_edit_frame->updateDrawGeometry();
 }
 
 void MainWindow::updateBeatsPerMeasure(int bmIndex)
@@ -468,12 +480,14 @@ void MainWindow::updateBeatsPerMeasure(int bmIndex)
             seq->setBeatsPerMeasure(bmIndex + 1);
             //reset number of measures, causing length to adjust to new b/m
             seq->setNumMeasures(seq->getNumMeasures());
-
             //            seq->set_length(seq->getNumMeasures() * bm * ((c_ppqn * 4) / seq->getBeatWidth()));
 
         }
     }
-    m_edit_frame->updateDrawGeometry();
+    m_modified = true;
+    //update the edit frame if it exists
+    if (m_edit_frame->isWidgetType())
+        m_edit_frame->updateDrawGeometry();
 }
 
 void MainWindow::tabWidgetClicked(int newIndex)
@@ -482,23 +496,188 @@ void MainWindow::tabWidgetClicked(int newIndex)
     //make sure it has something to edit
     if (newIndex == 2 && !m_edit_frame)
     {
+        int seqId = -1;
         for (int i = 0; i < c_max_sequence; i++)
         {
             if (m_main_perf->is_active(i))
             {
-                MidiSequence *seq = m_main_perf->get_sequence(i);
-                m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
-                ui->EditTabLayout->addWidget(m_edit_frame);
-                return;
+                seqId = i;
+                break;
             }
         }
-        //no sequences found to edit, so make a new one at index 0
-        m_main_perf->new_sequence(0);
-        MidiSequence *seq = m_main_perf->get_sequence(0);
+        //no sequence found, make a new one
+        if (seqId == -1)
+        {
+            m_main_perf->new_sequence(0);
+            seqId = 0;
+        }
+
+        MidiSequence *seq = m_main_perf->get_sequence(seqId);
         seq->set_dirty();
         m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
         ui->EditTabLayout->addWidget(m_edit_frame);
         m_edit_frame->show();
         update();
     }
+}
+
+void MainWindow::updateRecentFiles()
+{
+    //recent files sub-menu
+    mRecentMenu = new QMenu(tr("&Recent..."),this);
+
+    /* only add if a path is actually contained in each slot */
+    //TODO add the new CtrlR accelerator to documentation
+    if (recent_files[0]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[0], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+    else
+    {
+        mRecentMenu->addAction(tr("(No recent files)"));
+        ui->menuFile->insertMenu(ui->actionSave, mRecentMenu);
+        return;
+    }
+    if (recent_files[1]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[1], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+
+    if (recent_files[2]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[2], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+
+    if (recent_files[3]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[3], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+
+    if (recent_files[4]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[4], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+
+    if (recent_files[5]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[5], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+
+    if (recent_files[6]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[6], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+
+    if (recent_files[7]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[7], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+
+    if (recent_files[8]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[8], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+
+    if (recent_files[9]!="")
+    {
+        mRecentFileActions[0] = new QAction(recent_files[9], this);
+        connect(mRecentFileActions[0],
+                SIGNAL(triggered(bool)),
+                this,
+                SLOT(load_recent_1()));
+    }
+
+    ui->menuFile->insertMenu(ui->actionSave, mRecentMenu);
+}
+
+void MainWindow::quit()
+{
+    if (saveCheck())
+        QCoreApplication::exit();
+}
+
+void MainWindow::load_recent_1()
+{
+    openMidiFile(recent_files[0]);
+}
+
+void MainWindow::load_recent_2()
+{
+    openMidiFile(recent_files[1]);
+}
+
+void MainWindow::load_recent_3()
+{
+    openMidiFile(recent_files[2]);
+}
+
+void MainWindow::load_recent_4()
+{
+    openMidiFile(recent_files[3]);
+}
+
+void MainWindow::load_recent_5()
+{
+    openMidiFile(recent_files[4]);
+}
+
+void MainWindow::load_recent_6()
+{
+    openMidiFile(recent_files[5]);
+}
+
+void MainWindow::load_recent_7()
+{
+    openMidiFile(recent_files[6]);
+}
+
+void MainWindow::load_recent_8()
+{
+    openMidiFile(recent_files[7]);
+}
+
+void MainWindow::load_recent_9()
+{
+    openMidiFile(recent_files[8]);
+}
+
+void MainWindow::load_recent_10()
+{
+    openMidiFile(recent_files[9]);
 }
