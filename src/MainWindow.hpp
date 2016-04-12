@@ -67,8 +67,6 @@ private:
     bool                 m_modified;
 
 private slots:
-
-    //TODO recent files function
     void startPlaying();
     void stopPlaying();
     void setSongPlayback(bool playSongData);

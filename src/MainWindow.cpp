@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     ui->setupUi(this);
 
     //maximize by default
-//    setWindowState(Qt::WindowMaximized);
+    //    setWindowState(Qt::WindowMaximized);
     QRect screen = QApplication::desktop()->screenGeometry();
     int x = (screen.width()- width()) / 2;
     int y = (screen.height()- height()) / 2;
@@ -218,18 +218,17 @@ void MainWindow::updateBpm(int newBpm)
 
 void MainWindow::showOpenFileDialog()
 {
-    //TODO check if file is saved before opening anew
     QString file;
-
-    file = QFileDialog::getOpenFileName(
-                this,
-                tr("Open MIDI file"),
-                last_used_dir,
-                tr("MIDI files (*.midi *.mid);;"
-                   "All files (*)"),
-                0,
-                QFileDialog::DontUseNativeDialog
-                );
+    if (saveCheck())
+        file = QFileDialog::getOpenFileName(
+                    this,
+                    tr("Open MIDI file"),
+                    last_used_dir,
+                    tr("MIDI files (*.midi *.mid);;"
+                       "All files (*)"),
+                    0,
+                    QFileDialog::DontUseNativeDialog
+                    );
 
     //don't bother trying to open if the user cancels
     if (!file.isEmpty())
@@ -357,8 +356,8 @@ bool MainWindow::saveFile()
     } else {
         /* add to recent files list */
         m_dialog_prefs->addRecentFile(global_filename);
+
         /* update recent menu */
-        //TODO reinstate this
         updateRecentFilesMenu();
     }
     m_modified = !result;
