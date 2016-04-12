@@ -7,6 +7,7 @@
 #include <QErrorMessage>
 #include <QTimer>
 #include <QMessageBox>
+#include <QDesktopWidget>
 
 #include "LiveFrame.hpp"
 #include "SongFrame.hpp"
@@ -44,7 +45,7 @@ private:
     void updateWindowTitle();
 
     //update the recent files menu
-    void updateRecentFiles();
+    void updateRecentFilesMenu();
 
     Ui::MainWindow      *ui;
 

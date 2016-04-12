@@ -14,7 +14,8 @@ class PreferencesDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PreferencesDialog(QWidget *parent = 0);
+    explicit PreferencesDialog(MidiPerformance *perf,
+                               QWidget *parent = 0);
     ~PreferencesDialog();
 
     //add a new file to the recent files list.
@@ -23,6 +24,15 @@ public:
 
 private:
     Ui::PreferencesDialog *ui;
+
+    MidiPerformance *mPerf;
+
+private slots:
+    void updateTransportSupport(bool newState);
+    void updateTimeMaster(bool newState);
+    void updateMasterCond(bool newState);
+    void jackConnect();
+    void jackDisconnect();
 };
 
 #endif // PREFERENCESDIALOG_HPP

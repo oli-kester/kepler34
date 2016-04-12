@@ -11,7 +11,11 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     ui->setupUi(this);
 
     //maximize by default
-    setWindowState(Qt::WindowMaximized);
+//    setWindowState(Qt::WindowMaximized);
+    QRect screen = QApplication::desktop()->screenGeometry();
+    int x = (screen.width()- width()) / 2;
+    int y = (screen.height()- height()) / 2;
+    move(x, y);
 
     m_modified = false;
 
@@ -43,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_msg_save_changes->setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     m_msg_save_changes->setDefaultButton(QMessageBox::Save);
 
-    m_dialog_prefs = new PreferencesDialog(this);
+    m_dialog_prefs = new PreferencesDialog(m_main_perf, this);
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     m_song_frame = new SongFrame(m_main_perf, ui->SongTab);
     m_edit_frame = NULL; //set this so we know the edit tab is empty
@@ -57,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     beatLengthText.append(m_song_frame->getBeatLength());
     ui->cmb_beat_length->setCurrentText(beatLengthText);
 
-    updateRecentFiles();
+    updateRecentFilesMenu();
 
     //timer to refresh GUI elements every few ms
     m_timer = new QTimer(this);
@@ -262,7 +266,7 @@ void MainWindow::openMidiFile(const QString &path)
     m_dialog_prefs->addRecentFile(path);
 
     //update recent menu
-    updateRecentFiles();
+    updateRecentFilesMenu();
 
     m_live_frame->redraw();
     ui->spinBpm->setValue(m_main_perf->get_bpm());
@@ -327,10 +331,7 @@ void MainWindow::newFile()
     {
         m_main_perf->clear_all();
 
-        //TODO reinstate these
-        //        m_main_wid->reset();
-        //        m_entry_notes->set_text( * m_mainperf->get_screen_set_notepad(
-        //                                     m_mainperf->get_screenset() ));
+        //TODO ensure proper reset on load
 
         global_filename = "";
         updateWindowTitle();
@@ -358,7 +359,7 @@ bool MainWindow::saveFile()
         m_dialog_prefs->addRecentFile(global_filename);
         /* update recent menu */
         //TODO reinstate this
-        //        redraw_menu();
+        updateRecentFilesMenu();
     }
     m_modified = !result;
     return result;
@@ -521,11 +522,11 @@ void MainWindow::tabWidgetClicked(int newIndex)
     }
 }
 
-void MainWindow::updateRecentFiles()
+void MainWindow::updateRecentFilesMenu()
 {
     //if menu already exists, delete it.
     if (mRecentMenu && mRecentMenu->isWidgetType())
-            delete mRecentMenu;
+        delete mRecentMenu;
 
     //recent files sub-menu
     mRecentMenu = new QMenu(tr("&Recent..."),this);
