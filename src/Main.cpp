@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
     MidiPerformance p;
 
     /* config DIR */
-    QString config_dir = QString(getenv(HOME)) + SLASH + ".config" + SLASH + "kepler" + SLASH;
+    QString config_dir = QString(getenv(HOME)) + SLASH + ".config" + SLASH + "kepler34" + SLASH;
 
     /* make sure .config directory exists. If not, create it */
     QDir m_qdir;

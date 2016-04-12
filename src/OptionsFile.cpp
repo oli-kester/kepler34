@@ -11,6 +11,7 @@ extern QString last_used_dir;
 PreferencesFile::PreferencesFile(const QString& a_name) :
     ConfigFile( a_name )
 {
+
 }
 
 bool
@@ -276,7 +277,7 @@ PreferencesFile::write( MidiPerformance *a_perf  )
             /* 32 mute for channel
                32 group mute */
             case c_seqs_in_set               :  file << "# mute in group\n"; break;
-           case c_midi_control_bpm_up       :  file << "# bpm up\n"; break;
+            case c_midi_control_bpm_up       :  file << "# bpm up\n"; break;
             case c_midi_control_bpm_dn       :  file << "# bpm down\n"; break;
             case c_midi_control_ss_up        :  file << "# screen set up\n"; break;
             case c_midi_control_ss_dn        :  file << "# screen set down\n"; break;
@@ -416,93 +417,93 @@ PreferencesFile::write( MidiPerformance *a_perf  )
          i != a_perf->key_events.end(); ++i ){
 
         //TODO restore this
-//        snprintf(outs, sizeof(outs), "%u  %ld        # %s", i->first,
-//                i->second, gdk_keyval_name( i->first ) );
-//        file << string(outs) << "\n";
-//    }
-//    file << "\n\n\n[keyboard-group]\n";
-//    file << "# Key #, group # \n";
-//    file << (a_perf->key_groups.size() < (size_t)c_seqs_in_set ?
-//             a_perf->key_groups.size() : (size_t)c_seqs_in_set) << "\n";
+        snprintf(outs, sizeof(outs), "%u  %ld        # %s", i->first,
+                i->second, QKeySequence(i->first).toString().toStdString().c_str());
+        file << string(outs) << "\n";
+    }
+    file << "\n\n\n[keyboard-group]\n";
+    file << "# Key #, group # \n";
+    file << (a_perf->key_groups.size() < (size_t)c_seqs_in_set ?
+             a_perf->key_groups.size() : (size_t)c_seqs_in_set) << "\n";
 
-//    for( std::map<unsigned int,long>::const_iterator i = a_perf->key_groups.begin();
-//         i != a_perf->key_groups.end(); ++i ){
+    for( std::map<unsigned int,long>::const_iterator i = a_perf->key_groups.begin();
+         i != a_perf->key_groups.end(); ++i ){
 
-//        snprintf(outs, sizeof(outs), "%u  %ld        # %s", i->first,
-//                i->second, gdk_keyval_name(i->first));
-//        file << string(outs) << "\n";
-//    }
+        snprintf(outs, sizeof(outs), "%u  %ld        # %s", i->first,
+                i->second, QKeySequence(i->first).toString().toStdString().c_str());
+        file << string(outs) << "\n";
+    }
 
-//    file << "# bpm up, down\n"
-//         << a_perf->m_key_bpm_up << " "
-//         << a_perf->m_key_bpm_dn << "        # "
-//         << gdk_keyval_name( a_perf->m_key_bpm_up ) << " "
-//         << gdk_keyval_name( a_perf->m_key_bpm_dn ) << "\n";
+    file << "# bpm up, down\n"
+         << a_perf->m_key_bpm_up << " "
+         << a_perf->m_key_bpm_dn << "        # "
+         << QKeySequence(a_perf->m_key_bpm_up).toString().toStdString().c_str() << " "
+         << QKeySequence(a_perf->m_key_bpm_dn).toString().toStdString().c_str() << "\n";
 
-//    file << "# screen set up, down, play\n"
-//         << a_perf->m_key_screenset_up << " "
-//         << a_perf->m_key_screenset_dn << " "
-//         << a_perf->m_key_set_playing_screenset << "        # "
-//         << gdk_keyval_name( a_perf->m_key_screenset_up ) << " "
-//         << gdk_keyval_name( a_perf->m_key_screenset_dn ) << " "
-//         << gdk_keyval_name( a_perf->m_key_set_playing_screenset ) << "\n";
+    file << "# screen set up, down, play\n"
+         << a_perf->m_key_screenset_up << " "
+         << a_perf->m_key_screenset_dn << " "
+         << a_perf->m_key_set_playing_screenset << "        # "
+         << QKeySequence(a_perf->m_key_screenset_up).toString().toStdString().c_str() << " "
+         << QKeySequence(a_perf->m_key_screenset_dn).toString().toStdString().c_str() << " "
+         << QKeySequence(a_perf->m_key_set_playing_screenset).toString().toStdString().c_str() << "\n";
 
-//    file << "# group on, off, learn\n"
-//         << a_perf->m_key_group_on << " "
-//         << a_perf->m_key_group_off << " "
-//         << a_perf->m_key_group_learn << "        # "
-//         << gdk_keyval_name( a_perf->m_key_group_on ) << " "
-//         << gdk_keyval_name( a_perf->m_key_group_off ) << " "
-//         << gdk_keyval_name( a_perf->m_key_group_learn ) << "\n";
+    file << "# group on, off, learn\n"
+         << a_perf->m_key_group_on << " "
+         << a_perf->m_key_group_off << " "
+         << a_perf->m_key_group_learn << "        # "
+         << QKeySequence(a_perf->m_key_group_on).toString().toStdString().c_str() << " "
+         << QKeySequence(a_perf->m_key_group_off).toString().toStdString().c_str() << " "
+         << QKeySequence(a_perf->m_key_group_learn).toString().toStdString().c_str() << "\n";
 
-//    file << "# replace, queue, snapshot_1, snapshot 2, keep queue\n"
-//         << a_perf->m_key_replace << " "
-//         << a_perf->m_key_queue << " "
-//         << a_perf->m_key_snapshot_1 << " "
-//         << a_perf->m_key_snapshot_2 << " "
-//         << a_perf->m_key_keep_queue << "        # "
-//         << gdk_keyval_name( a_perf->m_key_replace ) << " "
-//         << gdk_keyval_name( a_perf->m_key_queue ) << " "
-//         << gdk_keyval_name( a_perf->m_key_snapshot_1 ) << " "
-//         << gdk_keyval_name( a_perf->m_key_snapshot_2 ) << " "
-//         << gdk_keyval_name( a_perf->m_key_keep_queue ) << "\n";
+    file << "# replace, queue, snapshot_1, snapshot 2, keep queue\n"
+         << a_perf->m_key_replace << " "
+         << a_perf->m_key_queue << " "
+         << a_perf->m_key_snapshot_1 << " "
+         << a_perf->m_key_snapshot_2 << " "
+         << a_perf->m_key_keep_queue << "        # "
+         << QKeySequence(a_perf->m_key_replace).toString().toStdString().c_str() << " "
+         << QKeySequence(a_perf->m_key_queue).toString().toStdString().c_str() << " "
+         << QKeySequence(a_perf->m_key_snapshot_1).toString().toStdString().c_str() << " "
+         << QKeySequence(a_perf->m_key_snapshot_2).toString().toStdString().c_str() << " "
+         << QKeySequence(a_perf->m_key_keep_queue).toString().toStdString().c_str() << "\n";
 
-//    file << a_perf->m_show_ui_sequence_key
-//         << "        # show_ui_sequence_key (1=true/0=false)\n";
-//    file << a_perf->m_key_start << "        # "
-//         << gdk_keyval_name( a_perf->m_key_start )
-//         << " start sequencer\n";
-//    file << a_perf->m_key_stop << "        # "
-//         << gdk_keyval_name( a_perf->m_key_stop )
-//         << " stop sequencer\n";
+    file << a_perf->m_show_ui_sequence_key
+         << "        # show_ui_sequence_key (1=true/0=false)\n";
+    file << a_perf->m_key_start << "        # "
+         << QKeySequence(a_perf->m_key_start).toString().toStdString().c_str()
+         << " start sequencer\n";
+    file << a_perf->m_key_stop << "        # "
+         << QKeySequence(a_perf->m_key_stop).toString().toStdString().c_str()
+         << " stop sequencer\n";
 
-//    file << "\n\n\n[jack-transport]\n\n"
-
-
-//         << "# jack_transport - Enable sync with JACK Transport.\n"
-//         << global_with_jack_transport << "\n\n"
-
-//         << "# jack_master - Seq24 will attempt to serve as JACK Master.\n"
-//         << global_with_jack_master << "\n\n"
-
-//         << "# jack_master_cond -  Seq24 will fail to be master if there is already a master set.\n"
-//         << global_with_jack_master_cond  << "\n\n"
-
-//            /* TODO remove jack start mode from config */
-//         << "# jack_start_mode\n"
-//         << "# 0 = Playback will be in live mode.  Use this to allow muting and unmuting of loops.\n"
-//         << "# 1 = Playback will use the song editors data.\n"
-//         << global_jack_start_mode << "\n\n";
+    file << "\n\n\n[jack-transport]\n\n"
 
 
-//    file << "\n\n\n[last-used-dir]\n\n"
-//         << "# Last used directory.\n"
-//         << last_used_dir << "\n\n";
+         << "# jack_transport - Enable sync with JACK Transport.\n"
+         << global_with_jack_transport << "\n\n"
 
-//    file << "\n\n\n[recent-files]\n\n"
-//         << "# List of 10 recently opened files.\n";
-//         for (int c=0;c<10;c++){
-//            file << recent_files[c] << "\n";
+         << "# jack_master - Seq24 will attempt to serve as JACK Master.\n"
+         << global_with_jack_master << "\n\n"
+
+         << "# jack_master_cond -  Seq24 will fail to be master if there is already a master set.\n"
+         << global_with_jack_master_cond  << "\n\n"
+
+            /* TODO remove jack start mode from config */
+         << "# jack_start_mode\n"
+         << "# 0 = Playback will be in live mode.  Use this to allow muting and unmuting of loops.\n"
+         << "# 1 = Playback will use the song editors data.\n"
+         << global_jack_start_mode << "\n\n";
+
+
+    file << "\n\n\n[last-used-dir]\n\n"
+         << "# Last used directory.\n"
+         << last_used_dir.toStdString().c_str() << "\n\n";
+
+    file << "\n\n\n[recent-files]\n\n"
+         << "# List of 10 recently opened files.\n";
+         for (int c=0;c<10;c++){
+            file << recent_files[c].toStdString().c_str() << "\n";
          }
 
     file.close();

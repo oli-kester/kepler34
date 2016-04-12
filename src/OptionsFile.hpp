@@ -5,6 +5,8 @@
 #include "MidiPerformance.hpp"
 #include "ConfigFile.hpp"
 
+#include "QKeyEvent"
+
 class PreferencesFile : public ConfigFile
 {
 
