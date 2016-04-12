@@ -462,7 +462,7 @@ void MainWindow::updateBeatLength(int blIndex)
     m_modified = true;
 
     //update the edit frame if it exists
-    if (m_edit_frame->isWidgetType())
+    if (m_edit_frame)
         m_edit_frame->updateDrawGeometry();
 }
 
@@ -486,7 +486,7 @@ void MainWindow::updateBeatsPerMeasure(int bmIndex)
     }
     m_modified = true;
     //update the edit frame if it exists
-    if (m_edit_frame->isWidgetType())
+    if (m_edit_frame)
         m_edit_frame->updateDrawGeometry();
 }
 
@@ -523,6 +523,10 @@ void MainWindow::tabWidgetClicked(int newIndex)
 
 void MainWindow::updateRecentFiles()
 {
+    //if menu already exists, delete it.
+    if (mRecentMenu && mRecentMenu->isWidgetType())
+            delete mRecentMenu;
+
     //recent files sub-menu
     mRecentMenu = new QMenu(tr("&Recent..."),this);
 
@@ -531,6 +535,8 @@ void MainWindow::updateRecentFiles()
     if (recent_files[0]!="")
     {
         mRecentFileActions[0] = new QAction(recent_files[0], this);
+        //FIXME this shortcut doesn't work
+        mRecentFileActions[0]->setShortcut(tr("Ctrl+R"));
         connect(mRecentFileActions[0],
                 SIGNAL(triggered(bool)),
                 this,
@@ -544,83 +550,92 @@ void MainWindow::updateRecentFiles()
     }
     if (recent_files[1]!="")
     {
-        mRecentFileActions[0] = new QAction(recent_files[1], this);
-        connect(mRecentFileActions[0],
+        mRecentFileActions[1] = new QAction(recent_files[1], this);
+        connect(mRecentFileActions[1],
                 SIGNAL(triggered(bool)),
                 this,
-                SLOT(load_recent_1()));
+                SLOT(load_recent_2()));
     }
 
     if (recent_files[2]!="")
     {
-        mRecentFileActions[0] = new QAction(recent_files[2], this);
-        connect(mRecentFileActions[0],
+        mRecentFileActions[2] = new QAction(recent_files[2], this);
+        connect(mRecentFileActions[2],
                 SIGNAL(triggered(bool)),
                 this,
-                SLOT(load_recent_1()));
+                SLOT(load_recent_3()));
     }
 
     if (recent_files[3]!="")
     {
-        mRecentFileActions[0] = new QAction(recent_files[3], this);
-        connect(mRecentFileActions[0],
+        mRecentFileActions[3] = new QAction(recent_files[3], this);
+        connect(mRecentFileActions[3],
                 SIGNAL(triggered(bool)),
                 this,
-                SLOT(load_recent_1()));
+                SLOT(load_recent_4()));
     }
 
     if (recent_files[4]!="")
     {
-        mRecentFileActions[0] = new QAction(recent_files[4], this);
-        connect(mRecentFileActions[0],
+        mRecentFileActions[4] = new QAction(recent_files[4], this);
+        connect(mRecentFileActions[4],
                 SIGNAL(triggered(bool)),
                 this,
-                SLOT(load_recent_1()));
+                SLOT(load_recent_5()));
     }
 
     if (recent_files[5]!="")
     {
-        mRecentFileActions[0] = new QAction(recent_files[5], this);
-        connect(mRecentFileActions[0],
+        mRecentFileActions[5] = new QAction(recent_files[5], this);
+        connect(mRecentFileActions[5],
                 SIGNAL(triggered(bool)),
                 this,
-                SLOT(load_recent_1()));
+                SLOT(load_recent_6()));
     }
 
     if (recent_files[6]!="")
     {
-        mRecentFileActions[0] = new QAction(recent_files[6], this);
-        connect(mRecentFileActions[0],
+        mRecentFileActions[6] = new QAction(recent_files[6], this);
+        connect(mRecentFileActions[6],
                 SIGNAL(triggered(bool)),
                 this,
-                SLOT(load_recent_1()));
+                SLOT(load_recent_7()));
     }
 
     if (recent_files[7]!="")
     {
-        mRecentFileActions[0] = new QAction(recent_files[7], this);
-        connect(mRecentFileActions[0],
+        mRecentFileActions[7] = new QAction(recent_files[7], this);
+        connect(mRecentFileActions[7],
                 SIGNAL(triggered(bool)),
                 this,
-                SLOT(load_recent_1()));
+                SLOT(load_recent_8()));
     }
 
     if (recent_files[8]!="")
     {
-        mRecentFileActions[0] = new QAction(recent_files[8], this);
-        connect(mRecentFileActions[0],
+        mRecentFileActions[8] = new QAction(recent_files[8], this);
+        connect(mRecentFileActions[8],
                 SIGNAL(triggered(bool)),
                 this,
-                SLOT(load_recent_1()));
+                SLOT(load_recent_9()));
     }
 
     if (recent_files[9]!="")
     {
-        mRecentFileActions[0] = new QAction(recent_files[9], this);
-        connect(mRecentFileActions[0],
+        mRecentFileActions[9] = new QAction(recent_files[9], this);
+        connect(mRecentFileActions[9],
                 SIGNAL(triggered(bool)),
                 this,
-                SLOT(load_recent_1()));
+                SLOT(load_recent_10()));
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (mRecentFileActions[i]){
+            mRecentMenu->addAction(mRecentFileActions[i]);
+        }
+        else
+            break;
     }
 
     ui->menuFile->insertMenu(ui->actionSave, mRecentMenu);
