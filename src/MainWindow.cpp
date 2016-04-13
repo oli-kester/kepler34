@@ -11,13 +11,17 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 {
     ui->setupUi(this);
 
+    //nullify all recent file action slots
+    for (int i = 0; i < 10; i++)
+        mRecentFileActions[i] = NULL;
+
     //center on screen
     QRect screen = QApplication::desktop()->screenGeometry();
     int x = (screen.width()- width()) / 2;
     int y = (screen.height()- height()) / 2;
     move(x, y);
 
-    //uncommnt to maximize by default
+    //maximize by default
     //    setWindowState(Qt::WindowMaximized);
 
     m_modified = false;
@@ -633,7 +637,8 @@ void MainWindow::updateRecentFilesMenu()
 
     for (int i = 0; i < 10; i++)
     {
-        if (mRecentFileActions[i]){
+        if (mRecentFileActions[i])
+        {
             mRecentMenu->addAction(mRecentFileActions[i]);
         }
         else

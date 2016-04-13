@@ -9,6 +9,10 @@ PreferencesDialog::PreferencesDialog(MidiPerformance *perf,
 {
     ui->setupUi(this);
 
+    backup();
+
+    syncWithInternals();
+
     connect(ui->btnJackConnect,
             SIGNAL(clicked(bool)),
             this,
@@ -20,19 +24,29 @@ PreferencesDialog::PreferencesDialog(MidiPerformance *perf,
             SLOT(jackDisconnect()));
 
     connect(ui->chkJackTransport,
-            SIGNAL(clicked(bool)),
+            SIGNAL(stateChanged(int)),
             this,
-            SLOT(updateTransportSupport(bool)));
+            SLOT(updateTransportSupport()));
 
     connect(ui->chkJackConditional,
-            SIGNAL(clicked(bool)),
+            SIGNAL(stateChanged(int)),
             this,
-            SLOT(updateMasterCond(bool)));
+            SLOT(updateMasterCond()));
 
     connect(ui->chkJackMaster,
+            SIGNAL(stateChanged(int)),
+            this,
+            SLOT(updateTimeMaster()));
+
+    connect(ui->buttonBox->button(QDialogButtonBox::Ok),
             SIGNAL(clicked(bool)),
             this,
-            SLOT(updateTimeMaster(bool)));
+            SLOT(okay()));
+
+    connect(ui->buttonBox->button(QDialogButtonBox::Cancel),
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(cancel()));
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -74,18 +88,66 @@ void PreferencesDialog::jackDisconnect()
     mPerf->deinit_jack();
 }
 
-void PreferencesDialog::updateMasterCond(bool newState)
+void PreferencesDialog::updateMasterCond()
 {
-    global_with_jack_master_cond = newState;
+    global_with_jack_master_cond = ui->chkJackConditional->isChecked();
+    syncWithInternals();
 }
 
-void PreferencesDialog::updateTimeMaster(bool newState)
+void PreferencesDialog::updateTimeMaster()
 {
-    global_with_jack_master = newState;
+    global_with_jack_master = ui->chkJackMaster->isChecked();
+    syncWithInternals();
 }
 
-void PreferencesDialog::updateTransportSupport(bool newState)
+void PreferencesDialog::updateTransportSupport()
 {
-    global_with_jack_transport = newState;
+    global_with_jack_transport = ui->chkJackTransport->isChecked();
+    syncWithInternals();
 }
 
+void PreferencesDialog::cancel()
+{
+    //restore settings from the backup
+     global_with_jack_transport = backupJackTransport;
+     global_with_jack_master_cond = backupMasterCond;
+     global_with_jack_master = backupTimeMaster;
+
+    syncWithInternals();
+
+    close();
+}
+
+void PreferencesDialog::syncWithInternals()
+{
+    //sync with preferences
+    ui->chkJackTransport->setChecked(global_with_jack_transport);
+    ui->chkJackMaster->setChecked(global_with_jack_master);
+    ui->chkJackConditional->setChecked(global_with_jack_master_cond);
+
+    if (!global_with_jack_transport)
+    {
+        //these options are meaningless if jack transport is disabled
+        ui->chkJackMaster->setDisabled(true);
+        ui->chkJackConditional->setDisabled(true);
+    }
+    else
+    {
+        ui->chkJackMaster->setDisabled(false);
+        ui->chkJackConditional->setDisabled(false);
+    }
+}
+
+void PreferencesDialog::backup()
+{
+    //backup settings incase user cancels
+    backupJackTransport = global_with_jack_transport;
+    backupMasterCond = global_with_jack_master_cond;
+    backupTimeMaster = global_with_jack_master;
+}
+
+void PreferencesDialog::okay()
+{
+    backup();
+    close();
+}

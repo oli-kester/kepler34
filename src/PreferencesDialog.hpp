@@ -23,16 +23,29 @@ public:
     void addRecentFile(QString path);
 
 private:
+    //makes sure the dialog reflects internal settings
+    void syncWithInternals();
+
+    //backup preferences incase we cancel changes
+    void backup();
+
     Ui::PreferencesDialog *ui;
 
     MidiPerformance *mPerf;
 
+    //backup variables for settings
+    bool backupJackTransport;
+    bool backupTimeMaster;
+    bool backupMasterCond;
+
 private slots:
-    void updateTransportSupport(bool newState);
-    void updateTimeMaster(bool newState);
-    void updateMasterCond(bool newState);
+    void updateTransportSupport();
+    void updateTimeMaster();
+    void updateMasterCond();
     void jackConnect();
     void jackDisconnect();
+    void okay();
+    void cancel();
 };
 
 #endif // PREFERENCESDIALOG_HPP
