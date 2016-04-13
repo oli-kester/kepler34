@@ -16,28 +16,32 @@ BeatIndicator::BeatIndicator(QWidget *parent,
     mFont.setBold(true);
 
     mColour     = new QColor(Qt::red);
-    alpha = 255;
-    lastMetro = -1;
+    alpha = 0;
+    lastMetro = 0;
 }
 void BeatIndicator::paintEvent(QPaintEvent *)
 {
     mPainter    = new QPainter(this);
-    mBrush      = new QBrush(Qt::SolidPattern);
+    mBrush      = new QBrush(Qt::NoBrush);
     mPen        = new QPen(Qt::darkGray);
+
+    mPainter->setPen(*mPen);
+    mPainter->setFont(mFont);
+    mPainter->setBrush(*mBrush);
 
     long tick = m_main_perf->get_tick();
     int metro = (tick / (c_ppqn / 4 * beatWidth)) % beatsPerMeasure;
-    int divX = width() / beatsPerMeasure;
-    int offsetX = divX * metro;
+    int divX = (width() - 1) / beatsPerMeasure;
 
-    //flash on beats.
-    if (metro != lastMetro || (tick < 50 && tick > 0))
+    //flash on beats
+    //(i.e. if metro has changed or we've just started playing)
+    if (metro != lastMetro || (tick < 50 && tick > 0 ))
     {
-        alpha = 255;
+        alpha = 230;
         if (metro == 0)
         {
             //red on first beat in bar
-            mColour->setRgb(255, 0, 0);
+            mColour->setRgb(255, 50, 50);
         }
         else
         {
@@ -46,20 +50,40 @@ void BeatIndicator::paintEvent(QPaintEvent *)
         }
     }
 
-    mColour->setAlpha(alpha);
-    mBrush->setColor(*mColour);
-    mPainter->setPen(*mPen);
-    mPainter->setFont(mFont);
-    mPainter->setBrush(*mBrush);
+    //draw beat blocks
+    for (int i = 0; i < beatsPerMeasure; i++)
+    {
+        int offsetX = divX * i;
 
-    //draw background
-    mPainter->drawRect(0, 0, width() - 1,height() - 1);
+        //with flash if on current beat
+        if (i == metro && m_main_perf->is_running())
+        {
+            mBrush->setStyle(Qt::SolidPattern);
+            mPen->setColor(Qt::black);
+        }
+        else
+        {
+            mBrush->setStyle(Qt::NoBrush);
+            mPen->setColor(Qt::darkGray);
+
+        }
+
+        mColour->setAlpha(alpha);
+        mBrush->setColor(*mColour);
+        mPainter->setPen(*mPen);
+        mPainter->setBrush(*mBrush);
+        mPainter->drawRect(offsetX + mPen->width() - 1,
+                           mPen->width() - 1,
+                           divX - mPen->width(),
+                           height() - mPen->width());
+    }
 
     //draw beat number
     mPen->setColor(Qt::black);
+    mPen->setStyle(Qt::SolidLine);
     mPainter->setPen(*mPen);
-    mPainter->drawText(offsetX + divX * 0.5 - mFont.pointSize() * 0.5,
-                       height() * 0.8,
+    mPainter->drawText((metro + 1) * divX - (mFont.pointSize() + 2),
+                       height() * 0.3 + mFont.pointSize(),
                        QString::number(metro + 1));
 
     //lessen alpha on each redraw to have smooth fading
@@ -98,5 +122,5 @@ BeatIndicator::~BeatIndicator()
 
 QSize BeatIndicator::sizeHint() const
 {
-    return QSize(100, mFont.pointSize() * 2);
+    return QSize(150, mFont.pointSize() * 2.4);
 }
