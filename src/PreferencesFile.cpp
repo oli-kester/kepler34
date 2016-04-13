@@ -223,12 +223,6 @@ PreferencesFile::parse( MidiPerformance *a_perf )
     sscanf( m_line, "%ld", &ticks );
     MidiBus::set_clock_mod(ticks);
 
-
-    /* manual alsa ports */
-    line_after( &file, "[manual-alsa-ports]" );
-    sscanf( m_line, "%ld", &flag );
-    global_manual_alsa_ports = (bool) flag;
-
     /* last used dir */
     line_after( &file, "[last-used-dir]" );
     //FIXME: check for a valid path is missing
@@ -395,13 +389,6 @@ PreferencesFile::write( MidiPerformance *a_perf  )
                  (char) a_perf->get_master_midi_bus( )->get_input(i));
         file << outs << "\n";
     }
-
-
-    /* manual alsa ports */
-    file << "\n\n\n[manual-alsa-ports]\n";
-    file << "# set to 1 if you want seq24 to create its own alsa ports and\n";
-    file << "# not connect to other clients\n";
-    file << global_manual_alsa_ports << "\n";
 
     /* interaction-method */
     int x = 0;
