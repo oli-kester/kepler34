@@ -17,18 +17,8 @@ BeatIndicator::BeatIndicator(QWidget *parent,
 
     mColour     = new QColor(Qt::red);
     alpha = 255;
-
-    //start refresh timer to queue regular redraws
-    mRedrawTimer = new QTimer(this);
-    mRedrawTimer->setInterval(50);
-    connect(mRedrawTimer,
-            SIGNAL(timeout()),
-            this,
-            SLOT(update()));
-    mRedrawTimer->start();
-
+    lastMetro = -1;
 }
-
 void BeatIndicator::paintEvent(QPaintEvent *)
 {
     mPainter    = new QPainter(this);
@@ -40,17 +30,18 @@ void BeatIndicator::paintEvent(QPaintEvent *)
     int divX = width() / beatsPerMeasure;
     int offsetX = divX * metro;
 
-    //flash on beats
-    if (metro != lastMetro)
+    //flash on beats.
+    if (metro != lastMetro || (tick < 50 && tick > 0))
     {
         alpha = 255;
         if (metro == 0)
         {
-            //red on first in bar
+            //red on first beat in bar
             mColour->setRgb(255, 0, 0);
         }
         else
         {
+            //white on others
             mColour->setRgb(255, 255, 255);
         }
     }
@@ -71,9 +62,9 @@ void BeatIndicator::paintEvent(QPaintEvent *)
                        height() * 0.8,
                        QString::number(metro + 1));
 
-
     //lessen alpha on each redraw to have smooth fading
-    alpha *= 0.7;
+    //done as a factor of the bpm to get useful fades
+    alpha *= 0.7 - m_main_perf->get_bpm() / 300;
 
     lastMetro = metro;
 

@@ -30,7 +30,13 @@ public:
     
     int getBeatWidth() const;
     void setBeatWidth(int beat_width);
+
+    //start the redraw timer
+    void startRedrawTimer();
     
+    bool getPlaying() const;
+    void setPlaying(bool mPlaying);
+
 protected:
     //override painting event to draw on the frame
     void paintEvent(QPaintEvent *event);
@@ -45,14 +51,13 @@ private:
     QPen        *mPen;
     QBrush      *mBrush;
     QColor      *mColour;
-//    QColor      lastColour;
     QFont        mFont;
-    QTimer      *mRedrawTimer;
 
     int         beatsPerMeasure;
     int         beatWidth;
     int         lastMetro;
     int         alpha;
+
 };
 
 #endif // BEATINDICATOR_HPP

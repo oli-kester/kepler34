@@ -193,7 +193,6 @@ void MainWindow::stopPlaying()
 {
     m_main_perf->stop_jack();
     m_main_perf->stop();
-
     ui->btnPlay->setChecked(false);
     ui->btnSongPlay->setChecked(false);
 
