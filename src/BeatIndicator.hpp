@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QDebug>
+#include <QTimer>
 
 #include "MidiPerformance.hpp"
 
@@ -43,10 +44,15 @@ private:
     QPainter    *mPainter;
     QPen        *mPen;
     QBrush      *mBrush;
+    QColor      *mColour;
+//    QColor      lastColour;
+    QFont        mFont;
+    QTimer      *mRedrawTimer;
 
-    int         mBeatsPerMeasure;
-    int         mBeatWidth;
-
+    int         beatsPerMeasure;
+    int         beatWidth;
+    int         lastMetro;
+    int         alpha;
 };
 
 #endif // BEATINDICATOR_HPP

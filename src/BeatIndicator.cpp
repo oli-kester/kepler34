@@ -6,52 +6,98 @@ BeatIndicator::BeatIndicator(QWidget *parent,
                              int beat_width):
     QWidget(parent),
     m_main_perf(perf),
-    mBeatsPerMeasure(beats_per_measure),
-    mBeatWidth(beat_width)
+    beatsPerMeasure(beats_per_measure),
+    beatWidth(beat_width)
 {
-    setSizePolicy(QSizePolicy::Fixed,
+    setSizePolicy(QSizePolicy::MinimumExpanding,
                   QSizePolicy::Fixed);
+
+    mFont.setPointSize(9);
+    mFont.setBold(true);
+
+    mColour     = new QColor(Qt::red);
+    alpha = 255;
+
+    //start refresh timer to queue regular redraws
+    mRedrawTimer = new QTimer(this);
+    mRedrawTimer->setInterval(50);
+    connect(mRedrawTimer,
+            SIGNAL(timeout()),
+            this,
+            SLOT(update()));
+    mRedrawTimer->start();
+
 }
 
 void BeatIndicator::paintEvent(QPaintEvent *)
 {
+    mPainter    = new QPainter(this);
+    mBrush      = new QBrush(Qt::SolidPattern);
+    mPen        = new QPen(Qt::darkGray);
+
     long tick = m_main_perf->get_tick();
+    int metro = (tick / (c_ppqn / 4 * beatWidth)) % beatsPerMeasure;
+    int divX = width() / beatsPerMeasure;
+    int offsetX = divX * metro;
 
-    mPainter = new QPainter(this);
-    mBrush = new QBrush(this);
+    //flash on beats
+    if (metro != lastMetro)
+    {
+        alpha = 255;
+        if (metro == 0)
+        {
+            //red on first in bar
+            mColour->setRgb(255, 0, 0);
+        }
+        else
+        {
+            mColour->setRgb(255, 255, 255);
+        }
+    }
 
-    mPainter->setPen(Qt::black);
-
-    long metro = (tick / (c_ppqn / 4 * mBeatWidth)) % mBeatsPerMeasure+ 1;
-
-    mPainter->drawText(5, 20, QString::number(metro));
-
-//    qDebug() << "BeatIndicator, paintEvent, Current tick: " << tick << endl;
+    mColour->setAlpha(alpha);
+    mBrush->setColor(*mColour);
+    mPainter->setPen(*mPen);
+    mPainter->setFont(mFont);
+    mPainter->setBrush(*mBrush);
 
     //draw background
-    mPainter->drawRect(0,0,width()-1,height()-1);
+    mPainter->drawRect(0, 0, width() - 1,height() - 1);
 
-    delete mPainter,mBrush;
+    //draw beat number
+    mPen->setColor(Qt::black);
+    mPainter->setPen(*mPen);
+    mPainter->drawText(offsetX + divX * 0.5 - mFont.pointSize() * 0.5,
+                       height() * 0.8,
+                       QString::number(metro + 1));
+
+
+    //lessen alpha on each redraw to have smooth fading
+    alpha *= 0.7;
+
+    lastMetro = metro;
+
+    delete mPainter, mBrush, mPen;
 }
 
 int BeatIndicator::getBeatWidth() const
 {
-    return mBeatWidth;
+    return beatWidth;
 }
 
 void BeatIndicator::setBeatWidth(int beat_width)
 {
-    mBeatWidth = beat_width;
+    beatWidth = beat_width;
 }
 
 int BeatIndicator::getBeatsPerMeasure() const
 {
-    return mBeatsPerMeasure;
+    return beatsPerMeasure;
 }
 
 void BeatIndicator::setBeatsPerMeasure(int beats_per_measure)
 {
-    mBeatsPerMeasure = beats_per_measure;
+    beatsPerMeasure = beats_per_measure;
 }
 
 BeatIndicator::~BeatIndicator()
@@ -61,5 +107,5 @@ BeatIndicator::~BeatIndicator()
 
 QSize BeatIndicator::sizeHint() const
 {
-    return QSize(300, 50);
+    return QSize(100, mFont.pointSize() * 2);
 }
