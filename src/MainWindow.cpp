@@ -11,12 +11,14 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 {
     ui->setupUi(this);
 
-    //maximize by default
-    //    setWindowState(Qt::WindowMaximized);
+    //center on screen
     QRect screen = QApplication::desktop()->screenGeometry();
     int x = (screen.width()- width()) / 2;
     int y = (screen.height()- height()) / 2;
     move(x, y);
+
+    //uncommnt to maximize by default
+    //    setWindowState(Qt::WindowMaximized);
 
     m_modified = false;
 
@@ -43,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_msg_error = new QErrorMessage(this);
 
     m_msg_save_changes = new QMessageBox(this);
-    m_msg_save_changes->setText(tr("Unsaved changes detected"));
+    m_msg_save_changes->setText(tr("Unsaved changes detected."));
     m_msg_save_changes->setInformativeText(tr("Do you want to save them?"));
     m_msg_save_changes->setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     m_msg_save_changes->setDefaultButton(QMessageBox::Save);
@@ -51,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_dialog_prefs = new PreferencesDialog(m_main_perf, this);
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     m_song_frame = new SongFrame(m_main_perf, ui->SongTab);
-    m_edit_frame = NULL; //set this so we know the edit tab is empty
+    m_edit_frame = NULL; //set this so we know for sure the edit tab is empty
     m_beat_ind = new BeatIndicator(this, m_main_perf, 4, 4);
     
     ui->lay_bpm->addWidget(m_beat_ind);
@@ -226,9 +228,9 @@ void MainWindow::showOpenFileDialog()
                     tr("Open MIDI file"),
                     last_used_dir,
                     tr("MIDI files (*.midi *.mid);;"
-                       "All files (*)"),
-                    0,
-                    QFileDialog::DontUseNativeDialog
+                       "All files (*)")
+                    //                    ,0,
+                    //                    QFileDialog::DontUseNativeDialog
                     );
 
     //don't bother trying to open if the user cancels
@@ -375,9 +377,9 @@ void MainWindow::saveFileAs()
                 tr("Save MIDI file as..."),
                 last_used_dir,
                 tr("MIDI files (*.midi *.mid);;"
-                   "All files (*)"),
-                0,
-                QFileDialog::DontUseNativeDialog
+                   "All files (*)")
+                //                ,0,
+                //                QFileDialog::DontUseNativeDialog
                 );
 
     if (!file.isEmpty())
@@ -649,50 +651,60 @@ void MainWindow::quit()
 
 void MainWindow::load_recent_1()
 {
-    openMidiFile(recent_files[0]);
+    if (saveCheck())
+        openMidiFile(recent_files[0]);
 }
 
 void MainWindow::load_recent_2()
 {
-    openMidiFile(recent_files[1]);
+    if (saveCheck())
+        openMidiFile(recent_files[1]);
 }
 
 void MainWindow::load_recent_3()
 {
-    openMidiFile(recent_files[2]);
+    if (saveCheck())
+        openMidiFile(recent_files[2]);
 }
 
 void MainWindow::load_recent_4()
 {
-    openMidiFile(recent_files[3]);
+    if (saveCheck())
+        openMidiFile(recent_files[3]);
 }
 
 void MainWindow::load_recent_5()
 {
-    openMidiFile(recent_files[4]);
+    if (saveCheck())
+        openMidiFile(recent_files[4]);
 }
 
 void MainWindow::load_recent_6()
 {
-    openMidiFile(recent_files[5]);
+    if (saveCheck())
+        openMidiFile(recent_files[5]);
 }
 
 void MainWindow::load_recent_7()
 {
-    openMidiFile(recent_files[6]);
+    if (saveCheck())
+        openMidiFile(recent_files[6]);
 }
 
 void MainWindow::load_recent_8()
 {
-    openMidiFile(recent_files[7]);
+    if (saveCheck())
+        openMidiFile(recent_files[7]);
 }
 
 void MainWindow::load_recent_9()
 {
-    openMidiFile(recent_files[8]);
+    if (saveCheck())
+        openMidiFile(recent_files[8]);
 }
 
 void MainWindow::load_recent_10()
 {
-    openMidiFile(recent_files[9]);
+    if (saveCheck())
+        openMidiFile(recent_files[9]);
 }

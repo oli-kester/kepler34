@@ -111,7 +111,9 @@ PreferencesFile::parse( MidiPerformance *a_perf )
         next_data_line( &file );
     }
 
-
+    //disabled this for the time being.
+    //Default key mappings always used
+/*
     line_after( &file, "[keyboard-control]" );
     long keys = 0;
     sscanf( m_line, "%ld", &keys );
@@ -186,6 +188,7 @@ PreferencesFile::parse( MidiPerformance *a_perf )
     next_data_line( &file );
 
     sscanf( m_line, "%u", &a_perf->m_key_stop );
+    */
 
     line_after( &file, "[jack-transport]" );
     long flag = 0;
