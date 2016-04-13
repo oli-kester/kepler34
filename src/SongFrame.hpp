@@ -29,7 +29,7 @@ public:
                        QWidget *parent);
     ~SongFrame();
 
-    int getBeatLength() const;
+    int getBeatWidth() const;
     void setBeatLength( int a_beat_width );
 
     int getBeatsPerMeasure() const;

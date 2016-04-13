@@ -79,7 +79,7 @@
          <enum>Qt::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>BW</string>
+         <string>B/M</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -98,7 +98,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Beats per Measure</string>
+         <string>Beats Per Measure</string>
         </property>
         <property name="currentIndex">
          <number>-1</number>
@@ -109,7 +109,7 @@
        <widget class="QLabel" name="label_16">
         <property name="minimumSize">
          <size>
-          <width>21</width>
+          <width>25</width>
           <height>19</height>
          </size>
         </property>
@@ -120,7 +120,7 @@
          </size>
         </property>
         <property name="text">
-         <string>BL</string>
+         <string>BW</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -139,7 +139,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Beat Length</string>
+         <string>Beat Width (length of beat)</string>
         </property>
        </widget>
       </item>

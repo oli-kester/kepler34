@@ -40,10 +40,12 @@ protected:
 private:
     MidiPerformance     * const m_main_perf;
 
-    QPainter    *m_painter;
+    QPainter    *mPainter;
+    QPen        *mPen;
+    QBrush      *mBrush;
 
-    int         m_beats_per_measure;
-    int         m_beat_width;
+    int         mBeatsPerMeasure;
+    int         mBeatWidth;
 
 };
 

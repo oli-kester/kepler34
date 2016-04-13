@@ -486,10 +486,10 @@ PreferencesFile::write( MidiPerformance *a_perf  )
          << "# jack_transport - Enable sync with JACK Transport.\n"
          << global_with_jack_transport << "\n\n"
 
-         << "# jack_master - Seq24 will attempt to serve as JACK Master.\n"
+         << "# jack_master - Kepler34 will attempt to serve as JACK Master.\n"
          << global_with_jack_master << "\n\n"
 
-         << "# jack_master_cond -  Seq24 will fail to be master if there is already a master set.\n"
+         << "# jack_master_cond -  Kepler34 will fail to be master if there is already a master set.\n"
          << global_with_jack_master_cond  << "\n\n";
 
     file << "\n\n\n[last-used-dir]\n\n"

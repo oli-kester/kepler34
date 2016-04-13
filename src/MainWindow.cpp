@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
         QString combo_text = QString::number(i + 1);
         ui->cmb_beat_measure->insertItem(i, combo_text);
     }
-    ui->cmb_beat_measure->setCurrentIndex(3);
 
     // fill options for beat length combo box and set default
     for (int i = 0; i < 5; i++)
@@ -40,7 +39,6 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
         QString combo_text = QString::number(pow(2, i));
         ui->cmb_beat_length->insertItem(i, combo_text);
     }
-    ui->cmb_beat_length->setCurrentIndex(2);
 
     //keyboard shortcuts
     ui->btnPlay->setShortcut(tr("Space"));
@@ -64,9 +62,11 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     ui->LiveTabLayout->addWidget(m_live_frame);
     ui->SongTabLayout->addWidget(m_song_frame);
 
-    QString beatLengthText("1/");
-    beatLengthText.append(m_song_frame->getBeatLength());
-    ui->cmb_beat_length->setCurrentText(beatLengthText);
+    //pull defaults from song frame
+    ui->cmb_beat_length->setCurrentText(QString::number(m_song_frame->getBeatWidth()));
+    ui->cmb_beat_measure->setCurrentText(QString::number(m_song_frame->getBeatsPerMeasure()));
+    m_beat_ind->setBeatWidth(m_song_frame->getBeatWidth());
+    m_beat_ind->setBeatsPerMeasure(m_song_frame->getBeatsPerMeasure());
 
     updateRecentFilesMenu();
 
@@ -453,6 +453,7 @@ void MainWindow::updateBeatLength(int blIndex)
     }
 
     m_song_frame->setBeatLength(bl);
+    m_beat_ind->setBeatWidth(bl);
 
     //also set beat length for all sequences
     for (int i = 0; i < c_max_sequence; i++)
@@ -476,7 +477,8 @@ void MainWindow::updateBeatLength(int blIndex)
 void MainWindow::updateBeatsPerMeasure(int bmIndex)
 {
     int bm = bmIndex + 1;
-    m_song_frame->setBeatLength(bm);
+    m_song_frame->setBeatsPerMeasure(bm);
+    m_beat_ind->setBeatsPerMeasure(bm);
 
     //also set beat length for all sequences
     for (int i = 0; i < c_max_sequence; i++)

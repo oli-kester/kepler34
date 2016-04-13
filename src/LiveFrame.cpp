@@ -244,8 +244,6 @@ void LiveFrame::drawSequence(int a_seq)
                                rectangle_y - 1,
                                rectangle_x + tick_x - 1,
                                rectangle_y + previewH + 1);
-
-
         }
         else
         {
@@ -490,7 +488,6 @@ void LiveFrame::mouseDoubleClickEvent(QMouseEvent *event)
         newSeq();
         mCanAddNew = false;
     }
-
 }
 
 void LiveFrame::newSeq()

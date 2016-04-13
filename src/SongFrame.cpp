@@ -77,7 +77,7 @@ SongFrame::~SongFrame()
     delete ui;
 }
 
-int SongFrame::getBeatLength() const
+int SongFrame::getBeatWidth() const
 {
     return mBeatWidth;
 }

@@ -6,59 +6,60 @@ BeatIndicator::BeatIndicator(QWidget *parent,
                              int beat_width):
     QWidget(parent),
     m_main_perf(perf),
-    m_beats_per_measure(beats_per_measure),
-    m_beat_width(beat_width)
+    mBeatsPerMeasure(beats_per_measure),
+    mBeatWidth(beat_width)
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
-}
-
-QSize BeatIndicator::sizeHint() const
-{
-    return QSize(30,20);
 }
 
 void BeatIndicator::paintEvent(QPaintEvent *)
 {
     long tick = m_main_perf->get_tick();
 
-    m_painter = new QPainter(this);
+    mPainter = new QPainter(this);
+    mBrush = new QBrush(this);
 
-    m_painter->setPen(Qt::black);
+    mPainter->setPen(Qt::black);
 
-    //beat indicator calculations from seq24
-//    int tick_x = ((tick % c_ppqn) * (c_mainwid_x - 1) ) / c_ppqn;
-//    int bar_x = (((tick / 16) % c_ppqn) * 4) / c_ppqn;
+    long metro = (tick / (c_ppqn / 4 * mBeatWidth)) % mBeatsPerMeasure+ 1;
 
-    //TODO refactor this equation
-    int metro = ((((tick / getBeatsPerMeasure()) % c_ppqn) * getBeatWidth()) / c_ppqn) + 1;
-
-    m_painter->drawText(5, 20, QString::number(metro));
+    mPainter->drawText(5, 20, QString::number(metro));
 
 //    qDebug() << "BeatIndicator, paintEvent, Current tick: " << tick << endl;
+
+    //draw background
+    mPainter->drawRect(0,0,width()-1,height()-1);
+
+    delete mPainter,mBrush;
 }
 
 int BeatIndicator::getBeatWidth() const
 {
-    return m_beat_width;
+    return mBeatWidth;
 }
 
 void BeatIndicator::setBeatWidth(int beat_width)
 {
-    m_beat_width = beat_width;
+    mBeatWidth = beat_width;
 }
 
 int BeatIndicator::getBeatsPerMeasure() const
 {
-    return m_beats_per_measure;
+    return mBeatsPerMeasure;
 }
 
 void BeatIndicator::setBeatsPerMeasure(int beats_per_measure)
 {
-    m_beats_per_measure = beats_per_measure;
+    mBeatsPerMeasure = beats_per_measure;
 }
 
 BeatIndicator::~BeatIndicator()
 {
 
+}
+
+QSize BeatIndicator::sizeHint() const
+{
+    return QSize(300, 50);
 }
