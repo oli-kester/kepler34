@@ -50,6 +50,96 @@ MidiPerformance::MidiPerformance()
         m_midi_cc_off[i] = zero;
     }
 
+
+    //map default keyboard mappings
+    //(falls back to these if preferences file is missing)
+    set_key_event( Qt::Key_1, 0 );
+    set_key_event( Qt::Key_Q, 1 );
+    set_key_event( Qt::Key_A, 2 );
+    set_key_event( Qt::Key_Z, 3 );
+    set_key_event( Qt::Key_2, 4 );
+    set_key_event( Qt::Key_W, 5 );
+    set_key_event( Qt::Key_S, 6 );
+    set_key_event( Qt::Key_X, 7 );
+    set_key_event( Qt::Key_3, 8 );
+    set_key_event( Qt::Key_E, 9 );
+    set_key_event( Qt::Key_D, 10 );
+    set_key_event( Qt::Key_C, 11 );
+    set_key_event( Qt::Key_4, 12 );
+    set_key_event( Qt::Key_R, 13 );
+    set_key_event( Qt::Key_F, 14 );
+    set_key_event( Qt::Key_V, 15 );
+    set_key_event( Qt::Key_5, 16 );
+    set_key_event( Qt::Key_T, 17 );
+    set_key_event( Qt::Key_G, 18 );
+    set_key_event( Qt::Key_B, 19 );
+    set_key_event( Qt::Key_6, 20 );
+    set_key_event( Qt::Key_Y, 21 );
+    set_key_event( Qt::Key_H, 22 );
+    set_key_event( Qt::Key_N, 23 );
+    set_key_event( Qt::Key_7, 24 );
+    set_key_event( Qt::Key_U, 25 );
+    set_key_event( Qt::Key_J, 26 );
+    set_key_event( Qt::Key_M, 27 );
+    set_key_event( Qt::Key_8, 28 );
+    set_key_event( Qt::Key_I, 29 );
+    set_key_event( Qt::Key_K, 30 );
+    set_key_event( Qt::Key_Comma, 31 );
+
+    set_key_group( Qt::Key_Exclam,  0 );
+    set_key_group( Qt::Key_QuoteDbl,  1  );
+    set_key_group( Qt::Key_NumberSign,  2  );
+    set_key_group( Qt::Key_Dollar,  3  );
+    set_key_group( Qt::Key_Percent,  4  );
+    set_key_group( Qt::Key_Ampersand,  5  );
+    set_key_group( Qt::Key_ParenLeft,  7  );
+    set_key_group( Qt::Key_Slash,  6  );
+    set_key_group( Qt::Key_Semicolon,  31 );
+    set_key_group( Qt::Key_A,  16 );
+    set_key_group( Qt::Key_B,  28 );
+    set_key_group( Qt::Key_C,  26 );
+    set_key_group( Qt::Key_D,  18 );
+    set_key_group( Qt::Key_E,  10 );
+    set_key_group( Qt::Key_F,  19 );
+    set_key_group( Qt::Key_G,  20 );
+    set_key_group( Qt::Key_H,  21 );
+    set_key_group( Qt::Key_I,  15 );
+    set_key_group( Qt::Key_J,  22 );
+    set_key_group( Qt::Key_K,  23 );
+    set_key_group( Qt::Key_M,  30 );
+    set_key_group( Qt::Key_N,  29 );
+    set_key_group( Qt::Key_Q,  8  );
+    set_key_group( Qt::Key_R,  11 );
+    set_key_group( Qt::Key_S,  17 );
+    set_key_group( Qt::Key_T,  12 );
+    set_key_group( Qt::Key_U,  14 );
+    set_key_group( Qt::Key_V,  27 );
+    set_key_group( Qt::Key_W,  9  );
+    set_key_group( Qt::Key_X,  25 );
+    set_key_group( Qt::Key_Y,  13 );
+    set_key_group( Qt::Key_Z,  24 );
+
+    m_key_bpm_up = Qt::Key_Apostrophe;
+    m_key_bpm_dn = Qt::Key_Semicolon;
+
+    m_key_replace = "Ctrl+L";
+    m_key_queue = "Ctrl+R";
+    m_key_snapshot_1 = "Alt+L";
+    m_key_snapshot_2 = "Alt+R";
+    m_key_keep_queue = "\\";
+
+    m_key_screenset_up = Qt::Key_BracketRight;
+    m_key_screenset_dn = Qt::Key_BracketLeft;
+    m_key_set_playing_screenset = Qt::Key_Home;
+    m_key_group_on = Qt::Key_Igrave;
+    m_key_group_off = Qt::Key_Apostrophe;
+    m_key_group_learn = Qt::Key_Insert;
+
+    m_key_start  = Qt::Key_Space;
+    m_key_stop   = Qt::Key_Escape;
+    m_key_record_upper = Qt::Key_R;
+    m_key_record_lower = Qt::Key_R;
+
     m_show_ui_sequence_key = true;
 
     m_offset                = 0;
@@ -2131,50 +2221,52 @@ void MidiPerformance::sequence_playing_off( int a_sequence )
 }
 
 
-void MidiPerformance::set_key_event( unsigned int keycode, long sequence_slot )
+void MidiPerformance::set_key_event( int keycode, long sequence_slot )
 {
     // unhook previous binding...
-    std::map<unsigned int,long>::iterator it1 = key_events.find( keycode );
+    std::map<int,long>::iterator it1 = key_events.find( keycode );
     if (it1 != key_events.end())
     {
-        std::map<long,unsigned int>::iterator i = key_events_rev.find( it1->second );
+        std::map<long,int>::iterator i = key_events_rev.find( it1->second );
         if (i != key_events_rev.end())
             key_events_rev.erase( i );
         key_events.erase( it1 );
     }
-    std::map<long,unsigned int>::iterator it2 = key_events_rev.find( sequence_slot );
+    std::map<long,int>::iterator it2 = key_events_rev.find( sequence_slot );
     if (it2 != key_events_rev.end())
     {
-        std::map<unsigned int,long>::iterator i = key_events.find( it2->second );
+        std::map<int,long>::iterator i = key_events.find( it2->second );
         if (i != key_events.end())
             key_events.erase( i );
         key_events_rev.erase( it2 );
     }
+    qDebug() << "New seq key binding - " << keycode << " mapped to " << sequence_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
     // set
     key_events[keycode] = sequence_slot;
     key_events_rev[sequence_slot] = keycode;
 }
 
 
-void MidiPerformance::set_key_group( unsigned int keycode, long group_slot )
+void MidiPerformance::set_key_group( int keycode, long group_slot )
 {
     // unhook previous binding...
-    std::map<unsigned int,long>::iterator it1 = key_groups.find( keycode );
+    std::map<int,long>::iterator it1 = key_groups.find( keycode );
     if (it1 != key_groups.end())
     {
-        std::map<long,unsigned int>::iterator i = key_groups_rev.find( it1->second );
+        std::map<long,int>::iterator i = key_groups_rev.find( it1->second );
         if (i != key_groups_rev.end())
             key_groups_rev.erase( i );
         key_groups.erase( it1 );
     }
-    std::map<long,unsigned int>::iterator it2 = key_groups_rev.find( group_slot );
+    std::map<long,int>::iterator it2 = key_groups_rev.find( group_slot );
     if (it2 != key_groups_rev.end())
     {
-        std::map<unsigned int,long>::iterator i = key_groups.find( it2->second );
+        std::map<int,long>::iterator i = key_groups.find( it2->second );
         if (i != key_groups.end())
             key_groups.erase( i );
         key_groups_rev.erase( it2 );
     }
+    qDebug() << "New group key binding - " << keycode << " mapped to " << group_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
     // set
     key_groups[keycode] = group_slot;
     key_groups_rev[group_slot] = keycode;

@@ -6,6 +6,7 @@
 #include "ConfigFile.hpp"
 
 #include "QKeyEvent"
+#include "QDebug"
 
 class PreferencesFile : public ConfigFile
 {

@@ -26,7 +26,6 @@ SOURCES +=\
     Lash.cpp \
     ConfigFile.cpp \
     MidiFile.cpp \
-    OptionsFile.cpp \
     UserFile.cpp \
     MidiPerformance.cpp \
     BeatIndicator.cpp \
@@ -35,7 +34,8 @@ SOURCES +=\
     EditNoteRoll.cpp \
     SongTimeBar.cpp \
     SongSequenceNames.cpp \
-    SongSequenceGrid.cpp
+    SongSequenceGrid.cpp \
+    PreferencesFile.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -54,7 +54,6 @@ HEADERS  += \
     ConfigFile.hpp \
     Config.hpp \
     MidiFile.hpp \
-    OptionsFile.hpp \
     MidiPerformance.hpp \
     BeatIndicator.hpp \
     EditKeys.hpp \
@@ -62,7 +61,8 @@ HEADERS  += \
     EditNoteRoll.hpp \
     SongTimeBar.hpp \
     SongSequenceNames.hpp \
-    SongSequenceGrid.hpp
+    SongSequenceGrid.hpp \
+    PreferencesFile.hpp
 
 FORMS    += \
     MainWindow.ui \

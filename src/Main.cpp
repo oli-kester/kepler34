@@ -15,7 +15,7 @@
 #    include "Lash.hpp"
 #endif
 #include "MidiFile.hpp"
-#include "OptionsFile.hpp"
+#include "PreferencesFile.hpp"
 #include "MidiPerformance.hpp"
 #include "UserFile.hpp"
 
@@ -173,17 +173,17 @@ int main(int argc, char *argv[])
             printf( "Options:\n" );
             printf( "   -h, --help: show this message\n" );
             printf( "   -v, --version: show program version information\n" );
-            printf( "   -m, --manual_alsa_ports: seq24 won't attach alsa ports\n" );
+            printf( "   -m, --manual_alsa_ports: kepler34 won't attach alsa ports\n" );
             printf( "   -s, --showmidi: dumps incoming midi events to screen\n" );
             printf( "   -p, --priority: runs higher priority with FIFO scheduler (must be root)\n" );
             printf( "   -P, --pass_sysex: passes any incoming sysex messages to all outputs \n" );
             printf( "   -i, --ignore <number>: ignore ALSA device\n" );
             printf( "   -k, --show_keys: prints pressed key value\n" );
-            printf( "   -x, --interaction_method <number>: see .seq24rc for methods to use\n" );
+            printf( "   -x, --interaction_method <number>: see .kepler34rc for methods to use\n" );
             printf( "   -j, --jack_transport: seq24 will sync to jack transport\n" );
             printf( "   -J, --jack_master: seq24 will try to be jack master\n" );
             printf( "   -C, --jack_master_cond: jack master will fail if there is already a master\n" );
-            printf( "   -M, --jack_start_mode <mode>: when seq24 is synced to jack, the following play\n" );
+            printf( "   -M, --jack_start_mode <mode>: when kepler34 is synced to jack, the following play\n" );
             printf( "                          modes are available (0 = live mode)\n");
             printf( "                                              (1 = song mode) (default)\n" );
             printf( "   -S, --stats: show statistics\n" );

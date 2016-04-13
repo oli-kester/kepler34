@@ -83,10 +83,10 @@ private:
     int     previewW, previewH;
 
     //mouse interaction
-    int     m_current_seq;
-    int     m_old_seq;
-    bool    m_button_down;
-    bool    m_moving; //are we moving bewteen slots
+    int     mCurrentSeq;
+    int     mOldSeq;
+    bool    mButtonDown;
+    bool    mMoving; //are we moving bewteen slots
     bool    mCanAddNew; /*we can add a new seq here,
                           wait for double click*/
     long    m_last_tick_x[c_max_sequence];

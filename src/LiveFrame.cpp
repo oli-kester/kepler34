@@ -133,9 +133,6 @@ void LiveFrame::drawSequence(int a_seq)
                                name);
 
             /* midi channel + key + timesig */
-
-            /*char key =  m_seq_to_char[local_seq];*/
-
             char str[20];
 
             if (m_main_perf->show_ui_sequence_key())
@@ -235,11 +232,7 @@ void LiveFrame::drawSequence(int a_seq)
 
             long tick_x = a_tick * previewW / length;
 
-            //            if ( seq->get_playing() ){
-            //                mPen->setColor(Qt::green);
-            //            } else {
             mPen->setColor(Qt::red);
-            //            }
 
             if ( seq->get_queued()){
                 mPen->setColor(Qt::green);
@@ -369,33 +362,33 @@ int LiveFrame::seqIDFromClickXY(int click_x, int click_y)
 
 void LiveFrame::mousePressEvent(QMouseEvent *event)
 {
-    m_current_seq = seqIDFromClickXY(
+    mCurrentSeq = seqIDFromClickXY(
                 event->x(), event->y());
 
-    if ( m_current_seq != -1
+    if ( mCurrentSeq != -1
          && event->button() == Qt::LeftButton )
     {
-        m_button_down = true;
+        mButtonDown = true;
     }
 }
 
 void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
 {
     /* get the sequence number we clicked on */
-    m_current_seq = seqIDFromClickXY(
+    mCurrentSeq = seqIDFromClickXY(
                 event->x(), event->y());
 
-    m_button_down = false;
+    mButtonDown = false;
 
     /* if we're on a valid sequence, hit the left mouse button,
      * and are not dragging a sequence - toggle playing*/
-    if ( m_current_seq != -1
+    if ( mCurrentSeq != -1
          && event->button() == Qt::LeftButton
-         && !m_moving )
+         && !mMoving )
     {
-        if ( m_main_perf->is_active( m_current_seq ))
+        if ( m_main_perf->is_active( mCurrentSeq ))
         {
-            m_main_perf->sequence_playing_toggle( m_current_seq );
+            m_main_perf->sequence_playing_toggle( mCurrentSeq );
             update();
         }
         else
@@ -406,31 +399,31 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
 
     /* if left mouse button & we're moving a seq between slots */
     if (event->button() == Qt::LeftButton
-            && m_moving )
+            && mMoving )
     {
-        m_moving = false;
+        mMoving = false;
 
-        if (!m_main_perf->is_active(m_current_seq)
-                && m_current_seq != -1
-                && !m_main_perf->is_sequence_in_edit(m_current_seq))
+        if (!m_main_perf->is_active(mCurrentSeq)
+                && mCurrentSeq != -1
+                && !m_main_perf->is_sequence_in_edit(mCurrentSeq))
         {
-            m_main_perf->new_sequence(m_current_seq);
-            *(m_main_perf->get_sequence( m_current_seq )) = m_moving_seq;
+            m_main_perf->new_sequence(mCurrentSeq);
+            *(m_main_perf->get_sequence( mCurrentSeq )) = m_moving_seq;
 
             update();
 
         }
         else
         {
-            m_main_perf->new_sequence( m_old_seq  );
-            *(m_main_perf->get_sequence( m_old_seq )) = m_moving_seq;
+            m_main_perf->new_sequence( mOldSeq  );
+            *(m_main_perf->get_sequence( mOldSeq )) = m_moving_seq;
 
             update();
         }
     }
 
     /* check for right mouse click - this launches the popup menu */
-    if (m_current_seq != -1
+    if (mCurrentSeq != -1
             && event->button() == Qt::RightButton)
     {
         mPopup = new QMenu(this);
@@ -442,7 +435,7 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
                          this,
                          SLOT(newSeq()));
 
-        if (m_main_perf->is_active(m_current_seq))
+        if (m_main_perf->is_active(mCurrentSeq))
         {
             QAction *actionEdit = new QAction("Edit sequence", mPopup);
             mPopup->addAction(actionEdit);
@@ -456,11 +449,11 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
     }
 
     //middle button launches seq editor
-    if (m_current_seq != -1
+    if (mCurrentSeq != -1
             && event->button() == Qt::MiddleButton
-            && m_main_perf->is_active(m_current_seq))
+            && m_main_perf->is_active(mCurrentSeq))
     {
-        callEditor(m_main_perf->get_sequence(m_current_seq));
+        callEditor(m_main_perf->get_sequence(mCurrentSeq));
     }
 }
 
@@ -468,21 +461,21 @@ void LiveFrame::mouseMoveEvent(QMouseEvent *event)
 {
     int seqId = seqIDFromClickXY(event->x(), event->y());
 
-    if ( m_button_down )
+    if ( mButtonDown )
     {
-        if (seqId != m_current_seq
-                && !m_moving
-                && !m_main_perf->is_sequence_in_edit(m_current_seq)){
+        if (seqId != mCurrentSeq
+                && !mMoving
+                && !m_main_perf->is_sequence_in_edit(mCurrentSeq)){
 
             /* lets drag a sequence between slots */
-            if ( m_main_perf->is_active( m_current_seq )){
+            if ( m_main_perf->is_active( mCurrentSeq )){
 
-                m_old_seq = m_current_seq;
-                m_moving = true;
+                mOldSeq = mCurrentSeq;
+                mMoving = true;
 
                 /* save the sequence and clear the old slot */
-                m_moving_seq = *(m_main_perf->get_sequence( m_current_seq ));
-                m_main_perf->delete_sequence( m_current_seq );
+                m_moving_seq = *(m_main_perf->get_sequence( mCurrentSeq ));
+                m_main_perf->delete_sequence( mCurrentSeq );
 
                 update();
             }
@@ -502,14 +495,14 @@ void LiveFrame::mouseDoubleClickEvent(QMouseEvent *event)
 
 void LiveFrame::newSeq()
 {
-    if (m_main_perf->is_active(m_current_seq))
+    if (m_main_perf->is_active(mCurrentSeq))
     {
         int choice = mMsgBoxNewSeqCheck->exec();
         if (choice == QMessageBox::No)
             return;
     }
-    m_main_perf->new_sequence(m_current_seq);
-    m_main_perf->get_sequence( m_current_seq )->set_dirty();
+    m_main_perf->new_sequence(mCurrentSeq);
+    m_main_perf->get_sequence( mCurrentSeq )->set_dirty();
     //TODO reenable - disabled opening the editor for each new seq
     //    callEditor(m_main_perf->get_sequence(m_current_seq));
 
@@ -517,7 +510,7 @@ void LiveFrame::newSeq()
 
 void LiveFrame::editSeq()
 {
-    callEditor(m_main_perf->get_sequence(m_current_seq));
+    callEditor(m_main_perf->get_sequence(mCurrentSeq));
 }
 
 void LiveFrame::keyPressEvent(QKeyEvent *event)
@@ -531,8 +524,10 @@ void LiveFrame::keyPressEvent(QKeyEvent *event)
         setBank(m_bank_id + 1);
         break;
     default: //sequence mute toggling
-        if (m_main_perf->get_key_events()->count( event->nativeScanCode()) != 0)
-            sequence_key(m_main_perf->lookup_keyevent_seq(event->nativeScanCode()));
+        quint32 keycode =  event->key();
+        qDebug() << keycode << endl;
+        if (m_main_perf->get_key_events()->count(event->key()) != 0)
+            sequence_key(m_main_perf->lookup_keyevent_seq(event->key()));
         break;
     }
 }

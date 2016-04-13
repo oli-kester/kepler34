@@ -15,8 +15,9 @@ class MidiPerformance;
 #endif
 #include <pthread.h>
 
-#include <QMap>
 #include <QCoreApplication>
+#include <QKeySequence>
+#include <QDebug>
 
 /* if we have jack, include the jack headers */
 #ifdef JACK_SUPPORT
@@ -32,14 +33,14 @@ class MidiPerformance;
 
 class MidiControl
 {
- public:
+public:
 
-	bool m_active;
-	bool m_inverse_active;
-	long m_status;
-	long m_data;
-	long m_min_value;
-	long m_max_value;
+    bool m_active;
+    bool m_inverse_active;
+    long m_status;
+    long m_data;
+    long m_min_value;
+    long m_max_value;
 };
 
 
@@ -47,21 +48,21 @@ const int c_status_replace  = 0x01;
 const int c_status_snapshot = 0x02;
 const int c_status_queue    = 0x04;
 
-	 const int c_midi_track_ctrl = c_seqs_in_set * 2;
-	 const int c_midi_control_bpm_up       = c_midi_track_ctrl ;
-	 const int c_midi_control_bpm_dn       = c_midi_track_ctrl + 1;
-	 const int c_midi_control_ss_up        = c_midi_track_ctrl + 2;
-	 const int c_midi_control_ss_dn        = c_midi_track_ctrl + 3;
-	 const int c_midi_control_mod_replace  = c_midi_track_ctrl + 4;
-	 const int c_midi_control_mod_snapshot = c_midi_track_ctrl + 5;
-	 const int c_midi_control_mod_queue    = c_midi_track_ctrl + 6;
-	 //andy midi_control_mod_mute_group
-	 const int c_midi_control_mod_gmute    = c_midi_track_ctrl + 7;
-	 //andy learn_mute_toggle_mode
-	 const int c_midi_control_mod_glearn   = c_midi_track_ctrl + 8;
-	 //andy play only this screen set
-	 const int c_midi_control_play_ss      = c_midi_track_ctrl + 9;
-	 const int c_midi_controls             = c_midi_track_ctrl + 10;//7
+const int c_midi_track_ctrl = c_seqs_in_set * 2;
+const int c_midi_control_bpm_up       = c_midi_track_ctrl ;
+const int c_midi_control_bpm_dn       = c_midi_track_ctrl + 1;
+const int c_midi_control_ss_up        = c_midi_track_ctrl + 2;
+const int c_midi_control_ss_dn        = c_midi_track_ctrl + 3;
+const int c_midi_control_mod_replace  = c_midi_track_ctrl + 4;
+const int c_midi_control_mod_snapshot = c_midi_track_ctrl + 5;
+const int c_midi_control_mod_queue    = c_midi_track_ctrl + 6;
+//andy midi_control_mod_mute_group
+const int c_midi_control_mod_gmute    = c_midi_track_ctrl + 7;
+//andy learn_mute_toggle_mode
+const int c_midi_control_mod_glearn   = c_midi_track_ctrl + 8;
+//andy play only this screen set
+const int c_midi_control_play_ss      = c_midi_track_ctrl + 9;
+const int c_midi_controls             = c_midi_track_ctrl + 10;//7
 
 
 struct performcallback
@@ -71,14 +72,11 @@ struct performcallback
 
 class MidiPerformance
 {
- public:
-    // do not access these directly, use set/lookup below
-    map<unsigned int,long> key_events;
-    map<unsigned int,long> key_groups;
+public:
 
     bool m_show_ui_sequence_key;
 
- private:
+private:
     //andy mute group
     bool m_mute_group[c_gmute_tracks];
     bool m_tracks_mute_state[c_seqs_in_set];
@@ -147,24 +145,29 @@ class MidiPerformance
 
     condition_var m_condition_var;
 
-    map<long,unsigned int> key_events_rev; // reverse lookup, keep this in sync!!
-    map<long,unsigned int> key_groups_rev; // reverse lookup, keep this in sync!!
+    // do not access these directly, use set/lookup below
+    std::map<int,long> key_events;
+    std::map<int,long> key_groups;
+
+    // reverse lookup, keep these in sync!!
+    std:: map<long, int> key_events_rev;
+    std:: map<long, int> key_groups_rev;
 
 
 #ifdef JACK_SUPPORT
 
     jack_client_t *m_jack_client;
     jack_nframes_t m_jack_frame_current,
-                   m_jack_frame_last;
+    m_jack_frame_last;
     jack_position_t m_jack_pos;
     jack_transport_state_t m_jack_transport_state;
     jack_transport_state_t m_jack_transport_state_last;
     double m_jack_tick;
 #ifdef JACK_SESSION
- public:
+public:
     jack_session_event_t *m_jsession_ev;
     bool jack_session_event();
- private:
+private:
 #endif
 #endif
 
@@ -174,7 +177,7 @@ class MidiPerformance
     void inner_start( bool a_state );
     void inner_stop();
 
- public:
+public:
     bool is_running();
     bool is_learn_mode() const { return m_mode_group_learn; }
 
@@ -191,27 +194,27 @@ class MidiPerformance
     // can register here for events...
     std::vector<performcallback*> m_notify;
 
-    unsigned int m_key_bpm_up;
-    unsigned int m_key_bpm_dn;
+    int m_key_bpm_up;
+    int m_key_bpm_dn;
 
-    unsigned int m_key_replace;
-    unsigned int m_key_queue;
-    unsigned int m_key_keep_queue;
-    unsigned int m_key_snapshot_1;
-    unsigned int m_key_snapshot_2;
+    string m_key_keep_queue;
+    string m_key_replace;
+    string m_key_queue;
+    string m_key_snapshot_1;
+    string m_key_snapshot_2;
 
-    unsigned int m_key_screenset_up;
-    unsigned int m_key_screenset_dn;
-    unsigned int m_key_set_playing_screenset;
+    int m_key_screenset_up;
+    int m_key_screenset_dn;
+    int m_key_set_playing_screenset;
 
-    unsigned int m_key_group_on;
-    unsigned int m_key_group_off;
-    unsigned int m_key_group_learn;
+    int m_key_group_on;
+    int m_key_group_off;
+    int m_key_group_learn;
 
-    unsigned int m_key_start;
-    unsigned int m_key_stop;
-    unsigned int m_key_record_upper;
-    unsigned int m_key_record_lower;
+    int m_key_start;
+    int m_key_stop;
+    int m_key_record_upper;
+    int m_key_record_lower;
 
     bool show_ui_sequence_key() const { return m_show_ui_sequence_key; }
 
@@ -233,7 +236,7 @@ class MidiPerformance
 
     void clear_sequence_triggers( int a_seq  );
 
-    long get_tick( ) { return m_tick; };
+    long get_tick( ) { return m_tick; }
 
     void set_left_tick( long a_tick );
     long get_left_tick();
@@ -350,27 +353,56 @@ class MidiPerformance
     bool getModified();
     void setModified(bool modified);
 
-    const std::map<unsigned int,long> *get_key_events(void) const { return &key_events; }
-    const std::map<unsigned int,long> *get_key_groups(void) const { return &key_groups; }
+    const std::map<int,long> *get_key_events(void) const
+    {
+        return &key_events;
+    }
+    const std::map<int,long> *get_key_groups(void) const
+    {
+        return &key_groups;
+    }
 
-    void set_key_event( unsigned int keycode, long sequence_slot );
-    void set_key_group( unsigned int keycode, long group_slot );
+    void set_key_event( int keycode, long sequence_slot );
+    void set_key_group( int keycode, long group_slot );
 
     // getters of keyboard mapping for sequence and groups,
     // if not found, returns something "safe" (so use get_key()->count() to see if it's there first)
-    unsigned int lookup_keyevent_key( long seqnum ) { if (key_events_rev.count( seqnum )) return key_events_rev[seqnum]; else return '?';}
-    long lookup_keyevent_seq( unsigned int keycode ) { if (key_events.count( keycode )) return key_events[keycode]; else return 0; }
-    unsigned int lookup_keygroup_key( long groupnum ) { if (key_groups_rev.count( groupnum )) return key_groups_rev[groupnum]; else return '?'; }
-    long lookup_keygroup_group( unsigned int keycode ) { if (key_groups.count( keycode )) return key_groups[keycode]; else return 0; }
+    int lookup_keyevent_key(long seqnum)
+    {
+        if (key_events_rev.count( seqnum ))
+            return key_events_rev[seqnum];
+        else
+            return '?';
+    }
+    long lookup_keyevent_seq(int keycode)
+    {
+        if (key_events.count( keycode ))
+            return key_events[keycode];
+        else
+            return 0;
+    }
+    int lookup_keygroup_key(long groupnum) {
+        if (key_groups_rev.count(groupnum))
+            return key_groups_rev[groupnum];
+        else
+            return '?';
+    }
+    long lookup_keygroup_group(int keycode)
+    {
+        if (key_groups.count(keycode))
+            return key_groups[keycode];
+        else
+            return 0;
+    }
 
     friend class MidiFile;
-    friend class OptionsFile;
+    friend class PreferencesFile;
     friend class PreferencesDialog;
 
 #ifdef JACK_SUPPORT
 
     friend int jack_sync_callback(jack_transport_state_t state,
-                              jack_position_t *pos, void *arg);
+                                  jack_position_t *pos, void *arg);
     friend void jack_shutdown(void *arg);
     friend void jack_timebase_callback(jack_transport_state_t state, jack_nframes_t nframes,
                                        jack_position_t *pos, int new_pos, void *arg);
@@ -384,7 +416,7 @@ extern void *input_thread_func(void *a_p);
 #ifdef JACK_SUPPORT
 
 int jack_sync_callback(jack_transport_state_t state,
-					   jack_position_t *pos, void *arg);
+                       jack_position_t *pos, void *arg);
 void print_jack_pos( jack_position_t* jack_pos );
 void jack_shutdown(void *arg);
 void jack_timebase_callback(jack_transport_state_t state, jack_nframes_t nframes,

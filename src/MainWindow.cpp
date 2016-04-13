@@ -6,7 +6,8 @@ bool is_pattern_playing = false;
 MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_main_perf(a_p)
+    m_main_perf(a_p),
+    mRecentMenu(NULL)
 {
     ui->setupUi(this);
 
@@ -535,7 +536,6 @@ void MainWindow::updateRecentFilesMenu()
     if (recent_files[0]!="")
     {
         mRecentFileActions[0] = new QAction(recent_files[0], this);
-        //FIXME this shortcut doesn't work
         mRecentFileActions[0]->setShortcut(tr("Ctrl+R"));
         connect(mRecentFileActions[0],
                 SIGNAL(triggered(bool)),
