@@ -108,16 +108,18 @@ const int c_maxbeats     = 0xFFFF;   /* max number of beats in a sequence */
 
 
 /* midifile tags */
-const unsigned long c_midibus =    0x24240001;
-const unsigned long c_midich =     0x24240002;
-const unsigned long c_midiclocks = 0x24240003;
-const unsigned long c_triggers =   0x24240004;
-const unsigned long c_notes =      0x24240005;
-const unsigned long c_timesig =    0x24240006;
-const unsigned long c_bpmtag =     0x24240007;
-const unsigned long c_triggers_new =   0x24240008;
-const unsigned long c_midictrl =   0x24240010;
-const unsigned long c_mutegroups = 0x24240009; // not sure why we went to 10 above, this might need a different value
+const unsigned long c_midibus =         0x24240001;
+const unsigned long c_midich =          0x24240002;
+const unsigned long c_midiclocks =      0x24240003;
+const unsigned long c_triggers =        0x24240004;
+const unsigned long c_notes =           0x24240005;
+const unsigned long c_timesig =         0x24240006;
+const unsigned long c_bpmtag =          0x24240007;
+const unsigned long c_triggers_new =    0x24240008;
+const unsigned long c_midictrl =        0x24240010;
+// not sure why we went to 10 above, this might need a different value
+const unsigned long c_mutegroups =      0x24240009;
+const unsigned long c_seq_colours =     0x24240011;
 
 
 const char c_font_6_12[] = "-*-fixed-medium-r-*--12-*-*-*-*-*-*";
@@ -325,7 +327,7 @@ const char* const c_interaction_method_descs[] =
 
 extern interaction_method_e global_interactionmethod;
 
-enum colours_e
+enum thumb_colours_e
 {
     White,
     Red,
@@ -338,4 +340,4 @@ enum colours_e
 };
 
 //colour map, initialised in main.cpp
-extern QMap<colours_e, QColor> colourMap;
+extern QMap<thumb_colours_e, QColor> colourMap;

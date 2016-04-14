@@ -2273,12 +2273,12 @@ void MidiPerformance::set_key_group( int keycode, long group_slot )
 }
 
 void MidiPerformance::setSequenceColour(int seqId,
-                                        colours_e newColour)
+                                        thumb_colours_e newColour)
 {
     mSequenceColours[seqId] = newColour;
 }
 
-colours_e MidiPerformance::getSequenceColour(int seqId)
+thumb_colours_e MidiPerformance::getSequenceColour(int seqId)
 {
     return mSequenceColours[seqId];
 }

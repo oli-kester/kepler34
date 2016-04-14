@@ -3582,10 +3582,6 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
 
     a_list->push_front( e.get_status() | m_midi_channel );
 
-    /* grab event data and store */
-//    unsigned char *m_data[2];
-//    e.get_data(m_data[0],m_data[1]);
-
     switch( e.get_status() & 0xF0 ){
 
             case 0x80:

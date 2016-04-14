@@ -66,7 +66,7 @@ bool global_with_jack_master = false;
 bool global_with_jack_master_cond = false;
 bool global_jack_start_mode = true;
 QString global_jack_session_uuid = "";
-QMap<colours_e, QColor> colourMap;
+QMap<thumb_colours_e, QColor> colourMap;
 
 user_midi_bus_definition   global_user_midi_bus_definitions[c_maxBuses];
 user_instrument_definition global_user_instrument_definitions[c_max_instruments];
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 //    QApplication::setStyle(new KeplerStyle);
 
     //setup colour scheme
-    colourMap = QMap<colours_e, QColor>();
+    colourMap = QMap<thumb_colours_e, QColor>();
     colourMap[White]  = Qt::white;
     colourMap[Red]    = Qt::red;
     colourMap[Green]  = Qt::green;

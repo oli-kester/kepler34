@@ -153,7 +153,7 @@ private:
     std:: map<long, int> key_events_rev;
     std:: map<long, int> key_groups_rev;
 
-    colours_e mSequenceColours[c_max_sequence];
+    thumb_colours_e mSequenceColours[c_max_sequence];
 
 #ifdef JACK_SUPPORT
 
@@ -193,8 +193,8 @@ public:
     bool get_song_recording();
 
     //set the colour used to represent the specified sequence
-    void setSequenceColour(int seqId, colours_e newColour);
-    colours_e getSequenceColour(int seqId);
+    void setSequenceColour(int seqId, thumb_colours_e newColour);
+    thumb_colours_e getSequenceColour(int seqId);
 
     // can register here for events...
     std::vector<performcallback*> m_notify;
