@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     for (int i = 0; i < 10; i++)
         mRecentFileActions[i] = NULL;
 
+
     //center on screen
     QRect screen = QApplication::desktop()->screenGeometry();
     int x = (screen.width()- width()) / 2;

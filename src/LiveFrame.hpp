@@ -97,6 +97,13 @@ private slots:
     void updateBankName();
     void newSeq();
     void editSeq();
+    void setColourRed();
+    void setColourGreen();
+    void setColourBlue();
+    void setColourYellow();
+    void setColourPurple();
+    void setColourPink();
+    void setColourOrange();
 
 signals:
     void callEditor(MidiSequence *seq); //call the editor tab on the given seq

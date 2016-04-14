@@ -35,7 +35,8 @@ SOURCES +=\
     SongTimeBar.cpp \
     SongSequenceNames.cpp \
     SongSequenceGrid.cpp \
-    PreferencesFile.cpp
+    PreferencesFile.cpp \
+    KeplerStyle.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -62,7 +63,8 @@ HEADERS  += \
     SongTimeBar.hpp \
     SongSequenceNames.hpp \
     SongSequenceGrid.hpp \
-    PreferencesFile.hpp
+    PreferencesFile.hpp \
+    KeplerStyle.hpp
 
 FORMS    += \
     MainWindow.ui \

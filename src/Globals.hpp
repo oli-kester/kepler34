@@ -27,6 +27,8 @@
 #endif
 
 #include <QString>
+#include <QMap>
+#include <QColor>
 
 using namespace std;
 
@@ -63,12 +65,12 @@ const int c_control_height = 0;
 
 
 const int c_mainwid_x = ((c_seqarea_x + c_mainwid_spacing )
-			 * c_mainwnd_cols - c_mainwid_spacing
-			 +  c_mainwid_border * 2 );
+                         * c_mainwnd_cols - c_mainwid_spacing
+                         +  c_mainwid_border * 2 );
 const int c_mainwid_y = ((c_seqarea_y  + c_mainwid_spacing )
-			 * c_mainwnd_rows
-			 +  c_mainwid_border * 2
-			 +  c_control_height );
+                         * c_mainwnd_rows
+                         +  c_mainwid_border * 2
+                         +  c_control_height );
 
 
 
@@ -178,10 +180,10 @@ extern user_instrument_definition global_user_instrument_definitions[c_max_instr
 
 /* scales */
 enum c_music_scales {
-  c_scale_off,
-  c_scale_major,
-  c_scale_minor,
-  c_scale_size
+    c_scale_off,
+    c_scale_major,
+    c_scale_minor,
+    c_scale_size
 
 };
 
@@ -280,7 +282,7 @@ const char c_interval_text[][3] =
     "M9",
     ""
 };
- 	  	  	
+
 const char c_chord_text[][5] =
 {
     "I",
@@ -323,3 +325,16 @@ const char* const c_interaction_method_descs[] =
 
 extern interaction_method_e global_interactionmethod;
 
+enum colours_e
+{
+    Red,
+    Green,
+    Blue,
+    Yellow,
+    Purple,
+    Pink,
+    Orange,
+};
+
+//colour map, initialised in main.cpp
+extern QMap<colours_e, QColor> colourMap;

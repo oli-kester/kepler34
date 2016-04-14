@@ -16,6 +16,7 @@
 #include "MidiPerformance.hpp"
 #include "MidiFile.hpp"
 #include "BeatIndicator.hpp"
+#include "KeplerStyle.hpp"
 
 //the main window of Kepler34
 

@@ -10,7 +10,6 @@
 #    include "Config.hpp"
 #endif
 
-//#include "font.h"
 #ifdef LASH_SUPPORT
 #    include "Lash.hpp"
 #endif
@@ -18,6 +17,7 @@
 #include "PreferencesFile.hpp"
 #include "MidiPerformance.hpp"
 #include "UserFile.hpp"
+#include "KeplerStyle.hpp"
 
 /* struct for command parsing */
 static struct
@@ -66,6 +66,7 @@ bool global_with_jack_master = false;
 bool global_with_jack_master_cond = false;
 bool global_jack_start_mode = true;
 QString global_jack_session_uuid = "";
+QMap<colours_e, QColor> colourMap;
 
 user_midi_bus_definition   global_user_midi_bus_definitions[c_maxBuses];
 user_instrument_definition global_user_instrument_definitions[c_max_instruments];
@@ -86,6 +87,20 @@ Lash *lash_driver = NULL;
 
 int main(int argc, char *argv[])
 {
+    //set application style
+//    QApplication::setStyle(new KeplerStyle);
+
+    //setup colour scheme
+    colourMap = QMap<colours_e, QColor>();
+    colourMap[Red]    = Qt::red;
+    colourMap[Green]  = Qt::green;
+    colourMap[Blue]   = Qt::blue;
+    colourMap[Yellow] = Qt::yellow;
+    colourMap[Purple] = Qt::blue;
+    colourMap[Pink]   = Qt::red;
+    colourMap[Orange] = Qt::yellow;
+
+    //main application object
     QApplication a(argc, argv);
 
     /*prepare global MIDI definitions*/
@@ -100,7 +115,6 @@ int main(int argc, char *argv[])
         for ( int j=0; j<128; j++ )
             global_user_instrument_definitions[i].controllers_active[j] = false;
     }
-
 
     /* Init the lash driver (strip lash specific command line
      * arguments and connect to daemon) */

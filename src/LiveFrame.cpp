@@ -426,7 +426,8 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
     {
         mPopup = new QMenu(this);
 
-        QAction *actionNew = new QAction("New sequence", mPopup);
+        //new sequence option
+        QAction *actionNew = new QAction(tr("New sequence"), mPopup);
         mPopup->addAction(actionNew);
         QObject::connect(actionNew,
                          SIGNAL(triggered(bool)),
@@ -435,12 +436,68 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
 
         if (m_main_perf->is_active(mCurrentSeq))
         {
-            QAction *actionEdit = new QAction("Edit sequence", mPopup);
+            //edit sequence
+            QAction *actionEdit = new QAction(tr("Edit sequence"), mPopup);
             mPopup->addAction(actionEdit);
-            QObject::connect(actionEdit,
-                             SIGNAL(triggered(bool)),
-                             this,
-                             SLOT(editSeq()));
+            connect(actionEdit,
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(editSeq()));
+
+            //set the colour from the scheme
+            QMenu *menuColour = new QMenu(tr("Set colour..."));
+
+            QAction *actionColours[7];
+
+            actionColours[0] = new QAction(tr("Red"), menuColour);
+            actionColours[1] = new QAction(tr("Green"), menuColour);
+            actionColours[2] = new QAction(tr("Blue"), menuColour);
+            actionColours[3] = new QAction(tr("Yellow"), menuColour);
+            actionColours[4] = new QAction(tr("Purple"), menuColour);
+            actionColours[5] = new QAction(tr("Pink"), menuColour);
+            actionColours[6] = new QAction(tr("Orange"), menuColour);
+
+            connect(actionColours[0],
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(setColourRed()));
+
+            connect(actionColours[1],
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(setColourGreen()));
+
+            connect(actionColours[2],
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(setColourBlue()));
+
+            connect(actionColours[3],
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(setColourYellow()));
+
+            connect(actionColours[4],
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(setColourPurple()));
+
+            connect(actionColours[5],
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(setColourPink()));
+
+            connect(actionColours[6],
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(setColourOrange()));
+
+            for (int i = 0; i < 7; i++)
+            {
+                menuColour->addAction(actionColours[i]);
+            }
+
+            mPopup->addMenu(menuColour);
         }
 
         mPopup->exec(QCursor::pos());
@@ -543,4 +600,33 @@ void LiveFrame::sequence_key( int a_seq )
 
         m_main_perf->sequence_playing_toggle( a_seq );
     }
+}
+
+void LiveFrame::setColourRed()
+{
+
+}
+void LiveFrame::setColourGreen()
+{
+
+}
+void LiveFrame::setColourBlue()
+{
+
+}
+void LiveFrame::setColourYellow()
+{
+
+}
+void LiveFrame::setColourPurple()
+{
+
+}
+void LiveFrame::setColourPink()
+{
+
+}
+void LiveFrame::setColourOrange()
+{
+
 }
