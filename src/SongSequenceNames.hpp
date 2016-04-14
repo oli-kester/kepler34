@@ -39,7 +39,7 @@ signals:
 public slots:
 
 private:    
-    MidiPerformance *m_mainperf;
+    MidiPerformance *mPerf;
 
     QTimer      *mTimer;
     QPen        *mPen;

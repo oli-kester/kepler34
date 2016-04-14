@@ -8,7 +8,7 @@
 SongSequenceNames::SongSequenceNames(MidiPerformance *a_perf,
                                      QWidget *parent) :
     QWidget(parent),
-    m_mainperf(a_perf)
+    mPerf(a_perf)
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::MinimumExpanding);
@@ -42,13 +42,13 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
 
     for ( int y = y_s; y <= y_f; y++ )
     {
-        int sequence = y;
+        int seqId = y;
 
-        if (sequence < c_total_seqs)
+        if (seqId < c_total_seqs)
         {
-            int i = sequence;
+            int i = seqId;
             //if first seq in bank
-            if ( sequence % c_seqs_in_set == 0 )
+            if ( seqId % c_seqs_in_set == 0 )
             {
                 //black boxes to mark each bank
                 mPen->setColor(Qt::black);
@@ -62,7 +62,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                                    c_names_y - 1);
 
                 char ss[3];
-                int bankId = sequence / c_seqs_in_set;
+                int bankId = seqId / c_seqs_in_set;
                 snprintf(ss, sizeof(ss), "%2d", bankId );
 
                 //draw bank number here
@@ -76,7 +76,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                 mPen->setColor(Qt::black);
                 mPainter->setPen(*mPen);
                 mPainter->save();
-                QString bankName(m_mainperf->getBankName(bankId)->c_str());
+                QString bankName(mPerf->getBankName(bankId)->c_str());
                 mPainter->translate(12,
                                     (c_names_y * i) +
                                     (c_names_y * c_seqs_in_set * 0.5)
@@ -85,7 +85,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                 mFont.setPointSize(9);
                 mFont.setBold(true);
                 mFont.setLetterSpacing(QFont::AbsoluteSpacing,
-                                      2);
+                                       2);
                 mPainter->setFont(mFont);
                 mPainter->drawText(0,
                                    0,
@@ -95,8 +95,17 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
 
             mPen->setStyle(Qt::SolidLine);
             mPen->setColor(Qt::black);
-            if ( m_mainperf->is_active( sequence ))
-                mBrush->setColor(Qt::white);
+            if ( mPerf->is_active(seqId))
+            {
+                //get seq's assigned colour and beautify
+                QColor colourSpec = QColor(colourMap.value(mPerf->getSequenceColour(seqId)));
+                QColor backColour = QColor(colourSpec);
+                if (backColour.value() != 255) //dont do this if we're white
+                    backColour.setHsv(colourSpec.hue(),
+                                      colourSpec.saturation() * 0.65,
+                                      colourSpec.value() * 1.3);
+                mBrush->setColor(backColour);
+            }
             else
                 mBrush->setColor(Qt::lightGray);
 
@@ -108,15 +117,15 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                                c_names_x - 15,
                                c_names_y);
 
-            if ( m_mainperf->is_active( sequence )){
+            if ( mPerf->is_active( seqId )){
 
-                m_sequence_active[sequence]=true;
+                m_sequence_active[seqId]=true;
 
                 //draw seq info on label
                 char name[50];
                 snprintf(name, sizeof(name), "%-14.14s                        %2d",
-                         m_mainperf->get_sequence(sequence)->get_name(),
-                         m_mainperf->get_sequence(sequence)->get_midi_channel() + 1);
+                         mPerf->get_sequence(seqId)->get_name(),
+                         mPerf->get_sequence(seqId)->get_midi_channel() + 1);
 
                 //seq name
                 mPen->setColor(Qt::black);
@@ -128,17 +137,17 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                 char str[20];
                 snprintf(str, sizeof(str),
                          "%d-%d %ld/%ld",
-                         m_mainperf->get_sequence(sequence)->get_midi_bus(),
-                         m_mainperf->get_sequence(sequence)->get_midi_channel()+1,
-                         m_mainperf->get_sequence(sequence)->getBeatsPerMeasure(),
-                         m_mainperf->get_sequence(sequence)->getBeatWidth());
+                         mPerf->get_sequence(seqId)->get_midi_bus(),
+                         mPerf->get_sequence(seqId)->get_midi_channel()+1,
+                         mPerf->get_sequence(seqId)->getBeatsPerMeasure(),
+                         mPerf->get_sequence(seqId)->getBeatWidth());
 
                 //seq info
                 mPainter->drawText(18,
                                    c_names_y * i + 20,
                                    str);
 
-                bool muted = m_mainperf->get_sequence(sequence)->get_song_mute();
+                bool muted = mPerf->get_sequence(seqId)->get_song_mute();
 
                 mPen->setColor(Qt::black);
                 mPainter->setPen(*mPen);

@@ -63,7 +63,7 @@ private:
     void half_split_trigger(int a_sequence, long a_tick);
     void set_adding(bool a_adding);
 
-    MidiPerformance *m_mainperf;
+    MidiPerformance *mPerf;
 
     QPen        *mPen;
     QBrush      *mBrush;
