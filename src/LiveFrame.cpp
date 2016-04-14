@@ -99,17 +99,17 @@ void LiveFrame::drawSequence(int a_seq)
 
             //get seq's assigned colour
             QColor backColour = QColor(colourMap.value(mPerf->getSequenceColour(a_seq)));
-            backColour.setAlpha(210);
 
             mPen->setColor(Qt::black);
             mPen->setStyle(Qt::SolidLine);
-            mBrush->setColor(backColour);
-            mPainter->setBrush(*mBrush);
 
             if (seq->get_playing())
             {
                 mPen->setWidth(2);
                 mPainter->setPen(*mPen);
+                backColour.setAlpha(210);
+                mBrush->setColor(backColour);
+                mPainter->setBrush(*mBrush);
                 mPainter->drawRect(base_x,
                                    base_y,
                                    thumbW + 1,
@@ -118,7 +118,10 @@ void LiveFrame::drawSequence(int a_seq)
             else
             {
                 mPen->setStyle(Qt::NoPen);
+                backColour.setAlpha(180);
+                mBrush->setColor(backColour);
                 mPainter->setPen(*mPen);
+                mPainter->setBrush(*mBrush);
                 mPainter->drawRect(base_x,
                                    base_y,
                                    thumbW,
