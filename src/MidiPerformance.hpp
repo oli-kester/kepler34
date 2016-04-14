@@ -133,7 +133,7 @@ private:
 
     void set_running( bool a_running );
 
-    string m_screen_set_notepad[c_max_sets];
+    string m_screen_set_notepad[c_max_num_banks];
 
     MidiControl m_midi_cc_toggle[ c_midi_controls ];
     MidiControl m_midi_cc_on[ c_midi_controls ];
@@ -153,6 +153,7 @@ private:
     std:: map<long, int> key_events_rev;
     std:: map<long, int> key_groups_rev;
 
+    colours_e mSequenceColours[c_max_sequence];
 
 #ifdef JACK_SUPPORT
 
@@ -191,6 +192,10 @@ public:
     void set_song_recording(bool new_state);
     bool get_song_recording();
 
+    //set the colour used to represent the specified sequence
+    void setSequenceColour(int seqId, colours_e newColour);
+    colours_e getSequenceColour(int seqId);
+
     // can register here for events...
     std::vector<performcallback*> m_notify;
 
@@ -217,6 +222,7 @@ public:
     int m_key_record_lower;
 
     bool show_ui_sequence_key() const { return m_show_ui_sequence_key; }
+
 
     MidiPerformance();
     ~MidiPerformance();

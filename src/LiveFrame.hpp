@@ -63,7 +63,7 @@ private:
 
     Ui::LiveFrame *ui;
 
-    MidiPerformance *m_main_perf;
+    MidiPerformance *mPerf;
     MidiSequence    m_moving_seq;
 
     QPainter    *mPainter;
@@ -97,6 +97,7 @@ private slots:
     void updateBankName();
     void newSeq();
     void editSeq();
+    void setColourWhite();
     void setColourRed();
     void setColourGreen();
     void setColourBlue();

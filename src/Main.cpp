@@ -92,6 +92,7 @@ int main(int argc, char *argv[])
 
     //setup colour scheme
     colourMap = QMap<colours_e, QColor>();
+    colourMap[White]  = Qt::white;
     colourMap[Red]    = Qt::red;
     colourMap[Green]  = Qt::green;
     colourMap[Blue]   = Qt::blue;

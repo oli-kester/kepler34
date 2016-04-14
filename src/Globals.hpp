@@ -37,12 +37,12 @@ const int c_mainwnd_rows = 4;
 const int c_mainwnd_cols = 8;
 const int c_seqs_in_set = c_mainwnd_rows * c_mainwnd_cols;
 const int c_gmute_tracks = c_seqs_in_set * c_seqs_in_set;
-const int c_max_sets = 32;
-const int c_total_seqs = c_seqs_in_set * c_max_sets;
+const int c_max_num_banks = 32;
+const int c_total_seqs = c_seqs_in_set * c_max_num_banks;
 
 /* number of sequences */
 /* 32 screen sets */
-const int c_max_sequence =  c_mainwnd_rows *  c_mainwnd_cols * c_max_sets;
+const int c_max_sequence =  c_mainwnd_rows *  c_mainwnd_cols * c_max_num_banks;
 
 const int c_ppqn         = 192;  /* default - dosnt change */
 const int c_bpm          = 120;  /* default */
@@ -327,13 +327,14 @@ extern interaction_method_e global_interactionmethod;
 
 enum colours_e
 {
+    White,
     Red,
     Green,
     Blue,
     Yellow,
     Purple,
     Pink,
-    Orange,
+    Orange
 };
 
 //colour map, initialised in main.cpp

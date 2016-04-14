@@ -118,9 +118,6 @@ class MidiSequence
     /* locking */
     Mutex m_mutex;
 
-    /* used to idenfity which events are ours in the out queue */
-    //unsigned char m_tag;
-
     /* takes an event this sequence is holding and
        places it on our midibus */
     void put_event_on_bus (MidiEvent * a_e);
@@ -193,20 +190,19 @@ class MidiSequence
     void set_editing (bool a_edit)
     {
     m_editing = a_edit;
-    };
+    }
     bool get_editing ()
     {
     return m_editing;
-    };
+    }
     void set_raise (bool a_edit)
     {
     m_raise = a_edit;
-    };
+    }
     bool get_raise ()
     {
     return m_raise;
-    };
-
+    }
 
     /* length in ticks */
     void set_length (long a_len, bool a_adjust_triggers = true);

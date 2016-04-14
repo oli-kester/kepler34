@@ -20,6 +20,7 @@ MidiPerformance::MidiPerformance()
         m_was_active_edit[i]  = false;
         m_was_active_perf[i]  = false;
         m_was_active_names[i] = false;
+        mSequenceColours[i]   = White;
     }
 
     m_mute_group_selected = 0;
@@ -49,7 +50,6 @@ MidiPerformance::MidiPerformance()
         m_midi_cc_on[i] = zero;
         m_midi_cc_off[i] = zero;
     }
-
 
     //map default keyboard mappings
     //(falls back to these if preferences file is missing)
@@ -270,7 +270,7 @@ void MidiPerformance::clear_all()
 
     string e( "" );
 
-    for (int i=0; i<c_max_sets; i++ ){
+    for (int i=0; i<c_max_num_banks; i++ ){
         setBankName( i, &e );
     }
 }
@@ -712,7 +712,7 @@ void MidiPerformance::print()
 
 void MidiPerformance::setBankName(int bankNum, string *a_notepad )
 {
-    if ( bankNum < c_max_sets )
+    if ( bankNum < c_max_num_banks )
         m_screen_set_notepad[bankNum] = *a_notepad;
 }
 
@@ -728,9 +728,9 @@ void MidiPerformance::setBank(int newBank )
     m_screen_set = newBank;
 
     if ( m_screen_set < 0 )
-        m_screen_set = c_max_sets - 1;
+        m_screen_set = c_max_num_banks - 1;
 
-    if ( m_screen_set >= c_max_sets )
+    if ( m_screen_set >= c_max_num_banks )
         m_screen_set = 0;
 }
 
@@ -2272,6 +2272,16 @@ void MidiPerformance::set_key_group( int keycode, long group_slot )
     key_groups_rev[group_slot] = keycode;
 }
 
+void MidiPerformance::setSequenceColour(int seqId,
+                                        colours_e newColour)
+{
+    mSequenceColours[seqId] = newColour;
+}
+
+colours_e MidiPerformance::getSequenceColour(int seqId)
+{
+    return mSequenceColours[seqId];
+}
 
 #ifdef JACK_SUPPORT
 void jack_timebase_callback(jack_transport_state_t state,
@@ -2363,66 +2373,5 @@ void print_jack_pos( jack_position_t* jack_pos ){
     printf( "    frame_time       [%lf]\n", jack_pos->frame_time );
     printf( "    next_time        [%lf]\n", jack_pos->next_time );
 }
-
-
-#if 0
-
-int main ()
-{
-    jack_client_t *client;
-
-    /* become a new client of the JACK server */
-    if ((client = jack_client_new("transport tester")) == 0) {
-        fprintf(stderr, "jack server not running?\n");
-        return 1;
-    }
-
-    jack_on_shutdown(client, jack_shutdown, 0);
-    jack_set_sync_callback(client, jack_sync_callback, NULL);
-
-    if (jack_activate(client)) {
-        fprintf(stderr, "cannot activate client");
-        return 1;
-    }
-
-    bool cond = false; /* true if we want to fail if there is already a master */
-    if (jack_set_timebase_callback(client, cond, timebase, NULL) != 0){
-        printf("Unable to take over timebase or there is already a master.\n");
-        exit(1);
-    }
-
-    jack_position_t pos;
-
-    pos.valid = JackPositionBBT;
-
-    pos.bar = 0;
-    pos.beat = 0;
-    pos.tick = 0;
-
-    pos.beats_per_bar = time_beats_per_bar;
-    pos.beat_type = time_beat_type;
-    pos.ticks_per_beat = time_ticks_per_beat;
-    pos.beats_per_minute = time_beats_per_minute;
-    pos.bar_start_tick = 0.0;
-
-
-    //jack_transport_reposition( client, &pos );
-
-    jack_transport_start (client);
-
-    //void jack_transport_stop (jack_client_t *client);
-
-    int bob;
-    scanf ("%d", &bob);
-
-    jack_transport_stop (client);
-    jack_release_timebase(client);
-    jack_client_close(client);
-
-    return 0;
-}
-
-#endif
-
 
 #endif

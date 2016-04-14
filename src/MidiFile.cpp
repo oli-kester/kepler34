@@ -622,9 +622,9 @@ bool MidiFile::write (MidiPerformance * a_perf)
 
     /* notepad data */
     write_long (c_notes);
-    write_short (c_max_sets);
+    write_short (c_max_num_banks);
 
-    for (int i = 0; i < c_max_sets; i++)
+    for (int i = 0; i < c_max_num_banks; i++)
     {
         string * note = a_perf->getBankName (i);
         write_short (note->length ());

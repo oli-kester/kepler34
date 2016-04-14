@@ -5,7 +5,7 @@
 LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     QFrame(parent),
     ui(new Ui::LiveFrame),
-    m_main_perf(perf),
+    mPerf(perf),
     mCanAddNew(false)
 {
     setSizePolicy(QSizePolicy::Expanding,
@@ -94,15 +94,16 @@ void LiveFrame::drawSequence(int a_seq)
                            thumbW,
                            thumbH);
         
-        if (m_main_perf->is_active(a_seq))
+        if (mPerf->is_active(a_seq))
         {
-            MidiSequence *seq = m_main_perf->get_sequence(a_seq);
+            MidiSequence *seq = mPerf->get_sequence(a_seq);
             
             //set foreground/background colours based on seq's play state
+            //and the assigned seq colour
             if (seq->get_playing())
             {
                 m_last_playing[a_seq] = true;
-                mBrush->setColor(Qt::yellow);
+                mBrush->setColor(colourMap.value(mPerf->getSequenceColour(a_seq)));
                 mPen->setColor(Qt::black);
             }
             else
@@ -135,9 +136,9 @@ void LiveFrame::drawSequence(int a_seq)
             /* midi channel + key + timesig */
             char str[20];
 
-            if (m_main_perf->show_ui_sequence_key())
+            if (mPerf->show_ui_sequence_key())
             {
-                snprintf( str, sizeof str, "%c", (char)m_main_perf->lookup_keyevent_key( a_seq ) );
+                snprintf( str, sizeof str, "%c", (char)mPerf->lookup_keyevent_key( a_seq ) );
 
                 mPainter->drawText(base_x + thumbW - 7,
                                    base_y + thumbH * 4 - 2,
@@ -226,7 +227,7 @@ void LiveFrame::drawSequence(int a_seq)
             }
 
             //draw playhead
-            int a_tick = m_main_perf->get_tick();
+            int a_tick = mPerf->get_tick();
             a_tick += (length - seq->get_trigger_offset( ));
             a_tick %= length;
 
@@ -273,14 +274,14 @@ void LiveFrame::setBank(int newBank)
     m_bank_id = newBank;
 
     if (m_bank_id < 0)
-        m_bank_id = c_max_sets - 1;
+        m_bank_id = c_max_num_banks - 1;
 
-    if (m_bank_id >= c_max_sets)
+    if (m_bank_id >= c_max_num_banks)
         m_bank_id = 0;
 
-    m_main_perf->set_offset(m_bank_id);
+    mPerf->set_offset(m_bank_id);
 
-    QString bankName = (*m_main_perf->getBankName(m_bank_id)).c_str();
+    QString bankName = (*mPerf->getBankName(m_bank_id)).c_str();
     ui->txtBankName->setPlainText(bankName);
 
     ui->spinBank->setValue(m_bank_id);
@@ -300,15 +301,15 @@ void LiveFrame::redraw()
 
 void LiveFrame::updateBank(int newBank)
 {
-    m_main_perf->setBank(newBank);
+    mPerf->setBank(newBank);
     setBank(newBank);
-    m_main_perf->setModified(true);
+    mPerf->setModified(true);
 }
 
 void LiveFrame::updateBankName()
 {
     updateInternalBankName();
-    m_main_perf->setModified(true);
+    mPerf->setModified(true);
 }
 
 void LiveFrame::updateInternalBankName()
@@ -319,7 +320,7 @@ void LiveFrame::updateInternalBankName()
     qDebug() << "LiveFrame.cpp, New bank name is - "
              << QString(newName.c_str()) << endl;
 
-    m_main_perf->setBankName(m_bank_id, &newName);
+    mPerf->setBankName(m_bank_id, &newName);
 }
 
 int LiveFrame::seqIDFromClickXY(int click_x, int click_y)
@@ -384,9 +385,9 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
          && event->button() == Qt::LeftButton
          && !mMoving )
     {
-        if ( m_main_perf->is_active( mCurrentSeq ))
+        if ( mPerf->is_active( mCurrentSeq ))
         {
-            m_main_perf->sequence_playing_toggle( mCurrentSeq );
+            mPerf->sequence_playing_toggle( mCurrentSeq );
             update();
         }
         else
@@ -401,20 +402,20 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
     {
         mMoving = false;
 
-        if (!m_main_perf->is_active(mCurrentSeq)
+        if (!mPerf->is_active(mCurrentSeq)
                 && mCurrentSeq != -1
-                && !m_main_perf->is_sequence_in_edit(mCurrentSeq))
+                && !mPerf->is_sequence_in_edit(mCurrentSeq))
         {
-            m_main_perf->new_sequence(mCurrentSeq);
-            *(m_main_perf->get_sequence( mCurrentSeq )) = m_moving_seq;
+            mPerf->new_sequence(mCurrentSeq);
+            *(mPerf->get_sequence( mCurrentSeq )) = m_moving_seq;
 
             update();
 
         }
         else
         {
-            m_main_perf->new_sequence( mOldSeq  );
-            *(m_main_perf->get_sequence( mOldSeq )) = m_moving_seq;
+            mPerf->new_sequence( mOldSeq  );
+            *(mPerf->get_sequence( mOldSeq )) = m_moving_seq;
 
             update();
         }
@@ -434,7 +435,7 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
                          this,
                          SLOT(newSeq()));
 
-        if (m_main_perf->is_active(mCurrentSeq))
+        if (mPerf->is_active(mCurrentSeq))
         {
             //edit sequence
             QAction *actionEdit = new QAction(tr("Edit sequence"), mPopup);
@@ -447,68 +448,73 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
             //set the colour from the scheme
             QMenu *menuColour = new QMenu(tr("Set colour..."));
 
-            QAction *actionColours[7];
+            QAction *actionColours[8];
 
-            actionColours[0] = new QAction(tr("Red"), menuColour);
-            actionColours[1] = new QAction(tr("Green"), menuColour);
-            actionColours[2] = new QAction(tr("Blue"), menuColour);
-            actionColours[3] = new QAction(tr("Yellow"), menuColour);
-            actionColours[4] = new QAction(tr("Purple"), menuColour);
-            actionColours[5] = new QAction(tr("Pink"), menuColour);
-            actionColours[6] = new QAction(tr("Orange"), menuColour);
+            actionColours[0] = new QAction(tr("White"), menuColour);
+            actionColours[1] = new QAction(tr("Red"), menuColour);
+            actionColours[2] = new QAction(tr("Green"), menuColour);
+            actionColours[3] = new QAction(tr("Blue"), menuColour);
+            actionColours[4] = new QAction(tr("Yellow"), menuColour);
+            actionColours[5] = new QAction(tr("Purple"), menuColour);
+            actionColours[6] = new QAction(tr("Pink"), menuColour);
+            actionColours[7] = new QAction(tr("Orange"), menuColour);
 
             connect(actionColours[0],
                     SIGNAL(triggered(bool)),
                     this,
-                    SLOT(setColourRed()));
+                    SLOT(setColourWhite()));
 
             connect(actionColours[1],
                     SIGNAL(triggered(bool)),
                     this,
-                    SLOT(setColourGreen()));
+                    SLOT(setColourRed()));
 
             connect(actionColours[2],
                     SIGNAL(triggered(bool)),
                     this,
-                    SLOT(setColourBlue()));
+                    SLOT(setColourGreen()));
 
             connect(actionColours[3],
                     SIGNAL(triggered(bool)),
                     this,
-                    SLOT(setColourYellow()));
+                    SLOT(setColourBlue()));
 
             connect(actionColours[4],
                     SIGNAL(triggered(bool)),
                     this,
-                    SLOT(setColourPurple()));
+                    SLOT(setColourYellow()));
 
             connect(actionColours[5],
                     SIGNAL(triggered(bool)),
                     this,
-                    SLOT(setColourPink()));
+                    SLOT(setColourPurple()));
 
             connect(actionColours[6],
                     SIGNAL(triggered(bool)),
                     this,
+                    SLOT(setColourPink()));
+
+            connect(actionColours[7],
+                    SIGNAL(triggered(bool)),
+                    this,
                     SLOT(setColourOrange()));
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 8; i++)
             {
                 menuColour->addAction(actionColours[i]);
             }
 
             mPopup->addMenu(menuColour);
         }
-
         mPopup->exec(QCursor::pos());
     }
 
     //middle button launches seq editor
     if (mCurrentSeq != -1
             && event->button() == Qt::MiddleButton
-            && m_main_perf->is_active(mCurrentSeq))
+            && mPerf->is_active(mCurrentSeq))
     {
-        callEditor(m_main_perf->get_sequence(mCurrentSeq));
+        callEditor(mPerf->get_sequence(mCurrentSeq));
     }
 }
 
@@ -520,17 +526,17 @@ void LiveFrame::mouseMoveEvent(QMouseEvent *event)
     {
         if (seqId != mCurrentSeq
                 && !mMoving
-                && !m_main_perf->is_sequence_in_edit(mCurrentSeq)){
+                && !mPerf->is_sequence_in_edit(mCurrentSeq)){
 
             /* lets drag a sequence between slots */
-            if ( m_main_perf->is_active( mCurrentSeq )){
+            if ( mPerf->is_active( mCurrentSeq )){
 
                 mOldSeq = mCurrentSeq;
                 mMoving = true;
 
                 /* save the sequence and clear the old slot */
-                m_moving_seq = *(m_main_perf->get_sequence( mCurrentSeq ));
-                m_main_perf->delete_sequence( mCurrentSeq );
+                m_moving_seq = *(mPerf->get_sequence( mCurrentSeq ));
+                mPerf->delete_sequence( mCurrentSeq );
 
                 update();
             }
@@ -549,14 +555,14 @@ void LiveFrame::mouseDoubleClickEvent(QMouseEvent *event)
 
 void LiveFrame::newSeq()
 {
-    if (m_main_perf->is_active(mCurrentSeq))
+    if (mPerf->is_active(mCurrentSeq))
     {
         int choice = mMsgBoxNewSeqCheck->exec();
         if (choice == QMessageBox::No)
             return;
     }
-    m_main_perf->new_sequence(mCurrentSeq);
-    m_main_perf->get_sequence( mCurrentSeq )->set_dirty();
+    mPerf->new_sequence(mCurrentSeq);
+    mPerf->get_sequence( mCurrentSeq )->set_dirty();
     //TODO reenable - disabled opening the editor for each new seq
     //    callEditor(m_main_perf->get_sequence(m_current_seq));
 
@@ -564,7 +570,7 @@ void LiveFrame::newSeq()
 
 void LiveFrame::editSeq()
 {
-    callEditor(m_main_perf->get_sequence(mCurrentSeq));
+    callEditor(mPerf->get_sequence(mCurrentSeq));
 }
 
 void LiveFrame::keyPressEvent(QKeyEvent *event)
@@ -580,8 +586,8 @@ void LiveFrame::keyPressEvent(QKeyEvent *event)
     default: //sequence mute toggling
         quint32 keycode =  event->key();
         qDebug() << keycode << endl;
-        if (m_main_perf->get_key_events()->count(event->key()) != 0)
-            sequence_key(m_main_perf->lookup_keyevent_seq(event->key()));
+        if (mPerf->get_key_events()->count(event->key()) != 0)
+            sequence_key(mPerf->lookup_keyevent_seq(event->key()));
         break;
     }
 }
@@ -594,39 +600,43 @@ void LiveFrame::keyReleaseEvent(QKeyEvent *event)
 void LiveFrame::sequence_key( int a_seq )
 {
     /* add screen set offset */
-    a_seq += m_main_perf->getBank() * c_mainwnd_rows * c_mainwnd_cols;
+    a_seq += mPerf->getBank() * c_mainwnd_rows * c_mainwnd_cols;
 
-    if ( m_main_perf->is_active( a_seq ) ){
+    if ( mPerf->is_active( a_seq ) ){
 
-        m_main_perf->sequence_playing_toggle( a_seq );
+        mPerf->sequence_playing_toggle( a_seq );
     }
 }
 
+void LiveFrame::setColourWhite()
+{
+    mPerf->setSequenceColour(mCurrentSeq, White);
+}
 void LiveFrame::setColourRed()
 {
-
+    mPerf->setSequenceColour(mCurrentSeq, Red);
 }
 void LiveFrame::setColourGreen()
 {
-
+    mPerf->setSequenceColour(mCurrentSeq, Green);
 }
 void LiveFrame::setColourBlue()
 {
-
+    mPerf->setSequenceColour(mCurrentSeq, Blue);
 }
 void LiveFrame::setColourYellow()
 {
-
+    mPerf->setSequenceColour(mCurrentSeq, Yellow);
 }
 void LiveFrame::setColourPurple()
 {
-
+    mPerf->setSequenceColour(mCurrentSeq, Purple);
 }
 void LiveFrame::setColourPink()
 {
-
+    mPerf->setSequenceColour(mCurrentSeq, Pink);
 }
 void LiveFrame::setColourOrange()
 {
-
+    mPerf->setSequenceColour(mCurrentSeq, Orange);
 }
