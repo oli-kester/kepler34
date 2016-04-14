@@ -6,7 +6,7 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     QFrame(parent),
     ui(new Ui::LiveFrame),
     mPerf(perf),
-    mCanAddNew(false)
+    mAddingNew(false)
 {
     setSizePolicy(QSizePolicy::Expanding,
                   QSizePolicy::Expanding);
@@ -27,7 +27,7 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
             SIGNAL(valueChanged(int)),
             this,
             SLOT(updateBank(int)));
-    
+
     connect(ui->txtBankName,
             SIGNAL(textChanged()),
             this,
@@ -68,10 +68,14 @@ void LiveFrame::drawSequence(int a_seq)
     mPainter->setBrush(*mBrush);
     mPainter->setFont(mFont);
 
+    //timing info for timed draw elements
+    long tick = mPerf->get_tick();
+    int metro = (tick / c_ppqn) % 2;
+
     //grab frame dimensions for scaled drawing
-    thumbW = (ui->frame->width() - c_mainwid_spacing * 8)
+    thumbW = (ui->frame->width() - 1 - c_mainwid_spacing * 8)
             / c_mainwnd_cols;
-    thumbH = (ui->frame->height() - c_mainwid_spacing * 5)
+    thumbH = (ui->frame->height() - 1 - c_mainwid_spacing * 5)
             / c_mainwnd_rows;
 
     previewW = thumbW - mFont.pointSize() * 2;
@@ -82,50 +86,53 @@ void LiveFrame::drawSequence(int a_seq)
     {
         int i =  (a_seq / c_mainwnd_rows) % c_mainwnd_cols;
         int j =  a_seq % c_mainwnd_rows;
-        
-        int base_x = (ui->frame->x() +
+
+        int base_x = (ui->frame->x() + 1 +
                       (thumbW + c_mainwid_spacing) * i);
-        int base_y = (ui->frame->y() +
+        int base_y = (ui->frame->y() + 1 +
                       (thumbH + c_mainwid_spacing) * j);
-        
-        //draw outline of this seq thumbnail
-        mPainter->drawRect(base_x,
-                           base_y,
-                           thumbW,
-                           thumbH);
-        
+
+
         if (mPerf->is_active(a_seq))
         {
             MidiSequence *seq = mPerf->get_sequence(a_seq);
-            
-            //set foreground/background colours based on seq's play state
-            //and the assigned seq colour
+
+            //get seq's assigned colour
+            QColor backColour = QColor(colourMap.value(mPerf->getSequenceColour(a_seq)));
+            backColour.setAlpha(210);
+
+            mPen->setColor(Qt::black);
+            mPen->setStyle(Qt::SolidLine);
+            mBrush->setColor(backColour);
+            mPainter->setBrush(*mBrush);
+
             if (seq->get_playing())
             {
-                m_last_playing[a_seq] = true;
-                mBrush->setColor(colourMap.value(mPerf->getSequenceColour(a_seq)));
-                mPen->setColor(Qt::black);
+                mPen->setWidth(2);
+                mPainter->setPen(*mPen);
+                mPainter->drawRect(base_x,
+                                   base_y,
+                                   thumbW + 1,
+                                   thumbH + 1);
             }
             else
             {
-                m_last_playing[a_seq] = false;
-                mBrush->setColor(Qt::lightGray);
-                mPen->setColor(Qt::black);
+                mPen->setStyle(Qt::NoPen);
+                mPainter->setPen(*mPen);
+                mPainter->drawRect(base_x,
+                                   base_y,
+                                   thumbW,
+                                   thumbH);
             }
-            
-            //draw background of thumbnail
-            mPainter->setBrush(*mBrush);
-            mPainter->setPen(*mPen);
-            mPainter->drawRect(base_x + 1,
-                               base_y + 1,
-                               thumbW - 2,
-                               thumbH - 2);
-            
-            //write seq data strings on thumbnail
+
+            //write seq data strings
+            ///name
+            mPen->setColor(Qt::black);
+            mPen->setWidth(1);
+            mPen->setStyle(Qt::SolidLine);
             mPainter->setPen(*mPen);
             char name[20];
             snprintf(name, sizeof name, "%.13s", seq->get_name());
-            
             mPainter->drawText(base_x + c_text_x,
                                base_y + 4,
                                80,
@@ -172,6 +179,7 @@ void LiveFrame::drawSequence(int a_seq)
             mBrush->setStyle(Qt::NoBrush);
             mPainter->setBrush(*mBrush);
             mPainter->setPen(*mPen);
+            //draw inner box for notes
             mPainter->drawRect(rectangle_x - 2,
                                rectangle_y - 1,
                                previewW,
@@ -233,7 +241,10 @@ void LiveFrame::drawSequence(int a_seq)
 
             long tick_x = a_tick * previewW / length;
 
-            mPen->setColor(Qt::red);
+            if (seq->get_playing())
+                mPen->setColor(Qt::red);
+            else
+                mPen->setColor(Qt::black);
 
             if ( seq->get_queued()){
                 mPen->setColor(Qt::green);
@@ -248,21 +259,38 @@ void LiveFrame::drawSequence(int a_seq)
         }
         else
         {
-            //no sequence present. Insert placeholder
             mPen->setColor(Qt::black);
+            mPen->setStyle(Qt::NoPen);
             mFont.setPointSize(15);
             mPainter->setPen(*mPen);
             mPainter->setFont(mFont);
+
+            //draw outline of this seq thumbnail
+            mPainter->drawRect(base_x,
+                               base_y,
+                               thumbW,
+                               thumbH);
+
+            //no sequence present. Insert placeholder
+            mPen->setStyle(Qt::SolidLine);
+            mPainter->setPen(*mPen);
             mPainter->drawText(base_x + 2,
                                base_y + 17,
                                "+");
         }
     }
+    //lessen alpha on each redraw to have smooth fading
+    //done as a factor of the bpm to get useful fades
+    alpha *= 0.7 - mPerf->get_bpm() / 300;
+
+    lastMetro = metro;
+
     delete mPainter, mPen, mBrush;
 }
 void LiveFrame::drawAllSequences()
 {
-    for (int i=0; i < (c_mainwnd_rows * c_mainwnd_cols); i++){
+    for (int i=0; i < (c_mainwnd_rows * c_mainwnd_cols); i++)
+    {
         drawSequence(i + (m_bank_id * c_mainwnd_rows * c_mainwnd_cols));
 
         m_last_tick_x[i + (m_bank_id * c_mainwnd_rows * c_mainwnd_cols)] = 0;
@@ -381,18 +409,22 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
 
     /* if we're on a valid sequence, hit the left mouse button,
      * and are not dragging a sequence - toggle playing*/
-    if ( mCurrentSeq != -1
-         && event->button() == Qt::LeftButton
-         && !mMoving )
+    if (mCurrentSeq != -1
+            && event->button() == Qt::LeftButton
+            && !mMoving)
     {
-        if ( mPerf->is_active( mCurrentSeq ))
+        if (mPerf->is_active(mCurrentSeq))
         {
-            mPerf->sequence_playing_toggle( mCurrentSeq );
+            if (!mAddingNew)
+            {
+                mPerf->sequence_playing_toggle(mCurrentSeq);
+            }
+            mAddingNew = false;
             update();
         }
         else
         {
-            mCanAddNew = true;
+            mAddingNew = true;
         }
     }
 
@@ -522,15 +554,15 @@ void LiveFrame::mouseMoveEvent(QMouseEvent *event)
 {
     int seqId = seqIDFromClickXY(event->x(), event->y());
 
-    if ( mButtonDown )
+    if (mButtonDown)
     {
         if (seqId != mCurrentSeq
                 && !mMoving
                 && !mPerf->is_sequence_in_edit(mCurrentSeq)){
 
             /* lets drag a sequence between slots */
-            if ( mPerf->is_active( mCurrentSeq )){
-
+            if ( mPerf->is_active( mCurrentSeq ))
+            {
                 mOldSeq = mCurrentSeq;
                 mMoving = true;
 
@@ -546,10 +578,9 @@ void LiveFrame::mouseMoveEvent(QMouseEvent *event)
 
 void LiveFrame::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if (mCanAddNew)
+    if (mAddingNew)
     {
         newSeq();
-        mCanAddNew = false;
     }
 }
 
@@ -639,4 +670,9 @@ void LiveFrame::setColourPink()
 void LiveFrame::setColourOrange()
 {
     mPerf->setSequenceColour(mCurrentSeq, Orange);
+}
+
+void LiveFrame::resetBeatPulsing()
+{
+
 }

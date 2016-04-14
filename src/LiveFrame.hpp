@@ -82,12 +82,16 @@ private:
     //internal seq MIDI preview dimensions
     int     previewW, previewH;
 
+    //beat pulsing
+    int         lastMetro;
+    int         alpha;
+
     //mouse interaction
     int     mCurrentSeq;
     int     mOldSeq;
     bool    mButtonDown;
     bool    mMoving; //are we moving bewteen slots
-    bool    mCanAddNew; /*we can add a new seq here,
+    bool    mAddingNew; /*we can add a new seq here,
                           wait for double click*/
     long    m_last_tick_x[c_max_sequence];
     bool    m_last_playing[c_max_sequence];
@@ -105,6 +109,7 @@ private slots:
     void setColourPurple();
     void setColourPink();
     void setColourOrange();
+    void resetBeatPulsing();
 
 signals:
     void callEditor(MidiSequence *seq); //call the editor tab on the given seq
