@@ -93,13 +93,13 @@ int main(int argc, char *argv[])
     //setup colour scheme
     colourMap = QMap<thumb_colours_e, QColor>();
     colourMap[White]  = Qt::white;
-    colourMap[Red]    = Qt::red;
-    colourMap[Green]  = Qt::green;
-    colourMap[Blue]   = Qt::blue;
-    colourMap[Yellow] = Qt::yellow;
-    colourMap[Purple] = Qt::blue;
-    colourMap[Pink]   = Qt::red;
-    colourMap[Orange] = Qt::yellow;
+    colourMap[Red]    = QColor(173, 33, 33);
+    colourMap[Green]  = QColor(26, 139, 26);
+    colourMap[Blue]   = QColor(28, 72, 112);
+    colourMap[Yellow] = QColor(169, 173, 33);
+    colourMap[Purple] = QColor(87, 26, 115);
+    colourMap[Pink]   = QColor(152, 29, 72);
+    colourMap[Orange] = QColor(173, 115, 33);
 
     //main application object
     QApplication a(argc, argv);
