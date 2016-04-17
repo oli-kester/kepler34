@@ -619,9 +619,18 @@ void LiveFrame::keyPressEvent(QKeyEvent *event)
     case Qt::Key_BracketRight:
         setBank(m_bank_id + 1);
         break;
+    case Qt::Key_Semicolon: //replace
+        mPerf->set_sequence_control_status(c_status_replace);
+        break;
+    case Qt::Key_Slash: //queue
+        mPerf->set_sequence_control_status(c_status_queue);
+        break;
+    case Qt::Key_Apostrophe || Qt::Key_NumberSign: //snapshot
+        mPerf->set_sequence_control_status(c_status_snapshot);
+        break;
     default: //sequence mute toggling
         quint32 keycode =  event->key();
-        qDebug() << keycode << endl;
+        qDebug() << "Live frame key press - " << keycode << endl;
         if (mPerf->get_key_events()->count(event->key()) != 0)
             sequence_key(mPerf->lookup_keyevent_seq(event->key()));
         break;
@@ -630,7 +639,19 @@ void LiveFrame::keyPressEvent(QKeyEvent *event)
 
 void LiveFrame::keyReleaseEvent(QKeyEvent *event)
 {
-
+    //unset the relevant control modifiers
+    switch (event->key())
+    {
+    case Qt::Key_Semicolon: //replace
+        mPerf->unset_sequence_control_status(c_status_replace);
+        break;
+    case Qt::Key_Slash: //queue
+        mPerf->unset_sequence_control_status(c_status_queue);
+        break;
+    case Qt::Key_Apostrophe || Qt::Key_NumberSign: //snapshot
+        mPerf->unset_sequence_control_status(c_status_snapshot);
+        break;
+    }
 }
 
 void LiveFrame::sequence_key( int a_seq )
@@ -675,9 +696,4 @@ void LiveFrame::setColourPink()
 void LiveFrame::setColourOrange()
 {
     mPerf->setSequenceColour(mCurrentSeq, Orange);
-}
-
-void LiveFrame::resetBeatPulsing()
-{
-
 }

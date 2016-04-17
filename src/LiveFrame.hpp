@@ -109,7 +109,6 @@ private slots:
     void setColourPurple();
     void setColourPink();
     void setColourOrange();
-    void resetBeatPulsing();
 
 signals:
     void callEditor(MidiSequence *seq); //call the editor tab on the given seq
