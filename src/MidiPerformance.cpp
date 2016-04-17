@@ -717,7 +717,7 @@ void MidiPerformance::setBankName(int bankNum, string *a_notepad )
 }
 
 
-string *MidiPerformance::getBankName(int bank_num )
+string *MidiPerformance::getBankName(int bank_num)
 {
     return &m_screen_set_notepad[bank_num];
 }

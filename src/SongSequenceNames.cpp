@@ -117,7 +117,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                                c_names_x - 15,
                                c_names_y);
 
-            if ( mPerf->is_active( seqId )){
+            if ( mPerf->is_active(seqId)){
 
                 m_sequence_active[seqId]=true;
 

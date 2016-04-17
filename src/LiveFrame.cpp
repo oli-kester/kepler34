@@ -6,7 +6,8 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     QFrame(parent),
     ui(new Ui::LiveFrame),
     mPerf(perf),
-    mAddingNew(false)
+    mAddingNew(false),
+    m_bank_id(0)
 {
     setSizePolicy(QSizePolicy::Expanding,
                   QSizePolicy::Expanding);
@@ -22,6 +23,9 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     mMsgBoxNewSeqCheck->setDefaultButton(QMessageBox::No);
 
     setBank(0);
+
+    QString bankName = (*mPerf->getBankName(m_bank_id)).c_str();
+    ui->txtBankName->setPlainText(bankName);
 
     connect(ui->spinBank,
             SIGNAL(valueChanged(int)),
@@ -155,15 +159,13 @@ void LiveFrame::drawSequence(int a_seq)
                                    str);
             }
 
-            snprintf( str, sizeof str,
-                      "%d-%d %ld/%ld",
-                      seq->get_midi_bus(),
-                      seq->get_midi_channel()+1,
-                      seq->getBeatsPerMeasure(), seq->getBeatWidth());
+            QString seqInfo = QString::number(seq->get_midi_bus());
+            seqInfo.append("-");
+            seqInfo.append(QString::number(seq->get_midi_channel() + 1));
 
             mPainter->drawText(base_x + 5,
                                base_y + thumbH - 5,
-                               str);
+                               seqInfo);
 
             int rectangle_x = base_x + 7;
             int rectangle_y = base_y + 15;

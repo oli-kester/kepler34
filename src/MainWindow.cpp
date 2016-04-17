@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     for (int i = 0; i < 10; i++)
         mRecentFileActions[i] = NULL;
 
-
     //center on screen
     QRect screen = QApplication::desktop()->screenGeometry();
     int x = (screen.width()- width()) / 2;
@@ -70,6 +69,8 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_beat_ind->setBeatsPerMeasure(m_song_frame->getBeatsPerMeasure());
 
     updateRecentFilesMenu();
+
+    m_live_frame->setFocus();
 
     //timer to refresh GUI elements every few ms
     m_timer = new QTimer(this);
@@ -267,6 +268,14 @@ void MainWindow::openMidiFile(const QString &path)
     global_filename = path;
 
     updateWindowTitle();
+
+    //reinitialize live frame
+    ui->LiveTabLayout->removeWidget(m_live_frame);
+    if (m_live_frame)
+        delete  m_live_frame;
+    m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
+    ui->LiveTabLayout->addWidget(m_live_frame);
+    m_live_frame->show();
 
     //add to recent files list
     m_dialog_prefs->addRecentFile(path);

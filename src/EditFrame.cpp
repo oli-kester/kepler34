@@ -242,7 +242,7 @@ void EditFrame::updateMidiBus(int newIndex)
 
 void EditFrame::updateMidiChannel(int newIndex)
 {
-    mSeq->set_midi_channel(newIndex + 1);
+    mSeq->set_midi_channel(newIndex);
 }
 
 void EditFrame::undo()
