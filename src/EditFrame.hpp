@@ -6,6 +6,7 @@
 #include "EditKeys.hpp"
 #include "EditTimeBar.hpp"
 #include "EditNoteRoll.hpp"
+#include "EditEventValues.hpp"
 
 #include <QFrame>
 #include <QLayout>
@@ -47,6 +48,7 @@ private:
     EditKeys     *mKeyboard;
     EditTimeBar  *mTimeBar;
     EditNoteRoll *mNoteGrid;
+    EditEventValues   *mEventEdit;
 
     /* set snap to in pulses, off = 1 */
     int         mSnap;

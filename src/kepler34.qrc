@@ -21,5 +21,9 @@
         <file>pixmaps/length.xpm</file>
         <file>pixmaps/key.xpm</file>
         <file>pixmaps/bus.xpm</file>
+        <file>pixmaps/editor-play.xpm</file>
+        <file>pixmaps/editor-q-rec.xpm</file>
+        <file>pixmaps/editor-rec.xpm</file>
+        <file>pixmaps/editor-thru.xpm</file>
     </qresource>
 </RCC>
