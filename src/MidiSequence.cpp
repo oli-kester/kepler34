@@ -19,6 +19,7 @@ MidiSequence::MidiSequence( ) :
     m_quanized_rec(false),
     m_thru(false),
     m_queued(false),
+    m_oneshot(false),
 
     m_trigger_copied(false),
 
@@ -37,6 +38,7 @@ MidiSequence::MidiSequence( ) :
 
     m_last_tick(0),
     m_queued_tick(0),
+    m_oneshot_tick(0),
 
     m_trigger_offset(0),
 
@@ -241,8 +243,7 @@ MidiSequence::set_orig_tick( long a_tick )
 }
 
 
-void
-MidiSequence::toggle_queued()
+void MidiSequence::toggle_queued()
 {
     lock();
 
@@ -250,6 +251,18 @@ MidiSequence::toggle_queued()
 
     m_queued = !m_queued;
     m_queued_tick = m_last_tick - (m_last_tick % m_length) + m_length;
+
+    unlock();
+}
+
+void MidiSequence::toggle_oneshot()
+{
+    lock();
+
+    set_dirty_mp();
+
+    m_oneshot = !m_oneshot;
+    m_oneshot_tick = m_last_tick - (m_last_tick % m_length) + m_length;
 
     unlock();
 }
@@ -263,6 +276,18 @@ MidiSequence::off_queued()
     set_dirty_mp();
 
     m_queued = false;
+
+    unlock();
+}
+
+void MidiSequence::off_oneshot()
+{
+
+    lock();
+
+    set_dirty_mp();
+
+    m_oneshot = false;
 
     unlock();
 }
@@ -3110,6 +3135,7 @@ MidiSequence::set_playing( bool a_p )
     }
 
     m_queued = false;
+    m_oneshot = false;
 
     unlock();
 }
@@ -3246,6 +3272,16 @@ MidiSequence::print_triggers()
 long MidiSequence::getSnap_tick() const
 {
     return m_snap_tick;
+}
+
+bool MidiSequence::getOneshot() const
+{
+    return m_oneshot;
+}
+
+long MidiSequence::getOneshot_tick() const
+{
+    return m_oneshot_tick;
 }
 
 void

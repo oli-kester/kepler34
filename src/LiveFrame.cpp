@@ -150,6 +150,21 @@ void LiveFrame::drawSequence(int a_seq)
                                    thumbW,
                                    thumbH);
             }
+            else if (seq->getOneshot())
+                //queued for one-shot
+            {
+                mPen->setWidth(2);
+                mPen->setColor(Qt::darkGray);
+                mPen->setStyle(Qt::DotLine);
+                backColour.setAlpha(180);
+                mBrush->setColor(backColour);
+                mPainter->setPen(*mPen);
+                mPainter->setBrush(*mBrush);
+                mPainter->drawRect(base_x,
+                                   base_y,
+                                   thumbW,
+                                   thumbH);
+            }
             else
                 //just not playing
             {
@@ -652,6 +667,9 @@ void LiveFrame::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Apostrophe || Qt::Key_NumberSign: //snapshot
         mPerf->set_sequence_control_status(c_status_snapshot);
         break;
+    case Qt::Key_Period: //one-shot
+        mPerf->set_sequence_control_status(c_status_oneshot);
+        break;
     default: //sequence mute toggling
         quint32 keycode =  event->key();
         qDebug() << "Live frame key press - " << keycode << endl;
@@ -674,6 +692,9 @@ void LiveFrame::keyReleaseEvent(QKeyEvent *event)
         break;
     case Qt::Key_Apostrophe || Qt::Key_NumberSign: //snapshot
         mPerf->unset_sequence_control_status(c_status_snapshot);
+        break;
+    case Qt::Key_Period: //one-shot
+        mPerf->unset_sequence_control_status(c_status_oneshot);
         break;
     }
 }

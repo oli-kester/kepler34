@@ -47,6 +47,7 @@ public:
 const int c_status_replace  = 0x01;
 const int c_status_snapshot = 0x02;
 const int c_status_queue    = 0x04;
+const int c_status_oneshot  = 0x08;
 
 const int c_midi_track_ctrl = c_seqs_in_set * 2;
 const int c_midi_control_bpm_up       = c_midi_track_ctrl ;
@@ -329,13 +330,14 @@ public:
      * - Replace    (c_status_replace)
      * - Queue      (c_status_queue)
      * - Snapshot   (c_status_snapshot)
+     * - One-shot   (c_status_oneshot)
      *
      * constants representing these are up top ^^^ */
     void set_sequence_control_status( int a_status );
     void unset_sequence_control_status( int a_status );
 
     /* toggle the plackback state of a seq. Used for live input */
-    void sequence_playing_toggle( int a_sequence );
+    void sequence_playing_toggle(int seqId );
 
     void sequence_playing_on( int a_sequence );
     void sequence_playing_off( int a_sequence );

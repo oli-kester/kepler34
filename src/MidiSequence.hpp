@@ -71,6 +71,7 @@ class MidiSequence
     bool m_quanized_rec;
     bool m_thru;
     bool m_queued;
+    bool m_oneshot;
 
     bool m_trigger_copied;
 
@@ -100,6 +101,7 @@ class MidiSequence
     /* where were we */
     long m_last_tick;
     long m_queued_tick;
+    long m_oneshot_tick;
 
     long m_trigger_offset;
 
@@ -220,9 +222,13 @@ class MidiSequence
     void toggle_playing ();
 
     void toggle_queued ();
+    void toggle_oneshot ();
     void off_queued ();
+    void off_oneshot();
     bool get_queued ();
     long get_queued_tick ();
+    bool getOneshot() const;
+    long getOneshot_tick() const;
 
     void set_recording (bool);
     bool get_recording ();

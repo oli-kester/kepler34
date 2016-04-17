@@ -125,7 +125,7 @@ MidiPerformance::MidiPerformance()
     m_key_replace = "Semicolon";
     m_key_queue = "Slash";
     m_key_snapshot_1 = "Apostrophe";
-    m_key_snapshot_2 = "NumberSign";
+    m_key_snapshot_2 = "Period";
     m_key_keep_queue = "\\";
 
     m_key_screenset_up = Qt::Key_BracketRight;
@@ -783,20 +783,31 @@ void MidiPerformance::play( long a_tick )
 
             assert( m_seqs[i] );
 
-            //            printf( "dump seq - [%s]\n", m_seqs[i]->get_name() );
+            //check for queue
+            if (m_seqs[i]->get_queued() &&
+                    m_seqs[i]->get_queued_tick() <= a_tick){
 
-            if ( m_seqs[i]->get_queued() &&
-
-                 m_seqs[i]->get_queued_tick() <= a_tick ){
-
-                m_seqs[i]->play( m_seqs[i]->get_queued_tick() - 1, m_playback_mode );
+                m_seqs[i]->play(m_seqs[i]->get_queued_tick() - 1, m_playback_mode);
 
                 m_seqs[i]->toggle_playing();
 
-                printf( "toggle playing - [%s]\n", m_seqs[i]->get_name() );
+                printf("toggle playing - [%s]\n", m_seqs[i]->get_name());
             }
 
-            m_seqs[i]->play( a_tick, m_playback_mode );
+            //check for oneshot
+            if (m_seqs[i]->getOneshot() &&
+                    m_seqs[i]->getOneshot_tick() <= a_tick)
+            {
+                m_seqs[i]->play(m_seqs[i]->getOneshot_tick() - 1, m_playback_mode);
+
+                m_seqs[i]->toggle_playing();
+                //queue it to mute again after one play
+                m_seqs[i]->toggle_queued();
+
+                printf("toggle playing - [%s]\n", m_seqs[i]->get_name());
+            }
+
+            m_seqs[i]->play(a_tick, m_playback_mode);
         }
     }
 
@@ -1255,7 +1266,7 @@ void jack_session_callback(jack_session_event_t *event, void *arg )
     MidiPerformance *p = (MidiPerformance *) arg;
     p->m_jsession_ev = event;
     //TODO restore
-//        Glib::signal_idle().connect( sigc::mem_fun( *p, &perform::jack_session_event) );
+    //        Glib::signal_idle().connect( sigc::mem_fun( *p, &perform::jack_session_event) );
 }
 
 #endif
@@ -2109,45 +2120,52 @@ void MidiPerformance::unset_sequence_control_status( int a_status )
 }
 
 
-void MidiPerformance::sequence_playing_toggle( int a_sequence )
+void MidiPerformance::sequence_playing_toggle(int seqId)
 {
-    if ( is_active(a_sequence) == true ){
-        assert( m_seqs[a_sequence] );
+    if (is_active(seqId) == true)
+    {
+        assert(m_seqs[seqId]);
 
-        if ( m_control_status & c_status_queue )
+        //oneshots only allowed if we're not playing this seq
+        if (m_control_status & c_status_oneshot
+                && !m_seqs[seqId]->get_playing())
         {
-            m_seqs[a_sequence]->toggle_queued();
+            m_seqs[seqId]->toggle_oneshot();
+        }
+        else if ( m_control_status & c_status_queue )
+        {
+            m_seqs[seqId]->toggle_queued();
         }
         else
         {
-            if (  m_control_status & c_status_replace )
+            if (m_control_status & c_status_replace)
             {
-                unset_sequence_control_status( c_status_replace );
-                off_sequences( );
+                unset_sequence_control_status(c_status_replace);
+                off_sequences();
             }
-            m_seqs[a_sequence]->toggle_playing();
+            m_seqs[seqId]->toggle_playing();
         }
 
         /* if we're in song playback, temporarily block the events
          * till the next seq boundary */
         if (m_playback_mode)
         {
-            m_seqs[a_sequence]->set_song_playback_block(true);
+            m_seqs[seqId]->set_song_playback_block(true);
         }
 
-        if (is_active(a_sequence))
+        if (is_active(seqId))
         {
             /* if we're recording,
              * add seq playback changes to the song data */
             if (get_song_recording())
             {
-                long seq_length = get_sequence( a_sequence )->getLength();
+                long seq_length = get_sequence( seqId )->getLength();
 
                 long tick = get_tick();
 
-                bool trigger_state = get_sequence( a_sequence )->get_trigger_state( tick );
+                bool trigger_state = get_sequence( seqId )->get_trigger_state( tick );
 
-                MidiSequence *seq = get_sequence( a_sequence );
+                MidiSequence *seq = get_sequence( seqId );
 
                 /* if sequence already playing */
                 if (trigger_state)
