@@ -119,6 +119,21 @@ void LiveFrame::drawSequence(int a_seq)
                                    thumbW + 1,
                                    thumbH + 1);
             }
+            else if (seq->get_queued())
+            {
+                mPen->setWidth(2);
+                mPen->setColor(Qt::darkGray);
+                mPen->setStyle(Qt::DashLine);
+                backColour.setAlpha(180);
+                mBrush->setColor(backColour);
+                mPainter->setPen(*mPen);
+                mPainter->setBrush(*mBrush);
+                mPainter->drawRect(base_x,
+                                   base_y,
+                                   thumbW,
+                                   thumbH);
+            }
+
             else
             {
                 mPen->setStyle(Qt::NoPen);
@@ -169,16 +184,6 @@ void LiveFrame::drawSequence(int a_seq)
 
             int rectangle_x = base_x + 7;
             int rectangle_y = base_y + 15;
-
-            if (seq->get_queued()){
-
-                mPen->setColor(Qt::green);
-                mPainter->setPen(*mPen);
-                mPainter->drawRect(rectangle_x - 2,
-                                   rectangle_y - 1,
-                                   thumbW * 0.9,
-                                   thumbH * 0.7);
-            }
 
             mPen->setColor(Qt::gray);
             mBrush->setStyle(Qt::NoBrush);

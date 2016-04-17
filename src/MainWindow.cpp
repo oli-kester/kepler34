@@ -280,6 +280,8 @@ void MainWindow::openMidiFile(const QString &path)
     //add to recent files list
     m_dialog_prefs->addRecentFile(path);
 
+    m_live_frame->setFocus();
+
     //update recent menu
     updateRecentFilesMenu();
 

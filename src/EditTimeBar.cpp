@@ -24,8 +24,8 @@ void EditTimeBar::paintEvent(QPaintEvent *)
 {
     m_painter = new QPainter(this);
     m_pen = new QPen(Qt::black);
-    m_brush = new QBrush(Qt::lightGray, Qt::SolidPattern),
-            m_font.setPointSize(6);
+    m_brush = new QBrush(Qt::lightGray, Qt::SolidPattern);
+    m_font.setPointSize(6);
     m_painter->setPen(*m_pen);
     m_painter->setBrush(*m_brush);
     m_painter->setFont(m_font);

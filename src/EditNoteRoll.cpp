@@ -33,7 +33,7 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
 
     //start refresh timer to queue regular redraws
     mTimer = new QTimer(this);
-    mTimer->setInterval(1);
+    mTimer->setInterval(20);
     QObject::connect(mTimer,
                      SIGNAL(timeout()),
                      this,

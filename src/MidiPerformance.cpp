@@ -122,10 +122,10 @@ MidiPerformance::MidiPerformance()
     m_key_bpm_up = Qt::Key_Apostrophe;
     m_key_bpm_dn = Qt::Key_Semicolon;
 
-    m_key_replace = "Shift";
-    m_key_queue = "Alt";
-    m_key_snapshot_1 = "=";
-    m_key_snapshot_2 = "-";
+    m_key_replace = "Semicolon";
+    m_key_queue = "Slash";
+    m_key_snapshot_1 = "Apostrophe";
+    m_key_snapshot_2 = "NumberSign";
     m_key_keep_queue = "\\";
 
     m_key_screenset_up = Qt::Key_BracketRight;
