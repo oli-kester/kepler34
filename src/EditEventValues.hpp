@@ -10,6 +10,7 @@
 class EditEventValues : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit EditEventValues(MidiSequence *a_seq,
                              QWidget *parent = 0);
@@ -43,6 +44,14 @@ private:
 
     int m_zoom;
 
+    int m_drop_x, m_drop_y;
+    int m_current_x, m_current_y;
+
+    /* what is the data window currently editing ? */
+    unsigned char m_status;
+    unsigned char m_cc;
+
+    bool m_dragging;
 };
 
 #endif // EDITEVENTVALUES_HPP

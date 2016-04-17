@@ -86,13 +86,15 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     mKeyboard = new EditKeys(mSeq, mContainer);
     mTimeBar = new EditTimeBar(mSeq, mContainer);
     mNoteGrid = new EditNoteRoll(mPerformance, mSeq, mContainer);
-    mEventEdit = new EditEventValues(mSeq, mContainer);
+    mEventValues = new EditEventValues(mSeq, mContainer);
+    mEventTriggers = new EditEventTriggers(mSeq, mEventValues, mContainer);
 
     m_layout_grid->setSpacing(0);
     m_layout_grid->addWidget(mKeyboard, 1, 0, 1, 1);
     m_layout_grid->addWidget(mTimeBar, 0, 1, 1, 1);
     m_layout_grid->addWidget(mNoteGrid, 1, 1, 1, 1);
-    m_layout_grid->addWidget(mEventEdit, 2, 1, 1, 1);
+    m_layout_grid->addWidget(mEventTriggers, 2, 1, 1, 1);
+    m_layout_grid->addWidget(mEventValues, 3, 1, 1, 1);
     m_layout_grid->setAlignment(mNoteGrid, Qt::AlignTop);
 
     m_scroll_area->setWidget(mContainer);

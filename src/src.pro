@@ -37,7 +37,8 @@ SOURCES +=\
     SongSequenceGrid.cpp \
     PreferencesFile.cpp \
     KeplerStyle.cpp \
-    EditEventValues.cpp
+    EditEventValues.cpp \
+    EditEventTriggers.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -66,7 +67,8 @@ HEADERS  += \
     SongSequenceGrid.hpp \
     PreferencesFile.hpp \
     KeplerStyle.hpp \
-    EditEventValues.hpp
+    EditEventValues.hpp \
+    EditEventTriggers.hpp
 
 FORMS    += \
     MainWindow.ui \

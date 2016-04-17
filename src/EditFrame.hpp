@@ -7,6 +7,7 @@
 #include "EditTimeBar.hpp"
 #include "EditNoteRoll.hpp"
 #include "EditEventValues.hpp"
+#include "EditEventTriggers.hpp"
 
 #include <QFrame>
 #include <QLayout>
@@ -45,10 +46,11 @@ private:
     MidiSequence       * const mSeq;
     MidiPerformance    * const mPerformance;
 
-    EditKeys     *mKeyboard;
-    EditTimeBar  *mTimeBar;
-    EditNoteRoll *mNoteGrid;
-    EditEventValues   *mEventEdit;
+    EditKeys          *mKeyboard;
+    EditTimeBar       *mTimeBar;
+    EditNoteRoll      *mNoteGrid;
+    EditEventValues   *mEventValues;
+    EditEventTriggers *mEventTriggers;
 
     /* set snap to in pulses, off = 1 */
     int         mSnap;
