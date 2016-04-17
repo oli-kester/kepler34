@@ -107,7 +107,23 @@ void LiveFrame::drawSequence(int a_seq)
             mPen->setColor(Qt::black);
             mPen->setStyle(Qt::SolidLine);
 
-            if (seq->get_playing())
+            if (seq->get_playing() && seq->get_queued())
+                //playing but queued to mute
+            {
+                mPen->setWidth(2);
+                mPen->setColor(Qt::black);
+                mPen->setStyle(Qt::DashLine);
+                mPainter->setPen(*mPen);
+                backColour.setAlpha(210);
+                mBrush->setColor(backColour);
+                mPainter->setBrush(*mBrush);
+                mPainter->drawRect(base_x,
+                                   base_y,
+                                   thumbW + 1,
+                                   thumbH + 1);
+            }
+            else if (seq->get_playing())
+                //playing, no queueing
             {
                 mPen->setWidth(2);
                 mPainter->setPen(*mPen);
@@ -120,6 +136,7 @@ void LiveFrame::drawSequence(int a_seq)
                                    thumbH + 1);
             }
             else if (seq->get_queued())
+                //not playing but queued
             {
                 mPen->setWidth(2);
                 mPen->setColor(Qt::darkGray);
@@ -133,8 +150,8 @@ void LiveFrame::drawSequence(int a_seq)
                                    thumbW,
                                    thumbH);
             }
-
             else
+                //just not playing
             {
                 mPen->setStyle(Qt::NoPen);
                 backColour.setAlpha(180);

@@ -39,7 +39,6 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
                      this,
                      SLOT(update()));
     mTimer->start();
-
 }
 
 void EditNoteRoll::paintEvent(QPaintEvent *)
