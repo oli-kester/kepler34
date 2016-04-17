@@ -6,8 +6,8 @@ bool is_pattern_playing = false;
 MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_main_perf(a_p),
-    mRecentMenu(NULL)
+    mRecentMenu(NULL),
+    m_main_perf(a_p)
 {
     ui->setupUi(this);
 
@@ -182,7 +182,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::startPlaying()
 {
-//    m_main_perf->set_playback_mode(false);
+    //    m_main_perf->set_playback_mode(false);
     m_main_perf->position_jack(false);
     m_main_perf->start(false);
     m_main_perf->start_jack();
@@ -211,9 +211,9 @@ void MainWindow::setRecording(bool record)
 void MainWindow::setSongPlayback(bool playSongData)
 {
     m_main_perf->set_playback_mode(true);
-//    m_main_perf->position_jack(true);
-//    m_main_perf->start_jack();
-//    m_main_perf->start(playSongData);
+    //    m_main_perf->position_jack(true);
+    //    m_main_perf->start_jack();
+    //    m_main_perf->start(playSongData);
 
     qDebug() << "Song data playback - " << playSongData << endl;
 }

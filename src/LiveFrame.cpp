@@ -6,8 +6,8 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     QFrame(parent),
     ui(new Ui::LiveFrame),
     mPerf(perf),
-    mAddingNew(false),
-    m_bank_id(0)
+    m_bank_id(0),
+    mAddingNew(false)
 {
     setSizePolicy(QSizePolicy::Expanding,
                   QSizePolicy::Expanding);
@@ -55,9 +55,9 @@ void LiveFrame::paintEvent(QPaintEvent *)
 
 LiveFrame::~LiveFrame()
 {
-    delete ui,
-            mMsgBoxNewSeqCheck,
-            mRedrawTimer;
+    delete ui;
+    delete mMsgBoxNewSeqCheck;
+    delete mRedrawTimer;
 }
 
 void LiveFrame::drawSequence(int a_seq)
@@ -290,7 +290,9 @@ void LiveFrame::drawSequence(int a_seq)
 
     lastMetro = metro;
 
-    delete mPainter, mPen, mBrush;
+    delete mPainter;
+    delete mPen;
+    delete mBrush;
 }
 void LiveFrame::drawAllSequences()
 {
@@ -581,7 +583,7 @@ void LiveFrame::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-void LiveFrame::mouseDoubleClickEvent(QMouseEvent *event)
+void LiveFrame::mouseDoubleClickEvent(QMouseEvent *)
 {
     if (mAddingNew)
     {

@@ -90,6 +90,10 @@ void EditTimeBar::paintEvent(QPaintEvent *)
     m_painter->setPen(*m_pen);
     m_painter->drawText(end_x + 1, 21,
                         tr("END"));
+
+    delete m_painter;
+    delete m_brush;
+    delete m_pen;
 }
 
 void EditTimeBar::mousePressEvent(QMouseEvent *event)

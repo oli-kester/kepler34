@@ -77,6 +77,9 @@ void EditKeys::paintEvent(QPaintEvent *)
         }
 
     }
+    delete m_painter;
+    delete m_brush;
+    delete m_pen;
 }
 
 void EditKeys::mousePressEvent(QMouseEvent *event)

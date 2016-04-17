@@ -386,6 +386,9 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         m_old.height = m_selected.height;
 
     }
+    delete mPainter;
+    delete mBrush;
+    delete mPen;
 }
 
 void EditNoteRoll::mousePressEvent(QMouseEvent *event)
