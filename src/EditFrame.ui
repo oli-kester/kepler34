@@ -587,6 +587,9 @@ p, li { white-space: pre-wrap; }
            <height>25</height>
           </size>
          </property>
+         <property name="currentText">
+          <string/>
+         </property>
          <property name="currentIndex">
           <number>-1</number>
          </property>

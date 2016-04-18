@@ -606,3 +606,10 @@ void EditEventTriggers::set_adding(bool a_adding)
         m_adding = false;
     }
 }
+
+void EditEventTriggers::set_data_type(unsigned char a_status,
+                                      unsigned char a_control = 0 )
+{
+    m_status = a_status;
+    m_cc = a_control;
+}

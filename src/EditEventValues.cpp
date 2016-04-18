@@ -9,6 +9,21 @@ EditEventValues::EditEventValues(MidiSequence *a_seq,
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
+
+    //edit note velocity for now
+    m_status = EVENT_NOTE_ON;
+    m_cc = 1;
+
+    m_old = new QRect();
+
+    //start refresh timer to queue regular redraws
+    mTimer = new QTimer(this);
+    mTimer->setInterval(20);
+    QObject::connect(mTimer,
+                     SIGNAL(timeout()),
+                     this,
+                     SLOT(update()));
+    mTimer->start();
 }
 
 void EditEventValues::zoomIn()
@@ -25,7 +40,7 @@ void EditEventValues::zoomOut()
 
 QSize EditEventValues::sizeHint() const
 {
-    return QSize(m_seq->getLength() / m_zoom + 100, 175);
+    return QSize(m_seq->getLength() / m_zoom + 100, c_dataarea_y);
 }
 
 void EditEventValues::paintEvent(QPaintEvent *)
@@ -57,7 +72,6 @@ void EditEventValues::paintEvent(QPaintEvent *)
                         width() - 1,
                         height() - 1);
 
-
     m_seq->reset_draw_marker();
     while ( m_seq->get_next_event( m_status,
                                    m_cc,
@@ -87,93 +101,75 @@ void EditEventValues::paintEvent(QPaintEvent *)
                                 event_x + 1,
                                 height());
 
-//            m_painter->drawText(m_numbers[event_height],
-//                                0,0,
-//                                event_x + 3,
-//                                c_dataarea_y - 25,
-//                                6,30);
+            for( int i = 0; i < c_dataarea_y; ++i ){
+
+                //                m_numbers[i] = Gdk::Pixmap::create( m_window,
+                //                                                    6,
+                //                                                    30, -1  );
+
+                //                m_gc->set_foreground( m_white );
+                //                m_numbers[i]->draw_rectangle(m_gc,true,
+                //                                             0,
+                //                                             0,
+                //                                             6,
+                //                                             30 );
+
+                char val[5];
+                snprintf(val, sizeof(val), "%3d\n", i);
+                char num[6];
+                memset( num, 0, 6);
+                num[0] = val[0];
+                num[2] = val[1];
+                num[4] = val[2];
+
+                //                m_pen->setColor(Qt::black);
+                //                m_painter->setPen(*m_pen);
+                //                p_font_renderer->render_string_on_drawable(m_gc,
+                //                                                           0,
+                //                                                           0,
+                //                                                           m_numbers[i], &num[0], font::BLACK );
+                //                p_font_renderer->render_string_on_drawable(m_gc,
+                //                                                           0,
+                //                                                           8,
+                //                                                           m_numbers[i], &num[2], font::BLACK );
+                //                p_font_renderer->render_string_on_drawable(m_gc,
+                //                                                           0,
+                //                                                           16,
+                //                                                           m_numbers[i], &num[4], font::BLACK );
+
+            }
+
+
+            //                        m_painter->drawText(m_numbers[event_height],
+            //                                            0,0,
+            //                                            event_x + 3,
+            //                                            c_dataarea_y - 25,
+            //                                            6,30);
         }
     }
 
-    //draw numbers
+    //draw edit line
 
-//    for( int i=0; i<c_dataarea_y; ++i ){
+    int x,y,w,h;
+    m_pen->setColor(Qt::black);
+    m_painter->setPen(*m_pen);
 
-//        m_numbers[i] = Gdk::Pixmap::create( m_window,
-//                                            6,
-//                                            30, -1  );
+    xy_to_rect ( m_drop_x,
+                 m_drop_y,
+                 m_current_x,
+                 m_current_y,
+                 &x, &y,
+                 &w, &h );
 
-//        m_gc->set_foreground( m_white );
-//        m_numbers[i]->draw_rectangle(m_gc,true,
-//                                     0,
-//                                     0,
-//                                     6,
-//                                     30 );
+    m_old->setX(x);
+    m_old->setY(y);
+    m_old->setWidth(w);
+    m_old->setHeight(h);
 
-//        char val[5];
-//        snprintf(val, sizeof(val), "%3d\n", i);
-//        char num[6];
-//        memset( num, 0, 6);
-//        num[0] = val[0];
-//        num[2] = val[1];
-//        num[4] = val[2];
-
-//        p_font_renderer->render_string_on_drawable(m_gc,
-//                                                   0,
-//                                                   0,
-//                                                   m_numbers[i], &num[0], font::BLACK );
-//        p_font_renderer->render_string_on_drawable(m_gc,
-//                                                   0,
-//                                                   8,
-//                                                   m_numbers[i], &num[2], font::BLACK );
-//        p_font_renderer->render_string_on_drawable(m_gc,
-//                                                   0,
-//                                                   16,
-//                                                   m_numbers[i], &num[4], font::BLACK );
-
-//    }
-
-//    //draw selection
-
-//    int x,y,w,h;
-//    m_gc->set_foreground( m_black );
-//    m_gc->set_line_attributes( 1,
-//                               Gdk::LINE_SOLID,
-//                               Gdk::CAP_NOT_LAST,
-//                               Gdk::JOIN_MITER );
-
-//    /* replace old */
-//    m_window->draw_drawable(m_gc,
-//                            m_pixmap,
-//                            m_old.x,
-//                            m_old.y,
-//                            m_old.x,
-//                            m_old.y,
-//                            m_old.width + 1,
-//                            m_old.height + 1 );
-
-//    xy_to_rect ( m_drop_x,
-//                 m_drop_y,
-//                 m_current_x,
-//                 m_current_y,
-//                 &x, &y,
-//                 &w, &h );
-
-//    x -= m_scroll_offset_x;
-
-//    m_old.x = x;
-//    m_old.y = y;
-//    m_old.width = w;
-//    m_old.height = h;
-
-//    m_gc->set_foreground(m_black);
-//    m_window->draw_line(m_gc,
-//                        m_current_x - m_scroll_offset_x,
-//                        m_current_y,
-//                        m_drop_x - m_scroll_offset_x,
-//                        m_drop_y );
-
-
+    m_painter->drawLine(m_current_x,
+                        m_current_y,
+                        m_drop_x,
+                        m_drop_y );
 
     delete m_painter;
     delete m_brush;
@@ -182,17 +178,86 @@ void EditEventValues::paintEvent(QPaintEvent *)
 
 void EditEventValues::mousePressEvent(QMouseEvent *event)
 {
+    m_seq->push_undo();
 
+    /* set values for line */
+    m_drop_x = (int) event->x();
+    m_drop_y = (int) event->y();
+
+    /* reset box that holds dirty redraw spot */
+    m_old->setX(0);
+    m_old->setY(0);
+    m_old->setWidth(0);
+    m_old->setHeight(0);
+
+    m_dragging = true;
 }
 
 void EditEventValues::mouseReleaseEvent(QMouseEvent *event)
 {
+    m_current_x = (int) event->x();
+    m_current_y = (int) event->y();
 
+    if ( m_dragging ){
+
+        long tick_s, tick_f;
+
+        if ( m_current_x < m_drop_x ){
+            swap( m_current_x, m_drop_x );
+            swap( m_current_y, m_drop_y );
+        }
+
+        convert_x( m_drop_x, &tick_s );
+        convert_x( m_current_x, &tick_f );
+
+        m_seq->change_event_data_range( tick_s, tick_f,
+                                        m_status,
+                                        m_cc,
+                                        c_dataarea_y - m_drop_y -1,
+                                        c_dataarea_y - m_current_y-1 );
+
+        /* convert x,y to ticks, then set events in range */
+        m_dragging = false;
+
+    }
 }
 
 void EditEventValues::mouseMoveEvent(QMouseEvent *event)
 {
+    if ( m_dragging ){
 
+        m_current_x = (int) event->x();
+        m_current_y = (int) event->y();
+
+        long tick_s, tick_f;
+
+        int adj_x_min, adj_x_max,
+                adj_y_min, adj_y_max;
+
+        if ( m_current_x < m_drop_x ){
+
+            adj_x_min = m_current_x;
+            adj_y_min = m_current_y;
+            adj_x_max = m_drop_x;
+            adj_y_max = m_drop_y;
+
+        } else {
+
+            adj_x_max = m_current_x;
+            adj_y_max = m_current_y;
+            adj_x_min = m_drop_x;
+            adj_y_min = m_drop_y;
+        }
+
+        convert_x( adj_x_min, &tick_s );
+        convert_x( adj_x_max, &tick_f );
+
+        m_seq->change_event_data_range( tick_s, tick_f,
+                                        m_status,
+                                        m_cc,
+                                        c_dataarea_y - adj_y_min -1,
+                                        c_dataarea_y - adj_y_max -1 );
+    }
 }
 
 void EditEventValues::xy_to_rect(  int a_x1,  int a_y1,
@@ -218,5 +283,16 @@ void EditEventValues::xy_to_rect(  int a_x1,  int a_y1,
         *a_y = a_y2;
         *a_h = a_y1 - a_y2;
     }
+}
+
+void EditEventValues::set_data_type( unsigned char a_status, unsigned char a_control = 0  )
+{
+    m_status = a_status;
+    m_cc = a_control;
+}
+
+void EditEventValues::convert_x( int a_x, long *a_tick )
+{
+    *a_tick = a_x * m_zoom;
 }
 

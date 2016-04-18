@@ -81,7 +81,7 @@ const int c_data_x = 2;
 
 /* keyboard */
 const int c_key_x = 16;
-const int c_key_y = 8;
+const int c_key_y = 8; //TODO make this configurable, perhaps move to midiperformance.cpp
 const int c_num_keys = 128;
 const int c_keyarea_y = c_key_y * c_num_keys + 1;
 const int c_keyarea_x = 36;

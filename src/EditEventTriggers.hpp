@@ -26,6 +26,8 @@ public:
                                QWidget *parent = 0);
     void zoomIn();
     void zoomOut();
+    void set_data_type(unsigned char a_status,
+                       unsigned char a_control);
 
 protected:
     //override painting event to draw on the frame

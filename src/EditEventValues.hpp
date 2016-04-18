@@ -4,6 +4,8 @@
 #include "MidiSequence.hpp"
 
 #include <QWidget>
+#include <QTimer>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QPen>
 
@@ -23,6 +25,7 @@ public:
 
     void zoomIn();
     void zoomOut();
+    void set_data_type(unsigned char a_status, unsigned char a_control);
 
 protected:
     //override painting event to draw on the frame
@@ -48,6 +51,8 @@ private:
                     int *a_x,  int *a_y,
                     int *a_w,  int *a_h );
 
+    void convert_x( int a_x, long *a_tick );
+
     MidiSequence *m_seq;
 
     QPen        *m_pen;
@@ -56,6 +61,7 @@ private:
     QFont        m_font;
     QRect       *m_old;
     QString      m_numbers;
+    QTimer      *mTimer;
 
     int m_zoom;
 
@@ -67,6 +73,9 @@ private:
     unsigned char m_cc;
 
     bool m_dragging;
+
+    friend class EditNoteRoll;
+    friend class EditEventTriggers;
 };
 
 #endif // EDITEVENTVALUES_HPP
