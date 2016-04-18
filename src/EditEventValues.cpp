@@ -14,7 +14,7 @@ EditEventValues::EditEventValues(MidiSequence *a_seq,
     m_status = EVENT_NOTE_ON;
     m_cc = 1;
 
-    m_old = new QRect();
+    mOld = new QRect();
 
     //start refresh timer to queue regular redraws
     mTimer = new QTimer(this);
@@ -45,13 +45,13 @@ QSize EditEventValues::sizeHint() const
 
 void EditEventValues::paintEvent(QPaintEvent *)
 {
-    m_painter = new QPainter(this);
-    m_pen = new QPen(Qt::black);
-    m_brush = new QBrush(Qt::lightGray, Qt::SolidPattern);
-    m_font.setPointSize(6);
-    m_painter->setPen(*m_pen);
-    m_painter->setBrush(*m_brush);
-    m_painter->setFont(m_font);
+    mPainter = new QPainter(this);
+    mPen = new QPen(Qt::black);
+    mBrush = new QBrush(Qt::lightGray, Qt::SolidPattern);
+    mFont.setPointSize(6);
+    mPainter->setPen(*mPen);
+    mPainter->setBrush(*mBrush);
+    mPainter->setFont(mFont);
 
     //this is perhaps the background?
 
@@ -67,7 +67,7 @@ void EditEventValues::paintEvent(QPaintEvent *)
     int start_tick = 0 ;
     int end_tick = (width() * m_zoom);
 
-    m_painter->drawRect(0,
+    mPainter->drawRect(0,
                         0,
                         width() - 1,
                         height() - 1);
@@ -96,26 +96,29 @@ void EditEventValues::paintEvent(QPaintEvent *)
             }
 
             /* draw vert lines */
-            m_painter->drawLine(event_x + 1,
+            mPen->setWidth(2);
+            mPainter->setPen(*mPen);
+            mPainter->drawLine(event_x + 1,
                                 height() - event_height,
                                 event_x + 1,
                                 height());
 
-            //            draw numbers
+            //draw numbers
             QString val = QString::number(d1);
 
-            m_pen->setColor(Qt::black);
-            m_painter->setPen(*m_pen);
+            mPen->setColor(Qt::black);
+            mPen->setWidth(1);
+            mPainter->setPen(*mPen);
             if (val.length() >= 1)
-                m_painter->drawText(event_x + 3,
+                mPainter->drawText(event_x + 3,
                                     c_dataarea_y - 25,
                                     val.at(0));
             if (val.length() >= 2)
-                m_painter->drawText(event_x + 3,
+                mPainter->drawText(event_x + 3,
                                     c_dataarea_y - 25 + 8,
                                     val.at(1));
             if (val.length() >= 3)
-                m_painter->drawText(event_x + 3,
+                mPainter->drawText(event_x + 3,
                                     c_dataarea_y - 25 + 16,
                                     val.at(2));
         }
@@ -123,30 +126,33 @@ void EditEventValues::paintEvent(QPaintEvent *)
 
     //draw edit line
 
-    int x,y,w,h;
-    m_pen->setColor(Qt::black);
-    m_painter->setPen(*m_pen);
+    if (m_dragging)
+    {
+        int x,y,w,h;
+        mPen->setColor(Qt::black);
+        mPainter->setPen(*mPen);
 
-    xy_to_rect ( m_drop_x,
-                 m_drop_y,
-                 m_current_x,
-                 m_current_y,
-                 &x, &y,
-                 &w, &h );
+        xy_to_rect ( m_drop_x,
+                     m_drop_y,
+                     m_current_x,
+                     m_current_y,
+                     &x, &y,
+                     &w, &h );
 
-    m_old->setX(x);
-    m_old->setY(y);
-    m_old->setWidth(w);
-    m_old->setHeight(h);
+        mOld->setX(x);
+        mOld->setY(y);
+        mOld->setWidth(w);
+        mOld->setHeight(h);
 
-    m_painter->drawLine(m_current_x,
-                        m_current_y,
-                        m_drop_x,
-                        m_drop_y );
+        mPainter->drawLine(m_current_x,
+                            m_current_y,
+                            m_drop_x,
+                            m_drop_y );
+    }
 
-    delete m_painter;
-    delete m_brush;
-    delete m_pen;
+    delete mPainter;
+    delete mBrush;
+    delete mPen;
 }
 
 void EditEventValues::mousePressEvent(QMouseEvent *event)
@@ -158,10 +164,10 @@ void EditEventValues::mousePressEvent(QMouseEvent *event)
     m_drop_y = (int) event->y();
 
     /* reset box that holds dirty redraw spot */
-    m_old->setX(0);
-    m_old->setY(0);
-    m_old->setWidth(0);
-    m_old->setHeight(0);
+    mOld->setX(0);
+    mOld->setY(0);
+    mOld->setWidth(0);
+    mOld->setHeight(0);
 
     m_dragging = true;
 }

@@ -324,6 +324,8 @@ void EditFrame::zoomIn()
 {
     mNoteGrid->zoomIn();
     mTimeBar->zoomIn();
+    mEventTriggers->zoomIn();
+    mEventValues->zoomIn();
     updateDrawGeometry();
 }
 
@@ -331,6 +333,8 @@ void EditFrame::zoomOut()
 {
     mNoteGrid->zoomOut();
     mTimeBar->zoomOut();
+    mEventTriggers->zoomOut();
+    mEventValues->zoomOut();
     updateDrawGeometry();
 }
 

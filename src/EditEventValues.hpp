@@ -55,12 +55,12 @@ private:
 
     MidiSequence *m_seq;
 
-    QPen        *m_pen;
-    QBrush      *m_brush;
-    QPainter    *m_painter;
-    QFont        m_font;
-    QRect       *m_old;
-    QString      m_numbers;
+    QPen        *mPen;
+    QBrush      *mBrush;
+    QPainter    *mPainter;
+    QFont        mFont;
+    QRect       *mOld;
+    QString      mNumbers;
     QTimer      *mTimer;
 
     int m_zoom;
