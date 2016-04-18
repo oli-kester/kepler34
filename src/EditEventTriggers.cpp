@@ -149,7 +149,7 @@ void EditEventTriggers::paintEvent(QPaintEvent *)
             //draw note highlight
             mPainter->setBrush(*mBrush);
             mPainter->drawRect(x,
-                               (c_eventarea_y - c_eventevent_y)/2,
+                               (c_eventarea_y - c_eventevent_y) / 2,
                                c_eventevent_x - 1,
                                c_eventevent_y - 1 );
         }
@@ -170,17 +170,15 @@ void EditEventTriggers::paintEvent(QPaintEvent *)
 
         x_to_w( m_drop_x, m_current_x, &x,&w );
 
-        //        x -= m_scroll_offset_x;
-
         m_old->setX(x);
         m_old->setWidth(w);
 
         mPen->setColor(Qt::black);
         mPainter->setPen(*mPen);
-        //        mPainter->drawRect(x,
-        //                           y,
-        //                           w,
-        //                           h);
+        mPainter->drawRect(x,
+                           y,
+                           w,
+                           h);
     }
 
     if ( m_moving || m_paste ){
@@ -191,10 +189,10 @@ void EditEventTriggers::paintEvent(QPaintEvent *)
 
         mPen->setColor(Qt::black);
         mPainter->setPen(*mPen);
-        //        mPainter->drawRect(x,
-        //                           y,
-        //                           m_selected->width(),
-        //                           h );
+        mPainter->drawRect(x,
+                           y,
+                           m_selected->width(),
+                           h );
         m_old->setX(x);
         m_old->setWidth(m_selected->width());
     }
