@@ -101,50 +101,23 @@ void EditEventValues::paintEvent(QPaintEvent *)
                                 event_x + 1,
                                 height());
 
-            for( int i = 0; i < c_dataarea_y; ++i ){
+            //            draw numbers
+            QString val = QString::number(d1);
 
-                //                m_numbers[i] = Gdk::Pixmap::create( m_window,
-                //                                                    6,
-                //                                                    30, -1  );
-
-                //                m_gc->set_foreground( m_white );
-                //                m_numbers[i]->draw_rectangle(m_gc,true,
-                //                                             0,
-                //                                             0,
-                //                                             6,
-                //                                             30 );
-
-                char val[5];
-                snprintf(val, sizeof(val), "%3d\n", i);
-                char num[6];
-                memset( num, 0, 6);
-                num[0] = val[0];
-                num[2] = val[1];
-                num[4] = val[2];
-
-                //                m_pen->setColor(Qt::black);
-                //                m_painter->setPen(*m_pen);
-                //                p_font_renderer->render_string_on_drawable(m_gc,
-                //                                                           0,
-                //                                                           0,
-                //                                                           m_numbers[i], &num[0], font::BLACK );
-                //                p_font_renderer->render_string_on_drawable(m_gc,
-                //                                                           0,
-                //                                                           8,
-                //                                                           m_numbers[i], &num[2], font::BLACK );
-                //                p_font_renderer->render_string_on_drawable(m_gc,
-                //                                                           0,
-                //                                                           16,
-                //                                                           m_numbers[i], &num[4], font::BLACK );
-
-            }
-
-
-            //                        m_painter->drawText(m_numbers[event_height],
-            //                                            0,0,
-            //                                            event_x + 3,
-            //                                            c_dataarea_y - 25,
-            //                                            6,30);
+            m_pen->setColor(Qt::black);
+            m_painter->setPen(*m_pen);
+            if (val.length() >= 1)
+                m_painter->drawText(event_x + 3,
+                                    c_dataarea_y - 25,
+                                    val.at(0));
+            if (val.length() >= 2)
+                m_painter->drawText(event_x + 3,
+                                    c_dataarea_y - 25 + 8,
+                                    val.at(1));
+            if (val.length() >= 3)
+                m_painter->drawText(event_x + 3,
+                                    c_dataarea_y - 25 + 16,
+                                    val.at(2));
         }
     }
 
