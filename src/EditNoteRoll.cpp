@@ -51,6 +51,9 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     mPainter->setBrush(*mBrush);
     mPainter->setFont(mFont);
 
+    //draw border
+    //    m_painter->drawRect(0, 0, width(), height());
+
     mPen->setColor(Qt::lightGray);
     mPen->setStyle(Qt::DashLine);
     mPainter->setPen(*mPen);
@@ -421,7 +424,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
     } else {
 
         /*  left mouse button     */
-        if ( event->button() == Qt::LeftButton )
+        if (event->button() == Qt::LeftButton)
         {
             /* selection, normal x */
             m_current_x = m_drop_x = norm_x;
@@ -540,7 +543,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
         }
 
         /*     right mouse button      */
-        if ( event->button() == Qt::RightButton )
+        if (event->button() == Qt::RightButton)
         {
             set_adding(true);
         }

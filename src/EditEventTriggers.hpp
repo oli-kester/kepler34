@@ -6,6 +6,7 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QMouseEvent>
 #include <QPen>
 
 ///
@@ -34,6 +35,10 @@ protected:
     void mouseReleaseEvent  (QMouseEvent * event);
     void mouseMoveEvent     (QMouseEvent * event);
 
+    //override keyboard events for interaction
+    void keyPressEvent      (QKeyEvent * event);
+    void keyReleaseEvent    (QKeyEvent * event);
+
     //override the sizehint to set our own defaults
     QSize sizeHint() const;
 
@@ -44,8 +49,15 @@ public slots:
 private:
     /* checks mins / maxes..  the fills in x,y
        and width and height */
-    void x_to_w( int a_x1, int a_x2,
-         int *a_x, int *a_w  );
+    void x_to_w(int a_x1, int a_x2,
+                int *a_x, int *a_w);
+    void start_paste();
+    void convert_x(int a_x, long *a_tick);
+    void convert_t(long a_ticks, int *a_x);
+    void drop_event(long a_tick);
+    void snap_y( int *a_y );
+    void snap_x( int *a_x );
+    void set_adding(bool a_adding);
 
     MidiSequence    *m_seq;
     EditEventValues *m_seqdata_wid;
@@ -70,6 +82,7 @@ private:
     bool m_growing;
     bool m_painting;
     bool m_paste;
+    bool m_adding;
 
     /* where the dragging started */
     int m_drop_x;
