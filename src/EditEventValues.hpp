@@ -7,6 +7,12 @@
 #include <QPainter>
 #include <QPen>
 
+///
+/// \brief The EditEventValues class
+///
+/// Displays the values for MIDI events
+/// e.g. Modwheel, pitchbend etc
+
 class EditEventValues : public QWidget
 {
     Q_OBJECT
@@ -35,12 +41,21 @@ signals:
 public slots:
 
 private:
+
+    // Takes two points, returns a Xwin rectangle
+    void xy_to_rect(int a_x1,  int a_y1,
+                    int a_x2,  int a_y2,
+                    int *a_x,  int *a_y,
+                    int *a_w,  int *a_h );
+
     MidiSequence *m_seq;
 
     QPen        *m_pen;
     QBrush      *m_brush;
     QPainter    *m_painter;
     QFont        m_font;
+    QRect       *m_old;
+    QString      m_numbers;
 
     int m_zoom;
 

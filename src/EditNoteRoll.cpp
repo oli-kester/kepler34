@@ -51,9 +51,6 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     mPainter->setBrush(*mBrush);
     mPainter->setFont(mFont);
 
-    //draw border
-    //    m_painter->drawRect(0, 0, width(), height());
-
     mPen->setColor(Qt::lightGray);
     mPen->setStyle(Qt::DashLine);
     mPainter->setPen(*mPen);

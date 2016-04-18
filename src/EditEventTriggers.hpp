@@ -8,6 +8,12 @@
 #include <QPainter>
 #include <QPen>
 
+///
+/// \brief The EditEventTriggers class
+///
+/// Displays the triggers for MIDI events
+/// e.g. Modwheel, pitchbend etc
+
 class EditEventTriggers : public QWidget
 {
     Q_OBJECT
