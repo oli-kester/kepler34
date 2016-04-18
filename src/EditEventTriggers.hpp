@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QTimer>
 #include <QPen>
 
 ///
@@ -68,6 +69,7 @@ private:
     QFont        mFont;
     QRect       *m_old;
     QRect       *m_selected;
+    QTimer      *mTimer;
 
     /* one pixel == m_zoom ticks */
     int          m_zoom;

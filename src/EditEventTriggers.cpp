@@ -20,6 +20,20 @@ EditEventTriggers::EditEventTriggers(MidiSequence *a_seq,
 {
     m_old = new QRect();
     m_selected = new QRect();
+
+    m_snap = m_seq->getSnap_tick();
+
+    setSizePolicy(QSizePolicy::Fixed,
+                  QSizePolicy::Fixed);
+
+    //start refresh timer to queue regular redraws
+    mTimer = new QTimer(this);
+    mTimer->setInterval(20);
+    QObject::connect(mTimer,
+                     SIGNAL(timeout()),
+                     this,
+                     SLOT(update()));
+    mTimer->start();
 }
 
 void EditEventTriggers::zoomIn()
@@ -145,7 +159,7 @@ void EditEventTriggers::paintEvent(QPaintEvent *)
 
     int w;
 
-    int y = (c_eventarea_y - c_eventevent_y)/2;
+    int y = (c_eventarea_y - c_eventevent_y) / 2;
     int h =  c_eventevent_y;
 
     //painter reset
