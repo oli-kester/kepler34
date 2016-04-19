@@ -11,6 +11,14 @@ To build, run in this directory -
 1. qmake
 2. make
 
+Requirements -
+
+ - qmake (Qt5 or higher)
+ - asound library (-lasound)
+ - lash driver (-llash)
+ - JACK driver (-ljack)
+ - rt library (-lrt)
+
 Based heavily on the seq24 source -
 
 http://filter24.org/seq24/

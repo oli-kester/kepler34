@@ -81,3 +81,9 @@ RESOURCES += \
     kepler34.qrc
 
 unix:!macx: LIBS += -lasound -llash -ljack -lrt
+
+# This is where lash is stored on openSUSE, so we must
+# check here too
+INCLUDEPATH += /usr/include/lash-1.0
+
+
