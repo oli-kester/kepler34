@@ -26,7 +26,7 @@ enum draw_type
 class MidiSequence
 {
 
-  private:
+private:
 
     /* holds the events */
     list < MidiEvent > m_list_event;
@@ -142,10 +142,10 @@ class MidiSequence
     void remove( list<MidiEvent>::iterator i );
     void remove( MidiEvent* e );
 
-  public:
+public:
 
-      MidiSequence ();
-     ~MidiSequence ();
+    MidiSequence ();
+    ~MidiSequence ();
 
     void push_undo ();
     void pop_undo ();
@@ -191,19 +191,19 @@ class MidiSequence
 
     void set_editing (bool a_edit)
     {
-    m_editing = a_edit;
+        m_editing = a_edit;
     }
     bool get_editing ()
     {
-    return m_editing;
+        return m_editing;
     }
     void set_raise (bool a_edit)
     {
-    m_raise = a_edit;
+        m_raise = a_edit;
     }
     bool get_raise ()
     {
-    return m_raise;
+        return m_raise;
     }
 
     /* length in ticks */
@@ -328,12 +328,12 @@ class MidiSequence
     /* select note events in range, returns number
        selected */
     int select_note_events (long a_tick_s, int a_note_h,
-                long a_tick_f, int a_note_l, select_action_e a_action );
+                            long a_tick_f, int a_note_l, select_action_e a_action );
 
     /* select events in range, returns number
        selected */
     int select_events (long a_tick_s, long a_tick_f,
-               unsigned char a_status, unsigned char a_cc, select_action_e a_action);
+                       unsigned char a_status, unsigned char a_cc, select_action_e a_action);
 
     int get_num_selected_notes ();
     int get_num_selected_events (unsigned char a_status, unsigned char a_cc);
@@ -345,11 +345,11 @@ class MidiSequence
 
     /* returns the 'box' of selected items */
     void get_selected_box (long *a_tick_s, int *a_note_h,
-               long *a_tick_f, int *a_note_l);
+                           long *a_tick_f, int *a_note_l);
 
     /* returns the 'box' of selected items */
     void get_clipboard_box (long *a_tick_s, int *a_note_h,
-                long *a_tick_f, int *a_note_l);
+                            long *a_tick_f, int *a_note_l);
 
     /* removes and adds readds selected in position */
     void move_selected_notes (long a_delta_tick, int a_delta_note);
@@ -358,17 +358,22 @@ class MidiSequence
     void add_note (long a_tick, long a_length, int a_note, bool a_paint = false);
 
     void add_event (long a_tick,
-            unsigned char a_status,
-            unsigned char a_d0, unsigned char a_d1, bool a_paint = false);
+                    unsigned char a_status,
+                    unsigned char a_d0, unsigned char a_d1, bool a_paint = false);
 
     void stream_event (MidiEvent * a_ev);
 
     /* changes velocities in a ramping way from vel_s to vel_f  */
     void change_event_data_range (long a_tick_s, long a_tick_f,
-                  unsigned char a_status,
-                  unsigned char a_cc,
-                  int a_d_s, int a_d_f);
-                  //unsigned char a_d_s, unsigned char a_d_f);
+                                  unsigned char a_status,
+                                  unsigned char a_cc,
+                                  int a_d_s, int a_d_f);
+
+    //change event data in a relative way between two ticks
+    //newVal can be positive or negative, reflecting the change
+    void change_event_data_relative (long a_tick_s, long a_tick_f,
+                                     unsigned char a_status, unsigned char a_cc,
+                                     int newVal);
 
     /* moves note off event */
     void increment_selected (unsigned char a_status, unsigned char a_control);
@@ -416,34 +421,34 @@ class MidiSequence
        events elements, and returns true.  When it
        has no more events, returns a false */
     draw_type get_next_note_event (long *a_tick_s,
-                   long *a_tick_f,
-                   int *a_note,
-                   bool * a_selected, int *a_velocity);
+                                   long *a_tick_f,
+                                   int *a_note,
+                                   bool * a_selected, int *a_velocity);
 
     int get_lowest_note_event ();
     int get_highest_note_event ();
 
     bool get_next_event (unsigned char a_status,
-             unsigned char a_cc,
-             long *a_tick,
-             unsigned char *a_D0,
-             unsigned char *a_D1, bool * a_selected);
+                         unsigned char a_cc,
+                         long *a_tick,
+                         unsigned char *a_D0,
+                         unsigned char *a_D1, bool * a_selected);
 
     bool get_next_event (unsigned char *a_status, unsigned char *a_cc);
 
     bool get_next_trigger (long *a_tick_on,
-               long *a_tick_off,
-               bool * a_selected, long *a_tick_offset);
+                           long *a_tick_off,
+                           bool * a_selected, long *a_tick_offset);
 
     MidiSequence & operator= (const MidiSequence & a_rhs);
 
     void fill_list (list < char >*a_list, int a_pos);
 
     void select_events (unsigned char a_status, unsigned char a_cc,
-            bool a_inverse = false);
+                        bool a_inverse = false);
     void quanize_events (unsigned char a_status, unsigned char a_cc,
-             long a_snap_tick, int a_divide, bool a_linked =
-             false);
+                         long a_snap_tick, int a_divide, bool a_linked =
+            false);
     void transpose_notes (int a_steps, int a_scale);
     long getSnap_tick() const;
 };

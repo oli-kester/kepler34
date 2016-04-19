@@ -5,7 +5,7 @@ EditEventValues::EditEventValues(MidiSequence *a_seq,
     QWidget(parent),
     m_seq(a_seq),
     m_zoom(1),
-    m_dragging(false)
+    mLineAdjust(false)
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
@@ -68,9 +68,9 @@ void EditEventValues::paintEvent(QPaintEvent *)
     int end_tick = (width() * m_zoom);
 
     mPainter->drawRect(0,
-                        0,
-                        width() - 1,
-                        height() - 1);
+                       0,
+                       width() - 1,
+                       height() - 1);
 
     m_seq->reset_draw_marker();
     while ( m_seq->get_next_event( m_status,
@@ -99,9 +99,9 @@ void EditEventValues::paintEvent(QPaintEvent *)
             mPen->setWidth(2);
             mPainter->setPen(*mPen);
             mPainter->drawLine(event_x + 1,
-                                height() - event_height,
-                                event_x + 1,
-                                height());
+                               height() - event_height,
+                               event_x + 1,
+                               height());
 
             //draw numbers
             QString val = QString::number(d1);
@@ -111,31 +111,32 @@ void EditEventValues::paintEvent(QPaintEvent *)
             mPainter->setPen(*mPen);
             if (val.length() >= 1)
                 mPainter->drawText(event_x + 3,
-                                    c_dataarea_y - 25,
-                                    val.at(0));
+                                   c_dataarea_y - 25,
+                                   val.at(0));
             if (val.length() >= 2)
                 mPainter->drawText(event_x + 3,
-                                    c_dataarea_y - 25 + 8,
-                                    val.at(1));
+                                   c_dataarea_y - 25 + 8,
+                                   val.at(1));
             if (val.length() >= 3)
                 mPainter->drawText(event_x + 3,
-                                    c_dataarea_y - 25 + 16,
-                                    val.at(2));
+                                   c_dataarea_y - 25 + 16,
+                                   val.at(2));
         }
     }
 
     //draw edit line
 
-    if (m_dragging)
+    if (mLineAdjust)
     {
         int x,y,w,h;
         mPen->setColor(Qt::black);
+        mPen->setStyle(Qt::DashLine);
         mPainter->setPen(*mPen);
 
-        xy_to_rect ( m_drop_x,
-                     m_drop_y,
-                     m_current_x,
-                     m_current_y,
+        xy_to_rect ( mDropX,
+                     mDropY,
+                     mCurrentX,
+                     mCurrentY,
                      &x, &y,
                      &w, &h );
 
@@ -144,10 +145,10 @@ void EditEventValues::paintEvent(QPaintEvent *)
         mOld->setWidth(w);
         mOld->setHeight(h);
 
-        mPainter->drawLine(m_current_x,
-                            m_current_y,
-                            m_drop_x,
-                            m_drop_y );
+        mPainter->drawLine(mCurrentX,
+                           mCurrentY,
+                           mDropX,
+                           mDropY );
     }
 
     delete mPainter;
@@ -159,73 +160,91 @@ void EditEventValues::mousePressEvent(QMouseEvent *event)
 {
     m_seq->push_undo();
 
+    //if we're near an event (4px), do relative adjustment
+    long tick_start, tick_finish;
+    convert_x(event->x() - 2, &tick_start);
+    convert_x(event->x() + 2, &tick_finish);
+
+    //check if these ticks would select an event
+    if (m_seq->select_events(tick_start, tick_finish, m_status, m_cc, MidiSequence::e_would_select))
+    {
+        mRelativeAdjust = true;
+    }
+    else //else set new values for seqs under a line
+    {
+        mLineAdjust = true;
+    }
+
     /* set values for line */
-    m_drop_x = (int) event->x();
-    m_drop_y = (int) event->y();
+    mDropX = event->x();
+    mDropY = event->y();
 
     /* reset box that holds dirty redraw spot */
     mOld->setX(0);
     mOld->setY(0);
     mOld->setWidth(0);
     mOld->setHeight(0);
-
-    m_dragging = true;
 }
 
 void EditEventValues::mouseReleaseEvent(QMouseEvent *event)
 {
-    m_current_x = (int) event->x();
-    m_current_y = (int) event->y();
+    mCurrentX = (int) event->x();
+    mCurrentY = (int) event->y();
+    long tick_s, tick_f;
 
-    if ( m_dragging ){
-
-        long tick_s, tick_f;
-
-        if ( m_current_x < m_drop_x ){
-            swap( m_current_x, m_drop_x );
-            swap( m_current_y, m_drop_y );
+    if ( mLineAdjust )
+    {
+        if ( mCurrentX < mDropX )
+        {
+            swap( mCurrentX, mDropX );
+            swap( mCurrentY, mDropY );
         }
 
-        convert_x( m_drop_x, &tick_s );
-        convert_x( m_current_x, &tick_f );
+        convert_x( mDropX, &tick_s );
+        convert_x( mCurrentX, &tick_f );
 
         m_seq->change_event_data_range( tick_s, tick_f,
                                         m_status,
                                         m_cc,
-                                        c_dataarea_y - m_drop_y -1,
-                                        c_dataarea_y - m_current_y-1 );
+                                        c_dataarea_y - mDropY -1,
+                                        c_dataarea_y - mCurrentY-1 );
 
         /* convert x,y to ticks, then set events in range */
-        m_dragging = false;
+        mLineAdjust = false;
 
     }
+    else if (mRelativeAdjust)
+    {
+        mRelativeAdjust = false;
+    }
+
+
 }
 
 void EditEventValues::mouseMoveEvent(QMouseEvent *event)
 {
-    if ( m_dragging ){
+    mCurrentX = event->x();
+    mCurrentY = event->y();
+    long tick_s, tick_f;
 
-        m_current_x = (int) event->x();
-        m_current_y = (int) event->y();
 
-        long tick_s, tick_f;
-
+    if (mLineAdjust)
+    {
         int adj_x_min, adj_x_max,
                 adj_y_min, adj_y_max;
-
-        if ( m_current_x < m_drop_x ){
-
-            adj_x_min = m_current_x;
-            adj_y_min = m_current_y;
-            adj_x_max = m_drop_x;
-            adj_y_max = m_drop_y;
-
-        } else {
-
-            adj_x_max = m_current_x;
-            adj_y_max = m_current_y;
-            adj_x_min = m_drop_x;
-            adj_y_min = m_drop_y;
+        if (mCurrentX < mDropX)
+        {
+            adj_x_min = mCurrentX;
+            adj_y_min = mCurrentY;
+            adj_x_max = mDropX;
+            adj_y_max = mDropY;
+        }
+        else
+        {
+            adj_x_max = mCurrentX;
+            adj_y_max = mCurrentY;
+            adj_x_min = mDropX;
+            adj_y_min = mDropY;
         }
 
         convert_x( adj_x_min, &tick_s );
@@ -236,6 +255,21 @@ void EditEventValues::mouseMoveEvent(QMouseEvent *event)
                                         m_cc,
                                         c_dataarea_y - adj_y_min -1,
                                         c_dataarea_y - adj_y_max -1 );
+    }
+    else if (mRelativeAdjust)
+    {
+        int adjY = mDropY - mCurrentY;
+
+        convert_x( mDropX - 2, &tick_s );
+        convert_x( mDropX + 2, &tick_f );
+
+        m_seq->change_event_data_relative(tick_s, tick_f,
+                                          m_status,
+                                          m_cc,
+                                          adjY);
+
+        //move the drop location so we increment properly on next mouse move
+        mDropY = mCurrentY;
     }
 }
 

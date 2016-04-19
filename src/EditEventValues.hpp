@@ -51,6 +51,7 @@ private:
                     int *a_x,  int *a_y,
                     int *a_w,  int *a_h );
 
+    //convert the given X coordinate into a tick via a pointer
     void convert_x( int a_x, long *a_tick );
 
     MidiSequence *m_seq;
@@ -65,14 +66,16 @@ private:
 
     int m_zoom;
 
-    int m_drop_x, m_drop_y;
-    int m_current_x, m_current_y;
+    int mDropX, mDropY;
+    int mCurrentX, mCurrentY;
 
     /* what is the data window currently editing ? */
     unsigned char m_status;
     unsigned char m_cc;
 
-    bool m_dragging;
+    //interaction states
+    bool mLineAdjust; //dragging a new-level adjustment slope
+    bool mRelativeAdjust; //relative adjusting notes by dragging
 
     friend class EditNoteRoll;
     friend class EditEventTriggers;

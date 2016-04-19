@@ -70,7 +70,7 @@ MidiSequence::pop_undo()
     lock();
 
     if (m_list_undo.size() > 0 ){
-    m_list_redo.push( m_list_event );
+        m_list_redo.push( m_list_event );
         m_list_event = m_list_undo.top();
         m_list_undo.pop();
         verify_and_link();
@@ -106,7 +106,7 @@ MidiSequence::push_trigger_undo()
 
     for ( i  = m_list_trigger_undo.top().begin();
           i != m_list_trigger_undo.top().end(); i++ ){
-      (*i).m_selected = false;
+        (*i).m_selected = false;
     }
 
 
@@ -121,7 +121,7 @@ MidiSequence::pop_trigger_undo()
 
     if (m_list_trigger_undo.size() > 0 ){
 
-    m_list_trigger_redo.push( m_list_trigger );
+        m_list_trigger_redo.push( m_list_trigger );
         m_list_trigger = m_list_trigger_undo.top();
         m_list_trigger_undo.pop();
     }
@@ -310,7 +310,7 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
 {
     lock();
 
-//    printf( "a_tick[%ld] a_playback[%d]\n", a_tick, a_playback_mode );
+    //    printf( "a_tick[%ld] a_playback[%d]\n", a_tick, a_playback_mode );
 
     /* turns sequence off after we play in this frame */
     bool trigger_turning_off = false;
@@ -348,10 +348,10 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
 
                 /* if we've reached a new chunk of drawn seqs in the song data,
                  * and we're not recording, unset the block on this seq's events */
-                    if (start_tick == (*i).m_tick_start || end_tick == (*i).m_tick_start
-                            || start_tick == (*i).m_tick_end || end_tick == (*i).m_tick_end){
-//                        printf("MidiSequence.cpp - block off on %s - tick start = %ld, tick end = %ld, current tick = %ld \n",m_name.c_str(),(*i).m_tick_start,(*i).m_tick_end,end_tick);
-                        m_song_playback_block = false;
+                if (start_tick == (*i).m_tick_start || end_tick == (*i).m_tick_start
+                        || start_tick == (*i).m_tick_end || end_tick == (*i).m_tick_end){
+                    //                        printf("MidiSequence.cpp - block off on %s - tick start = %ld, tick end = %ld, current tick = %ld \n",m_name.c_str(),(*i).m_tick_start,(*i).m_tick_end,end_tick);
+                    m_song_playback_block = false;
                 }
 
                 if ( (*i).m_tick_start <= end_tick ){
@@ -367,7 +367,7 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
                 }
 
                 if ( (*i).m_tick_start >  end_tick ||
-                        (*i).m_tick_end   >  end_tick )
+                     (*i).m_tick_end   >  end_tick )
                 {
                     break;
                 }
@@ -424,7 +424,7 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
 
             //printf ( "s[%ld] -> t[%ld] ", start_tick, end_tick  ); (*e).print();
             if ( ((*e).get_timestamp() + offset_base ) >= (start_tick_offset) &&
-                    ((*e).get_timestamp() + offset_base ) <= (end_tick_offset) ){
+                 ((*e).get_timestamp() + offset_base ) <= (end_tick_offset) ){
 
                 put_event_on_bus( &(*e) );
                 //printf( "bus: ");(*e).print();
@@ -485,7 +485,7 @@ MidiSequence::verify_and_link()
     lock();
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
-    (*i).clear_link();
+        (*i).clear_link();
         (*i).unmark();
     }
 
@@ -494,75 +494,75 @@ MidiSequence::verify_and_link()
     /* pair ons and offs */
     while ( on != m_list_event.end() ){
 
-    /* check for a note on, then look for its
+        /* check for a note on, then look for its
        note off */
-    if ( (*on).is_note_on() ){
+        if ( (*on).is_note_on() ){
 
-        /* get next possible off node */
-        off = on; off++;
-        end_found = false;
+            /* get next possible off node */
+            off = on; off++;
+            end_found = false;
 
-        while ( off != m_list_event.end() ){
+            while ( off != m_list_event.end() ){
 
-        /* is a off event, == notes, and isnt
+                /* is a off event, == notes, and isnt
            markeded  */
-        if ( (*off).is_note_off()                  &&
-             (*off).get_note() == (*on).get_note() &&
-             ! (*off).is_marked()                  ){
+                if ( (*off).is_note_off()                  &&
+                     (*off).get_note() == (*on).get_note() &&
+                     ! (*off).is_marked()                  ){
 
-            /* link + mark */
-            (*on).link( &(*off) );
-            (*off).link( &(*on) );
-            (*on).mark(  );
-            (*off).mark( );
-            end_found = true;
+                    /* link + mark */
+                    (*on).link( &(*off) );
+                    (*off).link( &(*on) );
+                    (*on).mark(  );
+                    (*off).mark( );
+                    end_found = true;
 
-            break;
-        }
-        off++;
-        }
-        if (!end_found) {
-        off = m_list_event.begin();
-        while ( off != on){
-            if ( (*off).is_note_off()                  &&
-                 (*off).get_note() == (*on).get_note() &&
-                 ! (*off).is_marked()                  ){
-
-                /* link + mark */
-                (*on).link( &(*off) );
-                (*off).link( &(*on) );
-                (*on).mark(  );
-                (*off).mark( );
-                end_found = true;
-
-                break;
+                    break;
+                }
+                off++;
             }
-              off++;
+            if (!end_found) {
+                off = m_list_event.begin();
+                while ( off != on){
+                    if ( (*off).is_note_off()                  &&
+                         (*off).get_note() == (*on).get_note() &&
+                         ! (*off).is_marked()                  ){
 
+                        /* link + mark */
+                        (*on).link( &(*off) );
+                        (*off).link( &(*on) );
+                        (*on).mark(  );
+                        (*off).mark( );
+                        end_found = true;
+
+                        break;
+                    }
+                    off++;
+
+                }
+            }
         }
-        }
-    }
-    on++;
+        on++;
     }
 
     /* unmark all */
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
-    (*i).unmark();
+        (*i).unmark();
     }
 
     /* kill those not in range */
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
-    /* if our current time stamp is greater then the length */
+        /* if our current time stamp is greater then the length */
 
-    if ( (*i).get_timestamp() >= m_length ||
-         (*i).get_timestamp() < 0            ){
+        if ( (*i).get_timestamp() >= m_length ||
+             (*i).get_timestamp() < 0            ){
 
-        /* we have to prune it */
-        (*i).mark();
-        if ( (*i).is_linked() )
-        (*i).get_linked()->mark();
-    }
+            /* we have to prune it */
+            (*i).mark();
+            if ( (*i).is_linked() )
+                (*i).get_linked()->mark();
+        }
     }
 
     remove_marked( );
@@ -583,54 +583,54 @@ MidiSequence::link_new( )
     /* pair ons and offs */
     while ( on != m_list_event.end()){
 
-    /* check for a note on, then look for its
+        /* check for a note on, then look for its
        note off */
-    if ( (*on).is_note_on() &&
-         ! (*on).is_linked() ){
+        if ( (*on).is_note_on() &&
+             ! (*on).is_linked() ){
 
-        /* get next element */
-        off = on; off++;
-        end_found = false;
-        while ( off != m_list_event.end()){
+            /* get next element */
+            off = on; off++;
+            end_found = false;
+            while ( off != m_list_event.end()){
 
-            /* is a off event, == notes, and isnt
+                /* is a off event, == notes, and isnt
                   selected  */
-            if ( (*off).is_note_off()                    &&
-                 (*off).get_note() == (*on).get_note() &&
-                 ! (*off).is_linked()                    ){
+                if ( (*off).is_note_off()                    &&
+                     (*off).get_note() == (*on).get_note() &&
+                     ! (*off).is_linked()                    ){
 
-                /* link */
-                (*on).link( &(*off) );
-                (*off).link( &(*on) );
-            end_found = true;
+                    /* link */
+                    (*on).link( &(*off) );
+                    (*off).link( &(*on) );
+                    end_found = true;
 
-            break;
-        }
-        off++;
-        }
+                    break;
+                }
+                off++;
+            }
 
-        if (!end_found) {
+            if (!end_found) {
                 off = m_list_event.begin();
-            while ( off != on){
+                while ( off != on){
 
-            /* is a off event, == notes, and isnt
+                    /* is a off event, == notes, and isnt
                   selected  */
-            if ( (*off).is_note_off()                    &&
-                 (*off).get_note() == (*on).get_note() &&
-                 ! (*off).is_linked()                    ){
+                    if ( (*off).is_note_off()                    &&
+                         (*off).get_note() == (*on).get_note() &&
+                         ! (*off).is_linked()                    ){
 
-                /* link */
-                (*on).link( &(*off) );
-                (*off).link( &(*on) );
-            end_found = true;
+                        /* link */
+                        (*on).link( &(*off) );
+                        (*off).link( &(*on) );
+                        end_found = true;
 
-                break;
+                        break;
+                    }
+                    off++;
+                }
+            }
         }
-        off++;
-        }
-        }
-    }
-    on++;
+        on++;
     }
     unlock();
 }
@@ -644,7 +644,7 @@ MidiSequence::remove(list<MidiEvent>::iterator i)
     /* if its a note off, and that note is currently
        playing, send a note off */
     if ( (*i).is_note_off()  &&
-     m_playing_notes[ (*i).get_note()] > 0 ){
+         m_playing_notes[ (*i).get_note()] > 0 ){
 
         m_masterbus->play( m_bus, &(*i), m_midi_channel );
         m_playing_notes[(*i).get_note()]--;
@@ -681,16 +681,16 @@ MidiSequence::remove_marked()
     i = m_list_event.begin();
     while( i != m_list_event.end() ){
 
-    if ((*i).is_marked()){
+        if ((*i).is_marked()){
 
-        t = i; t++;
-        remove( i );
-        i = t;
-    }
-    else {
+            t = i; t++;
+            remove( i );
+            i = t;
+        }
+        else {
 
-        i++;
-    }
+            i++;
+        }
     }
 
     reset_draw_marker();
@@ -708,11 +708,11 @@ MidiSequence::mark_selected( )
     i = m_list_event.begin();
     while( i != m_list_event.end() ){
 
-    if ((*i).is_selected()){
+        if ((*i).is_selected()){
 
-        (*i).mark();
-    }
-    ++i;
+            (*i).mark();
+        }
+        ++i;
     }
     reset_draw_marker();
 
@@ -738,7 +738,7 @@ MidiSequence::unpaint_all( )
 /* returns the 'box' of the selected items */
 void
 MidiSequence::get_selected_box( long *a_tick_s, int *a_note_h,
-                long *a_tick_f, int *a_note_l )
+                                long *a_tick_f, int *a_note_l )
 {
 
     list<MidiEvent>::iterator i;
@@ -777,7 +777,7 @@ MidiSequence::get_selected_box( long *a_tick_s, int *a_note_h,
 
 void
 MidiSequence::get_clipboard_box( long *a_tick_s, int *a_note_h,
-                 long *a_tick_f, int *a_note_l )
+                                 long *a_tick_f, int *a_note_l )
 {
 
     list<MidiEvent>::iterator i;
@@ -794,20 +794,20 @@ MidiSequence::get_clipboard_box( long *a_tick_s, int *a_note_h,
     lock();
 
     if ( m_list_clipboard.size() == 0 ) {
-    *a_tick_s = *a_tick_f = *a_note_h = *a_note_l = 0;
+        *a_tick_s = *a_tick_f = *a_note_h = *a_note_l = 0;
     }
 
     for ( i = m_list_clipboard.begin(); i != m_list_clipboard.end(); i++ ){
 
-    time = (*i).get_timestamp();
+        time = (*i).get_timestamp();
 
-    if ( time < *a_tick_s ) *a_tick_s = time;
-    if ( time > *a_tick_f ) *a_tick_f = time;
+        if ( time < *a_tick_s ) *a_tick_s = time;
+        if ( time > *a_tick_f ) *a_tick_f = time;
 
-    note = (*i).get_note();
+        note = (*i).get_note();
 
-    if ( note < *a_note_l ) *a_note_l = note;
-    if ( note > *a_note_h ) *a_note_h = note;
+        if ( note < *a_note_l ) *a_note_l = note;
+        if ( note > *a_note_h ) *a_note_h = note;
     }
 
     unlock();
@@ -827,7 +827,7 @@ MidiSequence::get_num_selected_notes( )
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
         if( (*i).is_note_on()                &&
-            (*i).is_selected() ){
+                (*i).is_selected() ){
             ret++;
         }
     }
@@ -841,7 +841,7 @@ MidiSequence::get_num_selected_notes( )
 
 int
 MidiSequence::get_num_selected_events( unsigned char a_status,
-                                   unsigned char a_cc )
+                                       unsigned char a_cc )
 {
     int ret = 0;
     list<MidiEvent>::iterator i;
@@ -872,9 +872,9 @@ MidiSequence::get_num_selected_events( unsigned char a_status,
 
 /* selects events in range..  tick start, note high, tick end
    note low */
-    int
+int
 MidiSequence::select_note_events( long a_tick_s, int a_note_h,
-        long a_tick_f, int a_note_l, select_action_e a_action)
+                                  long a_tick_f, int a_note_l, select_action_e a_action)
 {
     int ret=0;
 
@@ -888,7 +888,7 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ) {
 
         if( (*i).get_note()      <= a_note_h &&
-            (*i).get_note()      >= a_note_l ) {
+                (*i).get_note()      >= a_note_l ) {
 
             if ( (*i).is_linked() ) {
                 MidiEvent *ev = (*i).get_linked();
@@ -904,10 +904,10 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
                 }
 
                 if (
-                       (    (tick_s <= tick_f) &&
-                            ((tick_s <= a_tick_f) && (tick_f >= a_tick_s)) ) ||
-                       (    (tick_s > tick_f) &&
-                        ((tick_s <= a_tick_f) || (tick_f >= a_tick_s)) ) )
+                        (    (tick_s <= tick_f) &&
+                             ((tick_s <= a_tick_f) && (tick_f >= a_tick_s)) ) ||
+                        (    (tick_s > tick_f) &&
+                             ((tick_s <= a_tick_f) || (tick_f >= a_tick_s)) ) )
                 {
                     if ( a_action == e_select ||
                          a_action == e_select_one )
@@ -1007,10 +1007,10 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
                     }
                     if ( a_action == e_remove_one )
                     {
-                         remove( &(*i) );
-                         reset_draw_marker();
-                         ret++;
-                         break;
+                        remove( &(*i) );
+                        reset_draw_marker();
+                        ret++;
+                        break;
                     }
                 }
             }
@@ -1026,8 +1026,8 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
    selected */
 int
 MidiSequence::select_events( long a_tick_s, long a_tick_f,
-             unsigned char a_status,
-             unsigned char a_cc, select_action_e a_action)
+                             unsigned char a_status,
+                             unsigned char a_cc, select_action_e a_action)
 {
     int ret=0;
     list<MidiEvent>::iterator i;
@@ -1044,8 +1044,8 @@ MidiSequence::select_events( long a_tick_s, long a_tick_f,
             (*i).get_data( &d0, &d1 );
 
             if ( (a_status == EVENT_CONTROL_CHANGE &&
-                        d0 == a_cc )
-                    || (a_status != EVENT_CONTROL_CHANGE) ){
+                  d0 == a_cc )
+                 || (a_status != EVENT_CONTROL_CHANGE) ){
 
 
                 if ( a_action == e_select ||
@@ -1086,17 +1086,17 @@ MidiSequence::select_events( long a_tick_s, long a_tick_f,
                 }
                 if ( a_action == e_remove_one )
                 {
-                     remove( &(*i) );
-                     reset_draw_marker();
-                     ret++;
-                     break;
+                    remove( &(*i) );
+                    reset_draw_marker();
+                    ret++;
+                    break;
                 }
             }
         }
     }
-        unlock();
+    unlock();
 
-        return ret;
+    return ret;
 }
 
 
@@ -1109,7 +1109,7 @@ MidiSequence::select_all()
     list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ )
-    (*i).select( );
+        (*i).select( );
 
     unlock();
 }
@@ -1123,7 +1123,7 @@ MidiSequence::unselect()
 
     list<MidiEvent>::iterator i;
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ )
-    (*i).unselect();
+        (*i).unselect();
 
     unlock();
 }
@@ -1153,24 +1153,24 @@ MidiSequence::move_selected_notes( long a_delta_tick, int a_delta_note )
             if ( (e.get_note() + a_delta_note)      >= 0   &&
                  (e.get_note() + a_delta_note)      <  c_num_keys ){
 
-        noteon = e.is_note_on();
+                noteon = e.is_note_on();
                 timestamp = e.get_timestamp() + a_delta_tick;
 
-        if (timestamp > m_length) {
-            timestamp = timestamp - m_length;
-        }
+                if (timestamp > m_length) {
+                    timestamp = timestamp - m_length;
+                }
 
-        if (timestamp < 0) {
-            timestamp = m_length + timestamp;
-        }
+                if (timestamp < 0) {
+                    timestamp = m_length + timestamp;
+                }
 
-        if ((timestamp==0) && !noteon) {
-            timestamp = m_length-2;
-        }
+                if ((timestamp==0) && !noteon) {
+                    timestamp = m_length-2;
+                }
 
-        if ((timestamp==m_length) && noteon) {
-            timestamp = 0;
-        }
+                if ((timestamp==m_length) && noteon) {
+                    timestamp = 0;
+                }
 
                 e.set_timestamp( timestamp );
                 e.set_note( e.get_note() + a_delta_note );
@@ -1258,8 +1258,8 @@ MidiSequence::stretch_selected( long a_delta_tick )
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
         if ( (*i).is_selected() &&
-                (*i).is_note_on() &&
-                (*i).is_linked() ){
+             (*i).is_note_on() &&
+             (*i).is_linked() ){
 
             on = &(*i);
             off = (*i).get_linked();
@@ -1283,8 +1283,8 @@ MidiSequence::stretch_selected( long a_delta_tick )
 
         for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
             if ( (*i).is_marked() &&
-                    (*i).is_note_on() &&
-                    (*i).is_linked() ){
+                 (*i).is_note_on() &&
+                 (*i).is_linked() ){
 
                 on = &(*i);
                 off = (*i).get_linked();
@@ -1328,28 +1328,28 @@ MidiSequence::grow_selected( long a_delta_tick )
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
         if ( (*i).is_marked() &&
-                (*i).is_note_on() &&
-                (*i).is_linked() ){
+             (*i).is_note_on() &&
+             (*i).is_linked() ){
 
             on = &(*i);
             off = (*i).get_linked();
 
             long length =
-                off->get_timestamp() +
-                a_delta_tick;
+                    off->get_timestamp() +
+                    a_delta_tick;
 
-        //If timestamp + delta is greater that m_length we do round robbin magic
-        if (length > m_length) {
-            length = length - m_length;
-        }
+            //If timestamp + delta is greater that m_length we do round robbin magic
+            if (length > m_length) {
+                length = length - m_length;
+            }
 
-        if (length < 0) {
-            length = m_length + length;
-        }
+            if (length < 0) {
+                length = m_length + length;
+            }
 
-        if (length==0) {
-            length = m_length-2;
-        }
+            if (length==0) {
+                length = m_length-2;
+            }
 
             on->unmark();
 
@@ -1449,16 +1449,16 @@ MidiSequence::copy_selected()
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
-    if ( (*i).is_selected() ){
-        m_list_clipboard.push_back( (*i) );
-    }
+        if ( (*i).is_selected() ){
+            m_list_clipboard.push_back( (*i) );
+        }
     }
 
     long first_tick = (*m_list_clipboard.begin()).get_timestamp();
 
     for ( i = m_list_clipboard.begin(); i != m_list_clipboard.end(); i++ ){
 
-    (*i).set_timestamp((*i).get_timestamp() - first_tick );
+        (*i).set_timestamp((*i).get_timestamp() - first_tick );
     }
 
     unlock();
@@ -1474,21 +1474,21 @@ MidiSequence::paste_selected( long a_tick, int a_note )
     list<MidiEvent> clipboard = m_list_clipboard;
 
     for ( i = clipboard.begin(); i != clipboard.end(); i++ ){
-    (*i).set_timestamp((*i).get_timestamp() + a_tick );
+        (*i).set_timestamp((*i).get_timestamp() + a_tick );
     }
 
     if ((*clipboard.begin()).is_note_on() ||
-    (*clipboard.begin()).is_note_off() ){
+            (*clipboard.begin()).is_note_off() ){
 
-    for ( i = clipboard.begin(); i != clipboard.end(); i++ )
-        if ( (*i).get_note( ) > highest_note ) highest_note = (*i).get_note();
+        for ( i = clipboard.begin(); i != clipboard.end(); i++ )
+            if ( (*i).get_note( ) > highest_note ) highest_note = (*i).get_note();
 
 
 
-    for ( i = clipboard.begin(); i != clipboard.end(); i++ ){
+        for ( i = clipboard.begin(); i != clipboard.end(); i++ ){
 
-        (*i).set_note( (*i).get_note( ) - (highest_note - a_note) );
-    }
+            (*i).set_note( (*i).get_note( ) - (highest_note - a_note) );
+        }
     }
 
     m_list_event.merge( clipboard );
@@ -1502,14 +1502,11 @@ MidiSequence::paste_selected( long a_tick, int a_note )
 
 }
 
-
-/* change */
-void
-MidiSequence::change_event_data_range( long a_tick_s, long a_tick_f,
-                   unsigned char a_status,
-                   unsigned char a_cc,
-                   int a_data_s,
-                   int a_data_f )
+void MidiSequence::change_event_data_range( long a_tick_s, long a_tick_f,
+                                            unsigned char a_status,
+                                            unsigned char a_cc,
+                                            int a_data_s,
+                                            int a_data_f )
 {
     lock();
 
@@ -1529,18 +1526,18 @@ MidiSequence::change_event_data_range( long a_tick_s, long a_tick_f,
 
         /* correct status and not CC */
         if ( a_status != EVENT_CONTROL_CHANGE &&
-                (*i).get_status() == a_status )
+             (*i).get_status() == a_status )
             set = true;
 
         /* correct status and correct cc */
         if ( a_status == EVENT_CONTROL_CHANGE &&
-                (*i).get_status() == a_status &&
-                d0 == a_cc )
+             (*i).get_status() == a_status &&
+             d0 == a_cc )
             set = true;
 
         /* in range? */
         if ( !((*i).get_timestamp() >= a_tick_s &&
-                    (*i).get_timestamp() <= a_tick_f ))
+               (*i).get_timestamp() <= a_tick_f ))
             set = false;
 
         /* in selection? */
@@ -1572,7 +1569,7 @@ MidiSequence::change_event_data_range( long a_tick_s, long a_tick_f,
             //printf("datas: %d %d\n", a_data_s, a_data_f);
 
             int newdata = ((tick-a_tick_s)*a_data_f + (a_tick_f-tick)*a_data_s)
-                /(a_tick_f - a_tick_s);
+                    /(a_tick_f - a_tick_s);
 
             if ( newdata < 0 ) newdata = 0;
             if ( newdata > 127 ) newdata = 127;
@@ -1605,8 +1602,94 @@ MidiSequence::change_event_data_range( long a_tick_s, long a_tick_f,
     unlock();
 }
 
+void MidiSequence::change_event_data_relative(long a_tick_s, long a_tick_f,
+                                              unsigned char a_status,
+                                              unsigned char a_cc, int newVal)
+{
+    lock();
 
+    unsigned char d0, d1;
+    list<MidiEvent>::iterator i;
 
+    /* change only selected events, if any */
+    bool have_selection = false;
+    if( get_num_selected_events(a_status, a_cc) )
+        have_selection = true;
+
+    for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
+
+        /* initially false */
+        bool set = false;
+        (*i).get_data( &d0, &d1 );
+
+        /* correct status and not CC */
+        if ( a_status != EVENT_CONTROL_CHANGE &&
+             (*i).get_status() == a_status )
+            set = true;
+
+        /* correct status and correct cc */
+        if ( a_status == EVENT_CONTROL_CHANGE &&
+             (*i).get_status() == a_status &&
+             d0 == a_cc )
+            set = true;
+
+        /* in range? */
+        if ( !((*i).get_timestamp() >= a_tick_s &&
+               (*i).get_timestamp() <= a_tick_f ))
+            set = false;
+
+        /* in selection? */
+        if (have_selection)
+        {
+            if (!(*i).is_selected())
+                set = false;
+            else //always operate on selected events
+                set = true;
+        }
+
+        if ( set )
+        {
+            //prevent divide by zero
+            if( a_tick_f == a_tick_s )
+                a_tick_f = a_tick_s + 1;
+
+            int tick = (*i).get_timestamp();
+
+            //scale data by our parameter
+            int newdata = d1 + newVal;
+
+            if ( newdata < 0 )
+                newdata = 0;
+            if ( newdata > 127 )
+                newdata = 127;
+
+            if ( a_status == EVENT_NOTE_ON )
+                d1 = newdata;
+
+            if ( a_status == EVENT_NOTE_OFF )
+                d1 = newdata;
+
+            if ( a_status == EVENT_AFTERTOUCH )
+                d1 = newdata;
+
+            if ( a_status == EVENT_CONTROL_CHANGE )
+                d1 = newdata;
+
+            if ( a_status == EVENT_PROGRAM_CHANGE )
+                d0 = newdata; /* d0 == new patch */
+
+            if ( a_status == EVENT_CHANNEL_PRESSURE )
+                d0 = newdata; /* d0 == pressure */
+
+            if ( a_status == EVENT_PITCH_WHEEL )
+                d1 = newdata;
+
+            (*i).set_data( d0, d1 );
+        }
+    }
+
+    unlock();
+}
 
 void
 MidiSequence::add_note( long a_tick, long a_length, int a_note, bool a_paint)
@@ -1656,21 +1739,21 @@ MidiSequence::add_note( long a_tick, long a_length, int a_note, bool a_paint)
         if ( !ignore )
         {
 
-        if ( a_paint )
-            e.paint();
+            if ( a_paint )
+                e.paint();
 
-        e.set_status( EVENT_NOTE_ON );
-        e.set_data( a_note, 100 );
-        e.set_timestamp( a_tick );
+            e.set_status( EVENT_NOTE_ON );
+            e.set_data( a_note, 100 );
+            e.set_timestamp( a_tick );
 
-        add_event( &e );
+            add_event( &e );
 
-        e.set_status( EVENT_NOTE_OFF );
-        e.set_data( a_note, 100 );
-        e.set_timestamp( a_tick + a_length );
+            e.set_status( EVENT_NOTE_OFF );
+            e.set_data( a_note, 100 );
+            e.set_timestamp( a_tick + a_length );
 
-        add_event( &e );
-    }
+            add_event( &e );
+        }
     }
 
     verify_and_link();
@@ -1680,10 +1763,10 @@ MidiSequence::add_note( long a_tick, long a_length, int a_note, bool a_paint)
 
 void
 MidiSequence::add_event( long a_tick,
-             unsigned char a_status,
-             unsigned char a_d0,
-             unsigned char a_d1,
-             bool a_paint)
+                         unsigned char a_status,
+                         unsigned char a_d0,
+                         unsigned char a_d1,
+                         bool a_paint)
 {
     lock();
 
@@ -1771,9 +1854,9 @@ MidiSequence::stream_event(  MidiEvent *a_ev  )
     if ( m_quanized_rec && is_pattern_playing){
         if (a_ev->is_note_off()) {
             select_note_events( a_ev->get_timestamp(), a_ev->get_note(),
-            a_ev->get_timestamp(), a_ev->get_note(), e_select);
+                                a_ev->get_timestamp(), a_ev->get_note(), e_select);
             quanize_events( EVENT_NOTE_ON, 0, m_snap_tick, 1 , true );
-    }
+        }
     }
     /* update view */
 
@@ -1943,7 +2026,7 @@ MidiSequence::add_trigger( long a_tick, long a_length, long a_offset, bool a_adj
 
         // Is it inside the new one ? erase
         if ((*i).m_tick_start >= e.m_tick_start &&
-            (*i).m_tick_end   <= e.m_tick_end  )
+                (*i).m_tick_end   <= e.m_tick_end  )
         {
             //printf ( "erase start[%d] end[%d]\n", (*i).m_tick_start, (*i).m_tick_end );
             m_list_trigger.erase(i);
@@ -2004,7 +2087,7 @@ bool MidiSequence::intersectNotes( long position, long position_note, long& star
     while ( on != m_list_event.end() )
     {
         if (position_note == (*on).get_note() &&
-            (*on).is_note_on())
+                (*on).is_note_on())
         {
             // find next "off" event for the note
             off = on; ++off;
@@ -2014,7 +2097,7 @@ bool MidiSequence::intersectNotes( long position, long position_note, long& star
                 ++off;
             }
             if ((*on).get_note() == (*off).get_note() && (*off).is_note_off() &&
-                (*on).get_timestamp() <= position && position <= (*off).get_timestamp())
+                    (*on).get_timestamp() <= position && position <= (*off).get_timestamp())
             {
                 start = (*on).get_timestamp();
                 end = (*off).get_timestamp();
@@ -2068,7 +2151,7 @@ MidiSequence::grow_trigger (long a_tick_from, long a_tick_to, long a_length)
 
         // Find our pair
         if ((*i).m_tick_start <= a_tick_from &&
-            (*i).m_tick_end   >= a_tick_from  )
+                (*i).m_tick_end   >= a_tick_from  )
         {
             long start = (*i).m_tick_start;
             long end   = (*i).m_tick_end;
@@ -2102,7 +2185,7 @@ MidiSequence::del_trigger( long a_tick )
 
     while ( i != m_list_trigger.end() ){
         if ((*i).m_tick_start <= a_tick &&
-            (*i).m_tick_end   >= a_tick ){
+                (*i).m_tick_end   >= a_tick ){
 
             m_list_trigger.erase(i);
             break;
@@ -2232,24 +2315,24 @@ L       R
 [                    ]
 
 <<
-    [     ]    [  ][ ]  [] split on the R marker, shift first
-    [     ]        [     ]
-    delete middle
-    [     ][ ]  []         move ticks
-    [     ][     ]
+   [     ]    [  ][ ]  [] split on the R marker, shift first
+[     ]        [     ]
+delete middle
+[     ][ ]  []         move ticks
+[     ][     ]
 
-    L       R
-    [     ][ ] [     ]  [] split on L
-    [     ][             ]
+L       R
+[     ][ ] [     ]  [] split on L
+[     ][             ]
 
-    [     ]        [ ] [     ]  [] increase all after L
-    [     ]        [             ]
+[     ]        [ ] [     ]  [] increase all after L
+[     ]        [             ]
 
 
 #endif
 
-    void
-    MidiSequence::copy_triggers( long a_start_tick,
+void
+MidiSequence::copy_triggers( long a_start_tick,
                              long a_distance  )
 {
 
@@ -2259,15 +2342,15 @@ L       R
     lock();
 
     move_triggers( a_start_tick,
-           a_distance,
-           true );
+                   a_distance,
+                   true );
 
     list<MidiTrigger>::iterator i = m_list_trigger.begin();
     while(  i != m_list_trigger.end() ){
 
 
 
-    if ( (*i).m_tick_start >= from_start_tick &&
+        if ( (*i).m_tick_start >= from_start_tick &&
              (*i).m_tick_start <= from_end_tick )
         {
             MidiTrigger e;
@@ -2360,8 +2443,8 @@ MidiSequence::exact_split_trigger(long a_tick){
 
 void
 MidiSequence::move_triggers( long a_start_tick,
-             long a_distance,
-             bool a_direction )
+                             long a_distance,
+                             bool a_direction )
 {
 
     long a_end_tick = a_start_tick + a_distance;
@@ -2374,7 +2457,7 @@ MidiSequence::move_triggers( long a_start_tick,
     while(  i != m_list_trigger.end() ){
 
         // trigger greater than L and R
-    if ( (*i).m_tick_start < a_start_tick &&
+        if ( (*i).m_tick_start < a_start_tick &&
              (*i).m_tick_end > a_start_tick )
         {
             if ( a_direction ) // forward
@@ -2388,7 +2471,7 @@ MidiSequence::move_triggers( long a_start_tick,
         }
 
         // triggers on L
-    if ( (*i).m_tick_start < a_start_tick &&
+        if ( (*i).m_tick_start < a_start_tick &&
              (*i).m_tick_end > a_start_tick )
         {
             if ( a_direction ) // forward
@@ -2411,7 +2494,7 @@ MidiSequence::move_triggers( long a_start_tick,
         }
 
         // triggers on R
-    if ( (*i).m_tick_start < a_end_tick &&
+        if ( (*i).m_tick_start < a_end_tick &&
              (*i).m_tick_end > a_end_tick )
         {
             if ( !a_direction ) // forward
@@ -2471,7 +2554,7 @@ MidiSequence::get_selected_trigger_start_tick()
 
     while(  i != m_list_trigger.end() ){
 
-    if ( i->m_selected ){
+        if ( i->m_selected ){
             ret = i->m_tick_start;
         }
 
@@ -2493,7 +2576,7 @@ MidiSequence::get_selected_trigger_end_tick()
 
     while(  i != m_list_trigger.end() ){
 
-    if ( i->m_selected ){
+        if ( i->m_selected ){
 
             ret = i->m_tick_end;
         }
@@ -2525,7 +2608,7 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
 
     while(  i != m_list_trigger.end() ){
 
-    if ( i->m_selected ){
+        if ( i->m_selected ){
 
             s = i;
 
@@ -2608,7 +2691,7 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
             }
 
             break;
-    }
+        }
         else {
             min_tick = (*i).m_tick_end + 1;
         }
@@ -2628,9 +2711,9 @@ MidiSequence::get_max_trigger()
     long ret;
 
     if ( m_list_trigger.size() > 0 )
-    ret = m_list_trigger.back().m_tick_end;
+        ret = m_list_trigger.back().m_tick_end;
     else
-    ret = 0;
+        ret = 0;
 
     unlock();
 
@@ -2658,9 +2741,9 @@ MidiSequence::get_trigger_state( long a_tick )
 
     for ( i = m_list_trigger.begin(); i != m_list_trigger.end(); i++ ){
 
-    if ( (*i).m_tick_start <= a_tick &&
+        if ( (*i).m_tick_start <= a_tick &&
              (*i).m_tick_end >= a_tick){
-        ret = true;
+            ret = true;
             break;
         }
     }
@@ -2682,11 +2765,11 @@ MidiSequence::select_trigger( long a_tick )
 
     for ( i = m_list_trigger.begin(); i != m_list_trigger.end(); i++ ){
 
-    if ( (*i).m_tick_start <= a_tick &&
+        if ( (*i).m_tick_start <= a_tick &&
              (*i).m_tick_end   >= a_tick){
 
             (*i).m_selected = true;
-        ret = true;
+            ret = true;
         }
     }
 
@@ -2767,7 +2850,7 @@ MidiSequence::paste_trigger()
 {
     if ( m_trigger_copied ){
         long length =  m_trigger_clipboard.m_tick_end -
-            m_trigger_clipboard.m_tick_start + 1;
+                m_trigger_clipboard.m_tick_start + 1;
         // paste at copy end
         add_trigger( m_trigger_clipboard.m_tick_end + 1,
                      length,
@@ -2814,9 +2897,9 @@ MidiSequence::get_lowest_note_event()
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
-    if ( (*i).is_note_on() || (*i).is_note_off() )
-        if ( (*i).get_note() < ret )
-        ret = (*i).get_note();
+        if ( (*i).is_note_on() || (*i).is_note_off() )
+            if ( (*i).get_note() < ret )
+                ret = (*i).get_note();
     }
 
     unlock();
@@ -2834,9 +2917,9 @@ MidiSequence::get_highest_note_event()
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
-    if ( (*i).is_note_on() || (*i).is_note_off() )
-        if ( (*i).get_note() > ret )
-        ret = (*i).get_note();
+        if ( (*i).is_note_on() || (*i).is_note_off() )
+            if ( (*i).get_note() > ret )
+                ret = (*i).get_note();
     }
 
     unlock();
@@ -2846,10 +2929,10 @@ MidiSequence::get_highest_note_event()
 
 draw_type
 MidiSequence::get_next_note_event( long *a_tick_s,
-                   long *a_tick_f,
-                   int  *a_note,
-                   bool *a_selected,
-                   int  *a_velocity  )
+                                   long *a_tick_f,
+                                   int  *a_note,
+                                   bool *a_selected,
+                                   int  *a_velocity  )
 {
 
     draw_type ret = DRAW_FIN;
@@ -2857,40 +2940,40 @@ MidiSequence::get_next_note_event( long *a_tick_s,
 
     while (  m_iterator_draw  != m_list_event.end() )
     {
-    *a_tick_s   = (*m_iterator_draw).get_timestamp();
-    *a_note     = (*m_iterator_draw).get_note();
-    *a_selected = (*m_iterator_draw).is_selected();
-    *a_velocity = (*m_iterator_draw).get_note_velocity();
+        *a_tick_s   = (*m_iterator_draw).get_timestamp();
+        *a_note     = (*m_iterator_draw).get_note();
+        *a_selected = (*m_iterator_draw).is_selected();
+        *a_velocity = (*m_iterator_draw).get_note_velocity();
 
-    /* note on, so its linked */
-    if( (*m_iterator_draw).is_note_on() &&
-        (*m_iterator_draw).is_linked() ){
+        /* note on, so its linked */
+        if( (*m_iterator_draw).is_note_on() &&
+                (*m_iterator_draw).is_linked() ){
 
-        *a_tick_f   = (*m_iterator_draw).get_linked()->get_timestamp();
+            *a_tick_f   = (*m_iterator_draw).get_linked()->get_timestamp();
 
-        ret = DRAW_NORMAL_LINKED;
+            ret = DRAW_NORMAL_LINKED;
+            m_iterator_draw++;
+            return ret;
+        }
+
+        else if( (*m_iterator_draw).is_note_on() &&
+                 (! (*m_iterator_draw).is_linked()) ){
+
+            ret = DRAW_NOTE_ON;
+            m_iterator_draw++;
+            return ret;
+        }
+
+        else if( (*m_iterator_draw).is_note_off() &&
+                 (! (*m_iterator_draw).is_linked()) ){
+
+            ret = DRAW_NOTE_OFF;
+            m_iterator_draw++;
+            return ret;
+        }
+
+        /* keep going until we hit null or find a NoteOn */
         m_iterator_draw++;
-        return ret;
-    }
-
-    else if( (*m_iterator_draw).is_note_on() &&
-         (! (*m_iterator_draw).is_linked()) ){
-
-        ret = DRAW_NOTE_ON;
-        m_iterator_draw++;
-        return ret;
-    }
-
-    else if( (*m_iterator_draw).is_note_off() &&
-         (! (*m_iterator_draw).is_linked()) ){
-
-        ret = DRAW_NOTE_OFF;
-        m_iterator_draw++;
-        return ret;
-    }
-
-    /* keep going until we hit null or find a NoteOn */
-    m_iterator_draw++;
     }
     return DRAW_FIN;
 }
@@ -2898,7 +2981,7 @@ MidiSequence::get_next_note_event( long *a_tick_s,
 
 bool
 MidiSequence::get_next_event( unsigned char *a_status,
-                          unsigned char *a_cc)
+                              unsigned char *a_cc)
 {
     unsigned char j;
 
@@ -2918,35 +3001,35 @@ MidiSequence::get_next_event( unsigned char *a_status,
 
 bool
 MidiSequence::get_next_event( unsigned char a_status,
-              unsigned char a_cc,
-              long *a_tick,
-              unsigned char *a_D0,
-              unsigned char *a_D1,
-              bool *a_selected )
+                              unsigned char a_cc,
+                              long *a_tick,
+                              unsigned char *a_D0,
+                              unsigned char *a_D1,
+                              bool *a_selected )
 {
     while (  m_iterator_draw  != m_list_event.end() ){
 
-    /* note on, so its linked */
-    if( (*m_iterator_draw).get_status() == a_status ){
+        /* note on, so its linked */
+        if( (*m_iterator_draw).get_status() == a_status ){
 
-        (*m_iterator_draw).get_data( a_D0, a_D1 );
-        *a_tick   = (*m_iterator_draw).get_timestamp();
-        *a_selected = (*m_iterator_draw).is_selected();
+            (*m_iterator_draw).get_data( a_D0, a_D1 );
+            *a_tick   = (*m_iterator_draw).get_timestamp();
+            *a_selected = (*m_iterator_draw).is_selected();
 
-        /* either we have a control chage with the right CC
+            /* either we have a control chage with the right CC
            or its a different type of event */
-        if ( (a_status == EVENT_CONTROL_CHANGE &&
-          *a_D0 == a_cc )
-         || (a_status != EVENT_CONTROL_CHANGE) ){
+            if ( (a_status == EVENT_CONTROL_CHANGE &&
+                  *a_D0 == a_cc )
+                 || (a_status != EVENT_CONTROL_CHANGE) ){
 
-        /* we have a good one */
-        /* update and return */
-        m_iterator_draw++;
-        return true;
+                /* we have a good one */
+                /* update and return */
+                m_iterator_draw++;
+                return true;
+            }
         }
-    }
-    /* keep going until we hit null or find a NoteOn */
-    m_iterator_draw++;
+        /* keep going until we hit null or find a NoteOn */
+        m_iterator_draw++;
     }
     return false;
 }
@@ -2956,13 +3039,13 @@ MidiSequence::get_next_trigger( long *a_tick_on, long *a_tick_off, bool *a_selec
 {
     while (  m_iterator_draw_trigger  != m_list_trigger.end() ){
 
-    *a_tick_on  = (*m_iterator_draw_trigger).m_tick_start;
+        *a_tick_on  = (*m_iterator_draw_trigger).m_tick_start;
         *a_selected = (*m_iterator_draw_trigger).m_selected;
         *a_offset =   (*m_iterator_draw_trigger).m_offset;
-    *a_tick_off = (*m_iterator_draw_trigger).m_tick_end;
-    m_iterator_draw_trigger++;
+        *a_tick_off = (*m_iterator_draw_trigger).m_tick_end;
+        m_iterator_draw_trigger++;
 
-    return true;
+        return true;
     }
     return false;
 }
@@ -2989,26 +3072,26 @@ MidiSequence::operator= (const MidiSequence& a_rhs)
     /* dont copy to self */
     if (this != &a_rhs){
 
-    m_list_event   = a_rhs.m_list_event;
-    m_list_trigger   = a_rhs.m_list_trigger;
+        m_list_event   = a_rhs.m_list_event;
+        m_list_trigger   = a_rhs.m_list_trigger;
 
-    m_midi_channel = a_rhs.m_midi_channel;
-    m_masterbus    = a_rhs.m_masterbus;
-    m_bus          = a_rhs.m_bus;
-    m_name         = a_rhs.m_name;
-    m_length       = a_rhs.m_length;
+        m_midi_channel = a_rhs.m_midi_channel;
+        m_masterbus    = a_rhs.m_masterbus;
+        m_bus          = a_rhs.m_bus;
+        m_name         = a_rhs.m_name;
+        m_length       = a_rhs.m_length;
 
-    m_time_beats_per_measure = a_rhs.m_time_beats_per_measure;
-    m_time_beat_width = a_rhs.m_time_beat_width;
+        m_time_beats_per_measure = a_rhs.m_time_beats_per_measure;
+        m_time_beat_width = a_rhs.m_time_beat_width;
 
-    m_playing      = false;
+        m_playing      = false;
 
-    /* no notes are playing */
-    for (int i=0; i< c_midi_notes; i++ )
-        m_playing_notes[i] = 0;
+        /* no notes are playing */
+        for (int i=0; i< c_midi_notes; i++ )
+            m_playing_notes[i] = 0;
 
-    /* reset */
-    zero_markers( );
+        /* reset */
+        zero_markers( );
 
     }
 
@@ -3095,7 +3178,7 @@ MidiSequence::set_length( long a_len, bool a_adjust_triggers )
 
     /* start up and refresh */
     if ( was_playing )
-    set_playing( true );
+        set_playing( true );
 
     unlock();
 }
@@ -3247,7 +3330,7 @@ MidiSequence::print()
     printf("[%s]\n", m_name.c_str()  );
 
     for( list<MidiEvent>::iterator i = m_list_event.begin(); i != m_list_event.end(); i++ )
-    (*i).print();
+        (*i).print();
     printf("events[%zd]\n\n",m_list_event.size());
 
 }
@@ -3354,20 +3437,20 @@ MidiSequence::select_events( unsigned char a_status, unsigned char a_cc, bool a_
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
-    /* initially false */
-    bool set = false;
-    (*i).get_data( &d0, &d1 );
+        /* initially false */
+        bool set = false;
+        (*i).get_data( &d0, &d1 );
 
-    /* correct status and not CC */
-    if ( a_status != EVENT_CONTROL_CHANGE &&
-         (*i).get_status() == a_status )
-        set = true;
+        /* correct status and not CC */
+        if ( a_status != EVENT_CONTROL_CHANGE &&
+             (*i).get_status() == a_status )
+            set = true;
 
-    /* correct status and correct cc */
-    if ( a_status == EVENT_CONTROL_CHANGE &&
-         (*i).get_status() == a_status &&
-         d0 == a_cc )
-        set = true;
+        /* correct status and correct cc */
+        if ( a_status == EVENT_CONTROL_CHANGE &&
+             (*i).get_status() == a_status &&
+             d0 == a_cc )
+            set = true;
 
         if ( set ){
 
@@ -3380,7 +3463,7 @@ MidiSequence::select_events( unsigned char a_status, unsigned char a_cc, bool a_
             }
             else
                 (*i).select( );
-    }
+        }
     }
 
     unlock();
@@ -3411,8 +3494,8 @@ MidiSequence::transpose_notes( int a_steps, int a_scale )
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
-    /* is it being moved ? */
-    if ( ((*i).get_status() ==  EVENT_NOTE_ON ||
+        /* is it being moved ? */
+        if ( ((*i).get_status() ==  EVENT_NOTE_ON ||
               (*i).get_status() ==  EVENT_NOTE_OFF) &&
              (*i).is_marked() ){
 
@@ -3437,7 +3520,7 @@ MidiSequence::transpose_notes( int a_steps, int a_scale )
 
             transposed_events.push_front(e);
 
-    }
+        }
     }
 
     remove_marked();
@@ -3457,7 +3540,7 @@ MidiSequence::transpose_notes( int a_steps, int a_scale )
 // NOT DELETING THE ENDS, NOT SELECTED.
 void
 MidiSequence::quanize_events( unsigned char a_status, unsigned char a_cc,
-                          long a_snap_tick,  int a_divide, bool a_linked )
+                              long a_snap_tick,  int a_divide, bool a_linked )
 {
     MidiEvent e,f;
 
@@ -3473,19 +3556,19 @@ MidiSequence::quanize_events( unsigned char a_status, unsigned char a_cc,
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
         /* initially false */
-    bool set = false;
-    (*i).get_data( &d0, &d1 );
+        bool set = false;
+        (*i).get_data( &d0, &d1 );
 
-    /* correct status and not CC */
-    if ( a_status != EVENT_CONTROL_CHANGE &&
-         (*i).get_status() == a_status )
-        set = true;
+        /* correct status and not CC */
+        if ( a_status != EVENT_CONTROL_CHANGE &&
+             (*i).get_status() == a_status )
+            set = true;
 
-    /* correct status and correct cc */
-    if ( a_status == EVENT_CONTROL_CHANGE &&
-         (*i).get_status() == a_status &&
-         d0 == a_cc )
-        set = true;
+        /* correct status and correct cc */
+        if ( a_status == EVENT_CONTROL_CHANGE &&
+             (*i).get_status() == a_status &&
+             d0 == a_cc )
+            set = true;
 
         if( !(*i).is_marked() )
             set = false;
@@ -3493,7 +3576,7 @@ MidiSequence::quanize_events( unsigned char a_status, unsigned char a_cc,
         if ( set ){
 
             /* copy event */
-        e = (*i);
+            e = (*i);
             (*i).select();
             e.unmark();
 
@@ -3507,9 +3590,9 @@ MidiSequence::quanize_events( unsigned char a_status, unsigned char a_cc,
             else {
                 timestamp_delta = (a_snap_tick - timestamp_remander) / a_divide;
             }
-        if ((timestamp_delta + timestamp) >= m_length) {
-        timestamp_delta = - e.get_timestamp() ;
-        }
+            if ((timestamp_delta + timestamp) >= m_length) {
+                timestamp_delta = - e.get_timestamp() ;
+            }
 
             e.set_timestamp( e.get_timestamp() + timestamp_delta );
             quantized_events.push_front(e);
@@ -3546,18 +3629,18 @@ addListVar( list<char> *a_list, long a_var )
        still set bits, encode into buffer
        in reverse order */
     while ( ( a_var >>= 7) ){
-    buffer <<= 8;
-    buffer |= ((a_var & 0x7F) | 0x80);
+        buffer <<= 8;
+        buffer |= ((a_var & 0x7F) | 0x80);
     }
 
     while (true){
 
-    a_list->push_front( (char) buffer & 0xFF );
+        a_list->push_front( (char) buffer & 0xFF );
 
-    if (buffer & 0x80)
-        buffer >>= 8;
-    else
-        break;
+        if (buffer & 0x80)
+            buffer >>= 8;
+        else
+            break;
     }
 }
 
@@ -3598,53 +3681,53 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
     a_list->push_front( length );
 
     for ( int i=0; i< length; i++ )
-    a_list->push_front( m_name.c_str()[i] );
+        a_list->push_front( m_name.c_str()[i] );
 
     long timestamp = 0, delta_time = 0, prev_timestamp = 0;
     list<MidiEvent>::iterator i;
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
 
-    MidiEvent e = (*i);
-    timestamp = e.get_timestamp();
-    delta_time = timestamp - prev_timestamp;
-    prev_timestamp = timestamp;
+        MidiEvent e = (*i);
+        timestamp = e.get_timestamp();
+        delta_time = timestamp - prev_timestamp;
+        prev_timestamp = timestamp;
 
-    /* encode delta_time */
-    addListVar( a_list, delta_time );
+        /* encode delta_time */
+        addListVar( a_list, delta_time );
 
-    /* now that the timestamp is encoded, do the status and
+        /* now that the timestamp is encoded, do the status and
        data */
 
-    a_list->push_front( e.get_status() | m_midi_channel );
+        a_list->push_front( e.get_status() | m_midi_channel );
 
-    switch( e.get_status() & 0xF0 ){
+        switch( e.get_status() & 0xF0 ){
 
-            case 0x80:
-            case 0x90:
-            case 0xA0:
-            case 0xB0:
-            case 0xE0:
+        case 0x80:
+        case 0x90:
+        case 0xA0:
+        case 0xB0:
+        case 0xE0:
 
-                a_list->push_front(  e.m_data[0] );
-                a_list->push_front(  e.m_data[1] );
+            a_list->push_front(  e.m_data[0] );
+            a_list->push_front(  e.m_data[1] );
 
-                //printf ( "- d[%2X %2X]\n" , e.m_data[0], e.m_data[1] );
+            //printf ( "- d[%2X %2X]\n" , e.m_data[0], e.m_data[1] );
 
-                break;
+            break;
 
-            case 0xC0:
-            case 0xD0:
+        case 0xC0:
+        case 0xD0:
 
-                a_list->push_front(  e.m_data[0] );
+            a_list->push_front(  e.m_data[0] );
 
-                //printf ( "- d[%2X]\n" , e.m_data[0] );
+            //printf ( "- d[%2X]\n" , e.m_data[0] );
 
-                break;
+            break;
 
-            default:
-                break;
-    }
+        default:
+            break;
+        }
     }
 
     int num_triggers = m_list_trigger.size();
@@ -3665,10 +3748,10 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
         //printf( "> start[%d] end[%d] offset[%d]\n",
         //        (*t).m_tick_start, (*t).m_tick_end, (*t).m_offset );
 
-    addLongList( a_list, (*t).m_tick_start );
+        addLongList( a_list, (*t).m_tick_start );
         addLongList( a_list, (*t).m_tick_end );
         addLongList( a_list, (*t).m_offset );
-    t++;
+        t++;
     }
 
     /* bus */
@@ -3729,14 +3812,14 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
 
 long MidiSequence::getNumMeasures()
 {
-   long units = ((getBeatsPerMeasure() * (c_ppqn * 4)) / getBeatWidth() );
+    long units = ((getBeatsPerMeasure() * (c_ppqn * 4)) / getBeatWidth() );
 
-   long measures = (getLength() / units);
+    long measures = (getLength() / units);
 
-   if (getLength() % units != 0)
-       measures++;
+    if (getLength() % units != 0)
+        measures++;
 
-   return measures;
+    return measures;
 
 }
 
