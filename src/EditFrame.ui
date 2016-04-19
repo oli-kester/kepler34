@@ -53,7 +53,7 @@
       <number>10</number>
      </property>
      <item>
-      <widget class="QTextEdit" name="txt_seq_name">
+      <widget class="QTextEdit" name="txtSeqName">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>1</horstretch>
@@ -132,7 +132,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_grid_snap">
+        <widget class="QComboBox" name="cmbGridSnap">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -180,7 +180,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_note_len">
+        <widget class="QComboBox" name="cmbNoteLen">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -225,7 +225,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_seq_len">
+        <widget class="QComboBox" name="cmbSeqLen">
          <property name="maximumSize">
           <size>
            <width>55</width>
@@ -242,7 +242,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLabel" name="label_9">
+        <widget class="QLabel" name="lblMidiBus">
          <property name="maximumSize">
           <size>
            <width>35</width>
@@ -258,7 +258,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_midi_bus">
+        <widget class="QComboBox" name="cmbMidiBus">
          <property name="maximumSize">
           <size>
            <width>45</width>
@@ -291,7 +291,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_midi_chan">
+        <widget class="QComboBox" name="cmbMidiChan">
          <property name="maximumSize">
           <size>
            <width>45</width>
@@ -334,7 +334,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
-        <widget class="QPushButton" name="btn_undo">
+        <widget class="QPushButton" name="btnUndo">
          <property name="maximumSize">
           <size>
            <width>27</width>
@@ -351,7 +351,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_redo">
+        <widget class="QPushButton" name="btnRedo">
          <property name="maximumSize">
           <size>
            <width>27</width>
@@ -370,7 +370,7 @@ p, li { white-space: pre-wrap; }
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_tools">
+      <widget class="QPushButton" name="btnTools">
        <property name="maximumSize">
         <size>
          <width>27</width>
@@ -389,7 +389,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <widget class="QPushButton" name="btn_zoom_out">
+        <widget class="QPushButton" name="btnZoomOut">
          <property name="maximumSize">
           <size>
            <width>35</width>
@@ -406,7 +406,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_zoom_in">
+        <widget class="QPushButton" name="btnZoomIn">
          <property name="maximumSize">
           <size>
            <width>35</width>
@@ -425,9 +425,9 @@ p, li { white-space: pre-wrap; }
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <layout class="QHBoxLayout" name="layoutKey">
        <item>
-        <widget class="QLabel" name="label_4">
+        <widget class="QLabel" name="lblKey">
          <property name="maximumSize">
           <size>
            <width>14</width>
@@ -443,7 +443,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_key">
+        <widget class="QComboBox" name="cmbKey">
          <property name="maximumSize">
           <size>
            <width>35</width>
@@ -462,7 +462,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_10">
          <item>
-          <widget class="QLabel" name="label_6">
+          <widget class="QLabel" name="lblBackgroundSeq">
            <property name="maximumSize">
             <size>
              <width>30</width>
@@ -478,7 +478,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="cmb_back">
+          <widget class="QComboBox" name="cmbBackgroundSeq">
            <property name="maximumSize">
             <size>
              <width>55</width>
@@ -493,7 +493,7 @@ p, li { white-space: pre-wrap; }
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="label_5">
+        <widget class="QLabel" name="lblScale">
          <property name="maximumSize">
           <size>
            <width>27</width>
@@ -509,7 +509,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_scale">
+        <widget class="QComboBox" name="cmbScale">
          <property name="minimumSize">
           <size>
            <width>65</width>
@@ -555,7 +555,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_13">
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="lblEventSelect">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -574,7 +574,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_event">
+        <widget class="QComboBox" name="cmbEventSelect">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -712,7 +712,7 @@ p, li { white-space: pre-wrap; }
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
        <item>
-        <widget class="QLabel" name="label_11">
+        <widget class="QLabel" name="lblRecVol">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -731,7 +731,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_vol">
+        <widget class="QComboBox" name="cmbRecVol">
          <property name="maximumSize">
           <size>
            <width>55</width>

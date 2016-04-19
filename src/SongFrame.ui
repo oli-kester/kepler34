@@ -172,7 +172,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
-        <widget class="Line" name="line">
+        <widget class="Line" name="lineExpand">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
            <horstretch>0</horstretch>
@@ -185,7 +185,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_7">
+        <widget class="QPushButton" name="btnCollapse">
          <property name="maximumSize">
           <size>
            <width>39</width>
@@ -208,7 +208,30 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_6">
+        <widget class="QPushButton" name="btnExpand">
+         <property name="maximumSize">
+          <size>
+           <width>39</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="kepler34.qrc">
+           <normaloff>:/pixmaps/pixmaps/copy.xpm</normaloff>:/pixmaps/pixmaps/copy.xpm</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>33</width>
+           <height>11</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnExpandCopy">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -236,29 +259,6 @@
          </property>
          <property name="shortcut">
           <string>Up</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_5">
-         <property name="maximumSize">
-          <size>
-           <width>39</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="kepler34.qrc">
-           <normaloff>:/pixmaps/pixmaps/copy.xpm</normaloff>:/pixmaps/pixmaps/copy.xpm</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>33</width>
-           <height>11</height>
-          </size>
          </property>
         </widget>
        </item>

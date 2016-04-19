@@ -152,11 +152,6 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
             this,
             SLOT(updateBpm(int)));
 
-    connect(m_live_frame,
-            SIGNAL(callEditor(MidiSequence*)),
-            this,
-            SLOT(loadEditor(MidiSequence*)));
-
     connect(ui->cmb_beat_length,
             SIGNAL(currentIndexChanged(int)),
             this,
@@ -171,6 +166,12 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
             SIGNAL(currentChanged(int)),
             this,
             SLOT(tabWidgetClicked(int)));
+
+    //connect to the seq edit signal from the live tab
+    connect(m_live_frame,
+            SIGNAL(callEditor(MidiSequence*)),
+            this,
+            SLOT(loadEditor(MidiSequence*)));
 
     show();
 }
@@ -275,6 +276,10 @@ void MainWindow::openMidiFile(const QString &path)
         delete  m_live_frame;
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     ui->LiveTabLayout->addWidget(m_live_frame);
+    connect(m_live_frame, //reconnect this as we've made a new object
+            SIGNAL(callEditor(MidiSequence*)),
+            this,
+            SLOT(loadEditor(MidiSequence*)));
     m_live_frame->show();
 
     //add to recent files list

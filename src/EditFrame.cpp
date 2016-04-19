@@ -19,55 +19,55 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
     for (int i = 0; i < 8; i++)
     {
         QString combo_text = "1/" + QString::number(pow(2,i));
-        ui->cmb_grid_snap->insertItem(i, combo_text);
-        ui->cmb_note_len->insertItem(i, combo_text);
+        ui->cmbGridSnap->insertItem(i, combo_text);
+        ui->cmbNoteLen->insertItem(i, combo_text);
     }
 
-    ui->cmb_grid_snap->insertSeparator(8);
-    ui->cmb_note_len->insertSeparator(8);
+    ui->cmbGridSnap->insertSeparator(8);
+    ui->cmbNoteLen->insertSeparator(8);
 
     //triplet intervals
     for (int i = 1; i < 8; i++)
     {
         QString combo_text = "1/" +
                 QString::number(pow(2, i) * 1.5);
-        ui->cmb_grid_snap->insertItem(i + 9, combo_text);
-        ui->cmb_note_len->insertItem(i + 9, combo_text);
+        ui->cmbGridSnap->insertItem(i + 9, combo_text);
+        ui->cmbNoteLen->insertItem(i + 9, combo_text);
     }
-    ui->cmb_grid_snap->setCurrentIndex(3);
-    ui->cmb_note_len->setCurrentIndex(3);
+    ui->cmbGridSnap->setCurrentIndex(3);
+    ui->cmbNoteLen->setCurrentIndex(3);
 
     /* fill options for MIDI channel numbers */
     for (int i = 0; i <= 15; i++)
     {
         QString combo_text = QString::number(i+1);
-        ui->cmb_midi_chan->insertItem(i,combo_text);
+        ui->cmbMidiChan->insertItem(i,combo_text);
     }
 
     // fill options for seq length
     for (int i = 0; i <= 15; i++)
     {
         QString combo_text = QString::number(i+1);
-        ui->cmb_seq_len->insertItem(i,combo_text);
+        ui->cmbSeqLen->insertItem(i,combo_text);
     }
-    ui->cmb_seq_len->insertItem(16,"32");
-    ui->cmb_seq_len->insertItem(17,"64");
+    ui->cmbSeqLen->insertItem(16,"32");
+    ui->cmbSeqLen->insertItem(17,"64");
 
     // fill options for scale
-    ui->cmb_scale->insertItem(0,"Off");
-    ui->cmb_scale->insertItem(1,"Major");
-    ui->cmb_scale->insertItem(2,"Minor");
+    ui->cmbScale->insertItem(0,"Off");
+    ui->cmbScale->insertItem(1,"Major");
+    ui->cmbScale->insertItem(2,"Minor");
 
     /* pull data from sequence object */
-    ui->txt_seq_name->setPlainText(mSeq->get_name());
-    ui->cmb_midi_chan->setCurrentIndex(mSeq->get_midi_channel());
+    ui->txtSeqName->setPlainText(mSeq->get_name());
+    ui->cmbMidiChan->setCurrentIndex(mSeq->get_midi_channel());
 
     QString snapText("1/");
     snapText.append(QString::number(c_ppqn * 4 / mSeq->getSnap_tick()));
-    ui->cmb_grid_snap->setCurrentText(snapText);
+    ui->cmbGridSnap->setCurrentText(snapText);
 
     QString seqLenText(QString::number(mSeq->getNumMeasures()));
-    ui->cmb_seq_len->setCurrentText(seqLenText);
+    ui->cmbSeqLen->setCurrentText(seqLenText);
 
     /* set out our custom elements */
     mSeq->set_editing(true);
@@ -99,73 +99,91 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
 
     m_scroll_area->setWidget(mContainer);
 
+    ui->cmbMidiBus->hide();
+    ui->lblMidiBus->hide();
+    ui->btnTools->hide();
+    ui->btnPlay->hide();
+    ui->btnThru->hide();
+    ui->btnQRec->hide();
+    ui->btnRec->hide();
+    ui->lblBackgroundSeq->hide();
+    ui->cmbBackgroundSeq->hide();
+    ui->lblRecVol->hide();
+    ui->cmbRecVol->hide();
+    ui->lblEventSelect->hide();
+    ui->cmbEventSelect->hide();
+    ui->lblKey->hide();
+    ui->cmbKey->hide();
+    ui->lblScale->hide();
+    ui->cmbScale->hide();
+
     //connect all the UI signals
-    connect(ui->txt_seq_name,
+    connect(ui->txtSeqName,
             SIGNAL(textChanged()),
             this,
             SLOT(updateSeqName()));
 
-    connect(ui->cmb_grid_snap,
+    connect(ui->cmbGridSnap,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateGridSnap(int)));
 
-    connect(ui->cmb_midi_bus,
+    connect(ui->cmbMidiBus,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateMidiBus(int)));
 
-    connect(ui->cmb_midi_chan,
+    connect(ui->cmbMidiChan,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateMidiChannel(int)));
 
-    connect(ui->btn_undo,
+    connect(ui->btnUndo,
             SIGNAL(clicked(bool)),
             this,
             SLOT(undo()));
 
-    connect(ui->btn_redo,
+    connect(ui->btnRedo,
             SIGNAL(clicked(bool)),
             this,
             SLOT(redo()));
 
-    connect(ui->btn_tools,
+    connect(ui->btnTools,
             SIGNAL(clicked(bool)),
             this,
             SLOT(showTools()));
 
-    connect(ui->cmb_note_len,
+    connect(ui->cmbNoteLen,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateNoteLength(int)));
 
-    connect(ui->btn_zoom_in,
+    connect(ui->btnZoomIn,
             SIGNAL(clicked(bool)),
             this,
             SLOT(zoomIn()));
 
-    connect(ui->btn_zoom_out,
+    connect(ui->btnZoomOut,
             SIGNAL(clicked(bool)),
             this,
             SLOT(zoomOut()));
 
-    connect(ui->cmb_key,
+    connect(ui->cmbKey,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateKey(int)));
 
-    connect(ui->cmb_seq_len,
+    connect(ui->cmbSeqLen,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateSeqLength()));
 
-    connect(ui->cmb_scale,
+    connect(ui->cmbScale,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateScale(int)));
 
-    connect(ui->cmb_back,
+    connect(ui->cmbBackgroundSeq,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateBackgroundSeq(int)));
@@ -178,7 +196,7 @@ EditFrame::~EditFrame()
 
 void EditFrame::updateSeqName()
 {
-    mSeq->set_name(ui->txt_seq_name->document()->toPlainText().toStdString());
+    mSeq->set_name(ui->txtSeqName->document()->toPlainText().toStdString());
 }
 
 void EditFrame::updateGridSnap(int snapIndex)
@@ -345,7 +363,7 @@ void EditFrame::updateKey(int newIndex)
 
 void EditFrame::updateSeqLength()
 {
-    int measures = ui->cmb_seq_len->currentText().toInt();
+    int measures = ui->cmbSeqLen->currentText().toInt();
     mSeq->setNumMeasures(measures);
     mTimeBar->updateGeometry();
     mNoteGrid->updateGeometry();
@@ -365,7 +383,7 @@ void EditFrame::updateBackgroundSeq(int newIndex)
 void EditFrame::updateDrawGeometry()
 {
     QString seqLenText(QString::number(mSeq->getNumMeasures()));
-    ui->cmb_seq_len->setCurrentText(seqLenText);
+    ui->cmbSeqLen->setCurrentText(seqLenText);
     mTimeBar->updateGeometry();
     mNoteGrid->updateGeometry();
     mContainer->adjustSize();

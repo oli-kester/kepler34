@@ -90,6 +90,9 @@ int main(int argc, char *argv[])
     //set application style
 //    QApplication::setStyle(new KeplerStyle);
 
+    //main application object
+    QApplication a(argc, argv);
+
     //setup colour scheme
     colourMap = QMap<thumb_colours_e, QColor>();
     colourMap[White]  = Qt::white;
@@ -100,9 +103,6 @@ int main(int argc, char *argv[])
     colourMap[Purple] = QColor(87, 26, 115);
     colourMap[Pink]   = QColor(152, 29, 72);
     colourMap[Orange] = QColor(173, 115, 33);
-
-    //main application object
-    QApplication a(argc, argv);
 
     /*prepare global MIDI definitions*/
     for ( int i=0; i<c_maxBuses; i++ )

@@ -2258,7 +2258,7 @@ void MidiPerformance::set_key_event( int keycode, long sequence_slot )
             key_events.erase( i );
         key_events_rev.erase( it2 );
     }
-    qDebug() << "New seq key binding - " << keycode << " mapped to " << sequence_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
+//    qDebug() << "New seq key binding - " << keycode << " mapped to " << sequence_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
     // set
     key_events[keycode] = sequence_slot;
     key_events_rev[sequence_slot] = keycode;
@@ -2284,7 +2284,7 @@ void MidiPerformance::set_key_group( int keycode, long group_slot )
             key_groups.erase( i );
         key_groups_rev.erase( it2 );
     }
-    qDebug() << "New group key binding - " << keycode << " mapped to " << group_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
+//    qDebug() << "New group key binding - " << keycode << " mapped to " << group_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
     // set
     key_groups[keycode] = group_slot;
     key_groups_rev[group_slot] = keycode;

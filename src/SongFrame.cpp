@@ -4,8 +4,8 @@
 SongFrame::SongFrame(MidiPerformance *a_perf,
                      QWidget *parent):
     QFrame(parent),
-    m_mainperf(a_perf),
-    ui(new Ui::SongFrame)
+    ui(new Ui::SongFrame),
+    m_mainperf(a_perf)
 {
     ui->setupUi(this);
 
@@ -42,6 +42,16 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
     m_layout_grid->setAlignment(m_perfroll, Qt::AlignTop);
 
     m_scroll_area->setWidget(mContainer);
+
+    //hide non-functional gui elements
+    ui->btnRedo->hide();
+    ui->btn_zoom_in->hide();
+    ui->btn_zoom_out->hide();
+    ui->btnCollapse->hide();
+    ui->btnExpand->hide();
+    ui->btnExpandCopy->hide();
+    ui->btnLoop->hide();
+    ui->lineExpand->hide();
 
     connect(ui->combo_grid_snap,
             SIGNAL(currentIndexChanged(int)),
@@ -108,7 +118,7 @@ void SongFrame::updateGridSnap(int snapIndex)
     }
 
     m_snap = snap;
-        setGuides();
+    setGuides();
 }
 
 void SongFrame::setSnap( int a_snap  )
@@ -118,7 +128,7 @@ void SongFrame::setSnap( int a_snap  )
     ui->combo_grid_snap->setCurrentText(b);
 
     m_snap = a_snap;
-        setGuides();
+    setGuides();
 }
 
 void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
@@ -128,7 +138,7 @@ void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
     //    m_entry_bpm->set_text(b);
 
     mBeatsPerMeasure = a_beats_per_measure;
-        setGuides();
+    setGuides();
 }
 
 int SongFrame::getBeatsPerMeasure() const
@@ -144,7 +154,7 @@ void SongFrame::setBeatLength( int a_beat_width )
     //    m_entry_bw->set_text(b);
 
     mBeatWidth = a_beat_width;
-        setGuides();
+    setGuides();
 }
 
 void SongFrame::setGuides()
