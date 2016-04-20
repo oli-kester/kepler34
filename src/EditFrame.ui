@@ -324,6 +324,26 @@ p, li { white-space: pre-wrap; }
        </property>
       </spacer>
      </item>
+     <item>
+      <widget class="QPushButton" name="btnDrum">
+       <property name="maximumSize">
+        <size>
+         <width>31</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Open the drum map editor</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="kepler34.qrc">
+         <normaloff>:/pixmaps/pixmaps/drum.xpm</normaloff>:/pixmaps/pixmaps/drum.xpm</iconset>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

@@ -25,5 +25,9 @@
         <file>pixmaps/editor-q-rec.xpm</file>
         <file>pixmaps/editor-rec.xpm</file>
         <file>pixmaps/editor-thru.xpm</file>
+        <file>pixmaps/drum.xpm</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>pixmaps/drum.xpm</file>
     </qresource>
 </RCC>

@@ -411,7 +411,7 @@ PreferencesFile::write( MidiPerformance *a_perf  )
     for (std::map<int,long>::const_iterator i = a_perf->key_events.begin();
          i != a_perf->key_events.end(); ++i )
     {
-        qDebug() << "Writing control mapping - " << i->first << " mapped to " << i->second << "Keyname - " << QKeySequence(i->first).toString().toStdString().c_str() << endl;
+//        qDebug() << "Writing control mapping - " << i->first << " mapped to " << i->second << "Keyname - " << QKeySequence(i->first).toString().toStdString().c_str() << endl;
 
         snprintf(outs, sizeof(outs), "%u  %ld        # %s", i->first,
                  i->second, QKeySequence(i->first).toString().toStdString().c_str());
@@ -427,7 +427,7 @@ PreferencesFile::write( MidiPerformance *a_perf  )
     for( std::map<int,long>::const_iterator i = a_perf->key_groups.begin();
          i != a_perf->key_groups.end(); ++i )
     {
-        qDebug() << "Writing group mapping - " << i->first << " mapped to " << i->second << "Keyname - " << QKeySequence(i->first).toString().toStdString().c_str() << endl;
+//        qDebug() << "Writing group mapping - " << i->first << " mapped to " << i->second << "Keyname - " << QKeySequence(i->first).toString().toStdString().c_str() << endl;
 
         snprintf(outs, sizeof(outs), "%u  %ld        # %s", i->first,
                  i->second, QKeySequence(i->first).toString().toStdString().c_str());
