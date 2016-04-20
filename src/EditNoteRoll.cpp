@@ -301,8 +301,9 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                     break;
                 }
 
-                /* draw inside box if there is room */
-                if ( note_width > 3 )
+                //draw note highlight if there's room
+                //always draw them in drum mode
+                if (note_width > 3 || editMode == DRUM)
                 {
                     //red noted selected, otherwise plain white
                     if ( selected )
