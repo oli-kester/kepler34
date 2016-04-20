@@ -139,6 +139,12 @@ private:
     //holds the editing mode we are in
     edit_mode_e editMode;
 
+    //note drawing variables
+    int note_x;
+    int note_width;
+    int note_y;
+    int note_height;
+
 signals:
 
 public slots:

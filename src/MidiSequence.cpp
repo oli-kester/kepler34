@@ -919,7 +919,7 @@ int
 MidiSequence::select_note_events( long a_tick_s, int a_note_h,
                                   long a_tick_f, int a_note_l, select_action_e a_action)
 {
-    int ret=0;
+    int ret = 0;
 
     long tick_s = 0;
     long tick_f = 0;
@@ -930,36 +930,62 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
 
     for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ) {
 
+        //if the note is between the highest & lowest
         if( (*i).get_note()      <= a_note_h &&
-                (*i).get_note()      >= a_note_l ) {
-
-            if ( (*i).is_linked() ) {
+                (*i).get_note()      >= a_note_l )
+        {
+            if ( (*i).is_linked() )
+            {
+                //expand notes out to their on/offsets,
+                //but not if we're only doing onset detection
                 MidiEvent *ev = (*i).get_linked();
 
-                if ( (*i).is_note_off() ) {
-                    tick_s = ev->get_timestamp();
-                    tick_f = (*i).get_timestamp();
-                }
-
-                if ( (*i).is_note_on() ) {
-                    tick_f = ev->get_timestamp();
-                    tick_s = (*i).get_timestamp();
-                }
-
-                if (
-                        (    (tick_s <= tick_f) &&
-                             ((tick_s <= a_tick_f) && (tick_f >= a_tick_s)) ) ||
-                        (    (tick_s > tick_f) &&
-                             ((tick_s <= a_tick_f) || (tick_f >= a_tick_s)) ) )
+                if (a_action == e_select_onset ||
+                        a_action == e_select_onset_single)
                 {
-                    if ( a_action == e_select ||
-                         a_action == e_select_one )
+                    tick_s = tick_f = (*i).get_timestamp();
+                }
+                else
+                {
+
+                    if ( (*i).is_note_off() )
                     {
-                        (*i).select( );
-                        ev->select( );
-                        ret++;
-                        if ( a_action == e_select_one )
-                            break;
+                        tick_s = ev->get_timestamp();
+                        tick_f = (*i).get_timestamp();
+                    }
+
+                    if ( (*i).is_note_on() )
+                    {
+                        tick_f = ev->get_timestamp();
+                        tick_s = (*i).get_timestamp();
+                    }
+                }
+
+                if (((tick_s <= tick_f) && ((tick_s <= a_tick_f)
+                                            && (tick_f >= a_tick_s))) ||
+                        ((tick_s > tick_f) && ((tick_s <= a_tick_f)
+                                               || (tick_f >= a_tick_s))))
+                {
+                    if (a_action == e_select ||
+                            a_action == e_select_single ||
+                            a_action == e_select_onset ||
+                            a_action == e_select_onset_single)
+                    {
+                        //if we're selecting onsets, this event
+                        //must be a note_on
+                        if ((a_action != e_select_onset &&
+                             a_action != e_select_onset_single) ||
+                                (*i).is_note_on())
+                        {
+                            (*i).select();
+                            ev->select();
+                            ret++;
+
+                            //selecting just one? we're done here
+                            if (a_action == e_select_single ||
+                                    a_action == e_select_onset_single)
+                                break;
+                        }
                     }
                     if ( a_action == e_is_selected )
                     {
@@ -1006,15 +1032,17 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
                         break;
                     }
                 }
-            } else {
+            }
+            else
+            {
                 tick_s = tick_f = (*i).get_timestamp();
                 if ( tick_s  >= a_tick_s - 16 && tick_f <= a_tick_f)
                 {
-                    if ( a_action == e_select || a_action == e_select_one )
+                    if ( a_action == e_select || a_action == e_select_single )
                     {
                         (*i).select( );
                         ret++;
-                        if ( a_action == e_select_one )
+                        if ( a_action == e_select_single )
                             break;
                     }
                     if ( a_action == e_is_selected )
@@ -1092,11 +1120,11 @@ MidiSequence::select_events( long a_tick_s, long a_tick_f,
 
 
                 if ( a_action == e_select ||
-                     a_action == e_select_one )
+                     a_action == e_select_single )
                 {
                     (*i).select( );
                     ret++;
-                    if ( a_action == e_select_one )
+                    if ( a_action == e_select_single )
                         break;
                 }
                 if ( a_action == e_is_selected )

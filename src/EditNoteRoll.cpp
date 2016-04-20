@@ -173,11 +173,6 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     long tick_f;
     int note;
 
-    int note_x;
-    int note_width;
-    int note_y;
-    int note_height;
-
     bool selected;
 
     int velocity;
@@ -280,6 +275,15 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                                        note_y,
                                        note_width,
                                        note_height);
+                    //draw shadow for notes starting before zero
+                    if (tick_f < tick_s)
+                    {
+                        mPainter->setPen(*mPen);
+                        mPainter->drawRect(0,
+                                           note_y,
+                                           tick_f / m_zoom,
+                                           note_height);
+                    }
                     break;
                 case DRUM:
                     //draw polygon for drum hits
@@ -297,15 +301,6 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                     break;
                 }
 
-                if (tick_f < tick_s)
-                {
-                    mPainter->setPen(*mPen);
-                    mPainter->drawRect(0,
-                                       note_y,
-                                       tick_f / m_zoom,
-                                       note_height);
-                }
-
                 /* draw inside box if there is room */
                 if ( note_width > 3 )
                 {
@@ -321,6 +316,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                         switch (editMode)
                         {
                         case NOTE:
+                            //if the note fits in the grid
                             if (tick_f >= tick_s)
                             {
                                 //draw inner note (highlight)
@@ -343,21 +339,18 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                             }
                             break;
                         case DRUM:
-                            if (tick_f >= tick_s)
-                            {
-                                //draw inner note (highlight)
-                                QPointF points[4] = {
-                                    QPointF(note_x - note_height * 0.5,
-                                    note_y + note_height * 0.5),
-                                    QPointF(note_x,
-                                    note_y),
-                                    QPointF(note_x + note_height * 0.5 - 1,
-                                    note_y + note_height * 0.5),
-                                    QPointF(note_x,
-                                    note_y + note_height - 1)
-                                };
-                                mPainter->drawPolygon(points, 4);
-                            }
+                            //draw inner note (highlight)
+                            QPointF points[4] = {
+                                QPointF(note_x - note_height * 0.5,
+                                note_y + note_height * 0.5),
+                                QPointF(note_x,
+                                note_y),
+                                QPointF(note_x + note_height * 0.5 - 1,
+                                note_y + note_height * 0.5),
+                                QPointF(note_x,
+                                note_y + note_height - 1)
+                            };
+                            mPainter->drawPolygon(points, 4);
                             break;
                         }
                     }
@@ -399,8 +392,8 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                            h + c_key_y );
     }
 
-    if ( m_moving || m_paste ){
-
+    if ( m_moving || m_paste )
+    {
         int delta_x = m_current_x - m_drop_x;
         int delta_y = m_current_y - m_drop_y;
 
@@ -492,16 +485,24 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
     } else {
 
-        /*  left mouse button     */
         if (event->button() == Qt::LeftButton)
         {
-            /* selection, normal x */
+            //for selection, use non-snapped x
             m_current_x = m_drop_x = norm_x;
 
-            /* turn x,y in to tick/note */
-            convert_xy( m_drop_x, m_drop_y, &tick_s, &note );
-
-            if ( m_adding )
+            //convert screen coords to ticks
+            switch (editMode)
+            {
+            case NOTE:
+                convert_xy( m_drop_x, m_drop_y, &tick_s, &note );
+                tick_f = tick_s;
+                break;
+            case DRUM:
+                convert_xy( m_drop_x - note_height * 0.5, m_drop_y, &tick_s, &note );
+                convert_xy( m_drop_x + note_height * 0.5, m_drop_y, &tick_f, &note );
+                         break;
+            }
+            if ( m_adding ) //painting new notes
             {
                 /* start the paint job */
                 m_painting = true;
@@ -525,19 +526,29 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                 }
 
             }
-            else /* we're selecting */
+            else // we're selecting
             {
-                if ( !m_seq->select_note_events( tick_s, note,
-                                                 tick_s, note,
-                                                 MidiSequence::e_is_selected ))
+                //if nothing's already selected
+                if (!m_seq->select_note_events(tick_s, note,
+                                               tick_f, note,
+                                               MidiSequence::e_is_selected))
                 {
-                    if ( ! (event->modifiers() & Qt::ControlModifier))
+                    if (!(event->modifiers() & Qt::ControlModifier))
                         m_seq->unselect();
 
                     /* on direct click select only one event */
-                    numsel = m_seq->select_note_events( tick_s,note,tick_s,note,
-                                                        MidiSequence::e_select_one );
+                    switch (editMode)
+                    {
+                    case NOTE:
+                        numsel = m_seq->select_note_events(tick_s,note,tick_f,note,
+                                                           MidiSequence::e_select_single);
+                        break;
+                    case DRUM:
+                        numsel = m_seq->select_note_events(tick_s,note,tick_f,note,
+                                                           MidiSequence::e_select_onset_single);
+                        break;
 
+                    }
                     /* none selected, start selection box */
                     if ( numsel == 0 )
                     {
@@ -552,7 +563,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
 
                 if ( m_seq->select_note_events(tick_s, note,
-                                               tick_s, note,
+                                               tick_f, note,
                                                MidiSequence::e_is_selected ))
                 {
                     // moving - left click only
@@ -581,9 +592,6 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                         int adjusted_selected_x = m_selected.x;
                         snap_x( &adjusted_selected_x );
                         m_move_snap_offset_x = ( m_selected.x - adjusted_selected_x);
-
-                        /* align selection for drawing */
-                        //                        snap_x( &m_selected.x );
 
                         m_current_x = m_drop_x = snapped_x;
                     }
@@ -629,11 +637,11 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
 void EditNoteRoll::mouseReleaseEvent(QMouseEvent *event)
 {
-    long tick_s;
-    long tick_f;
-    int note_h;
-    int note_l;
-    int x,y,w,h;
+    long tick_s; //start of tick window
+    long tick_f; //end of tick window
+    int note_h;  //highest note in window
+    int note_l;  //lowest note in window
+    int x,y,w,h; //window dimensions
 
     bool needs_update = false;
 
@@ -662,10 +670,24 @@ void EditNoteRoll::mouseReleaseEvent(QMouseEvent *event)
                         &x, &y,
                         &w, &h );
 
-            convert_xy( x,     y, &tick_s, &note_h );
-            convert_xy( x+w, y+h, &tick_f, &note_l );
+            switch (editMode)
+            {
+            case NOTE:
 
-            m_seq->select_note_events( tick_s, note_h, tick_f, note_l, MidiSequence::e_select );
+                convert_xy(x,     y, &tick_s, &note_h);
+                convert_xy(x+w, y+h, &tick_f, &note_l);
+                m_seq->select_note_events(tick_s, note_h,
+                                          tick_f, note_l,
+                                          MidiSequence::e_select);
+                break;
+            case DRUM:
+                convert_xy(x,     y, &tick_s, &note_h);
+                convert_xy(x+w, y+h, &tick_f, &note_l);
+                m_seq->select_note_events(tick_s, note_h,
+                                          tick_f, note_l,
+                                          MidiSequence::e_select_onset);
+                break;
+            }
 
             needs_update = true;
         }

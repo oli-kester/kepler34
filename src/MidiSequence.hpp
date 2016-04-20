@@ -317,7 +317,9 @@ public:
     enum select_action_e
     {
         e_select,
-        e_select_one,
+        e_select_single, //select a single note
+        e_select_onset, //select notes only by their onsets
+        e_select_onset_single, //select a single note by its onset
         e_is_selected,
         e_would_select,
         e_deselect, // deselect under cursor

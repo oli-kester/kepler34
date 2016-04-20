@@ -276,7 +276,7 @@ void EditEventTriggers::mousePressEvent(QMouseEvent *event)
 
                     numsel = m_seq->select_events( tick_s, tick_f,
                                                    m_status,
-                                                   m_cc, MidiSequence::e_select_one );
+                                                   m_cc, MidiSequence::e_select_single );
 
                     /* if we didnt select anyhing (user clicked empty space)
                        unselect all notes, and start selecting */
