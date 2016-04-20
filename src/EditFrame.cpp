@@ -1,11 +1,15 @@
 #include "EditFrame.hpp"
 #include "ui_EditFrame.h"
 
-EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) :
+EditFrame::EditFrame(QWidget *parent,
+                     MidiPerformance *perf,
+                     MidiSequence *seq,
+                     edit_mode_e mode):
     QFrame(parent),
     ui(new Ui::EditFrame),
     mSeq(seq),
-    mPerformance(perf)
+    mPerformance(perf),
+    editMode(mode)
 {
     ui->setupUi(this);
 
@@ -187,6 +191,11 @@ EditFrame::EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq) 
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateBackgroundSeq(int)));
+
+    connect(ui->btnDrum,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(toggleEditorMode()));
 }
 
 EditFrame::~EditFrame()
@@ -387,4 +396,26 @@ void EditFrame::updateDrawGeometry()
     mTimeBar->updateGeometry();
     mNoteGrid->updateGeometry();
     mContainer->adjustSize();
+}
+
+void EditFrame::toggleEditorMode()
+{
+    switch (editMode)
+    {
+        case NOTE:
+            editMode = DRUM;
+            break;
+        case DRUM:
+            editMode = NOTE;
+            break;
+    }
+
+    mNoteGrid->updateEditMode(editMode);
+
+}
+
+void EditFrame::setEditorMode(edit_mode_e mode)
+{
+    editMode = mode;
+    mNoteGrid->updateEditMode(mode);
 }

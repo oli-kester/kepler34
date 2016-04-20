@@ -35,7 +35,8 @@ class EditNoteRoll : public QWidget
 public:
     explicit EditNoteRoll(MidiPerformance *a_perf,
                           MidiSequence *a_seq,
-                          QWidget *parent = 0);
+                          QWidget *parent = 0,
+                          edit_mode_e mode = NOTE);
 
     void set_snap(int snap);
 
@@ -134,10 +135,13 @@ private:
     int m_background_sequence;
     bool m_drawing_background_seq;
 
+    //holds the editing mode we are in
+    edit_mode_e editMode;
+
 signals:
 
 public slots:
-
+    void updateEditMode(edit_mode_e mode);
 };
 
 #endif // EDITNOTEROLL_HPP

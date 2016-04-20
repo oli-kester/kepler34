@@ -2,10 +2,12 @@
 
 EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
                            MidiSequence *a_seq,
-                           QWidget *parent):
+                           QWidget *parent,
+                           edit_mode_e mode):
     QWidget(parent),
     m_perform(a_perf),
     m_seq(a_seq),
+    editMode(mode),
     m_scale(0),
     m_key(0),
     m_zoom(1),
@@ -76,10 +78,24 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         //        }
 
         //draw horizontal grid lines
-        mPainter->drawLine(0,
-                           i * c_key_y,
-                           width(),
-                           i * c_key_y);
+        //(differently depending on editing mode)
+        switch (editMode)
+        {
+        case NOTE:
+            mPainter->drawLine(0,
+                               i * c_key_y,
+                               width(),
+                               i * c_key_y);
+            break;
+
+        case DRUM:
+            mPainter->drawLine(0,
+                               i * c_key_y - (0.5 * c_key_y),
+                               width(),
+                               i * c_key_y - (0.5 * c_key_y));
+            break;
+        }
+
 
         if ( m_scale != c_scale_off )
         {
@@ -896,4 +912,9 @@ void EditNoteRoll::zoomOut()
 {
     if (m_zoom < 32)
         m_zoom *= 2;
+}
+
+void EditNoteRoll::updateEditMode(edit_mode_e mode)
+{
+    editMode = mode;
 }

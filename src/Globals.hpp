@@ -341,3 +341,7 @@ enum thumb_colours_e
 
 //colour map, initialised in main.cpp
 extern QMap<thumb_colours_e, QColor> colourMap;
+
+//editor modes (used by the sequence editing components)
+enum edit_mode_e {NOTE, DRUM};
+

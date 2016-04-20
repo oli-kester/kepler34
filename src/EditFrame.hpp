@@ -30,10 +30,16 @@ class EditFrame : public QFrame
     Q_OBJECT
 
 public:
-    explicit EditFrame(QWidget *parent, MidiPerformance *perf, MidiSequence *seq);
+    explicit EditFrame(QWidget *parent,
+                       MidiPerformance *perf,
+                       MidiSequence *seq,
+                       edit_mode_e mode = NOTE);
     ~EditFrame();
 
     void updateDrawGeometry();
+
+    //set a new editing mode
+    void setEditorMode(edit_mode_e mode);
 
 private:
     Ui::EditFrame   *ui;
@@ -54,6 +60,7 @@ private:
 
     /* set snap to in pulses, off = 1 */
     int         mSnap;
+    edit_mode_e editMode;
 
 private slots:
     void updateSeqName();
@@ -70,6 +77,7 @@ private slots:
     void updateSeqLength();
     void updateScale(int newIndex);
     void updateBackgroundSeq(int newIndex);
+    void toggleEditorMode();
 };
 
 #endif // EDITFRAME_HPP
