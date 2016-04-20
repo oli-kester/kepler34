@@ -411,9 +411,9 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                                m_selected.height);
             break;
         case DRUM:
-            mPainter->drawRect(x - c_key_y * 0.5,
+            mPainter->drawRect(x - note_height * 0.5,
                                y,
-                               m_selected.width + c_key_y,
+                               m_selected.width + note_height,
                                m_selected.height);
             break;
         }
@@ -497,10 +497,10 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                 convert_xy( m_drop_x, m_drop_y, &tick_s, &note );
                 tick_f = tick_s;
                 break;
-            case DRUM:
+            case DRUM: //add padding for selecting drum hits
                 convert_xy( m_drop_x - note_height * 0.5, m_drop_y, &tick_s, &note );
                 convert_xy( m_drop_x + note_height * 0.5, m_drop_y, &tick_f, &note );
-                         break;
+                break;
             }
             if ( m_adding ) //painting new notes
             {
@@ -577,9 +577,11 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                         case NOTE: //take note lengths into account
                             m_seq->get_selected_box(&tick_s, &note,
                                                     &tick_f, &note_l );
+                            break;
                         case DRUM: //ignore note lengths
                             m_seq->get_onsets_selected_box(&tick_s, &note,
                                                            &tick_f, &note_l );
+                            break;
                         }
 
                         convert_tn_box_to_rect(tick_s, tick_f, note, note_l,
