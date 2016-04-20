@@ -941,7 +941,8 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
                 MidiEvent *ev = (*i).get_linked();
 
                 if (a_action == e_select_onset ||
-                        a_action == e_select_onset_single)
+                        a_action == e_select_onset_single ||
+                        a_action == e_is_selected_onset)
                 {
                     tick_s = tick_f = (*i).get_timestamp();
                 }
@@ -987,7 +988,8 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
                                 break;
                         }
                     }
-                    if ( a_action == e_is_selected )
+                    if (a_action == e_is_selected ||
+                            a_action == e_is_selected_onset)
                     {
                         if ( (*i).is_selected())
                         {

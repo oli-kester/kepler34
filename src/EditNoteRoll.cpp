@@ -475,8 +475,8 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
     /* y is always snapped */
     m_current_y = m_drop_y = snapped_y;
 
-    if ( m_paste ){
-
+    if ( m_paste )
+    {
         convert_xy( snapped_x, snapped_y, &tick_s, &note );
         m_paste = false;
         m_seq->push_undo();
@@ -484,8 +484,9 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
         needs_update = true;
 
-    } else {
-
+    }
+    else
+    {
         if (event->button() == Qt::LeftButton)
         {
             //for selection, use non-snapped x
@@ -529,10 +530,23 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
             }
             else // we're selecting
             {
-                //if nothing's already selected
-                if (!m_seq->select_note_events(tick_s, note,
-                                               tick_f, note,
-                                               MidiSequence::e_is_selected))
+                //if nothing's already selected in the range
+                bool isSelected = false;
+                switch (editMode)
+                {
+                case NOTE:
+                    isSelected = m_seq->select_note_events(tick_s, note,
+                                                           tick_f, note,
+                                                           MidiSequence::e_is_selected);
+                    break;
+                case DRUM:
+                    isSelected = m_seq->select_note_events(tick_s, note,
+                                                           tick_f, note,
+                                                           MidiSequence::e_is_selected_onset);
+                    break;
+                }
+
+                if (!isSelected)
                 {
                     if (!(event->modifiers() & Qt::ControlModifier))
                         m_seq->unselect();
@@ -562,10 +576,23 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                     }
                 }
 
+                isSelected = false;
 
-                if ( m_seq->select_note_events(tick_s, note,
-                                               tick_f, note,
-                                               MidiSequence::e_is_selected ))
+                switch (editMode)
+                {
+                case NOTE:
+                    isSelected = m_seq->select_note_events(tick_s, note,
+                                                           tick_f, note,
+                                                           MidiSequence::e_is_selected);
+                    break;
+                case DRUM:
+                    isSelected = m_seq->select_note_events(tick_s, note,
+                                                           tick_f, note,
+                                                           MidiSequence::e_is_selected_onset);
+                    break;
+                }
+
+                if (isSelected)
                 {
                     // moving - left click only
                     if ( event->button() == Qt::LeftButton && !(event->modifiers() & Qt::ControlModifier))

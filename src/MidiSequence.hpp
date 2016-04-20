@@ -316,12 +316,13 @@ public:
 
     enum select_action_e
     {
-        e_select,
-        e_select_single, //select a single note
-        e_select_onset, //select notes only by their onsets
+        e_select, //select all notes in the range
+        e_select_single, //select the first note we come across
+        e_select_onset, //select notes in range only by their onsets
         e_select_onset_single, //select a single note by its onset
         e_is_selected,
-        e_would_select,
+        e_is_selected_onset,
+        e_would_select, //don't actually select, but check
         e_deselect, // deselect under cursor
         e_toggle_selection, // sel/deselect under cursor
         e_remove_one // remove one note under cursor
