@@ -164,7 +164,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="lblNoteLen">
          <property name="maximumSize">
           <size>
            <width>29</width>

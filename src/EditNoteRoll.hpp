@@ -84,6 +84,7 @@ private:
                                  int *a_x, int *a_y,
                                  int *a_w, int *a_h );
 
+
     void set_adding(bool a_adding);
 
     void start_paste();

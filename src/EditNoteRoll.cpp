@@ -7,14 +7,10 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
     QWidget(parent),
     m_perform(a_perf),
     m_seq(a_seq),
-    editMode(mode),
     m_scale(0),
     m_key(0),
     m_zoom(1),
-    m_old_progress_x(0),
     m_note_length(c_ppqn * 4 / 16),
-    m_background_sequence(0),
-    m_drawing_background_seq(false),
     m_selecting(false),
     m_adding(false),
     m_moving(false),
@@ -24,7 +20,11 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
     m_paste(false),
     m_is_drag_pasting(false),
     m_is_drag_pasting_start(false),
-    m_justselected_one(false)
+    m_justselected_one(false),
+    m_old_progress_x(0),
+    m_background_sequence(0),
+    m_drawing_background_seq(false),
+    editMode(mode)
 {
     set_snap(m_seq->getSnap_tick());
 
@@ -267,15 +267,35 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                 if ( method == 0 )
                     mPen->setColor(Qt::darkGray);
 
-                //draw outer note boundary (shadow)
                 mBrush->setStyle(Qt::SolidPattern);
                 mBrush->setColor(Qt::black);
                 mPainter->setBrush(*mBrush);
                 mPainter->setPen(*mPen);
-                mPainter->drawRect(note_x,
-                                   note_y,
-                                   note_width,
-                                   note_height);
+
+                switch (editMode)
+                {
+                case NOTE:
+                    //draw outer note boundary (shadow)
+                    mPainter->drawRect(note_x,
+                                       note_y,
+                                       note_width,
+                                       note_height);
+                    break;
+                case DRUM:
+                    //draw polygon for drum hits
+                    QPointF points[4] = {
+                        QPointF(note_x - note_height * 0.5,
+                        note_y + note_height * 0.5),
+                        QPointF(note_x,
+                        note_y),
+                        QPointF(note_x + note_height * 0.5,
+                        note_y + note_height * 0.5),
+                        QPointF(note_x,
+                        note_y + note_height)
+                    };
+                    mPainter->drawPolygon(points, 4);
+                    break;
+                }
 
                 if (tick_f < tick_s)
                 {
@@ -298,25 +318,47 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                     mPainter->setBrush(*mBrush);
                     if ( method == 1 )
                     {
-                        if (tick_f >= tick_s)
+                        switch (editMode)
                         {
-                            //draw inner note (highlight)
-                            mPainter->drawRect(note_x + in_shift,
-                                               note_y,
-                                               note_width - 1 + length_add,
-                                               note_height - 1 );
-                        }
-                        else
-                        {
-                            mPainter->drawRect(note_x + in_shift,
-                                               note_y,
-                                               note_width ,
-                                               note_height - 1);
+                        case NOTE:
+                            if (tick_f >= tick_s)
+                            {
+                                //draw inner note (highlight)
+                                mPainter->drawRect(note_x + in_shift,
+                                                   note_y,
+                                                   note_width - 1 + length_add,
+                                                   note_height - 1 );
+                            }
+                            else
+                            {
+                                mPainter->drawRect(note_x + in_shift,
+                                                   note_y,
+                                                   note_width ,
+                                                   note_height - 1);
 
-                            mPainter->drawRect(0,
-                                               note_y,
-                                               (tick_f/m_zoom) - 3 + length_add,
-                                               note_height - 1);
+                                mPainter->drawRect(0,
+                                                   note_y,
+                                                   (tick_f/m_zoom) - 3 + length_add,
+                                                   note_height - 1);
+                            }
+                            break;
+                        case DRUM:
+                            if (tick_f >= tick_s)
+                            {
+                                //draw inner note (highlight)
+                                QPointF points[4] = {
+                                    QPointF(note_x - note_height * 0.5,
+                                    note_y + note_height * 0.5),
+                                    QPointF(note_x,
+                                    note_y),
+                                    QPointF(note_x + note_height * 0.5 - 1,
+                                    note_y + note_height * 0.5),
+                                    QPointF(note_x,
+                                    note_y + note_height - 1)
+                                };
+                                mPainter->drawPolygon(points, 4);
+                            }
+                            break;
                         }
                     }
                 }
@@ -367,10 +409,21 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
         mPen->setColor(Qt::black);
         mPainter->setPen(*mPen);
-        mPainter->drawRect(x,
-                           y,
-                           m_selected.width,
-                           m_selected.height );
+        switch (editMode)
+        {
+        case NOTE:
+            mPainter->drawRect(x,
+                               y,
+                               m_selected.width,
+                               m_selected.height);
+            break;
+        case DRUM:
+            mPainter->drawRect(x - c_key_y * 0.5,
+                               y,
+                               m_selected.width + c_key_y,
+                               m_selected.height);
+            break;
+        }
         m_old.x = x;
         m_old.y = y;
         m_old.width = m_selected.width;
@@ -474,15 +527,12 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
             }
             else /* we're selecting */
             {
-
-
                 if ( !m_seq->select_note_events( tick_s, note,
                                                  tick_s, note,
                                                  MidiSequence::e_is_selected ))
                 {
                     if ( ! (event->modifiers() & Qt::ControlModifier))
                         m_seq->unselect();
-
 
                     /* on direct click select only one event */
                     numsel = m_seq->select_note_events( tick_s,note,tick_s,note,
@@ -511,17 +561,21 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                         m_moving_init = true;
                         needs_update = true;
 
+                        switch (editMode)
+                        {
+                        case NOTE: //take note lengths into account
+                            m_seq->get_selected_box(&tick_s, &note,
+                                                    &tick_f, &note_l );
+                        case DRUM: //ignore note lengths
+                            m_seq->get_onsets_selected_box(&tick_s, &note,
+                                                           &tick_f, &note_l );
+                        }
 
-                        /* get the box that selected elements are in */
-                        m_seq->get_selected_box( &tick_s, &note,
-                                                 &tick_f, &note_l );
-
-
-                        convert_tn_box_to_rect( tick_s, tick_f, note, note_l,
-                                                &m_selected.x,
-                                                &m_selected.y,
-                                                &m_selected.width,
-                                                &m_selected.height );
+                        convert_tn_box_to_rect(tick_s, tick_f, note, note_l,
+                                               &m_selected.x,
+                                               &m_selected.y,
+                                               &m_selected.width,
+                                               &m_selected.height );
 
                         /* save offset that we get from the snap above */
                         int adjusted_selected_x = m_selected.x;
@@ -535,11 +589,10 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
                     }
 
                     /* middle mouse button, or left-ctrl click (for 2button mice) */
-                    if (event->button() == Qt::MiddleButton ||
-                            (event->button() == Qt::LeftButton &&
-                             (event->modifiers() & Qt::ControlModifier)) ){
-
-                        /* moving, normal x */
+                    if ((event->button() == Qt::MiddleButton ||
+                         (event->button() == Qt::LeftButton &&
+                          (event->modifiers() & Qt::ControlModifier)))
+                            && editMode == NOTE){
 
                         m_growing = true;
 
@@ -808,7 +861,8 @@ void EditNoteRoll::convert_tn(long a_ticks, int a_note, int *a_x, int *a_y)
     *a_y = c_rollarea_y - ((a_note + 1) * c_key_y) - 1;
 }
 
-void EditNoteRoll::xy_to_rect(int a_x1, int a_y1, int a_x2, int a_y2, int *a_x, int *a_y, int *a_w, int *a_h)
+void EditNoteRoll::xy_to_rect(int a_x1, int a_y1, int a_x2, int a_y2,
+                              int *a_x, int *a_y, int *a_w, int *a_h)
 {
     if ( a_x1 < a_x2 ){
         *a_x = a_x1;
@@ -827,7 +881,10 @@ void EditNoteRoll::xy_to_rect(int a_x1, int a_y1, int a_x2, int a_y2, int *a_x, 
     }
 }
 
-void EditNoteRoll::convert_tn_box_to_rect(long a_tick_s, long a_tick_f, int a_note_h, int a_note_l, int *a_x, int *a_y, int *a_w, int *a_h)
+void EditNoteRoll::convert_tn_box_to_rect(long a_tick_s, long a_tick_f,
+                                          int a_note_h,  int a_note_l,
+                                          int *a_x,      int *a_y,
+                                          int *a_w,      int *a_h)
 {
     int x1, y1, x2, y2;
 

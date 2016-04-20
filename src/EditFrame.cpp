@@ -404,9 +404,13 @@ void EditFrame::toggleEditorMode()
     {
         case NOTE:
             editMode = DRUM;
+            ui->cmbNoteLen->hide();
+            ui->lblNoteLen->hide();
             break;
         case DRUM:
             editMode = NOTE;
+            ui->cmbNoteLen->show();
+            ui->lblNoteLen->show();
             break;
     }
 

@@ -775,6 +775,49 @@ MidiSequence::get_selected_box( long *a_tick_s, int *a_note_h,
     unlock();
 }
 
+void MidiSequence::get_onsets_selected_box(long *a_tick_s, int *a_note_h,
+                                           long *a_tick_f, int *a_note_l)
+{
+    list<MidiEvent>::iterator i;
+
+    *a_tick_s = c_maxbeats * c_ppqn;
+    *a_tick_f = 0;
+
+    *a_note_h = 0;
+    *a_note_l = 128;
+
+    long time;
+    int note;
+
+    lock();
+
+    for ( i = m_list_event.begin(); i != m_list_event.end(); i++ ){
+
+        if((*i).is_selected() && (*i).get_status() == EVENT_NOTE_ON)
+        {
+            time = (*i).get_timestamp();
+
+            // can't check on/off here. screws up seqevent
+            // selection which has no "off"
+            if ( time < *a_tick_s )
+                *a_tick_s = time;
+
+            if ( time > *a_tick_f )
+                *a_tick_f = time;
+
+            note = (*i).get_note();
+
+            if ( note < *a_note_l )
+                *a_note_l = note;
+
+            if ( note > *a_note_h )
+                *a_note_h = note;
+        }
+    }
+
+    unlock();
+}
+
 void
 MidiSequence::get_clipboard_box( long *a_tick_s, int *a_note_h,
                                  long *a_tick_f, int *a_note_l )

@@ -347,6 +347,10 @@ public:
     void get_selected_box (long *a_tick_s, int *a_note_h,
                            long *a_tick_f, int *a_note_l);
 
+    /* returns box of selected items ignoring length */
+    void get_onsets_selected_box (long *a_tick_s, int *a_note_h,
+                                  long *a_tick_f, int *a_note_l);
+
     /* returns the 'box' of selected items */
     void get_clipboard_box (long *a_tick_s, int *a_note_h,
                             long *a_tick_f, int *a_note_l);
