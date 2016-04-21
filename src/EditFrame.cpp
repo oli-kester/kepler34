@@ -63,6 +63,12 @@ EditFrame::EditFrame(QWidget *parent,
     ui->cmbScale->insertItem(1,"Major");
     ui->cmbScale->insertItem(2,"Minor");
 
+    //fill MIDI bus options
+    MasterMidiBus *masterbus = mPerformance->get_master_midi_bus();
+    for ( int i=0; i < masterbus->get_num_out_buses(); i++ )
+        ui->cmbMidiBus->addItem(QString::fromStdString(masterbus->get_midi_out_bus_name(i)));
+    ui->cmbMidiBus->setCurrentText(QString::fromStdString(masterbus->get_midi_out_bus_name(mSeq->get_midi_bus())));
+
     /* pull data from sequence object */
     ui->txtSeqName->setPlainText(mSeq->get_name());
     ui->cmbMidiChan->setCurrentIndex(mSeq->get_midi_channel());
@@ -115,8 +121,7 @@ EditFrame::EditFrame(QWidget *parent,
     ui->cmbRecVol->addItem("Fixed 31",   31);
     ui->cmbRecVol->addItem("Fixed 15",   15);
 
-    ui->cmbMidiBus->hide();
-    ui->lblMidiBus->hide();
+    //hide unused GUI elements
     ui->btnTools->hide();
     ui->lblBackgroundSeq->hide();
     ui->cmbBackgroundSeq->hide();
@@ -299,7 +304,7 @@ void EditFrame::updateGridSnap(int snapIndex)
 
 void EditFrame::updateMidiBus(int newIndex)
 {
-
+    mSeq->set_midi_bus(newIndex);
 }
 
 void EditFrame::updateMidiChannel(int newIndex)

@@ -148,7 +148,7 @@ p, li { white-space: pre-wrap; }
          <property name="maximumSize">
           <size>
            <width>100</width>
-           <height>99999</height>
+           <height>25</height>
           </size>
          </property>
          <property name="currentIndex">
@@ -196,7 +196,7 @@ p, li { white-space: pre-wrap; }
          <property name="maximumSize">
           <size>
            <width>100</width>
-           <height>9999</height>
+           <height>25</height>
           </size>
          </property>
          <property name="currentIndex">
@@ -261,7 +261,7 @@ p, li { white-space: pre-wrap; }
         <widget class="QComboBox" name="cmbMidiBus">
          <property name="maximumSize">
           <size>
-           <width>45</width>
+           <width>130</width>
            <height>25</height>
           </size>
          </property>

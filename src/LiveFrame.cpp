@@ -204,7 +204,7 @@ void LiveFrame::drawSequence(int a_seq)
                                    key);
             }
 
-            QString seqInfo = QString::number(seq->get_midi_bus());
+            QString seqInfo = QString::number(seq->get_midi_bus() + 1);
             seqInfo.append("-");
             seqInfo.append(QString::number(seq->get_midi_channel() + 1));
 
