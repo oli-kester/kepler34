@@ -6,7 +6,8 @@ SongTimeBar::SongTimeBar(MidiPerformance *a_perf,
     m_mainperf(a_perf),
     m_4bar_offset(0),
     m_snap(c_ppqn),
-    m_measure_length(c_ppqn * 4)
+    m_measure_length(c_ppqn * 4),
+    zoom(1)
 {
     //start refresh timer to queue regular redraws
     mTimer = new QTimer(this);
@@ -55,7 +56,7 @@ void SongTimeBar::paintEvent(QPaintEvent *)
     for ( int i=first_measure;
           i<first_measure+(width() * c_perf_scale_x / (m_measure_length)) + 1; i++ )
     {
-        int x_pos = ((i * m_measure_length) - tick_offset) / c_perf_scale_x;
+        int x_pos = ((i * m_measure_length) - tick_offset) / (c_perf_scale_x * zoom);
 
         /* beat */
         mPen->setColor(Qt::black);
@@ -65,21 +66,24 @@ void SongTimeBar::paintEvent(QPaintEvent *)
                            x_pos,
                            height());
 
-        QString bar(QString::number(i + 1));
-        mPen->setColor(Qt::black);
-        mPainter->setPen(*mPen);
-        mPainter->drawText(x_pos + 2,
-                           9,
-                           bar);
+        if (zoom <= 2) //only draw these numbers if they'll fit
+        {
+            QString bar(QString::number(i + 1));
+            mPen->setColor(Qt::black);
+            mPainter->setPen(*mPen);
+            mPainter->drawText(x_pos + 2,
+                               9,
+                               bar);
+        }
     }
 
     long left = m_mainperf->get_left_tick( );
     long right = m_mainperf->get_right_tick( );
 
     left -= (m_4bar_offset * 16 * c_ppqn);
-    left /= c_perf_scale_x;
+    left /= c_perf_scale_x * zoom;
     right -= (m_4bar_offset * 16 * c_ppqn);
-    right /= c_perf_scale_x;
+    right /= c_perf_scale_x * zoom;
 
     if ( left >=0 && left <= width() ){
 
@@ -122,7 +126,7 @@ void SongTimeBar::paintEvent(QPaintEvent *)
 
 QSize SongTimeBar::sizeHint() const
 {
-    return QSize(m_mainperf->get_max_trigger() + 2000, 22);
+    return QSize(m_mainperf->get_max_trigger() / zoom + 2000, 22);
 }
 
 void SongTimeBar::mousePressEvent(QMouseEvent *event)
@@ -140,4 +144,13 @@ void SongTimeBar::mouseMoveEvent(QMouseEvent *event)
 
 }
 
+void SongTimeBar::zoomIn()
+{
+    if (zoom > 1)
+        zoom *= 0.5;
+}
 
+void SongTimeBar::zoomOut()
+{
+    zoom *= 2;
+}

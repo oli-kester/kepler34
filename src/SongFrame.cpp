@@ -16,9 +16,9 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
     for (int i = 0; i < 6; i++)
     {
         QString combo_text = "1/" + QString::number(pow(2,i));
-        ui->combo_grid_snap->insertItem(i, combo_text);
+        ui->cmbGridSnap->insertItem(i, combo_text);
     }
-    ui->combo_grid_snap->setCurrentIndex(3);
+    ui->cmbGridSnap->setCurrentIndex(3);
 
     m_scroll_area = new QScrollArea(this);
     ui->vbox_centre->addWidget(m_scroll_area);
@@ -44,15 +44,13 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
     m_scroll_area->setWidget(mContainer);
 
     //hide non-functional gui elements
-    ui->btn_zoom_in->hide();
-    ui->btn_zoom_out->hide();
     ui->btnCollapse->hide();
     ui->btnExpand->hide();
     ui->btnExpandCopy->hide();
     ui->btnLoop->hide();
     ui->lineExpand->hide();
 
-    connect(ui->combo_grid_snap,
+    connect(ui->cmbGridSnap,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateGridSnap(int)));
@@ -67,10 +65,20 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
             m_perfroll,
             SLOT(redo()));
 
-    connect(ui->combo_grid_snap,
+    connect(ui->cmbGridSnap,
             SIGNAL(currentIndexChanged(int)),
             this,
             SLOT(updateGridSnap(int)));
+
+    connect(ui->btnZoomIn,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(zoomIn()));
+
+    connect(ui->btnZoomOut,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(zoomOut()));
 
     m_snap = 8;
     mBeatsPerMeasure = 4;
@@ -124,7 +132,7 @@ void SongFrame::setSnap( int a_snap  )
 {
     char b[10];
     snprintf( b, sizeof(b), "1/%d", a_snap );
-    ui->combo_grid_snap->setCurrentText(b);
+    ui->cmbGridSnap->setCurrentText(b);
 
     m_snap = a_snap;
     setGuides();
@@ -163,4 +171,16 @@ void SongFrame::setGuides()
     long beat_ticks = (c_ppqn * 4) / mBeatWidth;
     m_perfroll->set_guides( snap_ticks, measure_ticks, beat_ticks );
     //    m_perftime->set_guides( snap_ticks, measure_ticks );
+}
+
+void SongFrame::zoomIn()
+{
+    m_perftime->zoomIn();
+    m_perfroll->zoomIn();
+}
+
+void SongFrame::zoomOut()
+{
+    m_perftime->zoomOut();
+    m_perfroll->zoomOut();
 }

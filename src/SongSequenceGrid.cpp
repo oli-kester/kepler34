@@ -9,7 +9,8 @@ SongSequenceGrid::SongSequenceGrid(MidiPerformance *a_perf,
     m_moving(false),
     m_growing(false),
     m_adding(false),
-    m_adding_pressed(false)
+    m_adding_pressed(false),
+    zoom(1)
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
@@ -63,9 +64,9 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
         }
 
         mPainter->setPen(*mPen);
-        mPainter->drawLine(i * m_beat_length / c_perf_scale_x,
+        mPainter->drawLine(i * m_beat_length / (c_perf_scale_x * zoom),
                            1,
-                           i * m_beat_length / c_perf_scale_x,
+                           i * m_beat_length / (c_perf_scale_x * zoom),
                            height() - 1);
 
         // jump 2 if 16th notes
@@ -107,7 +108,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
     //    long tick_offset = c_ppqn * 16;
     long tick_offset = 0;
-    long x_offset = tick_offset / c_perf_scale_x;
+    long x_offset = tick_offset / (c_perf_scale_x * zoom);
 
     for ( int y = y_s; y <= y_f; y++ )
     {
@@ -123,25 +124,15 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
                 seq->reset_draw_trigger_marker();
 
-                //                for ( int i = first_measure;
-                //                      i < first_measure +
-                //                      (width() * c_perf_scale_x /
-                //                       (m_measure_length)) + 1;
-
-                //                      i++ )
-                //                {
-                //                    int x_pos = (i * m_measure_length) / c_perf_scale_x;
-                //                }
-
                 long seq_length = seq->getLength();
-                int length_w = seq_length / c_perf_scale_x;
+                int length_w = seq_length / (c_perf_scale_x * zoom);
 
                 while ( seq->get_next_trigger( &tick_on, &tick_off, &selected, &offset  )){
 
                     if ( tick_off > 0 ){
 
-                        long x_on  = tick_on  / c_perf_scale_x;
-                        long x_off = tick_off / c_perf_scale_x;
+                        long x_on  = tick_on  / (c_perf_scale_x * zoom);
+                        long x_off = tick_off / (c_perf_scale_x * zoom);
                         int  w     = x_off - x_on + 1;
 
                         int x = x_on;
@@ -200,7 +191,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
 
                         while ( tick_marker < tick_off ){
 
-                            long tick_marker_x = (tick_marker / c_perf_scale_x) - x_offset;
+                            long tick_marker_x = (tick_marker / (c_perf_scale_x * zoom)) - x_offset;
 
                             int lowest_note = seq->get_lowest_note_event( );
                             int highest_note = seq->get_highest_note_event( );
@@ -284,7 +275,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     //draw playhead
     long tick = mPerf->get_tick();
 
-    int progress_x = tick / c_perf_scale_x ;
+    int progress_x = tick / (c_perf_scale_x * zoom) ;
 
     mPen->setColor(Qt::red);
     mPen->setStyle(Qt::SolidLine);
@@ -365,7 +356,7 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
                 long end_tick = mPerf->get_sequence( m_drop_sequence )->get_selected_trigger_end_tick();
 
                 if ( tick >= start_tick &&
-                     tick <= start_tick + (c_perfroll_size_box_click_w * c_perf_scale_x) &&
+                     tick <= start_tick + (c_perfroll_size_box_click_w * (c_perf_scale_x * zoom)) &&
                      (m_drop_y % c_names_y) <= c_perfroll_size_box_click_w + 1 )
                 {
                     m_growing = true;
@@ -375,7 +366,7 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
                             get_selected_trigger_start_tick( );
                 }
                 else
-                    if ( tick >= end_tick - (c_perfroll_size_box_click_w * c_perf_scale_x) &&
+                    if ( tick >= end_tick - (c_perfroll_size_box_click_w * (c_perf_scale_x * zoom)) &&
                          tick <= end_tick &&
                          (m_drop_y % c_names_y) >= c_names_y - c_perfroll_size_box_click_w - 1 )
                     {
@@ -539,7 +530,7 @@ void SongSequenceGrid::snap_x( int *a_x )
     // m_scale = number of pulses per pixel
     //	so snap / m_scale  = number pixels to snap to
 
-    int mod = (m_snap / c_perf_scale_x );
+    int mod = (m_snap / (c_perf_scale_x * zoom) );
 
     if ( mod <= 0 )
         mod = 1;
@@ -553,7 +544,7 @@ void SongSequenceGrid::convert_x( int a_x, long *a_tick )
 
     //    long tick_offset = c_ppqn * 16;
     long tick_offset = 0;
-    *a_tick = a_x * c_perf_scale_x;
+    *a_tick = a_x * (c_perf_scale_x * zoom);
     *a_tick += tick_offset;
 }
 
@@ -564,7 +555,7 @@ void SongSequenceGrid::convert_xy( int a_x, int a_y, long *a_tick, int *a_seq)
     //    long tick_offset =  c_ppqn * 16;
     long tick_offset =  0;
 
-    *a_tick = a_x * c_perf_scale_x;
+    *a_tick = a_x * (c_perf_scale_x * zoom);
     *a_seq = a_y / c_names_y;
 
     *a_tick += tick_offset;
@@ -615,4 +606,15 @@ void SongSequenceGrid::undo()
 void SongSequenceGrid::redo()
 {
     mPerf->pop_trigger_redo();
+}
+
+void SongSequenceGrid::zoomIn()
+{
+    if (zoom > 1)
+        zoom *= 0.5;
+}
+
+void SongSequenceGrid::zoomOut()
+{
+    zoom *= 2;
 }

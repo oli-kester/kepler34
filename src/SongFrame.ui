@@ -78,7 +78,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <widget class="QPushButton" name="btn_zoom_out">
+        <widget class="QPushButton" name="btnZoomOut">
          <property name="maximumSize">
           <size>
            <width>35</width>
@@ -95,7 +95,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_zoom_in">
+        <widget class="QPushButton" name="btnZoomIn">
          <property name="maximumSize">
           <size>
            <width>35</width>
@@ -132,7 +132,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="combo_grid_snap">
+        <widget class="QComboBox" name="cmbGridSnap">
          <property name="maximumSize">
           <size>
            <width>55</width>

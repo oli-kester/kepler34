@@ -22,6 +22,9 @@ public:
     explicit SongTimeBar(MidiPerformance *a_perf,
                          QWidget *parent);
 
+    void zoomIn();
+    void zoomOut();
+
 protected:
     //override painting event to draw on the frame
     void paintEvent         (QPaintEvent *);
@@ -46,6 +49,8 @@ private:
     int m_4bar_offset;
 
     int m_snap, m_measure_length;
+
+    int zoom;
 
 signals:
 

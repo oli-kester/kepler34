@@ -35,6 +35,9 @@ public:
     void update_sizes();
     void increment_size();
 
+    void zoomIn();
+    void zoomOut();
+
 protected:
     //override painting event to draw on the frame
     void paintEvent         (QPaintEvent *);
@@ -76,9 +79,10 @@ private:
     int     m_beat_length;
     int     m_roll_length_ticks;
     int     m_drop_x, m_drop_y;
+    int     m_drop_sequence;
+    int     zoom;
     long    m_drop_tick;
     long    m_drop_tick_trigger_offset;
-    int     m_drop_sequence;
     bool    m_sequence_active[c_total_seqs];
     bool    m_moving;
     bool    m_growing;

@@ -78,13 +78,16 @@ void BeatIndicator::paintEvent(QPaintEvent *)
                            height() - mPen->width());
     }
 
-    //draw beat number
-    mPen->setColor(Qt::black);
-    mPen->setStyle(Qt::SolidLine);
-    mPainter->setPen(*mPen);
-    mPainter->drawText((metro + 1) * divX - (mFont.pointSize() + 2),
-                       height() * 0.3 + mFont.pointSize(),
-                       QString::number(metro + 1));
+    //draw beat number (if there's space)
+    if (beatsPerMeasure < 10)
+    {
+        mPen->setColor(Qt::black);
+        mPen->setStyle(Qt::SolidLine);
+        mPainter->setPen(*mPen);
+        mPainter->drawText((metro + 1) * divX - (mFont.pointSize() + 2),
+                           height() * 0.3 + mFont.pointSize(),
+                           QString::number(metro + 1));
+    }
 
     //lessen alpha on each redraw to have smooth fading
     //done as a factor of the bpm to get useful fades

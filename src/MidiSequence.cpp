@@ -130,24 +130,6 @@ MidiSequence::pop_trigger_undo()
     unlock();
 }
 
-//void
-//MidiSequence::push_trigger_redo()
-//{
-//    lock();
-
-//    m_list_trigger_redo.push( m_list_trigger );
-
-//    list<MidiTrigger>::iterator i;
-
-//    for ( i  = m_list_trigger_redo.top().begin();
-//          i != m_list_trigger_redo.top().end(); i++ )
-//    {
-//        (*i).m_selected = false;
-//    }
-
-//    unlock();
-//}
-
 
 void
 MidiSequence::pop_trigger_redo()

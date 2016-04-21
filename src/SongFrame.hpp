@@ -63,6 +63,8 @@ private:
 
 private slots:
     void updateGridSnap(int snapIndex);
+    void zoomIn();
+    void zoomOut();
 };
 
 #endif // SONGFRAME_HPP
