@@ -292,6 +292,7 @@ void MainWindow::openMidiFile(const QString &path)
 
     m_live_frame->redraw();
     ui->spinBpm->setValue(m_main_perf->get_bpm());
+    m_song_frame->updateSizes();
 }
 
 void MainWindow::updateWindowTitle()

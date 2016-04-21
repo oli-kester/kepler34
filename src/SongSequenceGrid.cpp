@@ -296,7 +296,7 @@ void SongSequenceGrid::setSnap(int snap)
 
 QSize SongSequenceGrid::sizeHint() const
 {
-    return QSize(m_roll_length_ticks, c_names_y * c_max_sequence + 1);
+    return QSize(mPerf->get_max_trigger() / (zoom * c_perf_scale_x) + 2000, c_names_y * c_max_sequence + 1);
 }
 
 void SongSequenceGrid::mousePressEvent(QMouseEvent *event)

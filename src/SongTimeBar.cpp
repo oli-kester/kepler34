@@ -126,7 +126,7 @@ void SongTimeBar::paintEvent(QPaintEvent *)
 
 QSize SongTimeBar::sizeHint() const
 {
-    return QSize(m_mainperf->get_max_trigger() / zoom + 2000, 22);
+    return QSize(m_mainperf->get_max_trigger() / (zoom * c_perf_scale_x)+ 2000, 22);
 }
 
 void SongTimeBar::mousePressEvent(QMouseEvent *event)

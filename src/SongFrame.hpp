@@ -35,6 +35,10 @@ public:
     int getBeatsPerMeasure() const;
     void setBeatsPerMeasure( int a_beats_per_measure );
 
+    //calls update geometry on elements to react to changes
+    //in MIDI file sizes
+    void updateSizes();
+
 private:
     /* set snap to in pulses */
     int m_snap;

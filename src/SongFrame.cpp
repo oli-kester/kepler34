@@ -184,3 +184,10 @@ void SongFrame::zoomOut()
     m_perftime->zoomOut();
     m_perfroll->zoomOut();
 }
+
+void SongFrame::updateSizes()
+{
+    m_perfroll->updateGeometry();
+    m_perftime->updateGeometry();
+    mContainer->adjustSize();
+}
