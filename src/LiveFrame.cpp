@@ -195,15 +195,13 @@ void LiveFrame::drawSequence(int a_seq)
                                name);
 
             /* midi channel + key + timesig */
-            char str[20];
-
             if (mPerf->show_ui_sequence_key())
             {
-                snprintf( str, sizeof str, "%c", (char)mPerf->lookup_keyevent_key( a_seq ) );
-
-                mPainter->drawText(base_x + thumbW - 7,
-                                   base_y + thumbH * 4 - 2,
-                                   str);
+                QString key; //when looking up key, ignore bank offset (print keys on every bank)
+                key[0] = (char)mPerf->lookup_keyevent_key(a_seq - mPerf->getBank() * cSeqsInBank);
+                mPainter->drawText(base_x + thumbW - 10,
+                                   base_y + thumbH - 5,
+                                   key);
             }
 
             QString seqInfo = QString::number(seq->get_midi_bus());

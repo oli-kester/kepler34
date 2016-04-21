@@ -49,7 +49,7 @@ const int c_status_snapshot = 0x02;
 const int c_status_queue    = 0x04;
 const int c_status_oneshot  = 0x08;
 
-const int c_midi_track_ctrl = c_seqs_in_set * 2;
+const int c_midi_track_ctrl = cSeqsInBank * 2;
 const int c_midi_control_bpm_up       = c_midi_track_ctrl ;
 const int c_midi_control_bpm_dn       = c_midi_track_ctrl + 1;
 const int c_midi_control_ss_up        = c_midi_track_ctrl + 2;
@@ -80,7 +80,7 @@ public:
 private:
     //andy mute group
     bool m_mute_group[c_gmute_tracks];
-    bool m_tracks_mute_state[c_seqs_in_set];
+    bool m_tracks_mute_state[cSeqsInBank];
     bool m_mode_group;
     bool m_mode_group_learn;
     int m_mute_group_selected;

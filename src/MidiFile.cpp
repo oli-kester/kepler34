@@ -408,7 +408,7 @@ bool MidiFile::parse (MidiPerformance * a_perf, int a_screen_set)
 
             /* the sequence has been filled, add it  */
             //printf ( "add_sequence( %d )\n", perf + (a_screen_set * c_seqs_in_set));
-            a_perf->add_sequence (seq, perf + (a_screen_set * c_seqs_in_set));
+            a_perf->add_sequence (seq, perf + (a_screen_set * cSeqsInBank));
         }
 
         /* dont know what kind of chunk */
@@ -519,10 +519,10 @@ bool MidiFile::parse (MidiPerformance * a_perf, int a_screen_set)
             {
                 printf( "corrupt data in mutegroup section\n" );
             }
-            for (int i = 0; i < c_seqs_in_set; i++)
+            for (int i = 0; i < cSeqsInBank; i++)
             {
                 a_perf->select_group_mute(read_long ());
-                for (int k = 0; k < c_seqs_in_set; ++k) {
+                for (int k = 0; k < cSeqsInBank; ++k) {
                     a_perf->set_group_mute_state(k, read_long ());
                 }
             }
@@ -658,11 +658,11 @@ bool MidiFile::write (MidiPerformance * a_perf)
     /* write out the mute groups */
     write_long (c_mutegroups);
     write_long (c_gmute_tracks);
-    for (int j=0; j < c_seqs_in_set; ++j)
+    for (int j=0; j < cSeqsInBank; ++j)
     {
         a_perf->select_group_mute(j);
         write_long(j);
-        for (int i=0; i < c_seqs_in_set; ++i)
+        for (int i=0; i < cSeqsInBank; ++i)
         {
             write_long( a_perf->get_group_mute_state(i) );
         }

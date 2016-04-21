@@ -291,9 +291,9 @@ void MidiPerformance::set_group_mute_state (int a_g_track, bool a_mute_state)
 {
     if (a_g_track < 0)
         a_g_track = 0;
-    if (a_g_track > c_seqs_in_set)
-        a_g_track = c_seqs_in_set -1;
-    m_mute_group[a_g_track + m_mute_group_selected * c_seqs_in_set] = a_mute_state;
+    if (a_g_track > cSeqsInBank)
+        a_g_track = cSeqsInBank -1;
+    m_mute_group[a_g_track + m_mute_group_selected * cSeqsInBank] = a_mute_state;
 }
 
 
@@ -301,22 +301,22 @@ bool MidiPerformance::get_group_mute_state (int a_g_track)
 {
     if (a_g_track < 0)
         a_g_track = 0;
-    if (a_g_track > c_seqs_in_set)
-        a_g_track = c_seqs_in_set -1;
-    return m_mute_group[a_g_track + m_mute_group_selected * c_seqs_in_set];
+    if (a_g_track > cSeqsInBank)
+        a_g_track = cSeqsInBank -1;
+    return m_mute_group[a_g_track + m_mute_group_selected * cSeqsInBank];
 }
 
 
 void MidiPerformance::select_group_mute (int a_g_mute)
 {
-    int j = (a_g_mute * c_seqs_in_set);
-    int k = m_playing_screen * c_seqs_in_set;
+    int j = (a_g_mute * cSeqsInBank);
+    int k = m_playing_screen * cSeqsInBank;
     if (a_g_mute < 0)
         a_g_mute = 0;
-    if (a_g_mute > c_seqs_in_set)
-        a_g_mute = c_seqs_in_set -1;
+    if (a_g_mute > cSeqsInBank)
+        a_g_mute = cSeqsInBank -1;
     if (m_mode_group_learn)
-        for (int i = 0; i < c_seqs_in_set; i++) {
+        for (int i = 0; i < cSeqsInBank; i++) {
             if (is_active(i + k)) {
                 assert(m_seqs[i + k]);
                 m_mute_group[i + j] = m_seqs[i + k]->get_playing();
@@ -345,19 +345,19 @@ void MidiPerformance::unset_mode_group_learn ()
 
 void MidiPerformance::select_mute_group (int a_group)
 {
-    int j = (a_group * c_seqs_in_set);
-    int k = m_playing_screen * c_seqs_in_set;
+    int j = (a_group * cSeqsInBank);
+    int k = m_playing_screen * cSeqsInBank;
     if (a_group < 0)
         a_group = 0;
-    if (a_group > c_seqs_in_set)
-        a_group = c_seqs_in_set -1;
+    if (a_group > cSeqsInBank)
+        a_group = cSeqsInBank -1;
     m_mute_group_selected = a_group;
-    for (int i = 0; i < c_seqs_in_set; i++) {
+    for (int i = 0; i < cSeqsInBank; i++) {
         if ((m_mode_group_learn) && (is_active(i + k))) {
             assert(m_seqs[i + k]);
             m_mute_group[i + j] = m_seqs[i + k]->get_playing();
         }
-        m_tracks_mute_state[i] = m_mute_group[i + m_mute_group_selected * c_seqs_in_set];
+        m_tracks_mute_state[i] = m_mute_group[i + m_mute_group_selected * cSeqsInBank];
     }
 }
 
@@ -365,13 +365,13 @@ void MidiPerformance::select_mute_group (int a_group)
 void MidiPerformance::mute_group_tracks ()
 {
     if (m_mode_group) {
-        for (int i=0; i< c_seqs_in_set; i++) {
-            for (int j=0; j < c_seqs_in_set; j++) {
-                if ( is_active(i * c_seqs_in_set + j) ) {
+        for (int i=0; i< cSeqsInBank; i++) {
+            for (int j=0; j < cSeqsInBank; j++) {
+                if ( is_active(i * cSeqsInBank + j) ) {
                     if ((i == m_playing_screen) && (m_tracks_mute_state[j])) {
-                        sequence_playing_on (i * c_seqs_in_set + j);
+                        sequence_playing_on (i * cSeqsInBank + j);
                     } else {
-                        sequence_playing_off (i * c_seqs_in_set + j);
+                        sequence_playing_off (i * cSeqsInBank + j);
                     }
                 }
             }
@@ -743,8 +743,8 @@ int MidiPerformance::getBank()
 
 void MidiPerformance::  setPlayingBank ()
 {
-    for (int j, i = 0; i < c_seqs_in_set; i++) {
-        j = i + m_playing_screen * c_seqs_in_set;
+    for (int j, i = 0; i < cSeqsInBank; i++) {
+        j = i + m_playing_screen * cSeqsInBank;
         if ( is_active(j) ){
             assert( m_seqs[j] );
             m_tracks_mute_state[i] = m_seqs[j]->get_playing();
@@ -1909,9 +1909,9 @@ void MidiPerformance::handle_midi_control( int a_control, bool a_state )
         break;
 
     default:
-        if ((a_control >= c_seqs_in_set) && (a_control < c_midi_track_ctrl)) {
+        if ((a_control >= cSeqsInBank) && (a_control < c_midi_track_ctrl)) {
             //printf ( "group mute\n" );
-            select_and_mute_group(a_control - c_seqs_in_set);
+            select_and_mute_group(a_control - cSeqsInBank);
         }
         break;
     }
@@ -2003,7 +2003,7 @@ void MidiPerformance::input_func()
                                     if (data[1] >= get_midi_control_toggle(i)->m_min_value &&
                                             data[1] <= get_midi_control_toggle(i)->m_max_value ){
 
-                                        if ( i <  c_seqs_in_set )
+                                        if ( i <  cSeqsInBank )
                                             sequence_playing_toggle( i + m_offset );
                                     }
                                 }
@@ -2015,14 +2015,14 @@ void MidiPerformance::input_func()
                                     if ( data[1] >= get_midi_control_on(i)->m_min_value &&
                                          data[1] <= get_midi_control_on(i)->m_max_value ){
 
-                                        if ( i <  c_seqs_in_set )
+                                        if ( i <  cSeqsInBank )
                                             sequence_playing_on( i  + m_offset);
                                         else
                                             handle_midi_control( i, true );
 
                                     } else if (  get_midi_control_on(i)->m_inverse_active ){
 
-                                        if ( i <  c_seqs_in_set )
+                                        if ( i <  cSeqsInBank )
                                             sequence_playing_off(  i + m_offset );
                                         else
                                             handle_midi_control( i, false );
@@ -2037,14 +2037,14 @@ void MidiPerformance::input_func()
                                     if ( data[1] >= get_midi_control_off(i)->m_min_value &&
                                          data[1] <= get_midi_control_off(i)->m_max_value ){
 
-                                        if ( i <  c_seqs_in_set )
+                                        if ( i <  cSeqsInBank )
                                             sequence_playing_off(  i + m_offset );
                                         else
                                             handle_midi_control( i, false );
 
                                     } else if ( get_midi_control_off(i)->m_inverse_active ){
 
-                                        if ( i <  c_seqs_in_set )
+                                        if ( i <  cSeqsInBank )
                                             sequence_playing_on(  i + m_offset );
                                         else
                                             handle_midi_control( i, true );
@@ -2199,9 +2199,9 @@ void MidiPerformance::sequence_playing_on( int a_sequence )
 {
     if ( is_active(a_sequence) == true ){
         if (m_mode_group && (m_playing_screen == m_screen_set)
-                && (a_sequence >= (m_playing_screen * c_seqs_in_set))
-                && (a_sequence < ((m_playing_screen + 1) * c_seqs_in_set)))
-            m_tracks_mute_state[a_sequence - m_playing_screen * c_seqs_in_set] = true;
+                && (a_sequence >= (m_playing_screen * cSeqsInBank))
+                && (a_sequence < ((m_playing_screen + 1) * cSeqsInBank)))
+            m_tracks_mute_state[a_sequence - m_playing_screen * cSeqsInBank] = true;
         assert( m_seqs[a_sequence] );
         if (!(m_seqs[a_sequence]->get_playing())) {
             if (m_control_status & c_status_queue ) {
@@ -2221,9 +2221,9 @@ void MidiPerformance::sequence_playing_off( int a_sequence )
 {
     if ( is_active(a_sequence) == true ){
         if (m_mode_group && (m_playing_screen == m_screen_set)
-                && (a_sequence >= (m_playing_screen * c_seqs_in_set))
-                && (a_sequence < ((m_playing_screen + 1) * c_seqs_in_set)))
-            m_tracks_mute_state[a_sequence - m_playing_screen * c_seqs_in_set] = false;
+                && (a_sequence >= (m_playing_screen * cSeqsInBank))
+                && (a_sequence < ((m_playing_screen + 1) * cSeqsInBank)))
+            m_tracks_mute_state[a_sequence - m_playing_screen * cSeqsInBank] = false;
         assert( m_seqs[a_sequence] );
         if (m_seqs[a_sequence]->get_playing()) {
             if (m_control_status & c_status_queue ) {

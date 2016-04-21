@@ -72,8 +72,8 @@ PreferencesFile::parse( MidiPerformance *a_perf )
     sscanf( m_line, "%d", &gtrack );
     next_data_line( &file );
 
-    int mtx[c_seqs_in_set], j=0;
-    for (int i=0; i< c_seqs_in_set; i++) {
+    int mtx[cSeqsInBank], j=0;
+    for (int i=0; i< cSeqsInBank; i++) {
         a_perf->select_group_mute(j);
         sscanf(m_line, "%d [%d %d %d %d %d %d %d %d]"
                        " [%d %d %d %d %d %d %d %d]"
@@ -91,7 +91,7 @@ PreferencesFile::parse( MidiPerformance *a_perf )
 
                 &mtx[24], &mtx[25], &mtx[26], &mtx[27],
                 &mtx[28], &mtx[29], &mtx[30], &mtx[31]);
-        for (int k=0; k< c_seqs_in_set; k++) {
+        for (int k=0; k< cSeqsInBank; k++) {
             a_perf->set_group_mute_state(k, mtx[k]);
         }
         j++;
@@ -278,7 +278,7 @@ PreferencesFile::write( MidiPerformance *a_perf  )
 
         /* 32 mute for channel
                32 group mute */
-        case c_seqs_in_set               :  file << "# mute in group\n"; break;
+        case cSeqsInBank               :  file << "# mute in group\n"; break;
         case c_midi_control_bpm_up       :  file << "# bpm up\n"; break;
         case c_midi_control_bpm_dn       :  file << "# bpm down\n"; break;
         case c_midi_control_ss_up        :  file << "# screen set up\n"; break;
@@ -326,11 +326,11 @@ PreferencesFile::write( MidiPerformance *a_perf  )
     /* group midi control */
     file << "\n\n\n[mute-group]\n";
 
-    int mtx[c_seqs_in_set];
+    int mtx[cSeqsInBank];
     file <<  c_gmute_tracks << "\n";
-    for (int j=0; j < c_seqs_in_set; j++ ){
+    for (int j=0; j < cSeqsInBank; j++ ){
         a_perf->select_group_mute(j);
-        for (int i=0; i < c_seqs_in_set; i++) {
+        for (int i=0; i < cSeqsInBank; i++) {
             mtx[i] = a_perf->get_group_mute_state(i);
         }
         snprintf(outs, sizeof(outs),
@@ -405,8 +405,8 @@ PreferencesFile::write( MidiPerformance *a_perf  )
 
     file << "\n\n\n[keyboard-control]\n";
     file << "# Key #, Sequence # \n";
-    file << (a_perf->key_events.size() < (size_t)c_seqs_in_set ?
-                 a_perf->key_events.size() : (size_t)c_seqs_in_set) << "\n";
+    file << (a_perf->key_events.size() < (size_t)cSeqsInBank ?
+                 a_perf->key_events.size() : (size_t)cSeqsInBank) << "\n";
 
     for (std::map<int,long>::const_iterator i = a_perf->key_events.begin();
          i != a_perf->key_events.end(); ++i )
@@ -421,8 +421,8 @@ PreferencesFile::write( MidiPerformance *a_perf  )
 
     file << "\n\n\n[keyboard-group]\n";
     file << "# Key #, group # \n";
-    file << (a_perf->key_groups.size() < (size_t)c_seqs_in_set ?
-                 a_perf->key_groups.size() : (size_t)c_seqs_in_set) << "\n";
+    file << (a_perf->key_groups.size() < (size_t)cSeqsInBank ?
+                 a_perf->key_groups.size() : (size_t)cSeqsInBank) << "\n";
 
     for( std::map<int,long>::const_iterator i = a_perf->key_groups.begin();
          i != a_perf->key_groups.end(); ++i )

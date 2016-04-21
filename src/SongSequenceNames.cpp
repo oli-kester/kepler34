@@ -48,7 +48,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
         {
             int i = seqId;
             //if first seq in bank
-            if ( seqId % c_seqs_in_set == 0 )
+            if ( seqId % cSeqsInBank == 0 )
             {
                 //black boxes to mark each bank
                 mPen->setColor(Qt::black);
@@ -62,7 +62,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                                    c_names_y - 1);
 
                 char ss[3];
-                int bankId = seqId / c_seqs_in_set;
+                int bankId = seqId / cSeqsInBank;
                 snprintf(ss, sizeof(ss), "%2d", bankId );
 
                 //draw bank number here
@@ -79,7 +79,7 @@ void SongSequenceNames::paintEvent(QPaintEvent *)
                 QString bankName(mPerf->getBankName(bankId)->c_str());
                 mPainter->translate(12,
                                     (c_names_y * i) +
-                                    (c_names_y * c_seqs_in_set * 0.5)
+                                    (c_names_y * cSeqsInBank * 0.5)
                                     + bankName.length() * 4);
                 mPainter->rotate(270);
                 mFont.setPointSize(9);
