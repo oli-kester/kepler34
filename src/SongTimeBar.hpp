@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <QObject>
 #include <QPen>
+#include <QMouseEvent>
 
 ///
 /// \brief The SongTimeBar class

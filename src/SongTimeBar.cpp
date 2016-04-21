@@ -38,20 +38,8 @@ void SongTimeBar::paintEvent(QPaintEvent *)
                        height());
 
     /* draw vert lines */
-
-    //    long tick_offset = (m_4bar_offset * 16 * c_ppqn);
-    //    long first_measure = tick_offset / m_measure_length;
     long tick_offset = 0;
     long first_measure = 0;
-
-#if 0
-
-    0   1   2   3   4   5   6
-    |   |   |   |   |   |   |
-    |    |    |    |    |    |
-    0    1    2    3    4    5
-
-#endif
 
     for ( int i=first_measure;
           i<first_measure+(width() * c_perf_scale_x / (m_measure_length)) + 1; i++ )
@@ -131,7 +119,20 @@ QSize SongTimeBar::sizeHint() const
 
 void SongTimeBar::mousePressEvent(QMouseEvent *event)
 {
+    long tick = (long) event->x();
+    tick *= c_perf_scale_x * zoom;
+    tick += (m_4bar_offset * 16 * c_ppqn);
 
+    tick = tick - (tick % m_snap);
+
+    if (event->button() == Qt::LeftButton)
+    {
+        m_mainperf->set_left_tick( tick );
+    }
+    if (event->button() == Qt::RightButton)
+    {
+        m_mainperf->set_right_tick( tick + m_snap );
+    }
 }
 
 void SongTimeBar::mouseReleaseEvent(QMouseEvent *event)

@@ -312,7 +312,7 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
     convert_xy( m_drop_x, m_drop_y, &m_drop_tick, &m_drop_sequence );
 
     /* left mouse button */
-    if ( event->button() == Qt::LeftButton){
+    if (event->button() == Qt::LeftButton){
 
         long tick = m_drop_tick;
 
