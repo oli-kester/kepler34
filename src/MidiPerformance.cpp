@@ -1000,13 +1000,13 @@ void MidiPerformance::position_jack( bool a_state )
 }
 
 
-void MidiPerformance::start(bool a_state)
+void MidiPerformance::start()
 {
     if (m_jack_running) {
         return;
     }
 
-    inner_start(a_state);
+    inner_start();
 }
 
 
@@ -1020,15 +1020,13 @@ void MidiPerformance::stop()
 }
 
 
-void MidiPerformance::inner_start(bool a_state)
+void MidiPerformance::inner_start()
 {
     m_condition_var.lock();
 
     if (!is_running()) {
 
-        set_playback_mode( a_state );
-
-        if (a_state)
+        if (m_playback_mode)
             off_sequences();
 
         set_running(true);
@@ -1233,7 +1231,8 @@ int jack_sync_callback(jack_transport_state_t state,
 
     case JackTransportStarting:
         //printf( "[JackTransportStarting]\n" );
-        p->inner_start( global_jack_start_mode );
+        p->set_playback_mode(global_jack_start_mode);
+        p->inner_start();
         break;
 
     case JackTransportLooping:
@@ -1948,7 +1947,8 @@ void MidiPerformance::input_func()
                     if (ev.get_status() == EVENT_MIDI_START)
                     {
                         stop();
-                        start(false);
+                        set_playback_mode(false);
+                        start();
                         m_midiclockrunning = true;
                         m_usemidiclock = true;
                         m_midiclocktick = 0;
@@ -1958,7 +1958,8 @@ void MidiPerformance::input_func()
                     else if (ev.get_status() == EVENT_MIDI_CONTINUE)
                     {
                         m_midiclockrunning = true;
-                        start(false);
+                        set_playback_mode(false);
+                        start();
                         //m_usemidiclock = true;
                     }
                     else if (ev.get_status() == EVENT_MIDI_STOP)

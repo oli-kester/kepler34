@@ -185,7 +185,7 @@ void MainWindow::startPlaying()
 {
     //    m_main_perf->set_playback_mode(false);
     m_main_perf->position_jack(false);
-    m_main_perf->start(false);
+    m_main_perf->start();
     m_main_perf->start_jack();
     is_pattern_playing = true;
 
@@ -211,8 +211,8 @@ void MainWindow::setRecording(bool record)
 
 void MainWindow::setSongPlayback(bool playSongData)
 {
-    m_main_perf->set_playback_mode(true);
-    //    m_main_perf->position_jack(true);
+    m_main_perf->set_playback_mode(playSongData);
+        m_main_perf->position_jack(true);
     //    m_main_perf->start_jack();
     //    m_main_perf->start(playSongData);
 
