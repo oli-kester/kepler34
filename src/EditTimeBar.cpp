@@ -33,7 +33,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
     m_painter->drawRect(c_keyboard_padding_x,
                         0,
                         size().width(),
-                        size().height());
+                        size().height() - 1);
 
     int measure_length_32nds =  m_seq->getBeatsPerMeasure() * 32 /
             m_seq->getBeatWidth();

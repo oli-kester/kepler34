@@ -61,7 +61,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     mPainter->setPen(*mPen);
 
     //for each note row in our grid
-    for ( int i=1; i <= c_num_keys; i++ )
+    for ( int i = 1; i < c_num_keys; i++ )
     {
         //set line colour dependent on the note row we're on
         //        if (0 == (((c_num_keys - i) + ( 12 - m_key )) % 12))
@@ -114,9 +114,9 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     int ticks_per_m_line =  ticks_per_measure * measures_per_line;
 
     //start drawing vertical grid lines
-    for ( int i = c_keyboard_padding_x; i < width(); i += ticks_per_step )
+    for ( int i = 0; i < width(); i += ticks_per_step )
     {
-        int base_line = i;
+        int base_line = i + c_keyboard_padding_x;
 
         if ( i % ticks_per_m_line == 0 ){
 

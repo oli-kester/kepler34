@@ -73,7 +73,7 @@ void EditKeys::paintEvent(QPaintEvent *)
             //draw "Cx" octave labels
             m_pen->setColor(Qt::black);
             m_painter->setPen(*m_pen);
-            m_painter->drawText(7, c_key_y * i + 8, notes);
+            m_painter->drawText(2, c_key_y * i + 11, notes);
         }
 
     }
