@@ -547,6 +547,25 @@ bool MidiFile::parse (MidiPerformance * a_perf, int a_screen_set)
         }
     }
 
+    //read in sequence editing modes
+    if ((file_size - m_pos) > (int) sizeof (unsigned long))
+    {
+        ID = read_long ();
+        if (ID == c_seq_edit_mode)
+        {
+            for (int curTrack = 0;
+                 curTrack < c_max_sequence;
+                 curTrack++)
+            {
+                if (a_perf->is_active (curTrack))
+                {
+                    a_perf->setEditMode(curTrack, (edit_mode_e) read_long());
+                }
+            }
+        }
+    }
+
+
     // *** ADD NEW TAGS AT END **************/
 
     return true;
@@ -675,6 +694,16 @@ bool MidiFile::write (MidiPerformance * a_perf)
         if (a_perf->is_active (curTrack))
         {
             write_long(a_perf->getSequenceColour(curTrack));
+        }
+    }
+
+    //write out sequence edit modes
+    write_long (c_seq_edit_mode);
+    for (int curTrack = 0; curTrack < c_max_sequence; curTrack++)
+    {
+        if (a_perf->is_active (curTrack))
+        {
+            write_long(a_perf->getEditMode(curTrack));
         }
     }
 
