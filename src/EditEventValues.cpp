@@ -40,7 +40,7 @@ void EditEventValues::zoomOut()
 
 QSize EditEventValues::sizeHint() const
 {
-    return QSize(m_seq->getLength() / m_zoom + 100, c_dataarea_y);
+    return QSize(m_seq->getLength() / m_zoom + 100 + c_keyboard_padding_x, c_dataarea_y);
 }
 
 void EditEventValues::paintEvent(QPaintEvent *)
@@ -84,7 +84,7 @@ void EditEventValues::paintEvent(QPaintEvent *)
 
             /* turn into screen corrids */
 
-            event_x = tick / m_zoom;
+            event_x = tick / m_zoom + c_keyboard_padding_x;
 
             /* generate the value */
             event_height = d1;
@@ -115,7 +115,7 @@ void EditEventValues::paintEvent(QPaintEvent *)
                                    val.at(0));
             if (val.length() >= 2)
                 mPainter->drawText(event_x + 3,
-                                   c_dataarea_y - 25 + 8,
+                                   c_dataarea_y - 25 + 8,\
                                    val.at(1));
             if (val.length() >= 3)
                 mPainter->drawText(event_x + 3,
@@ -145,9 +145,9 @@ void EditEventValues::paintEvent(QPaintEvent *)
         mOld->setWidth(w);
         mOld->setHeight(h);
 
-        mPainter->drawLine(mCurrentX,
+        mPainter->drawLine(mCurrentX + c_keyboard_padding_x,
                            mCurrentY,
-                           mDropX,
+                           mDropX + c_keyboard_padding_x,
                            mDropY );
     }
 
@@ -160,10 +160,13 @@ void EditEventValues::mousePressEvent(QMouseEvent *event)
 {
     m_seq->push_undo();
 
+    int mouseX = event->x() - c_keyboard_padding_x;
+    int mouseY = event->y();
+
     //if we're near an event (4px), do relative adjustment
     long tick_start, tick_finish;
-    convert_x(event->x() - 2, &tick_start);
-    convert_x(event->x() + 2, &tick_finish);
+    convert_x(mouseX - 2, &tick_start);
+    convert_x(mouseX + 2, &tick_finish);
 
     //check if these ticks would select an event
     if (m_seq->select_events(tick_start, tick_finish, m_status, m_cc, MidiSequence::e_would_select))
@@ -176,8 +179,8 @@ void EditEventValues::mousePressEvent(QMouseEvent *event)
     }
 
     /* set values for line */
-    mDropX = event->x();
-    mDropY = event->y();
+    mDropX = mouseX;
+    mDropY = mouseY;
 
     /* reset box that holds dirty redraw spot */
     mOld->setX(0);
@@ -188,7 +191,7 @@ void EditEventValues::mousePressEvent(QMouseEvent *event)
 
 void EditEventValues::mouseReleaseEvent(QMouseEvent *event)
 {
-    mCurrentX = (int) event->x();
+    mCurrentX = (int) event->x() - c_keyboard_padding_x;
     mCurrentY = (int) event->y();
     long tick_s, tick_f;
 
@@ -223,7 +226,7 @@ void EditEventValues::mouseReleaseEvent(QMouseEvent *event)
 
 void EditEventValues::mouseMoveEvent(QMouseEvent *event)
 {
-    mCurrentX = event->x();
+    mCurrentX = event->x() - c_keyboard_padding_x;
     mCurrentY = event->y();
     long tick_s, tick_f;
 

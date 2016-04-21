@@ -30,7 +30,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
     m_painter->setFont(m_font);
 
     //draw time bar border
-    m_painter->drawRect(0,
+    m_painter->drawRect(c_keyboard_padding_x,
                         0,
                         size().width(),
                         size().height());
@@ -51,7 +51,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
     m_painter->setPen(*m_pen);
     for (int i = start_tick; i <= end_tick; i += ticks_per_beat)
     {
-        int zoomedX = i / m_zoom;
+        int zoomedX = i / m_zoom + c_keyboard_padding_x;
 
         //vertical line at each beat
         m_painter->drawLine(zoomedX,
@@ -71,7 +71,7 @@ void EditTimeBar::paintEvent(QPaintEvent *)
 
     }
 
-    long end_x = m_seq->getLength() / m_zoom;
+    long end_x = m_seq->getLength() / m_zoom + c_keyboard_padding_x;
 
     //draw end of seq label
     //label background
@@ -112,7 +112,7 @@ void EditTimeBar::mouseMoveEvent(QMouseEvent *event)
 
 QSize EditTimeBar::sizeHint() const
 {
-    return QSize(m_seq->getLength() / m_zoom + 100, 22);
+    return QSize(m_seq->getLength() / m_zoom + 100 + c_keyboard_padding_x, 22);
 }
 
 void EditTimeBar::zoomIn()

@@ -114,7 +114,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
     int ticks_per_m_line =  ticks_per_measure * measures_per_line;
 
     //start drawing vertical grid lines
-    for ( int i = 0; i < width(); i += ticks_per_step )
+    for ( int i = c_keyboard_padding_x; i < width(); i += ticks_per_step )
     {
         int base_line = i;
 
@@ -166,7 +166,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                        m_old_progress_x,
                        height() * 8);
 
-    m_old_progress_x = (m_seq->get_last_tick() / m_zoom);
+    m_old_progress_x = (m_seq->get_last_tick() / m_zoom + c_keyboard_padding_x);
 
     //draw notes
     long tick_s;
@@ -220,9 +220,17 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                     ) {
 
                 /* turn into screen corrids */
-                note_x = tick_s / m_zoom;
+                note_x = tick_s / m_zoom + c_keyboard_padding_x;
                 note_y = c_rollarea_y -(note * c_key_y) - c_key_y - 1 + 2;
-                note_height = c_key_y - 3;
+                switch (editMode)
+                {
+                case NOTE:
+                    note_height = c_key_y - 3;
+                    break;
+                case DRUM:
+                    note_height = c_key_y;
+                    break;
+                }
 
                 int in_shift = 0;
                 int length_add = 0;
@@ -279,7 +287,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                     if (tick_f < tick_s)
                     {
                         mPainter->setPen(*mPen);
-                        mPainter->drawRect(0,
+                        mPainter->drawRect(c_keyboard_padding_x,
                                            note_y,
                                            tick_f / m_zoom,
                                            note_height);
@@ -333,7 +341,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
                                                    note_width ,
                                                    note_height - 1);
 
-                                mPainter->drawRect(0,
+                                mPainter->drawRect(c_keyboard_padding_x,
                                                    note_y,
                                                    (tick_f/m_zoom) - 3 + length_add,
                                                    note_height - 1);
@@ -387,7 +395,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
         mPen->setColor(Qt::black);
         mPainter->setPen(*mPen);
-        mPainter->drawRect(x,
+        mPainter->drawRect(x + c_keyboard_padding_x,
                            y,
                            w,
                            h + c_key_y );
@@ -406,13 +414,13 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         switch (editMode)
         {
         case NOTE:
-            mPainter->drawRect(x,
+            mPainter->drawRect(x + c_keyboard_padding_x,
                                y,
                                m_selected.width,
                                m_selected.height);
             break;
         case DRUM:
-            mPainter->drawRect(x - note_height * 0.5,
+            mPainter->drawRect(x - note_height * 0.5 + c_keyboard_padding_x,
                                y,
                                m_selected.width + note_height,
                                m_selected.height);
@@ -424,8 +432,8 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         m_old.height = m_selected.height;
     }
 
-    if ( m_growing ){
-
+    if ( m_growing )
+    {
         int delta_x = m_current_x - m_drop_x;
         int width = delta_x + m_selected.width;
 
@@ -437,7 +445,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
         mPen->setColor(Qt::black);
         mPainter->setPen(*mPen);
-        mPainter->drawRect(x,
+        mPainter->drawRect(x + c_keyboard_padding_x,
                            y,
                            width,
                            m_selected.height );
@@ -466,7 +474,7 @@ void EditNoteRoll::mousePressEvent(QMouseEvent *event)
 
     int norm_x, norm_y, snapped_x, snapped_y;
 
-    snapped_x = norm_x = event->x();
+    snapped_x = norm_x = event->x() - c_keyboard_padding_x;
     snapped_y = norm_y = event->y();
 
     snap_x( &snapped_x );
@@ -675,8 +683,8 @@ void EditNoteRoll::mouseReleaseEvent(QMouseEvent *event)
 
     bool needs_update = false;
 
-    m_current_x = event->x();
-    m_current_y = event->y();;
+    m_current_x = event->x() - c_keyboard_padding_x;
+    m_current_y = event->y();
 
     snap_y ( &m_current_y );
 
@@ -785,7 +793,7 @@ void EditNoteRoll::mouseReleaseEvent(QMouseEvent *event)
 
 void EditNoteRoll::mouseMoveEvent(QMouseEvent *event)
 {
-    m_current_x = event->x();
+    m_current_x = event->x() - c_keyboard_padding_x;
     m_current_y = event->y();
 
     int note;
@@ -881,7 +889,7 @@ void EditNoteRoll::keyReleaseEvent(QKeyEvent *event)
 
 QSize EditNoteRoll::sizeHint() const
 {
-    return QSize(m_seq->getLength() / m_zoom + 100, c_keyarea_y + 1);
+    return QSize(m_seq->getLength() / m_zoom + 100 + c_keyboard_padding_x, c_keyarea_y + 1);
 }
 
 void EditNoteRoll::snap_y( int *a_y )

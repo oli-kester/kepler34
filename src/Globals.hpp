@@ -84,9 +84,10 @@ const int c_key_x = 24;
 const int c_key_y = 12; //TODO make this configurable, perhaps move to midiperformance.cpp
 const int c_num_keys = 128;
 const int c_keyarea_y = c_key_y * c_num_keys + 1;
-const int c_keyarea_x = c_key_x + 20;
+const int c_keyarea_x = c_key_x + 50;
 const int c_keyoffset_x = c_keyarea_x - c_key_x;
-
+const int c_keyboard_padding_x = 10; //padding to the left of the note roll
+                                     //to allow 1st tick drum hits
 
 /* paino roll */
 const int c_rollarea_y = c_keyarea_y;

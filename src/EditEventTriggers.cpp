@@ -50,7 +50,7 @@ void EditEventTriggers::zoomOut()
 
 QSize EditEventTriggers::sizeHint() const
 {
-    return QSize(m_seq->getLength() / m_zoom + 100, c_eventarea_y + 1);
+    return QSize(m_seq->getLength() / m_zoom + 100 + c_keyboard_padding_x, c_eventarea_y + 1);
 }
 
 void EditEventTriggers::paintEvent(QPaintEvent *)
@@ -64,7 +64,7 @@ void EditEventTriggers::paintEvent(QPaintEvent *)
     mPainter->setFont(mFont);
 
     /* draw background */
-    mPainter->drawRect(0,
+    mPainter->drawRect(c_keyboard_padding_x,
                        0,
                        width(),
                        height());
@@ -82,7 +82,7 @@ void EditEventTriggers::paintEvent(QPaintEvent *)
 
     for ( int i = start_tick; i < width(); i += ticks_per_step )
     {
-        int base_line = i;
+        int base_line = i + c_keyboard_padding_x;
 
         if ( i % ticks_per_m_line == 0 )
         {
@@ -128,7 +128,7 @@ void EditEventTriggers::paintEvent(QPaintEvent *)
 
 
             /* turn into screen corrids */
-            x = tick / m_zoom;
+            x = tick / m_zoom + c_keyboard_padding_x;
 
             //draw outer note border
             mPen->setColor(Qt::black);
@@ -168,14 +168,14 @@ void EditEventTriggers::paintEvent(QPaintEvent *)
 
     if ( m_selecting ){
 
-        x_to_w( m_drop_x, m_current_x, &x,&w );
+        x_to_w( m_drop_x, m_current_x, &x,&w );      
 
         m_old->setX(x);
         m_old->setWidth(w);
 
         mPen->setColor(Qt::black);
         mPainter->setPen(*mPen);
-        mPainter->drawRect(x,
+        mPainter->drawRect(x+ c_keyboard_padding_x,
                            y,
                            w,
                            h);
@@ -189,7 +189,7 @@ void EditEventTriggers::paintEvent(QPaintEvent *)
 
         mPen->setColor(Qt::black);
         mPainter->setPen(*mPen);
-        mPainter->drawRect(x,
+        mPainter->drawRect(x + c_keyboard_padding_x,
                            y,
                            m_selected->width(),
                            h );
@@ -215,7 +215,7 @@ void EditEventTriggers::mousePressEvent(QMouseEvent *event)
     /* if it was a button press */
 
     /* set values for dragging */
-    m_drop_x = m_current_x = (int) event->x();
+    m_drop_x = m_current_x = (int) event->x() - c_keyboard_padding_x;
 
     /* reset box that holds dirty redraw spot */
     m_old->setX(0);
@@ -354,7 +354,7 @@ void EditEventTriggers::mouseReleaseEvent(QMouseEvent *event)
 
     int x,w;
 
-    m_current_x = (int) event->x();
+    m_current_x = (int) event->x() - c_keyboard_padding_x;
 
     if ( m_moving )
         snap_x( &m_current_x );
@@ -419,7 +419,7 @@ void EditEventTriggers::mouseMoveEvent(QMouseEvent *event)
 
     if ( m_selecting || m_moving || m_paste  ){
 
-        m_current_x = (int) event->x();
+        m_current_x = (int) event->x() - c_keyboard_padding_x;
 
         if ( m_moving || m_paste )
             snap_x( &m_current_x );
