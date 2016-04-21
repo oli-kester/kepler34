@@ -100,15 +100,16 @@ void
 MidiSequence::push_trigger_undo()
 {
     lock();
+
     m_list_trigger_undo.push( m_list_trigger );
 
     list<MidiTrigger>::iterator i;
 
     for ( i  = m_list_trigger_undo.top().begin();
-          i != m_list_trigger_undo.top().end(); i++ ){
+          i != m_list_trigger_undo.top().end(); i++ )
+    {
         (*i).m_selected = false;
     }
-
 
     unlock();
 }
@@ -119,11 +120,45 @@ MidiSequence::pop_trigger_undo()
 {
     lock();
 
-    if (m_list_trigger_undo.size() > 0 ){
-
+    if (m_list_trigger_undo.size() > 0 )
+    {
         m_list_trigger_redo.push( m_list_trigger );
         m_list_trigger = m_list_trigger_undo.top();
         m_list_trigger_undo.pop();
+    }
+
+    unlock();
+}
+
+//void
+//MidiSequence::push_trigger_redo()
+//{
+//    lock();
+
+//    m_list_trigger_redo.push( m_list_trigger );
+
+//    list<MidiTrigger>::iterator i;
+
+//    for ( i  = m_list_trigger_redo.top().begin();
+//          i != m_list_trigger_redo.top().end(); i++ )
+//    {
+//        (*i).m_selected = false;
+//    }
+
+//    unlock();
+//}
+
+
+void
+MidiSequence::pop_trigger_redo()
+{
+    lock();
+
+    if (m_list_trigger_redo.size() > 0 )
+    {
+        m_list_trigger_undo.push( m_list_trigger );
+        m_list_trigger = m_list_trigger_redo.top();
+        m_list_trigger_redo.pop();
     }
 
     unlock();

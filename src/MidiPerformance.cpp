@@ -862,11 +862,12 @@ void MidiPerformance::move_triggers( bool a_direction )
 
 void MidiPerformance::push_trigger_undo()
 {
-    for (int i=0; i< c_max_sequence; i++ ){
-
-        if ( is_active(i) == true ){
+    for (int i=0; i< c_max_sequence; i++ )
+    {
+        if ( is_active(i) == true )
+        {
             assert( m_seqs[i] );
-            m_seqs[i]->push_trigger_undo( );
+            m_seqs[i]->push_trigger_undo();
         }
     }
 }
@@ -874,11 +875,24 @@ void MidiPerformance::push_trigger_undo()
 
 void MidiPerformance::pop_trigger_undo()
 {
-    for (int i=0; i< c_max_sequence; i++ ){
-
-        if ( is_active(i) == true ){
+    for (int i=0; i< c_max_sequence; i++ )
+    {
+        if ( is_active(i) == true )
+        {
             assert( m_seqs[i] );
-            m_seqs[i]->pop_trigger_undo( );
+            m_seqs[i]->pop_trigger_undo();
+        }
+    }
+}
+
+void MidiPerformance::pop_trigger_redo()
+{
+    for (int i=0; i< c_max_sequence; i++ )
+    {
+        if ( is_active(i) == true )
+        {
+            assert( m_seqs[i] );
+            m_seqs[i]->pop_trigger_redo();
         }
     }
 }
@@ -2258,7 +2272,7 @@ void MidiPerformance::set_key_event( int keycode, long sequence_slot )
             key_events.erase( i );
         key_events_rev.erase( it2 );
     }
-//    qDebug() << "New seq key binding - " << keycode << " mapped to " << sequence_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
+    //    qDebug() << "New seq key binding - " << keycode << " mapped to " << sequence_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
     // set
     key_events[keycode] = sequence_slot;
     key_events_rev[sequence_slot] = keycode;
@@ -2284,7 +2298,7 @@ void MidiPerformance::set_key_group( int keycode, long group_slot )
             key_groups.erase( i );
         key_groups_rev.erase( it2 );
     }
-//    qDebug() << "New group key binding - " << keycode << " mapped to " << group_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
+    //    qDebug() << "New group key binding - " << keycode << " mapped to " << group_slot << "Keyname - " << QKeySequence(keycode).toString().toStdString().c_str() << endl;
     // set
     key_groups[keycode] = group_slot;
     key_groups_rev[group_slot] = keycode;

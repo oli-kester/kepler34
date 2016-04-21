@@ -44,7 +44,6 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
     m_scroll_area->setWidget(mContainer);
 
     //hide non-functional gui elements
-    ui->btnRedo->hide();
     ui->btn_zoom_in->hide();
     ui->btn_zoom_out->hide();
     ui->btnCollapse->hide();

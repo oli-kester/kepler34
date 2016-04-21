@@ -260,6 +260,9 @@ public:
     void push_trigger_undo();
     void pop_trigger_undo();
 
+    void push_trigger_redo();
+    void pop_trigger_redo();
+
     void print();
 
     MidiControl *get_midi_control_toggle( unsigned int a_seq );

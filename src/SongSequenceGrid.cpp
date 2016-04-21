@@ -614,5 +614,5 @@ void SongSequenceGrid::undo()
 
 void SongSequenceGrid::redo()
 {
-
+    mPerf->pop_trigger_redo();
 }

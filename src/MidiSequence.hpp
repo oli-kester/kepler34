@@ -147,12 +147,15 @@ public:
     MidiSequence ();
     ~MidiSequence ();
 
+    //undo/redo for editing notes in sequence
     void push_undo ();
     void pop_undo ();
     void pop_redo ();
 
+    //undo/redo for song editor triggers
     void push_trigger_undo ();
     void pop_trigger_undo ();
+    void pop_trigger_redo();
 
     //
     //  Gets and Sets
