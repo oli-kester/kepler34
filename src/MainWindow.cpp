@@ -277,9 +277,9 @@ void MainWindow::openMidiFile(const QString &path)
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     ui->LiveTabLayout->addWidget(m_live_frame);
     connect(m_live_frame, //reconnect this as we've made a new object
-            SIGNAL(callEditor(MidiSequence*)),
+            SIGNAL(callEditor(int)),
             this,
-            SLOT(loadEditor(MidiSequence*)));
+            SLOT(loadEditor(int)));
     m_live_frame->show();
 
     //add to recent files list
@@ -435,12 +435,12 @@ void MainWindow::showAboutQtDialog()
 
 }
 
-void MainWindow::loadEditor(MidiSequence *seq)
+void MainWindow::loadEditor(int seqId)
 {
     ui->EditTabLayout->removeWidget(m_edit_frame);
     if (m_edit_frame)
         delete  m_edit_frame;
-    m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
+    m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seqId);
     ui->EditTabLayout->addWidget(m_edit_frame);
     m_edit_frame->show();
     ui->tabWidget->setCurrentIndex(2);
@@ -539,7 +539,7 @@ void MainWindow::tabWidgetClicked(int newIndex)
 
         MidiSequence *seq = m_main_perf->get_sequence(seqId);
         seq->set_dirty();
-        m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seq);
+        m_edit_frame = new EditFrame(ui->EditTab, m_main_perf, seqId);
         ui->EditTabLayout->addWidget(m_edit_frame);
         m_edit_frame->show();
         update();

@@ -588,7 +588,7 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
             && event->button() == Qt::MiddleButton
             && mPerf->is_active(mCurrentSeq))
     {
-        callEditor(mPerf->get_sequence(mCurrentSeq));
+        callEditor(mCurrentSeq);
     }
 }
 
@@ -643,7 +643,7 @@ void LiveFrame::newSeq()
 
 void LiveFrame::editSeq()
 {
-    callEditor(mPerf->get_sequence(mCurrentSeq));
+    callEditor(mCurrentSeq);
 }
 
 void LiveFrame::keyPressEvent(QKeyEvent *event)

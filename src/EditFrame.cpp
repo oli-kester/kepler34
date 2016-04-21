@@ -3,15 +3,16 @@
 
 EditFrame::EditFrame(QWidget *parent,
                      MidiPerformance *perf,
-                     MidiSequence *seq,
-                     edit_mode_e mode):
+                     int seqId):
     QFrame(parent),
     ui(new Ui::EditFrame),
-    mSeq(seq),
+    mSeq(perf->get_sequence(seqId)),
     mPerformance(perf),
-    editMode(mode)
+    mSeqId(seqId)
 {
     ui->setupUi(this);
+
+    editMode = mPerformance->getEditMode(seqId);
 
     setSizePolicy(QSizePolicy::Expanding,
                   QSizePolicy::Expanding);
@@ -90,6 +91,7 @@ EditFrame::EditFrame(QWidget *parent,
     mKeyboard = new EditKeys(mSeq, mContainer);
     mTimeBar = new EditTimeBar(mSeq, mContainer);
     mNoteGrid = new EditNoteRoll(mPerformance, mSeq, mContainer);
+    mNoteGrid->updateEditMode(editMode);
     mEventValues = new EditEventValues(mSeq, mContainer);
     mEventTriggers = new EditEventTriggers(mSeq, mEventValues, mContainer);
 
@@ -402,24 +404,26 @@ void EditFrame::toggleEditorMode()
 {
     switch (editMode)
     {
-        case NOTE:
-            editMode = DRUM;
-            ui->cmbNoteLen->hide();
-            ui->lblNoteLen->hide();
-            break;
-        case DRUM:
-            editMode = NOTE;
-            ui->cmbNoteLen->show();
-            ui->lblNoteLen->show();
-            break;
+    case NOTE:
+        editMode = DRUM;
+        ui->cmbNoteLen->hide();
+        ui->lblNoteLen->hide();
+        break;
+
+    case DRUM:
+        editMode = NOTE;
+        ui->cmbNoteLen->show();
+        ui->lblNoteLen->show();
+        break;
     }
 
+    mPerformance->setEditMode(mSeqId, editMode);
     mNoteGrid->updateEditMode(editMode);
-
 }
 
 void EditFrame::setEditorMode(edit_mode_e mode)
 {
     editMode = mode;
+    mPerformance->setEditMode(mSeqId, editMode);
     mNoteGrid->updateEditMode(mode);
 }

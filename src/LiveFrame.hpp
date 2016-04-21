@@ -111,7 +111,7 @@ private slots:
     void setColourOrange();
 
 signals:
-    void callEditor(MidiSequence *seq); //call the editor tab on the given seq
+    void callEditor(int seqId); //call the editor tab on the given seq
 };
 
 #endif // LIVEFRAME_HPP

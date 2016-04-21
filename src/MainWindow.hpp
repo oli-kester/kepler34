@@ -100,7 +100,7 @@ private slots:
 
     //set the editor to a specific seq
     //and switch tab to it
-    void loadEditor(MidiSequence *seq);
+    void loadEditor(int seqId);
 };
 
 #endif // MAINWINDOW_HPP

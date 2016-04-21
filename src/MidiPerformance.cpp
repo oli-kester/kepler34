@@ -11,16 +11,16 @@
 
 MidiPerformance::MidiPerformance()
 {
-    for (int i=0; i< c_max_sequence; i++)
+    for (int i = 0; i < c_max_sequence; i++)
     {
         m_seqs[i]             = NULL;
         m_seqs_active[i]      = false;
-
         m_was_active_main[i]  = false;
         m_was_active_edit[i]  = false;
         m_was_active_perf[i]  = false;
         m_was_active_names[i] = false;
         mSequenceColours[i]   = White;
+        mEditModes[i]         = NOTE;
     }
 
     m_mute_group_selected = 0;
@@ -2313,6 +2313,16 @@ void MidiPerformance::setSequenceColour(int seqId,
 thumb_colours_e MidiPerformance::getSequenceColour(int seqId)
 {
     return mSequenceColours[seqId];
+}
+
+void MidiPerformance::setEditMode(int seqId, edit_mode_e newMode)
+{
+    mEditModes[seqId] = newMode;
+}
+
+edit_mode_e MidiPerformance::getEditMode(int seqId)
+{
+    return mEditModes[seqId];
 }
 
 #ifdef JACK_SUPPORT

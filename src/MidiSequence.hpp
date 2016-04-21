@@ -23,6 +23,11 @@ enum draw_type
     DRAW_NOTE_OFF
 };
 
+///
+/// \brief The MidiSequence class
+///
+/// Holds a sequence of MIDI events
+
 class MidiSequence
 {
 
@@ -186,7 +191,6 @@ public:
      * pass in the current tick to set the recorded block's boundaries */
     void song_recording_start (long current_tick);
     void song_recording_stop ();
-
     bool get_song_recording ();
 
     /* returns string of name */

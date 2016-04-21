@@ -28,9 +28,6 @@ class MidiPerformance;
 #endif
 #endif
 
-
-/* class contains sequences that make up a live set */
-
 class MidiControl
 {
 public:
@@ -70,6 +67,12 @@ struct performcallback
 {
     virtual void on_grouplearnchange(bool) {}
 };
+
+///
+/// \brief The MidiPerformance class
+///
+/// Holds the set of sequences making up a song,
+/// along with their surrounding data
 
 class MidiPerformance
 {
@@ -155,6 +158,7 @@ private:
     std:: map<long, int> key_groups_rev;
 
     thumb_colours_e mSequenceColours[c_max_sequence];
+    edit_mode_e     mEditModes[c_max_sequence];
 
 #ifdef JACK_SUPPORT
 
@@ -196,6 +200,10 @@ public:
     //set the colour used to represent the specified sequence
     void setSequenceColour(int seqId, thumb_colours_e newColour);
     thumb_colours_e getSequenceColour(int seqId);
+
+    //get/set the editing mode of this seq
+    void setEditMode(int seqId, edit_mode_e newMode);
+    edit_mode_e getEditMode(int seqId);
 
     // can register here for events...
     std::vector<performcallback*> m_notify;

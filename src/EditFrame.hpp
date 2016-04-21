@@ -32,8 +32,7 @@ class EditFrame : public QFrame
 public:
     explicit EditFrame(QWidget *parent,
                        MidiPerformance *perf,
-                       MidiSequence *seq,
-                       edit_mode_e mode = NOTE);
+                       int mSeqId);
     ~EditFrame();
 
     void updateDrawGeometry();
@@ -61,6 +60,7 @@ private:
     /* set snap to in pulses, off = 1 */
     int         mSnap;
     edit_mode_e editMode;
+    int         mSeqId;
 
 private slots:
     void updateSeqName();

@@ -121,6 +121,7 @@ const unsigned long c_midictrl =        0x24240010;
 // not sure why we went to 10 above, this might need a different value
 const unsigned long c_mutegroups =      0x24240009;
 const unsigned long c_seq_colours =     0x24240011;
+const unsigned long c_seq_edit_mode =   0x24240012;
 
 
 const char c_font_6_12[] = "-*-fixed-medium-r-*--12-*-*-*-*-*-*";
