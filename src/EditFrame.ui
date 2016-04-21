@@ -651,6 +651,9 @@ p, li { white-space: pre-wrap; }
              <height>15</height>
             </size>
            </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -673,6 +676,9 @@ p, li { white-space: pre-wrap; }
              <width>63</width>
              <height>24</height>
             </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -697,6 +703,9 @@ p, li { white-space: pre-wrap; }
              <height>24</height>
             </size>
            </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -719,6 +728,9 @@ p, li { white-space: pre-wrap; }
              <width>36</width>
              <height>24</height>
             </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -754,7 +766,7 @@ p, li { white-space: pre-wrap; }
         <widget class="QComboBox" name="cmbRecVol">
          <property name="maximumSize">
           <size>
-           <width>55</width>
+           <width>75</width>
            <height>25</height>
           </size>
          </property>

@@ -47,9 +47,9 @@ MidiSequence::MidiSequence( ) :
 
     m_time_beats_per_measure(4),
     m_time_beat_width(4),
-    m_rec_vol(0)
+    m_rec_vol(0),
+    mSongRecordingSnap(1)
 {
-
     /* no notes are playing */
     for (int i=0; i< c_midi_notes; i++ )
         m_playing_notes[i] = 0;
@@ -365,9 +365,11 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
 
                 /* if we've reached a new chunk of drawn seqs in the song data,
                  * and we're not recording, unset the block on this seq's events */
-                if (start_tick == (*i).m_tick_start || end_tick == (*i).m_tick_start
-                        || start_tick == (*i).m_tick_end || end_tick == (*i).m_tick_end){
-                    //                        printf("MidiSequence.cpp - block off on %s - tick start = %ld, tick end = %ld, current tick = %ld \n",m_name.c_str(),(*i).m_tick_start,(*i).m_tick_end,end_tick);
+                if (start_tick == (*i).m_tick_start ||
+                        end_tick == (*i).m_tick_start ||
+                        start_tick == (*i).m_tick_end ||
+                        end_tick == (*i).m_tick_end)
+                {
                     m_song_playback_block = false;
                 }
 

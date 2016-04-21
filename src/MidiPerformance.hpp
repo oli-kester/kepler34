@@ -1,5 +1,3 @@
-/* holds all the seqs and handles their playback */
-
 #pragma once
 
 class MidiPerformance;
@@ -72,7 +70,8 @@ struct performcallback
 /// \brief The MidiPerformance class
 ///
 /// Holds the set of sequences making up a song,
-/// along with their surrounding data
+/// along with their surrounding data, and controls
+/// their playback
 
 class MidiPerformance
 {

@@ -125,6 +125,9 @@ private:
     /* locking */
     Mutex m_mutex;
 
+    //number of ticks to snap recorded improvisations to
+    int mSongRecordingSnap;
+
     /* takes an event this sequence is holding and
        places it on our midibus */
     void put_event_on_bus (MidiEvent * a_e);

@@ -155,3 +155,9 @@ void SongTimeBar::zoomOut()
 {
     zoom *= 2;
 }
+
+void SongTimeBar::set_guides(int a_snap, int a_measure)
+{
+    m_snap = a_snap;
+    m_measure_length = a_measure;
+}

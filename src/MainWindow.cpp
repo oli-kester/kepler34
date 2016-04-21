@@ -556,7 +556,6 @@ void MainWindow::updateRecentFilesMenu()
     mRecentMenu = new QMenu(tr("&Recent..."),this);
 
     /* only add if a path is actually contained in each slot */
-    //TODO add the new CtrlR accelerator to documentation
     if (recent_files[0]!="")
     {
         mRecentFileActions[0] = new QAction(recent_files[0], this);

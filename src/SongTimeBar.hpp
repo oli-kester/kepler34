@@ -26,6 +26,8 @@ public:
     void zoomIn();
     void zoomOut();
 
+    void set_guides(int a_snap, int a_measure);
+
 protected:
     //override painting event to draw on the frame
     void paintEvent         (QPaintEvent *);

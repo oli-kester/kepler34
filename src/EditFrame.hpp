@@ -48,8 +48,8 @@ private:
     QWidget         *mContainer;
     QPalette        *m_palette;
 
-    MidiSequence       * const mSeq;
-    MidiPerformance    * const mPerformance;
+    MidiSequence    * const mSeq;
+    MidiPerformance * const mPerformance;
 
     EditKeys          *mKeyboard;
     EditTimeBar       *mTimeBar;
@@ -78,6 +78,11 @@ private slots:
     void updateScale(int newIndex);
     void updateBackgroundSeq(int newIndex);
     void toggleEditorMode();
+    void updateRecVol();
+    void toggleMidiPlay(bool newVal);
+    void toggleMidiThru(bool newVal);
+    void toggleMidiQRec(bool newVal);
+    void toggleMidiRec(bool newVal);
 };
 
 #endif // EDITFRAME_HPP

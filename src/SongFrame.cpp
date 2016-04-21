@@ -182,8 +182,8 @@ void SongFrame::setGuides()
     long measure_ticks = (c_ppqn * 4) * mBeatsPerMeasure / mBeatWidth;
     long snap_ticks =  measure_ticks / m_snap;
     long beat_ticks = (c_ppqn * 4) / mBeatWidth;
-    m_perfroll->set_guides( snap_ticks, measure_ticks, beat_ticks );
-    //    m_perftime->set_guides( snap_ticks, measure_ticks );
+    m_perfroll->set_guides(snap_ticks, measure_ticks, beat_ticks);
+    m_perftime->set_guides(snap_ticks, measure_ticks);
 }
 
 void SongFrame::zoomIn()

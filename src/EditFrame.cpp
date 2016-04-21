@@ -105,17 +105,21 @@ EditFrame::EditFrame(QWidget *parent,
 
     m_scroll_area->setWidget(mContainer);
 
+    ui->cmbRecVol->addItem("Free",       0);
+    ui->cmbRecVol->addItem("Fixed 127",  127);
+    ui->cmbRecVol->addItem("Fixed 111",  111);
+    ui->cmbRecVol->addItem("Fixed 95",   95);
+    ui->cmbRecVol->addItem("Fixed 79",   79);
+    ui->cmbRecVol->addItem("Fixed 63",   63);
+    ui->cmbRecVol->addItem("Fixed 47",   47);
+    ui->cmbRecVol->addItem("Fixed 31",   31);
+    ui->cmbRecVol->addItem("Fixed 15",   15);
+
     ui->cmbMidiBus->hide();
     ui->lblMidiBus->hide();
     ui->btnTools->hide();
-    ui->btnPlay->hide();
-    ui->btnThru->hide();
-    ui->btnQRec->hide();
-    ui->btnRec->hide();
     ui->lblBackgroundSeq->hide();
     ui->cmbBackgroundSeq->hide();
-    ui->lblRecVol->hide();
-    ui->cmbRecVol->hide();
     ui->lblEventSelect->hide();
     ui->cmbEventSelect->hide();
     ui->lblKey->hide();
@@ -198,6 +202,31 @@ EditFrame::EditFrame(QWidget *parent,
             SIGNAL(clicked(bool)),
             this,
             SLOT(toggleEditorMode()));
+
+    connect(ui->cmbRecVol,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateRecVol()));
+
+    connect(ui->btnPlay,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(toggleMidiPlay(bool)));
+
+    connect(ui->btnQRec,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(toggleMidiQRec(bool)));
+
+    connect(ui->btnRec,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(toggleMidiRec(bool)));
+
+    connect(ui->btnThru,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(toggleMidiThru(bool)));
 }
 
 EditFrame::~EditFrame()
@@ -426,4 +455,30 @@ void EditFrame::setEditorMode(edit_mode_e mode)
     editMode = mode;
     mPerformance->setEditMode(mSeqId, editMode);
     mNoteGrid->updateEditMode(mode);
+}
+
+void EditFrame::updateRecVol()
+{
+    mSeq->set_rec_vol(ui->cmbRecVol->currentData().toInt());
+}
+
+void EditFrame::toggleMidiPlay(bool newVal)
+{
+    mSeq->set_playing(newVal);
+}
+
+void EditFrame::toggleMidiQRec(bool newVal)
+{
+    mSeq->set_quanized_rec(newVal);
+}
+
+void EditFrame::toggleMidiRec(bool newVal)
+{
+    mPerformance->get_master_midi_bus()->set_sequence_input( true, mSeq );
+    mSeq->set_recording(newVal);
+}
+
+void EditFrame::toggleMidiThru(bool newVal)
+{
+
 }

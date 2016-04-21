@@ -1,5 +1,3 @@
-/* holds all the seqs and handles their playback */
-
 #include "MidiPerformance.hpp"
 #include "MidiBus.hpp"
 #include "MidiEvent.hpp"
@@ -158,7 +156,7 @@ MidiPerformance::MidiPerformance()
 
 void MidiPerformance::init()
 {
-    m_master_bus.init( );
+    m_master_bus.init();
 }
 
 

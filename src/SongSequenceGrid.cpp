@@ -275,7 +275,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     //draw playhead
     long tick = mPerf->get_tick();
 
-    int progress_x = tick / (c_perf_scale_x * zoom) ;
+    int progress_x = tick / (c_perf_scale_x * zoom);
 
     mPen->setColor(Qt::red);
     mPen->setStyle(Qt::SolidLine);
