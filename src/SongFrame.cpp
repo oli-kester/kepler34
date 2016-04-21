@@ -43,13 +43,6 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
 
     m_scroll_area->setWidget(mContainer);
 
-    //hide non-functional gui elements
-    ui->btnCollapse->hide();
-    ui->btnExpand->hide();
-    ui->btnExpandCopy->hide();
-    ui->btnLoop->hide();
-    ui->lineExpand->hide();
-
     connect(ui->cmbGridSnap,
             SIGNAL(currentIndexChanged(int)),
             this,
@@ -79,6 +72,26 @@ SongFrame::SongFrame(MidiPerformance *a_perf,
             SIGNAL(clicked(bool)),
             this,
             SLOT(zoomOut()));
+
+    connect(ui->btnCollapse,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(markerCollapse()));
+
+    connect(ui->btnExpand,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(markerExpand()));
+
+    connect(ui->btnExpandCopy,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(markerExpandCopy()));
+
+    connect(ui->btnLoop,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(markerLoop(bool)));
 
     m_snap = 8;
     mBeatsPerMeasure = 4;
@@ -190,4 +203,27 @@ void SongFrame::updateSizes()
     m_perfroll->updateGeometry();
     m_perftime->updateGeometry();
     mContainer->adjustSize();
+}
+
+void SongFrame::markerCollapse()
+{
+    m_mainperf->push_trigger_undo();
+    m_mainperf->move_triggers( false );
+}
+
+void SongFrame::markerExpand()
+{
+    m_mainperf->push_trigger_undo();
+    m_mainperf->move_triggers( true );
+}
+
+void SongFrame::markerExpandCopy()
+{
+    m_mainperf->push_trigger_undo();
+    m_mainperf->copy_triggers();
+}
+
+void SongFrame::markerLoop(bool loop)
+{
+    m_mainperf->set_looping(loop);
 }

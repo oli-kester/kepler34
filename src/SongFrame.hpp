@@ -69,6 +69,10 @@ private slots:
     void updateGridSnap(int snapIndex);
     void zoomIn();
     void zoomOut();
+    void markerCollapse();
+    void markerExpand();
+    void markerExpandCopy();
+    void markerLoop(bool loop);
 };
 
 #endif // SONGFRAME_HPP

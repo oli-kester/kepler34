@@ -167,6 +167,9 @@
          <height>12</height>
         </size>
        </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
