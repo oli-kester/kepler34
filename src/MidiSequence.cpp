@@ -218,17 +218,27 @@ bool MidiSequence::get_song_recording(){
     return m_song_recording;
 }
 
-void MidiSequence::song_recording_start(long current_tick){
+void MidiSequence::song_recording_start(long current_tick, bool snap)
+{
     /* add a starting chunk of ten ticks,
      * to allow the rest of the threads to notice the change */
     add_trigger( current_tick, 10 );
+    mSongRecordingSnap = snap;
     m_song_recording_tick = current_tick;
     m_song_recording = true;
 }
 
-void MidiSequence::song_recording_stop(){
+void MidiSequence::song_recording_stop(long currentTick)
+{
     m_song_playback_block = false;
     m_song_recording = false;
+
+    //if we've been recording, snap the end of the trigger block
+    //to the next whole sequence interfal
+    if (mSongRecordingSnap)
+        grow_trigger(m_song_recording_tick,
+                     currentTick,
+                     m_length - (currentTick % m_length));
 }
 
 MidiSequence::~MidiSequence()
@@ -326,8 +336,6 @@ void
 MidiSequence::play( long a_tick, bool a_playback_mode )
 {
     lock();
-
-    //    printf( "a_tick[%ld] a_playback[%d]\n", a_tick, a_playback_mode );
 
     /* turns sequence off after we play in this frame */
     bool trigger_turning_off = false;

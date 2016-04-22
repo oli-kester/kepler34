@@ -72,6 +72,7 @@ private slots:
     void stopPlaying();
     void setSongPlayback(bool playSongData);
     void setRecording(bool record);
+    void setRecordingSnap(bool snap);
     void updateBpm(int newBpm);
     void updateBeatsPerMeasure(int bmIndex);
     void updateBeatLength(int blIndex);

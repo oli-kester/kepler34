@@ -126,7 +126,7 @@ private:
     Mutex m_mutex;
 
     //number of ticks to snap recorded improvisations to
-    int mSongRecordingSnap;
+    bool mSongRecordingSnap;
 
     /* takes an event this sequence is holding and
        places it on our midibus */
@@ -192,8 +192,8 @@ public:
 
     /* start / stop growing the seq for song recording
      * pass in the current tick to set the recorded block's boundaries */
-    void song_recording_start (long current_tick);
-    void song_recording_stop ();
+    void song_recording_start (long current_tick, bool snap);
+    void song_recording_stop (long currentTick);
     bool get_song_recording ();
 
     /* returns string of name */

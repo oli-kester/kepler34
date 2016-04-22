@@ -151,6 +151,7 @@ MidiPerformance::MidiPerformance()
     m_in_thread_launched    = false;
 
     m_playback_mode         = false;
+    mSongRecordSnap         = false;
 }
 
 
@@ -617,6 +618,16 @@ void MidiPerformance::setModified(bool modified)
     m_modified = modified;
 }
 
+bool MidiPerformance::getSongRecordSnap() const
+{
+    return mSongRecordSnap;
+}
+
+void MidiPerformance::setSongRecordSnap(bool songRecordSnap)
+{
+    mSongRecordSnap = songRecordSnap;
+}
+
 void MidiPerformance::set_running( bool a_running )
 {
     m_running = a_running;
@@ -936,8 +947,6 @@ void MidiPerformance::stop_jack(  )
 
 void MidiPerformance::position_jack( bool a_state )
 {
-
-    //printf( "perform::position_jack()\n" );
 
 #ifdef JACK_SUPPORT
 
@@ -2185,7 +2194,9 @@ void MidiPerformance::sequence_playing_toggle(int seqId)
                 {
                     /* if this play is us recording live, end the new trigger block here */
                     if (seq->get_song_recording())
-                        seq->song_recording_stop();
+                    {
+                        seq->song_recording_stop(tick);
+                    }
 
                     /* ...else we need to trim the block already in place */
                     else {
@@ -2197,11 +2208,12 @@ void MidiPerformance::sequence_playing_toggle(int seqId)
                 /* if not playing, start recording a new strip */
                 else
                 {
-                    //                 snap to length of sequence
-                    //                tick = tick - (tick % seq_length);
+                    //snap to length of sequence
+                    if (mSongRecordSnap)
+                        tick = tick - (tick % seq_length);
 
                     push_trigger_undo();
-                    seq->song_recording_start( tick );
+                    seq->song_recording_start(tick, mSongRecordSnap);
                 }
             }
         }

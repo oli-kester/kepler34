@@ -171,6 +171,9 @@
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
+        <property name="toolTip">
+         <string>Stop playback</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -200,6 +203,9 @@
         </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Start playback</string>
         </property>
         <property name="text">
          <string/>
@@ -234,6 +240,9 @@
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
+        <property name="toolTip">
+         <string>Toggle playback of the Song Editor data</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -264,6 +273,9 @@
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
+        <property name="toolTip">
+         <string>Record live sequence changes into the Song Editor</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -271,6 +283,34 @@
          <iconset>
           <normalon>:/pixmaps/pixmaps/rec.xpm</normalon>
          </iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnRecSnap">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Snap recorded loop changes to sequence length</string>
+        </property>
+        <property name="text">
+         <string>S</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

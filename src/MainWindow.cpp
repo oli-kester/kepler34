@@ -167,6 +167,11 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
             this,
             SLOT(tabWidgetClicked(int)));
 
+    connect(ui->btnRecSnap,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(setRecordingSnap(bool)));
+
     //connect to the seq edit signal from the live tab
     connect(m_live_frame,
             SIGNAL(callEditor(MidiSequence*)),
@@ -399,8 +404,8 @@ void MainWindow::saveFileAs()
                 last_used_dir,
                 tr("MIDI files (*.midi *.mid);;"
                    "All files (*)")
-                //                ,0,
-                //                QFileDialog::DontUseNativeDialog
+//                                ,0,
+//                                QFileDialog::DontUseNativeDialog
                 );
 
     if (!file.isEmpty())
@@ -729,4 +734,9 @@ void MainWindow::load_recent_10()
 {
     if (saveCheck())
         openMidiFile(recent_files[9]);
+}
+
+void MainWindow::setRecordingSnap(bool snap)
+{
+    m_main_perf->setSongRecordSnap(snap);
 }

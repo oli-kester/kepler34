@@ -114,7 +114,10 @@ private:
     bool m_inputing;
     bool m_outputing;
     bool m_looping;
-    bool m_song_recording;
+    bool m_song_recording; //record live seq changes into
+                            //the song data
+    bool mSongRecordSnap; //snap recorded playback changes
+                           //to seq length
 
     /* whether we're in live or song mode */
     //TODO replace with enum
@@ -425,6 +428,8 @@ public:
     friend void jack_timebase_callback(jack_transport_state_t state, jack_nframes_t nframes,
                                        jack_position_t *pos, int new_pos, void *arg);
 #endif
+    bool getSongRecordSnap() const;
+    void setSongRecordSnap(bool songRecordSnap);
 };
 
 /* located in perform.C */
