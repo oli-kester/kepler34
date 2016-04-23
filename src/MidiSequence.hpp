@@ -229,7 +229,7 @@ public:
        get dumped to the alsa buffers */
     void set_playing (bool);
     bool get_playing ();
-    void toggle_playing ();
+    void toggle_playing (long tick);
 
     void toggle_queued ();
     void toggle_oneshot ();
@@ -468,6 +468,11 @@ public:
             false);
     void transpose_notes (int a_steps, int a_scale);
     long getSnap_tick() const;
+
+    //used to trigger notes that are fall over the playhead
+    //(i.e. NOTE_ON is before the given tick,
+    //and NOTE_OFF is after)
+    void resumeNoteOns(long tick);
 };
 
 

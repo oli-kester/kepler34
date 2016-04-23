@@ -486,7 +486,6 @@ void MainWindow::updateBeatLength(int blIndex)
             seq->setBeatWidth(bl);
             //reset number of measures, causing length to adjust to new b/m
             seq->setNumMeasures(seq->getNumMeasures());
-            //            seq->set_length(seq->getNumMeasures() * seq->getBeatsPerMeasure() * ((c_ppqn * 4) / bl));
         }
     }
     m_modified = true;

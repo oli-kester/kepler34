@@ -781,16 +781,14 @@ void MidiPerformance::play( long a_tick )
 
     /* just run down the list of sequences and have them dump */
 
-    //        printf( "play [%d]\n", a_tick );
-
     m_tick = a_tick;
 
     /* for all seqs in the array */
-    for (int i=0; i< c_max_sequence; i++ ){
+    for (int i = 0; i < c_max_sequence; i++ ){
 
         if ( is_active(i) ){
 
-            assert( m_seqs[i] );
+            assert(m_seqs[i]);
 
             //check for queue
             if (m_seqs[i]->get_queued() &&
@@ -798,7 +796,7 @@ void MidiPerformance::play( long a_tick )
 
                 m_seqs[i]->play(m_seqs[i]->get_queued_tick() - 1, m_playback_mode);
 
-                m_seqs[i]->toggle_playing();
+                m_seqs[i]->toggle_playing(a_tick);
 
                 printf("toggle playing - [%s]\n", m_seqs[i]->get_name());
             }
@@ -809,7 +807,7 @@ void MidiPerformance::play( long a_tick )
             {
                 m_seqs[i]->play(m_seqs[i]->getOneshot_tick() - 1, m_playback_mode);
 
-                m_seqs[i]->toggle_playing();
+                m_seqs[i]->toggle_playing(a_tick);
                 //queue it to mute again after one play
                 m_seqs[i]->toggle_queued();
 
@@ -2165,7 +2163,7 @@ void MidiPerformance::sequence_playing_toggle(int seqId)
                 unset_sequence_control_status(c_status_replace);
                 off_sequences();
             }
-            m_seqs[seqId]->toggle_playing();
+            m_seqs[seqId]->toggle_playing(m_tick);
         }
 
         /* if we're in song playback, temporarily block the events

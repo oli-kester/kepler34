@@ -48,7 +48,7 @@ MidiSequence::MidiSequence( ) :
     m_time_beats_per_measure(4),
     m_time_beat_width(4),
     m_rec_vol(0),
-    mSongRecordingSnap(1)
+    mSongRecordingSnap(0)
 {
     /* no notes are playing */
     for (int i=0; i< c_midi_notes; i++ )
@@ -369,8 +369,8 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
 
             list<MidiTrigger>::iterator i = m_list_trigger.begin();
 
-            while ( i != m_list_trigger.end()){
-
+            while ( i != m_list_trigger.end())
+            {
                 /* if we've reached a new chunk of drawn seqs in the song data,
                  * and we're not recording, unset the block on this seq's events */
                 if (start_tick == (*i).m_tick_start ||
@@ -381,13 +381,15 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
                     m_song_playback_block = false;
                 }
 
-                if ( (*i).m_tick_start <= end_tick ){
+                if ( (*i).m_tick_start <= end_tick )
+                {
                     trigger_state = true;
                     trigger_tick = (*i).m_tick_start;
                     trigger_offset = (*i).m_offset;
                 }
 
-                if ( (*i).m_tick_end <= end_tick ){
+                if ( (*i).m_tick_end <= end_tick )
+                {
                     trigger_state = false;
                     trigger_tick = (*i).m_tick_end;
                     trigger_offset = (*i).m_offset;
@@ -405,22 +407,23 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
             /* if we had triggers in our slice and its not equal to current state,
              * time to change the sequence trigger state
              * (only change state if we're not improvising) */
-            if ( trigger_state != m_playing && !m_song_playback_block){
-
-                //printf( "trigger %d\n", trigger_state );
-
+            if ( trigger_state != m_playing && !m_song_playback_block)
+            {
                 /* we are turning on */
-                if ( trigger_state){
-
-                    if ( trigger_tick < m_last_tick )
+                if (trigger_state)
+                {
+                    if (trigger_tick < m_last_tick)
                         start_tick = m_last_tick;
                     else
                         start_tick = trigger_tick;
 
-                    set_playing( true );
+                    set_playing(true);
 
-                } else {
-
+                    //if we have triggered between a note on and off, play it
+                    resumeNoteOns(a_tick);
+                }
+                else
+                {
                     /* we are on and turning off */
                     end_tick = trigger_tick;
                     trigger_turning_off = true;
@@ -436,6 +439,7 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
             }
         }
     }
+
 
     set_trigger_offset(trigger_offset);
 
@@ -499,7 +503,7 @@ MidiSequence::zero_markers()
 }
 
 /* verfies state, all noteons have an off,
-   links noteoffs with their ons */
+                                   links noteoffs with their ons */
 void
 MidiSequence::verify_and_link()
 {
@@ -522,7 +526,7 @@ MidiSequence::verify_and_link()
     while ( on != m_list_event.end() ){
 
         /* check for a note on, then look for its
-       note off */
+                                       note off */
         if ( (*on).is_note_on() ){
 
             /* get next possible off node */
@@ -532,7 +536,7 @@ MidiSequence::verify_and_link()
             while ( off != m_list_event.end() ){
 
                 /* is a off event, == notes, and isnt
-           markeded  */
+                                           markeded  */
                 if ( (*off).is_note_off()                  &&
                      (*off).get_note() == (*on).get_note() &&
                      ! (*off).is_marked()                  ){
@@ -611,7 +615,7 @@ MidiSequence::link_new( )
     while ( on != m_list_event.end()){
 
         /* check for a note on, then look for its
-       note off */
+                                       note off */
         if ( (*on).is_note_on() &&
              ! (*on).is_linked() ){
 
@@ -621,7 +625,7 @@ MidiSequence::link_new( )
             while ( off != m_list_event.end()){
 
                 /* is a off event, == notes, and isnt
-                  selected  */
+                                                  selected  */
                 if ( (*off).is_note_off()                    &&
                      (*off).get_note() == (*on).get_note() &&
                      ! (*off).is_linked()                    ){
@@ -641,7 +645,7 @@ MidiSequence::link_new( )
                 while ( off != on){
 
                     /* is a off event, == notes, and isnt
-                  selected  */
+                                                  selected  */
                     if ( (*off).is_note_off()                    &&
                          (*off).get_note() == (*on).get_note() &&
                          ! (*off).is_linked()                    ){
@@ -669,7 +673,7 @@ void
 MidiSequence::remove(list<MidiEvent>::iterator i)
 {
     /* if its a note off, and that note is currently
-       playing, send a note off */
+                                       playing, send a note off */
     if ( (*i).is_note_off()  &&
          m_playing_notes[ (*i).get_note()] > 0 ){
 
@@ -941,7 +945,7 @@ MidiSequence::get_num_selected_events( unsigned char a_status,
 
 
 /* selects events in range..  tick start, note high, tick end
-   note low */
+                                   note low */
 int
 MidiSequence::select_note_events( long a_tick_s, int a_note_h,
                                   long a_tick_f, int a_note_l, select_action_e a_action)
@@ -1123,7 +1127,7 @@ MidiSequence::select_note_events( long a_tick_s, int a_note_h,
 }
 
 /* select events in range, returns number
-   selected */
+                                   selected */
 int
 MidiSequence::select_events( long a_tick_s, long a_tick_f,
                              unsigned char a_status,
@@ -1654,14 +1658,14 @@ void MidiSequence::change_event_data_range( long a_tick_s, long a_tick_f,
 
             /* ratio of v1 to v2 */
             /*
-               weight =
-               (float)( (*i).get_timestamp() - a_tick_s ) /
-               (float)( a_tick_f - a_tick_s );
+                                               weight =
+                                               (float)( (*i).get_timestamp() - a_tick_s ) /
+                                               (float)( a_tick_f - a_tick_s );
 
-               int newdata = (int)
-               ((weight         * (float) a_data_f ) +
-               ((1.0f - weight) * (float) a_data_s ));
-               */
+                                               int newdata = (int)
+                                               ((weight         * (float) a_data_f ) +
+                                               ((1.0f - weight) * (float) a_data_s ));
+                                               */
 
             int tick = (*i).get_timestamp();
 
@@ -1805,8 +1809,8 @@ MidiSequence::add_note( long a_tick, long a_length, int a_note, bool a_paint)
          a_note < c_num_keys ){
 
         /* if we care about the painted, run though
-         * our events, delete the painted ones that
-         * overlap the one we want to add */
+                                         * our events, delete the painted ones that
+                                         * overlap the one we want to add */
         if ( a_paint )
         {
             list<MidiEvent>::iterator i,t;
@@ -1875,8 +1879,8 @@ MidiSequence::add_event( long a_tick,
         MidiEvent e;
 
         /* if we care about the painted, run though
-         * our events, delete the painted ones that
-         * overlap the one we want to add */
+                                         * our events, delete the painted ones that
+                                         * overlap the one we want to add */
         if ( a_paint )
         {
             list<MidiEvent>::iterator i,t;
@@ -2082,27 +2086,27 @@ MidiSequence::clear_triggers()
 
 
 /* adds trigger, a_state = true, range is on.
-   a_state = false, range is off
+                                   a_state = false, range is off
 
 
-   is      ie
-   <      ><        ><        >
-   es             ee
-   <               >
-   XX
+                                   is      ie
+                                   <      ><        ><        >
+                                   es             ee
+                                   <               >
+                                   XX
 
-   es ee
-   <   >
-   <>
+                                   es ee
+                                   <   >
+                                   <>
 
-   es    ee
-   <      >
-   <    >
+                                   es    ee
+                                   <      >
+                                   <    >
 
-   es     ee
-   <       >
-   <    >
-*/
+                                   es     ee
+                                   <       >
+                                   <    >
+                                */
 void
 MidiSequence::add_trigger( long a_tick, long a_length, long a_offset, bool a_adjust_offset )
 {
@@ -2334,30 +2338,30 @@ MidiSequence::split_trigger( MidiTrigger &trig, long a_split_tick)
 
 #if 0
 /*
-  |...|...|...|...|...|...|...
+                                  |...|...|...|...|...|...|...
 
-  0123456789abcdef0123456789abcdef
-  [      ][      ][      ][      ][      ][
+                                  0123456789abcdef0123456789abcdef
+                                  [      ][      ][      ][      ][      ][
 
-  [  ][      ][  ][][][][][      ]  [  ][  ]
-  0   4       4   0 7 4 2 0         6   2
-  0   4       4   0 1 4 6 0         2   6 inverse offset
+                                  [  ][      ][  ][][][][][      ]  [  ][  ]
+                                  0   4       4   0 7 4 2 0         6   2
+                                  0   4       4   0 1 4 6 0         2   6 inverse offset
 
-  [              ][              ][              ]
-  [  ][      ][  ][][][][][      ]  [  ][  ]
-  0   c       4   0 f c a 8         e   a
-  0   4       c   0 1 4 6 8         2   6  inverse offset
+                                  [              ][              ][              ]
+                                  [  ][      ][  ][][][][][      ]  [  ][  ]
+                                  0   c       4   0 f c a 8         e   a
+                                  0   4       c   0 1 4 6 8         2   6  inverse offset
 
-  [                              ][
-  [  ][      ][  ][][][][][      ]  [  ][  ]
-  k   g f c a 8
-  0   4       c   g h k m n       inverse offset
+                                  [                              ][
+                                  [  ][      ][  ][][][][][      ]  [  ][  ]
+                                  k   g f c a 8
+                                  0   4       c   g h k m n       inverse offset
 
-  0123456789abcdefghijklmonpq
-  ponmlkjihgfedcba9876543210
-  0fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210
+                                  0123456789abcdefghijklmonpq
+                                  ponmlkjihgfedcba9876543210
+                                  0fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210
 
-*/
+                                */
 
 #endif
 
@@ -2499,7 +2503,7 @@ MidiSequence::half_split_trigger( long a_tick )
     while(  i != m_list_trigger.end() ){
 
         /* if the tick is between the start and end
-         * of this trigger */
+                                         * of this trigger */
         if ( (*i).m_tick_start <= a_tick &&
              (*i).m_tick_end >= a_tick )
         {
@@ -2527,7 +2531,7 @@ MidiSequence::exact_split_trigger(long a_tick){
     while(  i != m_list_trigger.end() ){
 
         /* if the tick is between the start and end
-         * of this trigger */
+                                         * of this trigger */
         if ( (*i).m_tick_start <= a_tick &&
              (*i).m_tick_end >= a_tick )
         {
@@ -3117,7 +3121,7 @@ MidiSequence::get_next_event( unsigned char a_status,
             *a_selected = (*m_iterator_draw).is_selected();
 
             /* either we have a control chage with the right CC
-           or its a different type of event */
+                                           or its a different type of event */
             if ( (a_status == EVENT_CONTROL_CHANGE &&
                   *a_D0 == a_cc )
                  || (a_status != EVENT_CONTROL_CHANGE) ){
@@ -3300,17 +3304,16 @@ MidiSequence::set_playing( bool a_p )
     if ( a_p != get_playing() )
     {
 
-        if (a_p){
-
+        if (a_p)
+        {
             /* turn on */
             m_playing = true;
-
-        } else {
-
+        }
+        else
+        {
             /* turn off */
             m_playing = false;
             off_playing_notes();
-
         }
 
         //printf( "set_dirty\n");
@@ -3325,9 +3328,14 @@ MidiSequence::set_playing( bool a_p )
 
 
 void
-MidiSequence::toggle_playing()
+MidiSequence::toggle_playing(long tick)
 {
     set_playing( ! get_playing() );
+
+    if (get_playing())
+    {
+        resumeNoteOns(tick);
+    }
 }
 
 bool
@@ -3726,8 +3734,8 @@ addListVar( list<char> *a_list, long a_var )
     buffer = a_var & 0x7F;
 
     /* we shift it right 7, if there is
-       still set bits, encode into buffer
-       in reverse order */
+                                       still set bits, encode into buffer
+                                       in reverse order */
     while ( ( a_var >>= 7) ){
         buffer <<= 8;
         buffer |= ((a_var & 0x7F) | 0x80);
@@ -3797,7 +3805,7 @@ MidiSequence::fill_list( list<char> *a_list, int a_pos )
         addListVar( a_list, delta_time );
 
         /* now that the timestamp is encoded, do the status and
-       data */
+                                       data */
 
         a_list->push_front( e.get_status() | m_midi_channel );
 
@@ -3926,4 +3934,31 @@ long MidiSequence::getNumMeasures()
 void MidiSequence::setNumMeasures(long measures)
 {
     set_length(measures * getBeatsPerMeasure() * ((c_ppqn * 4) / getBeatWidth()));
+}
+
+void MidiSequence::resumeNoteOns(long tick)
+{
+    list<MidiEvent>::iterator e = m_list_event.begin();
+
+    while (e != m_list_event.end())
+    {
+        if ((*e).is_note_on())
+        {
+            MidiEvent *l = (*e).get_linked();
+
+            //if the note on event is after the note off
+            //(seq wraps around)
+            //play it now to resume
+            long onTime = (*e).get_timestamp();
+            long offTime = (*l).get_timestamp();
+            if (onTime < tick % m_length &&
+                    offTime > tick % m_length)
+            {
+                put_event_on_bus( &(*e) );
+            }
+        }
+
+        /* advance */
+        e++;
+    }
 }
