@@ -118,6 +118,8 @@ private:
                             //the song data
     bool mSongRecordSnap; //snap recorded playback changes
                            //to seq length
+    bool mResumeNoteOns; //whether to resume notes if the seq is toggled
+                        //after note on
 
     /* whether we're in live or song mode */
     //TODO replace with enum
@@ -141,9 +143,9 @@ private:
 
     string m_screen_set_notepad[c_max_num_banks];
 
-    MidiControl m_midi_cc_toggle[ c_midi_controls ];
-    MidiControl m_midi_cc_on[ c_midi_controls ];
-    MidiControl m_midi_cc_off[ c_midi_controls ];
+    MidiControl m_midi_cc_toggle[ c_midi_controls];
+    MidiControl m_midi_cc_on[ c_midi_controls];
+    MidiControl m_midi_cc_off[ c_midi_controls];
 
     int m_offset;
     int m_control_status; //TODO replace with enum
@@ -430,6 +432,8 @@ public:
 #endif
     bool getSongRecordSnap() const;
     void setSongRecordSnap(bool songRecordSnap);
+    bool getResumeNoteOns() const;
+    void setResumeNoteOns(bool value);
 };
 
 /* located in perform.C */

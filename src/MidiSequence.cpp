@@ -51,7 +51,7 @@ MidiSequence::MidiSequence( ) :
     mSongRecordingSnap(0)
 {
     /* no notes are playing */
-    for (int i=0; i< c_midi_notes; i++ )
+    for (int i = 0; i < c_midi_notes; i++ )
         m_playing_notes[i] = 0;
 }
 
@@ -333,7 +333,7 @@ MidiSequence::get_queued_tick()
 
 /* tick comes in as global tick */
 void
-MidiSequence::play( long a_tick, bool a_playback_mode )
+MidiSequence::play( long a_tick, bool a_playback_mode , bool a_resumeNoteOns)
 {
     lock();
 
@@ -420,7 +420,8 @@ MidiSequence::play( long a_tick, bool a_playback_mode )
                     set_playing(true);
 
                     //if we have triggered between a note on and off, play it
-                    resumeNoteOns(a_tick);
+                    if (a_resumeNoteOns)
+                        resumeNoteOns(a_tick);
                 }
                 else
                 {
@@ -2752,7 +2753,7 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
                 a_delta_tick = a_tick - s->m_tick_start;
 
                 if (  a_delta_tick < 0 &&
-                      (a_delta_tick + s->m_tick_start) < min_tick )
+                      (a_delta_tick + s->m_tick_start) < min_tick)
                 {
                     a_delta_tick = ((min_tick) - s->m_tick_start);
                 }
@@ -3328,11 +3329,11 @@ MidiSequence::set_playing( bool a_p )
 
 
 void
-MidiSequence::toggle_playing(long tick)
+MidiSequence::toggle_playing(long tick, bool a_resumeNoteOns)
 {
     set_playing( ! get_playing() );
 
-    if (get_playing())
+    if (get_playing() && a_resumeNoteOns)
     {
         resumeNoteOns(tick);
     }

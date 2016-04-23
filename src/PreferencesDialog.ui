@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabJackSync">
       <attribute name="title">
@@ -64,6 +64,24 @@
         </layout>
        </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Internal</string>
+      </attribute>
+      <widget class="QCheckBox" name="chkNoteResume">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>301</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Resume playback of notes on sequence toggle</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </item>

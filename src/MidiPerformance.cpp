@@ -152,6 +152,7 @@ MidiPerformance::MidiPerformance()
 
     m_playback_mode         = false;
     mSongRecordSnap         = false;
+    mResumeNoteOns          = true;
 }
 
 
@@ -628,6 +629,16 @@ void MidiPerformance::setSongRecordSnap(bool songRecordSnap)
     mSongRecordSnap = songRecordSnap;
 }
 
+bool MidiPerformance::getResumeNoteOns() const
+{
+    return mResumeNoteOns;
+}
+
+void MidiPerformance::setResumeNoteOns(bool value)
+{
+    mResumeNoteOns = value;
+}
+
 void MidiPerformance::set_running( bool a_running )
 {
     m_running = a_running;
@@ -794,9 +805,9 @@ void MidiPerformance::play( long a_tick )
             if (m_seqs[i]->get_queued() &&
                     m_seqs[i]->get_queued_tick() <= a_tick){
 
-                m_seqs[i]->play(m_seqs[i]->get_queued_tick() - 1, m_playback_mode);
+                m_seqs[i]->play(m_seqs[i]->get_queued_tick() - 1, m_playback_mode, mResumeNoteOns);
 
-                m_seqs[i]->toggle_playing(a_tick);
+                m_seqs[i]->toggle_playing(a_tick, mResumeNoteOns);
 
                 printf("toggle playing - [%s]\n", m_seqs[i]->get_name());
             }
@@ -805,16 +816,16 @@ void MidiPerformance::play( long a_tick )
             if (m_seqs[i]->getOneshot() &&
                     m_seqs[i]->getOneshot_tick() <= a_tick)
             {
-                m_seqs[i]->play(m_seqs[i]->getOneshot_tick() - 1, m_playback_mode);
+                m_seqs[i]->play(m_seqs[i]->getOneshot_tick() - 1, m_playback_mode, mResumeNoteOns);
 
-                m_seqs[i]->toggle_playing(a_tick);
+                m_seqs[i]->toggle_playing(a_tick, mResumeNoteOns);
                 //queue it to mute again after one play
                 m_seqs[i]->toggle_queued();
 
                 printf("toggle playing - [%s]\n", m_seqs[i]->get_name());
             }
 
-            m_seqs[i]->play(a_tick, m_playback_mode);
+            m_seqs[i]->play(a_tick, m_playback_mode, mResumeNoteOns);
         }
     }
 
@@ -2163,7 +2174,7 @@ void MidiPerformance::sequence_playing_toggle(int seqId)
                 unset_sequence_control_status(c_status_replace);
                 off_sequences();
             }
-            m_seqs[seqId]->toggle_playing(m_tick);
+            m_seqs[seqId]->toggle_playing(m_tick, mResumeNoteOns);
         }
 
         /* if we're in song playback, temporarily block the events

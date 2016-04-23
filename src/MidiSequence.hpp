@@ -229,7 +229,7 @@ public:
        get dumped to the alsa buffers */
     void set_playing (bool);
     bool get_playing ();
-    void toggle_playing (long tick);
+    void toggle_playing (long tick, bool a_resumeNoteOns);
 
     void toggle_queued ();
     void toggle_oneshot ();
@@ -270,7 +270,7 @@ public:
 
     /* dumps notes from tick and prebuffers to
        ahead.  Called by sequencer thread - perform.cpp */
-    void play (long a_tick, bool a_playback_mode);
+    void play (long a_tick, bool a_playback_mode, bool a_resumeNoteOns);
     void set_orig_tick (long a_tick);
 
     //

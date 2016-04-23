@@ -47,6 +47,11 @@ PreferencesDialog::PreferencesDialog(MidiPerformance *perf,
             SIGNAL(clicked(bool)),
             this,
             SLOT(cancel()));
+
+    connect(ui->chkNoteResume,
+            SIGNAL(stateChanged(int)),
+            this,
+            SLOT(updateNoteResume(bool)));
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -136,6 +141,8 @@ void PreferencesDialog::syncWithInternals()
         ui->chkJackMaster->setDisabled(false);
         ui->chkJackConditional->setDisabled(false);
     }
+
+    ui->chkNoteResume->setChecked(mPerf->getResumeNoteOns());
 }
 
 void PreferencesDialog::backup()
@@ -150,4 +157,9 @@ void PreferencesDialog::okay()
 {
     backup();
     close();
+}
+
+void PreferencesDialog::updateNoteResume(bool newVal)
+{
+    mPerf->setResumeNoteOns(newVal);
 }
