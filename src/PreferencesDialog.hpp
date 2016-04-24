@@ -46,7 +46,7 @@ private slots:
     void jackDisconnect();
     void okay();
     void cancel();
-    void updateNoteResume(bool newVal);
+    void updateNoteResume();
 };
 
 #endif // PREFERENCESDIALOG_HPP

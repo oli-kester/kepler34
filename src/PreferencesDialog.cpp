@@ -51,7 +51,7 @@ PreferencesDialog::PreferencesDialog(MidiPerformance *perf,
     connect(ui->chkNoteResume,
             SIGNAL(stateChanged(int)),
             this,
-            SLOT(updateNoteResume(bool)));
+            SLOT(updateNoteResume()));
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -159,7 +159,8 @@ void PreferencesDialog::okay()
     close();
 }
 
-void PreferencesDialog::updateNoteResume(bool newVal)
+void PreferencesDialog::updateNoteResume()
 {
-    mPerf->setResumeNoteOns(newVal);
+    mPerf->setResumeNoteOns(ui->chkNoteResume->isChecked());
+    qDebug() << "Note resume status" << mPerf->getResumeNoteOns() << endl;
 }
