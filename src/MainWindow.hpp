@@ -36,6 +36,10 @@ public:
     //open the file at the given path
     void openMidiFile(const QString& path);
 
+protected:
+    //override keyboard events for interaction
+    void keyPressEvent          (QKeyEvent * event);
+
 private:
 
     //check if the file has been modified.

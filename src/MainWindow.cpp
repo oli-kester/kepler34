@@ -40,10 +40,6 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
         ui->cmb_beat_length->insertItem(i, combo_text);
     }
 
-    //keyboard shortcuts
-    ui->btnPlay->setShortcut(tr("Space"));
-    ui->btnStop->setShortcut(tr("Esc"));
-
     m_msg_error = new QErrorMessage(this);
 
     m_msg_save_changes = new QMessageBox(this);
@@ -188,7 +184,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::startPlaying()
 {
-    //    m_main_perf->set_playback_mode(false);
     m_main_perf->position_jack(false);
     m_main_perf->start();
     m_main_perf->start_jack();
@@ -738,4 +733,27 @@ void MainWindow::load_recent_10()
 void MainWindow::setRecordingSnap(bool snap)
 {
     m_main_perf->setSongRecordSnap(snap);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+        case Qt::Key_Space:
+        if (m_main_perf->is_running())
+        {
+            stopPlaying();
+            ui->btnPlay->setChecked(false);
+        }
+        else
+        {
+            startPlaying();
+            ui->btnPlay->setChecked(true);
+        }
+        break;
+
+    default:
+        event->ignore();
+        break;
+    }
 }

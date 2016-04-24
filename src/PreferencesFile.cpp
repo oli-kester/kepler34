@@ -479,12 +479,9 @@ PreferencesFile::write( MidiPerformance *a_perf  )
 
     file << a_perf->m_show_ui_sequence_key
          << "        # show_ui_sequence_key (1=true/0=false)\n";
-    file << a_perf->m_key_start << "        # "
-         << QKeySequence(a_perf->m_key_start).toString().toStdString().c_str()
-         << " start sequencer\n";
-    file << a_perf->m_key_stop << "        # "
-         << QKeySequence(a_perf->m_key_stop).toString().toStdString().c_str()
-         << " stop sequencer\n";
+    file << a_perf->mKeyTogglePlay << "        # "
+         << QKeySequence(a_perf->mKeyTogglePlay).toString().toStdString().c_str()
+         << " toggle playback\n";
 
     file << "\n\n\n[jack-transport]\n\n"
 

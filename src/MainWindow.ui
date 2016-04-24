@@ -97,6 +97,9 @@
           <height>25</height>
          </size>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>Beats Per Measure</string>
         </property>
@@ -137,6 +140,9 @@
           <width>45</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>Beat Width (length of beat)</string>
@@ -351,6 +357,9 @@
           <width>47</width>
           <height>25</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>

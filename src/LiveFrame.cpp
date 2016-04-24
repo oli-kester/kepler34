@@ -673,6 +673,8 @@ void LiveFrame::keyPressEvent(QKeyEvent *event)
         qDebug() << "Live frame key press - " << keycode << endl;
         if (mPerf->get_key_events()->count(event->key()) != 0)
             sequence_key(mPerf->lookup_keyevent_seq(event->key()));
+        else
+            event->ignore();
         break;
     }
 }

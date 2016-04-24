@@ -122,6 +122,9 @@
          <pointsize>9</pointsize>
         </font>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
+       </property>
        <property name="verticalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOff</enum>
        </property>
@@ -193,6 +196,9 @@
         <font>
          <pointsize>9</pointsize>
         </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>

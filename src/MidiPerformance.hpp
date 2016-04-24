@@ -229,10 +229,8 @@ public:
     int m_key_group_off;
     int m_key_group_learn;
 
-    int m_key_start;
-    int m_key_stop;
-    int m_key_record_upper;
-    int m_key_record_lower;
+    int mKeyTogglePlay;
+    int mKeyRecord;
 
     bool show_ui_sequence_key() const { return m_show_ui_sequence_key; }
 
@@ -434,6 +432,8 @@ public:
     void setSongRecordSnap(bool songRecordSnap);
     bool getResumeNoteOns() const;
     void setResumeNoteOns(bool value);
+    int getKeyTogglePlay() const;
+    void setKeyTogglePlay(int keyTogglePlay);
 };
 
 /* located in perform.C */

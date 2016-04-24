@@ -133,10 +133,8 @@ MidiPerformance::MidiPerformance()
     m_key_group_off = Qt::Key_Apostrophe;
     m_key_group_learn = Qt::Key_Insert;
 
-    m_key_start  = Qt::Key_Space;
-    m_key_stop   = Qt::Key_Escape;
-    m_key_record_upper = Qt::Key_R;
-    m_key_record_lower = Qt::Key_R;
+    mKeyTogglePlay  = Qt::Key_Space;
+    mKeyRecord = Qt::Key_R;
 
     m_show_ui_sequence_key = true;
 
@@ -2343,6 +2341,16 @@ void MidiPerformance::setEditMode(int seqId, edit_mode_e newMode)
 edit_mode_e MidiPerformance::getEditMode(int seqId)
 {
     return mEditModes[seqId];
+}
+
+int MidiPerformance::getKeyTogglePlay() const
+{
+    return mKeyTogglePlay;
+}
+
+void MidiPerformance::setKeyTogglePlay(int keyTogglePlay)
+{
+    mKeyTogglePlay = keyTogglePlay;
 }
 
 #ifdef JACK_SUPPORT
