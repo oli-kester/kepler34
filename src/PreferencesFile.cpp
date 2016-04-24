@@ -113,7 +113,7 @@ PreferencesFile::parse( MidiPerformance *a_perf )
 
     //disabled this for the time being.
     //Default key mappings always used
-/*
+    /*
     line_after( &file, "[keyboard-control]" );
     long keys = 0;
     sscanf( m_line, "%ld", &keys );
@@ -238,6 +238,12 @@ PreferencesFile::parse( MidiPerformance *a_perf )
             recent_files[c] = "";
         next_data_line(&file);
     }
+
+    /* note resume */
+    long resume = 0;
+    line_after(&file, "[note-resume]");
+    sscanf(m_line, "%ld", &resume);
+    a_perf->setResumeNoteOns(resume);
 
     /* interaction method  */
     long method = 0;
@@ -411,7 +417,7 @@ PreferencesFile::write( MidiPerformance *a_perf  )
     for (std::map<int,long>::const_iterator i = a_perf->key_events.begin();
          i != a_perf->key_events.end(); ++i )
     {
-//        qDebug() << "Writing control mapping - " << i->first << " mapped to " << i->second << "Keyname - " << QKeySequence(i->first).toString().toStdString().c_str() << endl;
+        //        qDebug() << "Writing control mapping - " << i->first << " mapped to " << i->second << "Keyname - " << QKeySequence(i->first).toString().toStdString().c_str() << endl;
 
         snprintf(outs, sizeof(outs), "%u  %ld        # %s", i->first,
                  i->second, QKeySequence(i->first).toString().toStdString().c_str());
@@ -427,7 +433,7 @@ PreferencesFile::write( MidiPerformance *a_perf  )
     for( std::map<int,long>::const_iterator i = a_perf->key_groups.begin();
          i != a_perf->key_groups.end(); ++i )
     {
-//        qDebug() << "Writing group mapping - " << i->first << " mapped to " << i->second << "Keyname - " << QKeySequence(i->first).toString().toStdString().c_str() << endl;
+        //        qDebug() << "Writing group mapping - " << i->first << " mapped to " << i->second << "Keyname - " << QKeySequence(i->first).toString().toStdString().c_str() << endl;
 
         snprintf(outs, sizeof(outs), "%u  %ld        # %s", i->first,
                  i->second, QKeySequence(i->first).toString().toStdString().c_str());
@@ -457,7 +463,7 @@ PreferencesFile::write( MidiPerformance *a_perf  )
          << QKeySequence(a_perf->m_key_group_off).toString().toStdString().c_str() << " "
          << QKeySequence(a_perf->m_key_group_learn).toString().toStdString().c_str() << "\n";
 
-//    qDebug() << a_perf->m_key_replace.toString(QKeySequence::NativeText) << endl;
+    //    qDebug() << a_perf->m_key_replace.toString(QKeySequence::NativeText) << endl;
 
     file << "# replace, queue, snapshot_1, snapshot 2, keep queue\n"
          << a_perf->m_key_replace << " "
@@ -496,9 +502,14 @@ PreferencesFile::write( MidiPerformance *a_perf  )
          << "# Last used directory.\n"
          << last_used_dir.toStdString().c_str() << "\n\n";
 
+    file << "\n\n\n[note-resume]\n\n"
+         << "# Resume notes in progress on sequence toggle.\n"
+         << a_perf->getResumeNoteOns() << "\n\n";
+
     file << "\n\n\n[recent-files]\n\n"
          << "# List of 10 recently opened files.\n";
-    for (int c=0;c<10;c++){
+    for (int c=0;c<10;c++)
+    {
         file << recent_files[c].toStdString().c_str() << "\n";
     }
 
