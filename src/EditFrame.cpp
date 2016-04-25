@@ -124,8 +124,68 @@ EditFrame::EditFrame(QWidget *parent,
     ui->cmbRecVol->addItem("Fixed 31",   31);
     ui->cmbRecVol->addItem("Fixed 15",   15);
 
+    mPopup = new QMenu(this);
+    QMenu *menuSelect = new QMenu(tr("Select..."), mPopup);
+    QMenu *menuTiming = new QMenu(tr("Timing..."), mPopup);
+    QMenu *menuPitch  = new QMenu(tr("Pitch...") , mPopup);
+
+    QAction *actionSelectAll = new QAction(tr("Select all"), mPopup);
+    actionSelectAll->setShortcut(tr("Ctrl+A"));
+    connect(actionSelectAll,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(selectAllNotes()));
+    menuSelect->addAction(actionSelectAll);
+
+    QAction *actionSelectInverse = new QAction(tr("Inverse selection"), mPopup);
+    actionSelectInverse->setShortcut(tr("Ctrl+Shift+I"));
+    connect(actionSelectInverse,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(inverseNoteSelection()));
+    menuSelect->addAction(actionSelectInverse);
+
+    QAction *actionQuantize = new QAction(tr("Quantize"), mPopup);
+    actionQuantize->setShortcut(tr("Ctrl+Q"));
+    connect(actionQuantize,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(quantizeNotes()));
+    menuTiming->addAction(actionQuantize);
+
+    QAction *actionTighten = new QAction(tr("Tighten"), mPopup);
+    actionTighten->setShortcut(tr("Ctrl+T"));
+    connect(actionTighten,
+            SIGNAL(triggered(bool)),
+            this,
+            SLOT(tightenNotes()));
+    menuTiming->addAction(actionTighten);
+
+    //fill out note transpositions
+    char num[11];
+    QAction *actionsTranspose[24];
+    for (int i = -12; i <= 12; i++)
+    {
+        if (i != 0)
+        {
+            snprintf(num, sizeof(num), "%+d [%s]", i, c_interval_text[abs(i)]);
+            actionsTranspose[i + 12] = new QAction(num, mPopup);
+            actionsTranspose[i + 12]->setData(i);
+            menuPitch->addAction(actionsTranspose[i + 12]);
+            connect(actionsTranspose[i + 12],
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(transposeNotes()));
+        }
+        else
+            menuPitch->addSeparator();
+    }
+
+    mPopup->addMenu(menuSelect);
+    mPopup->addMenu(menuTiming);
+    mPopup->addMenu(menuPitch);
+
     //hide unused GUI elements
-    ui->btnTools->hide();
     ui->lblBackgroundSeq->hide();
     ui->cmbBackgroundSeq->hide();
     ui->lblEventSelect->hide();
@@ -327,7 +387,9 @@ void EditFrame::redo()
 
 void EditFrame::showTools()
 {
-
+    //popup menu over button
+    mPopup->exec(ui->btnTools->mapToGlobal(QPoint(ui->btnTools->width() - 2,
+                                                  ui->btnTools->height() - 2)));
 }
 
 void EditFrame::updateNoteLength(int newIndex)
@@ -488,5 +550,38 @@ void EditFrame::toggleMidiRec(bool newVal)
 
 void EditFrame::toggleMidiThru(bool newVal)
 {
+    mPerformance->get_master_midi_bus()->set_sequence_input(true, mSeq);
+    mSeq->set_thru(newVal);
+}
 
+void EditFrame::selectAllNotes()
+{
+    mSeq->select_events(EVENT_NOTE_ON, 0);
+    mSeq->select_events(EVENT_NOTE_OFF, 0);
+}
+
+void EditFrame::inverseNoteSelection()
+{
+    mSeq->select_events(EVENT_NOTE_ON, 0, true);
+    mSeq->select_events(EVENT_NOTE_OFF, 0, true);
+}
+
+void EditFrame::quantizeNotes()
+{
+    mSeq->push_undo();
+    mSeq->quanize_events(EVENT_NOTE_ON, 0, mSeq->getSnap_tick(), 1 , true);
+}
+
+void EditFrame::tightenNotes()
+{
+    mSeq->push_undo();
+    mSeq->quanize_events(EVENT_NOTE_ON, 0, mSeq->getSnap_tick(), 2 , true);
+}
+
+void EditFrame::transposeNotes()
+{
+    QAction *senderAction = (QAction*) sender();
+    int transposeVal = senderAction->data().toInt();
+    mSeq->push_undo();
+    mSeq->transpose_notes(transposeVal, 0);
 }

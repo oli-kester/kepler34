@@ -830,6 +830,7 @@ void EditNoteRoll::mouseMoveEvent(QMouseEvent *event)
 
 void EditNoteRoll::keyPressEvent(QKeyEvent *event)
 {
+
     if (event->key() == Qt::Key_Delete ||
             event->key() == Qt::Key_Backspace)
     {
@@ -837,17 +838,21 @@ void EditNoteRoll::keyPressEvent(QKeyEvent *event)
         m_seq->push_undo();
         m_seq->mark_selected();
         m_seq->remove_marked();
+        return;
     }
 
     if (!is_pattern_playing) {
         if (event->key() == Qt::Key_Home){
             m_seq->set_orig_tick(0);
+            return;
         }
         if (event->key() == Qt::Key_Left){
             m_seq->set_orig_tick(m_seq->get_last_tick()- m_snap);
+            return;
         }
         if (event->key() == Qt::Key_Right){
             m_seq->set_orig_tick(m_seq->get_last_tick() + m_snap);
+            return;
         }
     }
 
@@ -861,28 +866,41 @@ void EditNoteRoll::keyPressEvent(QKeyEvent *event)
             m_seq->copy_selected();
             m_seq->mark_selected();
             m_seq->remove_marked();
+            return;
             break;
 
         case Qt::Key_C:
             m_seq->copy_selected();
+            return;
             break;
 
         case Qt::Key_V:
             start_paste();
+            return;
             break;
 
         case Qt::Key_Z:
             if (event->modifiers() & Qt::ShiftModifier)
+            {
                 m_seq->pop_redo();
+            return;
+            }
             else
                 m_seq->pop_undo();
+            return;
             break;
 
         case Qt::Key_A:
             m_seq->select_all();
+            return;
             break;
         }
     }
+
+    //if we reach this point, the key isn't relevant to us
+    //ignore it so the event is passed to the parent
+    event->ignore();
+
 }
 void EditNoteRoll::keyReleaseEvent(QKeyEvent *event)
 {

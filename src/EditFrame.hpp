@@ -15,6 +15,7 @@
 #include <QScrollBar>
 #include <QScrollArea>
 #include <QPalette>
+#include <QMenu>
 
 namespace Ui {
 class EditFrame;
@@ -47,6 +48,7 @@ private:
     QScrollArea     *m_scroll_area;
     QWidget         *mContainer;
     QPalette        *m_palette;
+    QMenu           *mPopup;
 
     MidiSequence    * const mSeq;
     MidiPerformance * const mPerformance;
@@ -83,6 +85,11 @@ private slots:
     void toggleMidiThru(bool newVal);
     void toggleMidiQRec(bool newVal);
     void toggleMidiRec(bool newVal);
+    void selectAllNotes();
+    void inverseNoteSelection();
+    void quantizeNotes();
+    void tightenNotes();
+    void transposeNotes();
 };
 
 #endif // EDITFRAME_HPP
