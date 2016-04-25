@@ -63,6 +63,7 @@ private:
     QTimer              *m_timer;
     QAction             *mRecentFileActions[10];
     QMenu               *mRecentMenu;
+    QFileDialog         *mImportDialog;
 
     MidiPerformance     *m_main_perf;
     BeatIndicator       *m_beat_ind;
@@ -84,7 +85,7 @@ private slots:
     bool saveFile();
     void saveFileAs();
     void quit();
-    void showImportDialog();
+    void showImportDialog(); //import MIDI data from current bank onwards
     void showOpenFileDialog();
     void showAboutDialog();
     void showAboutQtDialog();

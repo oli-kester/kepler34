@@ -48,6 +48,12 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_msg_save_changes->setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     m_msg_save_changes->setDefaultButton(QMessageBox::Save);
 
+    mImportDialog = new QFileDialog(this,
+                                    tr("Import MIDI file"),
+                                    last_used_dir,
+                                    tr("MIDI files (*.midi *.mid);;"
+                                       "All files (*)"));
+
     m_dialog_prefs = new PreferencesDialog(m_main_perf, this);
     m_live_frame = new LiveFrame(ui->LiveTab, m_main_perf);
     m_song_frame = new SongFrame(m_main_perf, ui->SongTab);
@@ -212,7 +218,7 @@ void MainWindow::setRecording(bool record)
 void MainWindow::setSongPlayback(bool playSongData)
 {
     m_main_perf->set_playback_mode(playSongData);
-        m_main_perf->position_jack(true);
+    m_main_perf->position_jack(true);
     //    m_main_perf->start_jack();
     //    m_main_perf->start(playSongData);
 
@@ -399,8 +405,8 @@ void MainWindow::saveFileAs()
                 last_used_dir,
                 tr("MIDI files (*.midi *.mid);;"
                    "All files (*)")
-//                                ,0,
-//                                QFileDialog::DontUseNativeDialog
+                //                                ,0,
+                //                                QFileDialog::DontUseNativeDialog
                 );
 
     if (!file.isEmpty())
@@ -419,10 +425,35 @@ void MainWindow::saveFileAs()
     }
 }
 
-//TODO
 void MainWindow::showImportDialog()
 {
+    mImportDialog->exec();
 
+    QStringList filePaths = mImportDialog->selectedFiles();
+
+    for (int i = 0; i < filePaths.length(); i++)
+    {
+        QString path = mImportDialog->selectedFiles()[i];
+
+        if (!path.isEmpty())
+        {
+            try
+            {
+                MidiFile f(path);
+                f.parse( m_main_perf, m_main_perf->getBank());
+                m_modified = true;
+                ui->spinBpm->setValue(m_main_perf->get_bpm());
+                m_live_frame->setBank(m_main_perf->getBank());
+
+            }
+            catch (...)
+            {
+                QString msg_text = "Error reading MIDI data from file: " + path;
+                m_msg_error->showMessage(msg_text);
+                m_msg_error->exec();
+            }
+        }
+    }
 }
 
 void MainWindow::showAboutDialog()
@@ -570,6 +601,7 @@ void MainWindow::updateRecentFilesMenu()
         ui->menuFile->insertMenu(ui->actionSave, mRecentMenu);
         return;
     }
+
     if (recent_files[1]!="")
     {
         mRecentFileActions[1] = new QAction(recent_files[1], this);
@@ -739,7 +771,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key())
     {
-        case Qt::Key_Space:
+    case Qt::Key_Space:
         if (m_main_perf->is_running())
         {
             stopPlaying();
