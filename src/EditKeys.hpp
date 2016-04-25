@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QPen>
 #include <QSizePolicy>
+#include <QMouseEvent>
 
 //draws the piano keys in the sequence editor
 
@@ -38,6 +39,10 @@ signals:
 public slots:
 
 private:
+
+    //takes a y coordinate and converts it to a note value
+    void convert_y( int a_y, int *a_note);
+
     MidiSequence *m_seq;
 
     QTimer      *m_timer;
@@ -49,6 +54,9 @@ private:
     int m_key;
     int keyY;
     int keyAreaY;
+
+    bool mPreviewing;
+    int  mPreviewKey;
 
 };
 
