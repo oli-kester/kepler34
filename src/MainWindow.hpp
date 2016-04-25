@@ -17,6 +17,7 @@
 #include "MidiFile.hpp"
 #include "BeatIndicator.hpp"
 #include "KeplerStyle.hpp"
+#include "AboutDialog.hpp"
 
 //the main window of Kepler34
 
@@ -68,6 +69,7 @@ private:
     MidiPerformance     *m_main_perf;
     BeatIndicator       *m_beat_ind;
     PreferencesDialog   *m_dialog_prefs;
+    AboutDialog         *mDialogAbout;
 
     //TODO fully move this into main performance
     bool                 m_modified;
@@ -88,7 +90,6 @@ private slots:
     void showImportDialog(); //import MIDI data from current bank onwards
     void showOpenFileDialog();
     void showAboutDialog();
-    void showAboutQtDialog();
     void tabWidgetClicked(int newIndex);
     void load_recent_1();
     void load_recent_2();

@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
     m_song_frame = new SongFrame(m_main_perf, ui->SongTab);
     m_edit_frame = NULL; //set this so we know for sure the edit tab is empty
     m_beat_ind = new BeatIndicator(this, m_main_perf, 4, 4);
+    mDialogAbout = new AboutDialog(this);
     
     ui->lay_bpm->addWidget(m_beat_ind);
     ui->LiveTabLayout->addWidget(m_live_frame);
@@ -458,12 +459,7 @@ void MainWindow::showImportDialog()
 
 void MainWindow::showAboutDialog()
 {
-
-}
-
-void MainWindow::showAboutQtDialog()
-{
-
+    mDialogAbout->show();
 }
 
 void MainWindow::loadEditor(int seqId)

@@ -38,7 +38,8 @@ SOURCES +=\
     PreferencesFile.cpp \
     KeplerStyle.cpp \
     EditEventValues.cpp \
-    EditEventTriggers.cpp
+    EditEventTriggers.cpp \
+    AboutDialog.cpp
 
 HEADERS  += \
     MainWindow.hpp \
@@ -68,14 +69,16 @@ HEADERS  += \
     PreferencesFile.hpp \
     KeplerStyle.hpp \
     EditEventValues.hpp \
-    EditEventTriggers.hpp
+    EditEventTriggers.hpp \
+    AboutDialog.hpp
 
 FORMS    += \
     MainWindow.ui \
     LiveFrame.ui \
     SongFrame.ui \
     EditFrame.ui \
-    PreferencesDialog.ui
+    PreferencesDialog.ui \
+    AboutDialog.ui
 
 RESOURCES += \
     kepler34.qrc
