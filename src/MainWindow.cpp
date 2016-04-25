@@ -176,6 +176,11 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
             this,
             SLOT(loadEditor(int)));
 
+    connect(ui->btnPanic,
+            SIGNAL(clicked(bool)),
+            this,
+            SLOT(panic()));
+
     show();
 }
 
@@ -779,4 +784,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         event->ignore();
         break;
     }
+}
+
+void MainWindow::panic()
+{
+    m_main_perf->panic();
 }

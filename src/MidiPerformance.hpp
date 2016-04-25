@@ -277,6 +277,9 @@ public:
 
     void print();
 
+    //when in panic, send NOTE_OFF on all keys on all channels
+    void panic();
+
     MidiControl *get_midi_control_toggle( unsigned int a_seq );
     MidiControl *get_midi_control_on( unsigned int a_seq );
     MidiControl *get_midi_control_off( unsigned int a_seq );

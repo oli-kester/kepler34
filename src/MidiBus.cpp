@@ -1560,3 +1560,28 @@ MasterMidiBus::set_sequence_input( bool a_state, MidiSequence *a_seq )
     unlock();
 }
 
+void MasterMidiBus::panic()
+{
+    lock();
+
+    flush();
+
+    //for all buses
+    for (int bus = 0; bus < c_maxBuses; bus++)
+    {
+        //for all channels
+        for (int chan = 1; chan <= 16; chan++)
+        {
+            //for all notes
+            for (int note = 0; note < c_num_keys; note++)
+            {
+                MidiEvent e;
+                e.set_status(EVENT_NOTE_OFF);
+                e.set_data(note, 127);
+                play(bus, &e, chan);
+            }
+        }
+    }
+
+    unlock();
+}

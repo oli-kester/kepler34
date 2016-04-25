@@ -2370,6 +2370,19 @@ void MidiPerformance::setKeyTogglePlay(int keyTogglePlay)
     mKeyTogglePlay = keyTogglePlay;
 }
 
+void MidiPerformance::panic()
+{
+    //turn off all notes we are aware of
+    for (int i = 0; i < c_max_sequence; i++)
+    {
+        if (is_active(i))
+            m_seqs[i]->off_playing_notes();
+    }
+
+    //send an off to every channel on the bus
+    m_master_bus.panic();
+}
+
 #ifdef JACK_SUPPORT
 void jack_timebase_callback(jack_transport_state_t state,
                             jack_nframes_t nframes,

@@ -793,6 +793,8 @@ void LiveFrame::cutSeq()
 {
     if ( mPerf->is_active( mCurrentSeq ) &&
          !mPerf->is_sequence_in_edit( mCurrentSeq ) )
+        //TODO dialog warning that the editor is the reason
+        //this seq cant be cut
     {
         mSeqClipboard = *(mPerf->get_sequence( mCurrentSeq ));
         mCanPaste = true;
@@ -804,6 +806,8 @@ void LiveFrame::deleteSeq()
 {
     if ( mPerf->is_active( mCurrentSeq ) &&
          !mPerf->is_sequence_in_edit( mCurrentSeq ) )
+        //TODO dialog warning that the editor is the reason
+        //this seq cant be deleted
         mPerf->delete_sequence( mCurrentSeq );
 }
 

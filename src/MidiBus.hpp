@@ -203,6 +203,8 @@ class MasterMidiBus
 
     void init();
 
+    void panic();
+
 #if HAVE_LIBASOUND	
     snd_seq_t* get_alsa_seq( ) { return m_alsa_seq; }
 #endif
