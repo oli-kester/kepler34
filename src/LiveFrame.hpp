@@ -65,6 +65,7 @@ private:
 
     MidiPerformance *mPerf;
     MidiSequence    m_moving_seq;
+    MidiSequence    mSeqClipboard;
 
     QPainter    *mPainter;
     QBrush      *mBrush;
@@ -95,12 +96,17 @@ private:
                           wait for double click*/
     long    m_last_tick_x[c_max_sequence];
     bool    m_last_playing[c_max_sequence];
+    bool    mCanPaste;
 
 private slots:
     void updateBank(int newBank);
     void updateBankName();
     void newSeq();
     void editSeq();
+    void copySeq();
+    void cutSeq();
+    void pasteSeq();
+    void deleteSeq();
     void setColourWhite();
     void setColourRed();
     void setColourGreen();

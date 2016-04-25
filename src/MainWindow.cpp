@@ -120,11 +120,6 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
             this,
             SLOT(showAboutDialog()));
 
-    connect(ui->actionAbout_Qt,
-            SIGNAL(triggered(bool)),
-            this,
-            SLOT(showAboutQtDialog()));
-
     connect(ui->actionPreferences,
             SIGNAL(triggered(bool)),
             m_dialog_prefs,
@@ -177,9 +172,9 @@ MainWindow::MainWindow(QWidget *parent, MidiPerformance *a_p ) :
 
     //connect to the seq edit signal from the live tab
     connect(m_live_frame,
-            SIGNAL(callEditor(MidiSequence*)),
+            SIGNAL(callEditor(int)),
             this,
-            SLOT(loadEditor(MidiSequence*)));
+            SLOT(loadEditor(int)));
 
     show();
 }

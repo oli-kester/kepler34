@@ -7,7 +7,8 @@ LiveFrame::LiveFrame(QWidget *parent, MidiPerformance *perf) :
     ui(new Ui::LiveFrame),
     mPerf(perf),
     m_bank_id(0),
-    mAddingNew(false)
+    mAddingNew(false),
+    mCanPaste(false)
 {
     setSizePolicy(QSizePolicy::Expanding,
                   QSizePolicy::Expanding);
@@ -579,7 +580,43 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
             }
 
             mPopup->addMenu(menuColour);
+
+            //copy sequence
+            QAction *actionCopy = new QAction(tr("Copy sequence"), mPopup);
+            mPopup->addAction(actionCopy);
+            connect(actionCopy,
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(copySeq()));
+
+            //cut sequence
+            QAction *actionCut = new QAction(tr("Cut sequence"), mPopup);
+            mPopup->addAction(actionCut);
+            connect(actionCut,
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(cutSeq()));
+
+            //delete sequence
+            QAction *actionDelete = new QAction(tr("Delete sequence"), mPopup);
+            mPopup->addAction(actionDelete);
+            connect(actionDelete,
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(deleteSeq()));
+
         }
+        else if (mCanPaste)
+        {
+            //paste sequence
+            QAction *actionPaste = new QAction(tr("Paste sequence"), mPopup);
+            mPopup->addAction(actionPaste);
+            connect(actionPaste,
+                    SIGNAL(triggered(bool)),
+                    this,
+                    SLOT(pasteSeq()));
+        }
+
         mPopup->exec(QCursor::pos());
     }
 
@@ -600,8 +637,8 @@ void LiveFrame::mouseMoveEvent(QMouseEvent *event)
     {
         if (seqId != mCurrentSeq
                 && !mMoving
-                && !mPerf->is_sequence_in_edit(mCurrentSeq)){
-
+                && !mPerf->is_sequence_in_edit(mCurrentSeq))
+        {
             /* lets drag a sequence between slots */
             if ( mPerf->is_active( mCurrentSeq ))
             {
@@ -741,4 +778,41 @@ void LiveFrame::setColourPink()
 void LiveFrame::setColourOrange()
 {
     mPerf->setSequenceColour(mCurrentSeq, Orange);
+}
+
+void LiveFrame::copySeq()
+{
+    if ( mPerf->is_active(mCurrentSeq))
+    {
+        mSeqClipboard = *(mPerf->get_sequence(mCurrentSeq));
+        mCanPaste = true;
+    }
+}
+
+void LiveFrame::cutSeq()
+{
+    if ( mPerf->is_active( mCurrentSeq ) &&
+         !mPerf->is_sequence_in_edit( mCurrentSeq ) )
+    {
+        mSeqClipboard = *(mPerf->get_sequence( mCurrentSeq ));
+        mCanPaste = true;
+        mPerf->delete_sequence( mCurrentSeq );
+    }
+}
+
+void LiveFrame::deleteSeq()
+{
+    if ( mPerf->is_active( mCurrentSeq ) &&
+         !mPerf->is_sequence_in_edit( mCurrentSeq ) )
+        mPerf->delete_sequence( mCurrentSeq );
+}
+
+void LiveFrame::pasteSeq()
+{
+    if ( ! mPerf->is_active( mCurrentSeq ))
+    {
+        mPerf->new_sequence( mCurrentSeq  );
+        *(mPerf->get_sequence( mCurrentSeq )) = mSeqClipboard;
+        mPerf->get_sequence( mCurrentSeq )->set_dirty();
+    }
 }
