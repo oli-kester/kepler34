@@ -17,7 +17,9 @@ class EditKeys : public QWidget
 
 public:
     explicit EditKeys(MidiSequence *a_seq,
-                      QWidget *parent);
+                      QWidget *parent = 0,
+                      int keyHeight = 12,
+                      int keyAreaHeight = 12 * c_num_keys + 1);
 
 protected:
     //override painting event to draw on the frame
@@ -45,6 +47,8 @@ private:
     QFont        m_font;
 
     int m_key;
+    int keyY;
+    int keyAreaY;
 
 };
 

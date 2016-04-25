@@ -24,7 +24,9 @@ EditNoteRoll::EditNoteRoll(MidiPerformance *a_perf,
     m_old_progress_x(0),
     m_background_sequence(0),
     m_drawing_background_seq(false),
-    editMode(mode)
+    editMode(mode),
+    keyY(a_perf->getEditorKeyHeight()),
+    keyAreaY(a_perf->getEditorKeyboardHeight())
 {
     set_snap(m_seq->getSnap_tick());
 
@@ -83,16 +85,16 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         {
         case NOTE:
             mPainter->drawLine(0,
-                               i * c_key_y,
+                               i * keyY,
                                width(),
-                               i * c_key_y);
+                               i * keyY);
             break;
 
         case DRUM:
             mPainter->drawLine(0,
-                               i * c_key_y - (0.5 * c_key_y),
+                               i * keyY - (0.5 * keyY),
                                width(),
-                               i * c_key_y - (0.5 * c_key_y));
+                               i * keyY - (0.5 * keyY));
             break;
         }
 
@@ -101,9 +103,9 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         {
             if (!c_scales_policy[m_scale][ ((c_num_keys - i) - 1 + ( 12 - m_key )) % 12] )
                 /*m_painter->drawRect(0,
-                                    i * c_key_y + 1,
+                                    i * keyY + 1,
                                     m_size_x,
-                                    c_key_y - 1)*/;
+                                    keyY - 1)*/;
         }
     }
 
@@ -154,7 +156,7 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         mPainter->drawLine(base_line,
                            0,
                            base_line,
-                           c_keyarea_y);
+                           keyAreaY);
     }
 
     //draw the playhead
@@ -221,14 +223,14 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
 
                 /* turn into screen corrids */
                 note_x = tick_s / m_zoom + c_keyboard_padding_x;
-                note_y = c_rollarea_y -(note * c_key_y) - c_key_y - 1 + 2;
+                note_y = keyAreaY -(note * keyY) - keyY - 1 + 2;
                 switch (editMode)
                 {
                 case NOTE:
-                    note_height = c_key_y - 3;
+                    note_height = keyY - 3;
                     break;
                 case DRUM:
-                    note_height = c_key_y;
+                    note_height = keyY;
                     break;
                 }
 
@@ -391,14 +393,14 @@ void EditNoteRoll::paintEvent(QPaintEvent *)
         m_old.x = x;
         m_old.y = y;
         m_old.width = w;
-        m_old.height = h + c_key_y;
+        m_old.height = h + keyY;
 
         mPen->setColor(Qt::black);
         mPainter->setPen(*mPen);
         mPainter->drawRect(x + c_keyboard_padding_x,
                            y,
                            w,
-                           h + c_key_y );
+                           h + keyY );
     }
 
     if ( m_moving || m_paste )
@@ -889,12 +891,12 @@ void EditNoteRoll::keyReleaseEvent(QKeyEvent *event)
 
 QSize EditNoteRoll::sizeHint() const
 {
-    return QSize(m_seq->getLength() / m_zoom + 100 + c_keyboard_padding_x, c_keyarea_y + 1);
+    return QSize(m_seq->getLength() / m_zoom + 100 + c_keyboard_padding_x, keyAreaY + 1);
 }
 
 void EditNoteRoll::snap_y( int *a_y )
 {
-    *a_y = *a_y - (*a_y % c_key_y);
+    *a_y = *a_y - (*a_y % keyY);
 }
 
 void EditNoteRoll::snap_x( int *a_x )
@@ -912,13 +914,13 @@ void EditNoteRoll::snap_x( int *a_x )
 void EditNoteRoll::convert_xy( int a_x, int a_y, long *a_tick, int *a_note)
 {
     *a_tick = a_x * m_zoom;
-    *a_note = (c_rollarea_y - a_y - 2) / c_key_y;
+    *a_note = (keyAreaY - a_y - 2) / keyY;
 }
 
 void EditNoteRoll::convert_tn(long a_ticks, int a_note, int *a_x, int *a_y)
 {
     *a_x = a_ticks /  m_zoom;
-    *a_y = c_rollarea_y - ((a_note + 1) * c_key_y) - 1;
+    *a_y = keyAreaY - ((a_note + 1) * keyY) - 1;
 }
 
 void EditNoteRoll::xy_to_rect(int a_x1, int a_y1, int a_x2, int a_y2,
@@ -954,7 +956,7 @@ void EditNoteRoll::convert_tn_box_to_rect(long a_tick_s, long a_tick_f,
 
     xy_to_rect( x1, y1, x2, y2, a_x, a_y, a_w, a_h );
 
-    *a_h += c_key_y;
+    *a_h += keyY;
 }
 
 void EditNoteRoll::set_adding(bool a_adding)

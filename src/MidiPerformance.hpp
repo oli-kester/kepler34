@@ -150,6 +150,8 @@ private:
     int m_offset;
     int m_control_status; //TODO replace with enum
     int m_screen_set;
+    int mEditorKeyHeight; //height of keys in the sequence editor
+    int mEditorKeyboardHeight;
 
     condition_var m_condition_var;
 
@@ -434,6 +436,9 @@ public:
     void setResumeNoteOns(bool value);
     int getKeyTogglePlay() const;
     void setKeyTogglePlay(int keyTogglePlay);
+    int getEditorKeyHeight() const;
+    void setEditorKeyHeight(int editorKeyHeight);
+    int getEditorKeyboardHeight() const;
 };
 
 /* located in perform.C */

@@ -23,7 +23,8 @@ class EditEventTriggers : public QWidget
 public:
     explicit EditEventTriggers(MidiSequence *a_seq,
                                EditEventValues *a_seqdata_wid,
-                               QWidget *parent = 0);
+                               QWidget *parent = 0,
+                               int keyHeight = 12);
     void zoomIn();
     void zoomOut();
     void set_data_type(unsigned char a_status,
@@ -78,6 +79,7 @@ private:
     int          m_snap;
 
     int m_window_x, m_window_y;
+    int keyY;
 
     /* when highlighting a bunch of events */
     bool m_selecting;

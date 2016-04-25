@@ -145,6 +145,10 @@ private:
     int note_y;
     int note_height;
 
+    //dimensions
+    int keyY;
+    int keyAreaY;
+
 signals:
 
 public slots:

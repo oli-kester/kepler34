@@ -1,9 +1,11 @@
 #include "EditKeys.hpp"
 
-EditKeys::EditKeys(MidiSequence *a_seq, QWidget *parent):
+EditKeys::EditKeys(MidiSequence *a_seq, QWidget *parent, int keyHeight, int keyAreaHeight):
     m_seq(a_seq),
     QWidget(parent),
-    m_key(0)
+    m_key(0),
+    keyY(keyHeight),
+    keyAreaY(keyAreaHeight)
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::MinimumExpanding);
@@ -24,7 +26,7 @@ void EditKeys::paintEvent(QPaintEvent *)
     m_painter->drawRect(0,
                         0,
                         c_keyarea_x,
-                        c_keyarea_y);
+                        keyAreaY);
 
     for ( int i = 0; i < c_num_keys; i++ )
     {
@@ -35,9 +37,9 @@ void EditKeys::paintEvent(QPaintEvent *)
         m_brush->setStyle(Qt::SolidPattern);
         m_painter->setBrush(*m_brush);
         m_painter->drawRect(c_keyoffset_x + 1,
-                            c_key_y * i + 1,
+                            keyY * i + 1,
                             c_key_x - 2,
-                            c_key_y - 1);
+                            keyY - 1);
 
         /* the the key in the octave */
         int key = (c_num_keys - i - 1) % 12;
@@ -54,9 +56,9 @@ void EditKeys::paintEvent(QPaintEvent *)
             m_painter->setPen(*m_pen);
             m_painter->setBrush(*m_brush);
             m_painter->drawRect(c_keyoffset_x + 1,
-                                c_key_y * i + 3,
+                                keyY * i + 3,
                                 c_key_x - 4,
-                                c_key_y - 5);
+                                keyY - 5);
         }
 
         char notes[20];
@@ -73,7 +75,7 @@ void EditKeys::paintEvent(QPaintEvent *)
             //draw "Cx" octave labels
             m_pen->setColor(Qt::black);
             m_painter->setPen(*m_pen);
-            m_painter->drawText(2, c_key_y * i + 11, notes);
+            m_painter->drawText(2, keyY * i + 11, notes);
         }
 
     }
@@ -99,5 +101,5 @@ void EditKeys::mouseMoveEvent(QMouseEvent *event)
 
 QSize EditKeys::sizeHint() const
 {
-    return QSize(c_keyarea_x, c_keyarea_y);
+    return QSize(c_keyarea_x, keyAreaY);
 }

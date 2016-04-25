@@ -137,6 +137,7 @@ MidiPerformance::MidiPerformance()
     mKeyRecord = Qt::Key_R;
 
     m_show_ui_sequence_key = true;
+    setEditorKeyHeight(12);
 
     m_offset                = 0;
     m_control_status        = 0;
@@ -640,6 +641,22 @@ void MidiPerformance::setResumeNoteOns(bool value)
 void MidiPerformance::set_running( bool a_running )
 {
     m_running = a_running;
+}
+
+int MidiPerformance::getEditorKeyboardHeight() const
+{
+    return mEditorKeyboardHeight;
+}
+
+int MidiPerformance::getEditorKeyHeight() const
+{
+    return mEditorKeyHeight;
+}
+
+void MidiPerformance::setEditorKeyHeight(int editorKeyHeight)
+{
+    mEditorKeyHeight = editorKeyHeight;
+    mEditorKeyboardHeight = mEditorKeyHeight * c_num_keys + 1;
 }
 
 bool MidiPerformance::is_running()

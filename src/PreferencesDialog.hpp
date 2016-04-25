@@ -37,6 +37,8 @@ private:
     bool backupJackTransport;
     bool backupTimeMaster;
     bool backupMasterCond;
+    bool backupNoteResume;
+    int  backupKeyHeight;
 
 private slots:
     void updateTransportSupport();
@@ -47,6 +49,7 @@ private slots:
     void okay();
     void cancel();
     void updateNoteResume();
+    void updateKeyHeight();
 };
 
 #endif // PREFERENCESDIALOG_HPP

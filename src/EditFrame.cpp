@@ -94,12 +94,15 @@ EditFrame::EditFrame(QWidget *parent,
     m_palette->setColor(QPalette::Background, Qt::darkGray);
     mContainer->setPalette(*m_palette);
 
-    mKeyboard = new EditKeys(mSeq, mContainer);
+    mKeyboard = new EditKeys(mSeq, mContainer,
+                             mPerformance->getEditorKeyHeight(),
+                             mPerformance->getEditorKeyboardHeight());
     mTimeBar = new EditTimeBar(mSeq, mContainer);
     mNoteGrid = new EditNoteRoll(mPerformance, mSeq, mContainer);
     mNoteGrid->updateEditMode(editMode);
     mEventValues = new EditEventValues(mSeq, mContainer);
-    mEventTriggers = new EditEventTriggers(mSeq, mEventValues, mContainer);
+    mEventTriggers = new EditEventTriggers(mSeq, mEventValues, mContainer,
+                                           mPerformance->getEditorKeyHeight());
 
     m_layout_grid->setSpacing(0);
     m_layout_grid->addWidget(mKeyboard, 1, 0, 1, 1);

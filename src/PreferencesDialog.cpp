@@ -52,6 +52,11 @@ PreferencesDialog::PreferencesDialog(MidiPerformance *perf,
             SIGNAL(stateChanged(int)),
             this,
             SLOT(updateNoteResume()));
+
+    connect(ui->spinKeyHeight,
+            SIGNAL(valueChanged(int)),
+            this,
+            SLOT(updateKeyHeight()));
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -117,6 +122,8 @@ void PreferencesDialog::cancel()
      global_with_jack_transport = backupJackTransport;
      global_with_jack_master_cond = backupMasterCond;
      global_with_jack_master = backupTimeMaster;
+     mPerf->setEditorKeyHeight(backupKeyHeight);
+     mPerf->setResumeNoteOns(backupNoteResume);
 
     syncWithInternals();
 
@@ -143,6 +150,7 @@ void PreferencesDialog::syncWithInternals()
     }
 
     ui->chkNoteResume->setChecked(mPerf->getResumeNoteOns());
+    ui->spinKeyHeight->setValue(mPerf->getEditorKeyHeight());
 }
 
 void PreferencesDialog::backup()
@@ -151,6 +159,8 @@ void PreferencesDialog::backup()
     backupJackTransport = global_with_jack_transport;
     backupMasterCond = global_with_jack_master_cond;
     backupTimeMaster = global_with_jack_master;
+    backupKeyHeight = mPerf->getEditorKeyHeight();
+    backupNoteResume = mPerf->getResumeNoteOns();
 }
 
 void PreferencesDialog::okay()
@@ -163,4 +173,11 @@ void PreferencesDialog::updateNoteResume()
 {
     mPerf->setResumeNoteOns(ui->chkNoteResume->isChecked());
     qDebug() << "Note resume status" << mPerf->getResumeNoteOns() << endl;
+    syncWithInternals();
+}
+
+void PreferencesDialog::updateKeyHeight()
+{
+    mPerf->setEditorKeyHeight(ui->spinKeyHeight->value());
+    syncWithInternals();
 }

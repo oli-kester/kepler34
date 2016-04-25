@@ -2,7 +2,7 @@
 
 EditEventTriggers::EditEventTriggers(MidiSequence *a_seq,
                                      EditEventValues *a_seqdata_wid,
-                                     QWidget *parent):
+                                     QWidget *parent, int keyHeight):
     QWidget(parent),
     m_seq(a_seq),
     m_seqdata_wid(a_seqdata_wid),
@@ -15,7 +15,8 @@ EditEventTriggers::EditEventTriggers(MidiSequence *a_seq,
     m_painting(false),
     m_paste(false),
     m_adding(false),
-    m_status(EVENT_NOTE_ON)
+    m_status(EVENT_NOTE_ON),
+    keyY(keyHeight)
 
 {
     m_old = new QRect();
@@ -576,7 +577,7 @@ void EditEventTriggers::drop_event(long a_tick)
 /* performs a 'snap' on y */
 void EditEventTriggers::snap_y( int *a_y )
 {
-    *a_y = *a_y - (*a_y % c_key_y);
+    *a_y = *a_y - (*a_y % keyY);
 }
 
 /* performs a 'snap' on x */
