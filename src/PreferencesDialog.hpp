@@ -23,7 +23,7 @@ public:
     void addRecentFile(QString path);
 
 private:
-    //makes sure the dialog reflects internal settings
+    //makes sure the dialog properly reflects internal settings
     void syncWithInternals();
 
     //backup preferences incase we cancel changes

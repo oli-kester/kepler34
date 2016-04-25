@@ -42,7 +42,7 @@
          <item>
           <widget class="QSpinBox" name="spinKeyHeight">
            <property name="minimum">
-            <number>5</number>
+            <number>7</number>
            </property>
            <property name="maximum">
             <number>17</number>

@@ -245,6 +245,13 @@ PreferencesFile::parse( MidiPerformance *a_perf )
     sscanf(m_line, "%ld", &resume);
     a_perf->setResumeNoteOns(resume);
 
+    /* key height */
+    long keyHeight = 12;
+    line_after(&file, "[key-height]");
+    sscanf(m_line, "%ld", &keyHeight);
+    a_perf->setEditorKeyHeight(keyHeight);
+
+
     /* interaction method  */
     long method = 0;
     line_after( &file, "[interaction-method]" );
@@ -502,6 +509,10 @@ PreferencesFile::write( MidiPerformance *a_perf  )
     file << "\n\n\n[note-resume]\n\n"
          << "# Resume notes in progress on sequence toggle.\n"
          << a_perf->getResumeNoteOns() << "\n\n";
+
+    file << "\n\n\n[key-height]\n\n"
+         << "# The height of keys in the sequence editor.\n"
+         << a_perf->getEditorKeyHeight() << "\n\n";
 
     file << "\n\n\n[recent-files]\n\n"
          << "# List of 10 recently opened files.\n";
