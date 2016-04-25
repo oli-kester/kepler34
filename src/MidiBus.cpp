@@ -1562,8 +1562,6 @@ MasterMidiBus::set_sequence_input( bool a_state, MidiSequence *a_seq )
 
 void MasterMidiBus::panic()
 {
-    lock();
-
     flush();
 
     //for all buses
@@ -1582,6 +1580,4 @@ void MasterMidiBus::panic()
             }
         }
     }
-
-    unlock();
 }
