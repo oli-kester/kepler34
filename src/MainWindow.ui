@@ -301,7 +301,7 @@
       <item>
        <widget class="QPushButton" name="btnRecSnap">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -319,7 +319,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Snap recorded loop changes to sequence length</string>
+         <string>Snap newly drawn sequence blocks to their length in the Song Editor</string>
         </property>
         <property name="text">
          <string>S</string>

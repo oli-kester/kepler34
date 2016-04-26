@@ -221,14 +221,12 @@ void MainWindow::setSongPlayback(bool playSongData)
     if (playSongData)
     {
         ui->btnRecord->setEnabled(true);
-        ui->btnRecSnap->setEnabled(true);
     }
     else
     {
         setRecording(false);
         ui->btnRecord->setChecked(false);
         ui->btnRecord->setEnabled(false);
-        ui->btnRecSnap->setEnabled(false);
     }
 
     qDebug() << "Song data playback - " << playSongData << endl;

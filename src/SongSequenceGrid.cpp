@@ -336,7 +336,8 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
                 else
                 {
                     // snap to length of sequence
-                    tick = tick - (tick % seq_length);
+                    if (mPerf->getSongRecordSnap())
+                        tick = tick - (tick % seq_length);
 
                     mPerf->push_trigger_undo();
                     mPerf->get_sequence( m_drop_sequence )->add_trigger( tick, seq_length );
@@ -437,14 +438,18 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
     long tick;
     int x = event->x();
 
-    if (  m_adding && m_adding_pressed ){
+    if (  m_adding && m_adding_pressed )
+    {
 
         convert_x( x, &tick );
 
-        if ( mPerf->is_active( m_drop_sequence )){
-
+        if ( mPerf->is_active( m_drop_sequence ))
+        {
             long seq_length = mPerf->get_sequence( m_drop_sequence )->getLength();
-            tick = tick - (tick % seq_length);
+
+            // snap to length of sequence
+            if (mPerf->getSongRecordSnap())
+                tick = tick - (tick % seq_length);
 
             long length = seq_length;
 
@@ -452,14 +457,17 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
                     ->grow_trigger( m_drop_tick, tick, length);
         }
     }
-    else if ( m_moving || m_growing ){
+    else if ( m_moving || m_growing )
+    {
 
         if ( mPerf->is_active( m_drop_sequence)){
 
             convert_x( x, &tick );
             tick -= m_drop_tick_trigger_offset;
 
-            tick = tick - tick % m_snap;
+            // snap to length of sequence
+            if (mPerf->getSongRecordSnap())
+                tick = tick - tick % m_snap;
 
             if ( m_moving )
             {
@@ -510,7 +518,7 @@ void SongSequenceGrid::keyPressEvent(QKeyEvent *event)
 
         case Qt::Key_Z:
             if (event->modifiers() & Qt::ShiftModifier)
-                /*m_mainperf->pop_trigger_redo()*/;
+                mPerf->pop_trigger_redo();
             else
                 mPerf->pop_trigger_undo();
             break;
@@ -541,8 +549,6 @@ void SongSequenceGrid::snap_x( int *a_x )
 
 void SongSequenceGrid::convert_x( int a_x, long *a_tick )
 {
-
-    //    long tick_offset = c_ppqn * 16;
     long tick_offset = 0;
     *a_tick = a_x * (c_perf_scale_x * zoom);
     *a_tick += tick_offset;
@@ -551,8 +557,6 @@ void SongSequenceGrid::convert_x( int a_x, long *a_tick )
 
 void SongSequenceGrid::convert_xy( int a_x, int a_y, long *a_tick, int *a_seq)
 {
-
-    //    long tick_offset =  c_ppqn * 16;
     long tick_offset =  0;
 
     *a_tick = a_x * (c_perf_scale_x * zoom);

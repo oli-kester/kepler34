@@ -153,10 +153,6 @@ void SongFrame::setSnap( int a_snap  )
 
 void SongFrame::setBeatsPerMeasure( int a_beats_per_measure )
 {
-    //    char b[10];
-    //    snprintf(b, sizeof(b), "%d", a_beats_per_measure );
-    //    m_entry_bpm->set_text(b);
-
     mBeatsPerMeasure = a_beats_per_measure;
     setGuides();
 }
@@ -169,10 +165,6 @@ int SongFrame::getBeatsPerMeasure() const
 
 void SongFrame::setBeatLength( int a_beat_width )
 {
-    //    char b[10];
-    //    snprintf(b, sizeof(b), "%d", a_beat_width );
-    //    m_entry_bw->set_text(b);
-
     mBeatWidth = a_beat_width;
     setGuides();
 }
