@@ -10,7 +10,8 @@ SongSequenceGrid::SongSequenceGrid(MidiPerformance *a_perf,
     m_growing(false),
     m_adding(false),
     m_adding_pressed(false),
-    zoom(1)
+    zoom(1),
+    mLastTick(0)
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
@@ -514,6 +515,7 @@ void SongSequenceGrid::mouseReleaseEvent(QMouseEvent *event)
     m_growing = false;
     m_adding_pressed = false;
     mBoxSelect = false;
+    mLastTick = 0;
 }
 
 void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
@@ -560,21 +562,51 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
                 //...and any selected ones
                 for (int seqId = seq_l; seqId <= seq_h; seqId++)
                 {
-                    if (mPerf->is_active(seqId))
+                    if (mPerf->is_active(seqId) && seqId != m_drop_sequence)
                     {
-                        mPerf->get_sequence(seqId)
-                                ->move_selected_triggers_to( tick, true );
+                        if (mLastTick != 0)
+                            mPerf->get_sequence(seqId)
+                                    ->offset_selected_triggers_by(-(mLastTick - tick), true );
                     }
                 }
             }
             if ( m_growing )
             {
                 if ( m_grow_direction )
+                {
+                    //grow this trigger
                     mPerf->get_sequence( m_drop_sequence )
                             ->move_selected_triggers_to( tick, false, 0 );
+
+                    //...and any selected ones
+                    for (int seqId = seq_l; seqId <= seq_h; seqId++)
+                    {
+                        if (mPerf->is_active(seqId) && seqId != m_drop_sequence)
+                        {
+                            if (mLastTick != 0)
+                                mPerf->get_sequence( seqId )
+                                        ->offset_selected_triggers_by(-(mLastTick - tick), false, 0 );
+                        }
+                    }
+                }
+
                 else
+                {
+                    //grow this trigger
                     mPerf->get_sequence( m_drop_sequence )
-                            ->move_selected_triggers_to( tick-1, false, 1 );
+                            ->move_selected_triggers_to( tick - 1, false, 1 );
+
+                    //..and any selected ones
+                    for (int seqId = seq_l; seqId <= seq_h; seqId++)
+                    {
+                        if (mPerf->is_active(seqId) && seqId != m_drop_sequence)
+                        {
+                            if (mLastTick != 0)
+                                mPerf->get_sequence(seqId)
+                                        ->offset_selected_triggers_by(-(mLastTick - tick) - 1, false, 1 );
+                        }
+                    }
+                }
             }
         }
     }
@@ -585,6 +617,8 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
         snap_y( &m_current_y );
         convert_xy( 0, m_current_y, &tick, &m_drop_sequence );
     }
+
+    mLastTick = tick;
 }
 
 void SongSequenceGrid::keyPressEvent(QKeyEvent *event)

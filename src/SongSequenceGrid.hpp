@@ -96,7 +96,9 @@ private:
     int     seq_l;  //lowest seq in window
 
     long    m_drop_tick;
-    long    m_drop_tick_trigger_offset;
+    long    m_drop_tick_trigger_offset; //how far in ticks we clicked from
+                                        //the start of this trigger
+    long    mLastTick; //tick we we're using at last mouse event
     bool    m_sequence_active[c_total_seqs];
     bool    m_moving;
     bool    mBoxSelect;

@@ -308,6 +308,7 @@ public:
     void paste_trigger();
 
     void move_selected_triggers_to(long a_tick, bool a_adjust_offset, int a_which=2);
+    void offset_selected_triggers_by(long a_tick, bool a_adjust_offset, int a_which=2);
     long get_selected_trigger_start_tick();
     long get_selected_trigger_end_tick();
 

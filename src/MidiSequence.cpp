@@ -2815,6 +2815,59 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
     unlock();
 }
 
+void
+MidiSequence::offset_selected_triggers_by(long a_tick, bool a_adjust_offset,
+                                          int a_which)
+{
+    lock();
+
+    long min_tick = 0;
+    long max_tick = 0x7ffffff;
+
+    list<MidiTrigger>::iterator i = m_list_trigger.begin();
+    list<MidiTrigger>::iterator s = m_list_trigger.begin();
+
+    while(  i != m_list_trigger.end() ){
+
+        if ( i->m_selected ){
+
+            s = i;
+
+            if (     i != m_list_trigger.end() &&
+                     ++i != m_list_trigger.end())
+            {
+                max_tick = (*i).m_tick_start - 1;
+            }
+
+            // if we are moving the 0, use first as offset
+            // if we are moving the 1, use the last as the offset
+            // if we are moving both (2), use first as offset
+
+            if ( a_which == 0 || a_which == 2 )
+                s->m_tick_start += a_tick;
+
+            if ( a_which == 1 || a_which == 2 )
+                s->m_tick_end   += a_tick;
+
+            if ( a_adjust_offset )
+            {
+                s->m_offset += a_tick;
+                s->m_offset = adjust_offset( s->m_offset );
+            }
+
+            break;
+        }
+        else
+        {
+            min_tick = (*i).m_tick_end + 1;
+        }
+
+        ++i;
+    }
+
+    unlock();
+}
+
 
 long
 MidiSequence::get_max_trigger()
