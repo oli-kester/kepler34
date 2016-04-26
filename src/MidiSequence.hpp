@@ -470,7 +470,7 @@ public:
     void transpose_notes (int a_steps, int a_scale);
     long getSnap_tick() const;
 
-    //used to trigger notes that are fall over the playhead
+    //used to trigger notes that fall over the playhead
     //(i.e. NOTE_ON is before the given tick,
     //and NOTE_OFF is after)
     void resumeNoteOns(long tick);

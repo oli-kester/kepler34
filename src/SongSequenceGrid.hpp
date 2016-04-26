@@ -88,11 +88,18 @@ private:
     int     m_current_x, m_current_y;
     int     m_drop_sequence;
     int     zoom;
+
+    //sequence selection
+    long    tick_s; //start of tick window
+    long    tick_f; //end of tick window
+    int     seq_h;  //highest seq in window
+    int     seq_l;  //lowest seq in window
+
     long    m_drop_tick;
     long    m_drop_tick_trigger_offset;
     bool    m_sequence_active[c_total_seqs];
     bool    m_moving;
-    bool    m_selecting;
+    bool    mBoxSelect;
     bool    m_growing;
     bool    m_grow_direction;
     bool    m_adding;

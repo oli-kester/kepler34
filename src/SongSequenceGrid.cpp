@@ -264,7 +264,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     int x,y,w,h;
 
 
-    if (m_selecting)
+    if (mBoxSelect)
     {
         //painter reset
         mBrush->setStyle(Qt::NoBrush);
@@ -385,7 +385,7 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
         {
             bool selected = false;
 
-            //operations on a single seq
+            //trigger position operations
             if ( mPerf->is_active( m_drop_sequence ))
             {
                 mPerf->push_trigger_undo();
@@ -403,8 +403,8 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
                     m_grow_direction = true;
                     selected = true;
                     m_drop_tick_trigger_offset = m_drop_tick -
-                            mPerf->get_sequence( m_drop_sequence )->
-                            get_selected_trigger_start_tick( );
+                            mPerf->get_sequence(m_drop_sequence )->
+                            get_selected_trigger_start_tick();
                 }
                 //check for corner drag to grow sequence end
                 else if ( tick >= end_tick -
@@ -442,7 +442,7 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
                 m_current_x = m_drop_x;
                 m_current_y = m_drop_y;
 
-                m_selecting = true;
+                mBoxSelect = true;
             }
         }
     }
@@ -451,6 +451,8 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::RightButton)
     {
         set_adding(true);
+        mPerf->unselectAllTriggers();
+        mBoxSelect = false;
     }
 
     /* middle mouse button, split seq under cursor */
@@ -478,12 +480,8 @@ void SongSequenceGrid::mouseReleaseEvent(QMouseEvent *event)
             m_adding_pressed = false;
         }
 
-        if (m_selecting) //calculate selected seqs in box
+        if (mBoxSelect) //calculate selected seqs in box
         {
-            long tick_s; //start of tick window
-            long tick_f; //end of tick window
-            int seq_h;  //highest seq in window
-            int seq_l;  //lowest seq in window
             int x,y,w,h; //window dimensions
 
             m_current_x = event->x();
@@ -515,7 +513,7 @@ void SongSequenceGrid::mouseReleaseEvent(QMouseEvent *event)
     m_moving = false;
     m_growing = false;
     m_adding_pressed = false;
-    m_selecting = false;
+    mBoxSelect = false;
 }
 
 void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
@@ -525,7 +523,6 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
 
     if (  m_adding && m_adding_pressed )
     {
-
         convert_x( x, &tick );
 
         if ( mPerf->is_active( m_drop_sequence ))
@@ -556,8 +553,19 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
 
             if ( m_moving )
             {
+                //move these triggers
                 mPerf->get_sequence( m_drop_sequence )
                         ->move_selected_triggers_to( tick, true );
+
+                //...and any selected ones
+                for (int seqId = seq_l; seqId <= seq_h; seqId++)
+                {
+                    if (mPerf->is_active(seqId))
+                    {
+                        mPerf->get_sequence(seqId)
+                                ->move_selected_triggers_to( tick, true );
+                    }
+                }
             }
             if ( m_growing )
             {
@@ -570,7 +578,7 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
             }
         }
     }
-    else if (m_selecting) //box selection
+    else if (mBoxSelect) //box selection
     {
         m_current_x = event->x();
         m_current_y = event->y();
