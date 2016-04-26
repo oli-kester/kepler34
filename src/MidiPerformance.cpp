@@ -2406,6 +2406,27 @@ void MidiPerformance::setTick(long tick)
     current_tick = tick;
 }
 
+void MidiPerformance::selectTriggersInRange(int seqL, int seqH,
+                                            long tickS, long tickF)
+{
+    for (int seqId = seqL; seqId <= seqH; seqId++)
+    {
+        for (long tick = tickS; tick <= tickF; tick++)
+        {
+            get_sequence(seqId)->select_trigger(tick);
+        }
+    }
+}
+
+void MidiPerformance::unselectAllTriggers()
+{
+    for (int seqId = 0; seqId < c_max_sequence; seqId++)
+    {
+        if (is_active(seqId))
+            get_sequence(seqId)->unselect_triggers();
+    }
+}
+
 #ifdef JACK_SUPPORT
 void jack_timebase_callback(jack_transport_state_t state,
                             jack_nframes_t nframes,

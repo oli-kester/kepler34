@@ -375,6 +375,9 @@ public:
 
     long get_max_trigger();
 
+    void selectTriggersInRange(int seqL, int seqH, long tickS, long tickF);
+    void unselectAllTriggers();
+
     void set_offset( int a_offset );
 
     void save_playing_state();
