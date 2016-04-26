@@ -789,8 +789,4 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::panic()
 {
     m_main_perf->panic();
-    m_main_perf->stop_jack();
-    m_main_perf->stop();
-    ui->btnPlay->setChecked(false);
-    ui->btnSongPlay->setChecked(false);
 }

@@ -969,20 +969,20 @@ void MidiPerformance::stop_jack(  )
 }
 
 
-void MidiPerformance::position_jack( bool a_state )
+void MidiPerformance::position_jack(bool a_state , long tick)
 {
 
 #ifdef JACK_SUPPORT
 
     if ( m_jack_running ){
-        jack_transport_locate( m_jack_client, 0 );
+        jack_transport_locate( m_jack_client, tick );
     }
     return;
 
 
     jack_nframes_t rate = jack_get_sample_rate( m_jack_client ) ;
 
-    long current_tick = 0;
+    long current_tick = tick;
 
     if ( a_state ){
         current_tick = m_left_tick;
@@ -1365,7 +1365,7 @@ void MidiPerformance::output_func()
 #endif
 
         /* tick and tick fraction */
-        double current_tick   = 0.0;
+        current_tick   = 0.0;
         double total_tick   = 0.0;
         long clock_tick = 0;
         long delta_tick_frac = 0;
@@ -2381,6 +2381,14 @@ void MidiPerformance::panic()
 
     //send an off to every channel on the bus
     m_master_bus.panic();
+}
+
+void MidiPerformance::setTick(long tick)
+{
+    position_jack(true, tick);
+    get_master_midi_bus()->continue_from(tick);
+    current_tick = tick;
+
 }
 
 #ifdef JACK_SUPPORT

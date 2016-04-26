@@ -125,14 +125,25 @@ void SongTimeBar::mousePressEvent(QMouseEvent *event)
 
     tick = tick - (tick % m_snap);
 
-    if (event->button() == Qt::LeftButton)
+    if (event->y() > height() * 0.5)
     {
-        m_mainperf->set_left_tick( tick );
+        //move L/R markers
+
+        if (event->button() == Qt::LeftButton)
+        {
+            m_mainperf->set_left_tick( tick );
+        }
+        if (event->button() == Qt::RightButton)
+        {
+            m_mainperf->set_right_tick( tick + m_snap );
+        }
     }
-    if (event->button() == Qt::RightButton)
+    else
     {
-        m_mainperf->set_right_tick( tick + m_snap );
+        //reposition timecode
+        m_mainperf->setTick(tick);
     }
+
 }
 
 void SongTimeBar::mouseReleaseEvent(QMouseEvent *event)

@@ -80,6 +80,10 @@ public:
     bool m_show_ui_sequence_key;
 
 private:
+    //the global current tick
+    //moved out of output func so we can set position
+    double current_tick;
+
     //andy mute group
     bool m_mute_group[c_gmute_tracks];
     bool m_tracks_mute_state[cSeqsInBank];
@@ -310,7 +314,7 @@ public:
 
     void start_jack();
     void stop_jack();
-    void position_jack( bool a_state );
+    void position_jack(bool a_state, long tick = 0);
 
     void off_sequences();
     void all_notes_off();
@@ -442,6 +446,8 @@ public:
     int getEditorKeyHeight() const;
     void setEditorKeyHeight(int editorKeyHeight);
     int getEditorKeyboardHeight() const;
+
+    void setTick(long tick);
 };
 
 /* located in perform.C */
