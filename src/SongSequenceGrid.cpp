@@ -94,9 +94,6 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     }
 
     //draw background
-
-    long first_measure = 0;
-
     int y_s = 0;
     int y_f = height() / c_names_y;
 
@@ -263,6 +260,38 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
         }
     }
 
+    /* draw selections */
+    int x,y,w,h;
+
+
+    if (m_selecting)
+    {
+        //painter reset
+        mBrush->setStyle(Qt::NoBrush);
+        mPen->setStyle(Qt::SolidLine);
+        mPainter->setBrush(*mBrush);
+        mPainter->setPen(*mPen);
+
+        xy_to_rect ( m_drop_x,
+                     m_drop_y,
+                     m_current_x,
+                     m_current_y,
+                     &x, &y,
+                     &w, &h );
+
+        m_old.x = x;
+        m_old.y = y;
+        m_old.width = w;
+        m_old.height = h + c_names_y;
+
+        mPen->setColor(Qt::black);
+        mPainter->setPen(*mPen);
+        mPainter->drawRect(x,
+                           y,
+                           w,
+                           h + c_names_y );
+    }
+
     //draw border
     mPen->setStyle(Qt::SolidLine);
     mPen->setColor(Qt::black);
@@ -282,6 +311,10 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
     mPainter->setPen(*mPen);
     mPainter->drawLine(progress_x, 1,
                        progress_x, height() - 2);
+
+    delete mPainter;
+    delete mBrush;
+    delete mPen;
 }
 
 int SongSequenceGrid::getSnap() const
@@ -309,21 +342,21 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
     m_drop_x = event->x();
     m_drop_y = event->y();
 
-    convert_xy( m_drop_x, m_drop_y, &m_drop_tick, &m_drop_sequence );
+    convert_xy(m_drop_x, m_drop_y, &m_drop_tick, &m_drop_sequence);
 
     /* left mouse button */
-    if (event->button() == Qt::LeftButton){
-
+    if (event->button() == Qt::LeftButton)
+    {
         long tick = m_drop_tick;
 
         /* add a new seq instance if we didnt select anything,
          * and are holding the right mouse btn */
-        if (m_adding){
-
+        if (m_adding)
+        {
             m_adding_pressed = true;
 
-            if (mPerf->is_active(m_drop_sequence)){
-
+            if (mPerf->is_active(m_drop_sequence))
+            {
                 long seq_length = mPerf->get_sequence( m_drop_sequence )->getLength();
 
                 bool trigger_state = mPerf->get_sequence(m_drop_sequence)->get_trigger_state(tick);
@@ -346,10 +379,10 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
             }
         }
         /* we aren't holding the right mouse btn */
-        else {
-
-            if ( mPerf->is_active( m_drop_sequence )){
-
+        else
+        {
+            if ( mPerf->is_active( m_drop_sequence ))
+            {
                 mPerf->push_trigger_undo();
                 mPerf->get_sequence( m_drop_sequence )->select_trigger( tick );
 
@@ -386,6 +419,16 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
 
                     }
 
+            }
+            else //let's select with a box
+            {
+                //y is always snapped to rows
+                snap_y(&m_drop_y);
+
+                m_current_x = m_drop_x;
+                m_current_y = m_drop_y;
+
+                m_selecting = true;
             }
         }
     }
@@ -431,6 +474,7 @@ void SongSequenceGrid::mouseReleaseEvent(QMouseEvent *event)
     m_moving = false;
     m_growing = false;
     m_adding_pressed = false;
+    m_selecting = false;
 }
 
 void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
@@ -484,6 +528,13 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
                             ->move_selected_triggers_to( tick-1, false, 1 );
             }
         }
+    }
+    else if (m_selecting)
+    {
+        m_current_x = event->x();
+        m_current_y = event->y();
+        snap_y( &m_current_y );
+        convert_xy( 0, m_current_y, &tick, &m_drop_sequence );
     }
 }
 
@@ -544,6 +595,12 @@ void SongSequenceGrid::snap_x( int *a_x )
         mod = 1;
 
     *a_x = *a_x - (*a_x % mod );
+}
+
+
+void SongSequenceGrid::snap_y(int *a_y)
+{
+    *a_y = *a_y - (*a_y % c_names_y);
 }
 
 
@@ -621,4 +678,24 @@ void SongSequenceGrid::zoomIn()
 void SongSequenceGrid::zoomOut()
 {
     zoom *= 2;
+}
+
+void SongSequenceGrid::xy_to_rect(int a_x1, int a_y1, int a_x2, int a_y2,
+                                  int *a_x, int *a_y, int *a_w, int *a_h)
+{
+    if ( a_x1 < a_x2 ){
+        *a_x = a_x1;
+        *a_w = a_x2 - a_x1;
+    } else {
+        *a_x = a_x2;
+        *a_w = a_x1 - a_x2;
+    }
+
+    if ( a_y1 < a_y2 ){
+        *a_y = a_y1;
+        *a_h = a_y2 - a_y1;
+    } else {
+        *a_y = a_y2;
+        *a_h = a_y1 - a_y2;
+    }
 }

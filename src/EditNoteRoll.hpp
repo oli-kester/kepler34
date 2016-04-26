@@ -3,24 +3,13 @@
 
 #include "MidiPerformance.hpp"
 #include "MidiSequence.hpp"
+#include "seq24Rect.hpp"
 
 #include <QWidget>
 #include <QPainter>
 #include <QPen>
 #include <QTimer>
 #include <QMouseEvent>
-
-///
-/// \brief The rect class
-///
-/// Simple rect class from seq24.
-/// TODO replace with QRect
-
-class rect
-{
- public:
-    int x, y, height, width;
-};
 
 ///
 /// \brief The EditNoteRoll class
@@ -92,8 +81,8 @@ private:
     MidiPerformance *m_perform;
     MidiSequence    *m_seq;
 
-    class rect    m_old;
-    class rect    m_selected;
+    seq24Rect    m_old;
+    seq24Rect    m_selected;
 
     QPen        *mPen;
     QBrush      *mBrush;

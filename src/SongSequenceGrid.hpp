@@ -3,6 +3,7 @@
 
 #include "Globals.hpp"
 #include "MidiPerformance.hpp"
+#include "seq24Rect.hpp"
 
 #include <QWidget>
 #include <QTimer>
@@ -60,9 +61,12 @@ public slots:
 
 private:
 
+    void xy_to_rect (int a_x1, int a_y1, int a_x2, int a_y2,
+                     int *a_x, int *a_y, int *a_w, int *a_h);
     void convert_xy( int a_x, int a_y, long *a_ticks, int *a_seq);
     void convert_x(int a_x, long *a_ticks);
     void snap_x(int *a_x);
+    void snap_y(int *a_y);
     void half_split_trigger(int a_sequence, long a_tick);
     void set_adding(bool a_adding);
 
@@ -74,17 +78,21 @@ private:
     QFont        mFont;
     QTimer      *mTimer;
 
+    seq24Rect m_old;
+
     int     m_snap;
     int     m_measure_length;
     int     m_beat_length;
     int     m_roll_length_ticks;
     int     m_drop_x, m_drop_y;
+    int     m_current_x, m_current_y;
     int     m_drop_sequence;
     int     zoom;
     long    m_drop_tick;
     long    m_drop_tick_trigger_offset;
     bool    m_sequence_active[c_total_seqs];
     bool    m_moving;
+    bool    m_selecting;
     bool    m_growing;
     bool    m_grow_direction;
     bool    m_adding;

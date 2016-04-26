@@ -70,7 +70,8 @@ HEADERS  += \
     KeplerStyle.hpp \
     EditEventValues.hpp \
     EditEventTriggers.hpp \
-    AboutDialog.hpp
+    AboutDialog.hpp \
+    seq24Rect.hpp
 
 FORMS    += \
     MainWindow.ui \

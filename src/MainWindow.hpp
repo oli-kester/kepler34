@@ -19,11 +19,15 @@
 #include "KeplerStyle.hpp"
 #include "AboutDialog.hpp"
 
-//the main window of Kepler34
-
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
+
+///
+/// \brief The MainWindow class
+///
+/// The main window of kepler34
 
 class MainWindow : public QMainWindow
 {
@@ -31,7 +35,8 @@ class MainWindow : public QMainWindow
 
 public:
 
-    explicit MainWindow(QWidget *parent = 0, MidiPerformance *a_p = 0);
+    explicit MainWindow(QWidget *parent = 0,
+                        MidiPerformance *a_p = 0);
     ~MainWindow();
 
     //open the file at the given path
