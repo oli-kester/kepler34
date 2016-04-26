@@ -77,6 +77,7 @@ private:
     bool m_thru;
     bool m_queued;
     bool m_oneshot;
+    bool mOffFromSnap; //we've turned off from a snap
 
     bool m_trigger_copied;
 
@@ -473,6 +474,7 @@ public:
     //(i.e. NOTE_ON is before the given tick,
     //and NOTE_OFF is after)
     void resumeNoteOns(long tick);
+    bool getOffFromSnap() const;
 };
 
 

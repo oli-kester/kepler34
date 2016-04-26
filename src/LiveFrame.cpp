@@ -108,8 +108,10 @@ void LiveFrame::drawSequence(int a_seq)
             mPen->setColor(Qt::black);
             mPen->setStyle(Qt::SolidLine);
 
-            if (seq->get_playing() && seq->get_queued())
-                //playing but queued to mute
+            if (seq->get_playing() &&
+                    (seq->get_queued() || seq->getOffFromSnap()))
+                //playing but queued to mute, or
+                //turning off after snapping
             {
                 mPen->setWidth(2);
                 mPen->setColor(Qt::black);
@@ -287,8 +289,14 @@ void LiveFrame::drawSequence(int a_seq)
             else
                 mPen->setColor(Qt::black);
 
-            if ( seq->get_queued()){
+            if ( seq->get_queued() ||
+                 (seq->getOffFromSnap() && seq->get_playing()))
+            {
                 mPen->setColor(Qt::green);
+            }
+            else if (seq->getOneshot())
+            {
+                mPen->setColor(Qt::blue);
             }
 
             mPen->setWidth(1);
@@ -451,7 +459,7 @@ void LiveFrame::mouseReleaseEvent(QMouseEvent *event)
     mButtonDown = false;
 
     /* if we're on a valid sequence, hit the left mouse button,
-     * and are not dragging a sequence - toggle playing*/
+          * and are not dragging a sequence - toggle playing*/
     if (mCurrentSeq != -1
             && event->button() == Qt::LeftButton
             && !mMoving)
@@ -738,7 +746,7 @@ void LiveFrame::keyReleaseEvent(QKeyEvent *event)
 
 void LiveFrame::sequence_key( int a_seq )
 {
-    /* add screen set offset */
+    /* add bank offset */
     a_seq += mPerf->getBank() * c_mainwnd_rows * c_mainwnd_cols;
 
     if ( mPerf->is_active( a_seq ) ){

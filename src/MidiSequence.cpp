@@ -20,6 +20,7 @@ MidiSequence::MidiSequence( ) :
     m_thru(false),
     m_queued(false),
     m_oneshot(false),
+    mOffFromSnap(false),
 
     m_trigger_copied(false),
 
@@ -234,11 +235,14 @@ void MidiSequence::song_recording_stop(long currentTick)
     m_song_recording = false;
 
     //if we've been recording, snap the end of the trigger block
-    //to the next whole sequence interfal
+    //to the next whole sequence interval
     if (mSongRecordingSnap)
+    {
         grow_trigger(m_song_recording_tick,
                      currentTick,
                      m_length - (currentTick % m_length));
+        mOffFromSnap = true;
+    }
 }
 
 MidiSequence::~MidiSequence()
@@ -278,6 +282,7 @@ void MidiSequence::toggle_queued()
 
     m_queued = !m_queued;
     m_queued_tick = m_last_tick - (m_last_tick % m_length) + m_length;
+    mOffFromSnap = true;
 
     unlock();
 }
@@ -290,6 +295,7 @@ void MidiSequence::toggle_oneshot()
 
     m_oneshot = !m_oneshot;
     m_oneshot_tick = m_last_tick - (m_last_tick % m_length) + m_length;
+    mOffFromSnap = true;
 
     unlock();
 }
@@ -303,6 +309,7 @@ MidiSequence::off_queued()
     set_dirty_mp();
 
     m_queued = false;
+    mOffFromSnap = true;
 
     unlock();
 }
@@ -315,6 +322,7 @@ void MidiSequence::off_oneshot()
     set_dirty_mp();
 
     m_oneshot = false;
+    mOffFromSnap = true;
 
     unlock();
 }
@@ -3337,6 +3345,8 @@ MidiSequence::toggle_playing(long tick, bool a_resumeNoteOns)
     {
         resumeNoteOns(tick);
     }
+
+    mOffFromSnap = false;
 }
 
 bool
@@ -3474,6 +3484,11 @@ bool MidiSequence::getOneshot() const
 long MidiSequence::getOneshot_tick() const
 {
     return m_oneshot_tick;
+}
+
+bool MidiSequence::getOffFromSnap() const
+{
+    return mOffFromSnap;
 }
 
 void
