@@ -264,6 +264,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnRecord">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -297,6 +300,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnRecSnap">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -341,7 +347,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Snap recorded loop changes to sequence length</string>
+         <string>Panic - send global note off signal</string>
         </property>
         <property name="text">
          <string>P</string>

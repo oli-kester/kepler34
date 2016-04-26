@@ -1149,11 +1149,26 @@ bool MidiPerformance::get_playback_mode()
     return m_playback_mode;
 }
 
-void MidiPerformance::set_song_recording(bool new_state){
+void MidiPerformance::set_song_recording(bool new_state)
+{
     m_song_recording = new_state;
+
+    //if not recording
+    if (!new_state)
+    {
+        //stop all seqs recording
+        for (int i = 0; i < c_max_sequence; i++)
+        {
+            if (is_active(i))
+            {
+                m_seqs[i]->song_recording_stop(current_tick);
+            }
+        }
+    }
 }
 
-bool MidiPerformance::get_song_recording(){
+bool MidiPerformance::get_song_recording()
+{
     return m_song_recording;
 }
 

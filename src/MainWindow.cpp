@@ -203,7 +203,6 @@ void MainWindow::stopPlaying()
     m_main_perf->stop_jack();
     m_main_perf->stop();
     ui->btnPlay->setChecked(false);
-    ui->btnSongPlay->setChecked(false);
 
     qDebug() << "Stop playing" << endl;
 }
@@ -218,6 +217,19 @@ void MainWindow::setRecording(bool record)
 void MainWindow::setSongPlayback(bool playSongData)
 {
     m_main_perf->set_playback_mode(playSongData);
+
+    if (playSongData)
+    {
+        ui->btnRecord->setEnabled(true);
+        ui->btnRecSnap->setEnabled(true);
+    }
+    else
+    {
+        setRecording(false);
+        ui->btnRecord->setChecked(false);
+        ui->btnRecord->setEnabled(false);
+        ui->btnRecSnap->setEnabled(false);
+    }
 
     qDebug() << "Song data playback - " << playSongData << endl;
 }
