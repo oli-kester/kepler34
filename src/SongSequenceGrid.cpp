@@ -269,6 +269,7 @@ void SongSequenceGrid::paintEvent(QPaintEvent *)
         //painter reset
         mBrush->setStyle(Qt::NoBrush);
         mPen->setStyle(Qt::SolidLine);
+        mPen->setColor(Qt::black);
         mPainter->setBrush(*mBrush);
         mPainter->setPen(*mPen);
 
@@ -342,6 +343,7 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
     m_drop_x = event->x();
     m_drop_y = event->y();
 
+    //convery to get the sequence row we're on
     convert_xy(m_drop_x, m_drop_y, &m_drop_tick, &m_drop_sequence);
 
     /* left mouse button */
@@ -381,6 +383,9 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
         /* we aren't holding the right mouse btn */
         else
         {
+            bool selected = false;
+
+            //operations on a single seq
             if ( mPerf->is_active( m_drop_sequence ))
             {
                 mPerf->push_trigger_undo();
@@ -389,30 +394,36 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
                 long start_tick = mPerf->get_sequence( m_drop_sequence )->get_selected_trigger_start_tick();
                 long end_tick = mPerf->get_sequence( m_drop_sequence )->get_selected_trigger_end_tick();
 
+                //check for corner drag to grow sequence start
                 if ( tick >= start_tick &&
                      tick <= start_tick + (c_perfroll_size_box_click_w * (c_perf_scale_x * zoom)) &&
                      (m_drop_y % c_names_y) <= c_perfroll_size_box_click_w + 1 )
                 {
                     m_growing = true;
                     m_grow_direction = true;
+                    selected = true;
                     m_drop_tick_trigger_offset = m_drop_tick -
                             mPerf->get_sequence( m_drop_sequence )->
                             get_selected_trigger_start_tick( );
                 }
-                else
-                    if ( tick >= end_tick - (c_perfroll_size_box_click_w * (c_perf_scale_x * zoom)) &&
-                         tick <= end_tick &&
-                         (m_drop_y % c_names_y) >= c_names_y - c_perfroll_size_box_click_w - 1 )
+                //check for corner drag to grow sequence end
+                else if ( tick >= end_tick -
+                          (c_perfroll_size_box_click_w * (c_perf_scale_x * zoom))
+                          && tick <= end_tick &&
+                          (m_drop_y % c_names_y) >= c_names_y - c_perfroll_size_box_click_w - 1 )
                     {
                         m_growing = true;
+                        selected = true;
                         m_grow_direction = false;
                         m_drop_tick_trigger_offset =
                                 m_drop_tick -
                                 mPerf->get_sequence( m_drop_sequence )->get_selected_trigger_end_tick( );
                     }
-                    else
+                    //else we're moving the seq
+                    else if (tick <= end_tick && tick >= start_tick)
                     {
                         m_moving = true;
+                        selected = true;
                         m_drop_tick_trigger_offset = m_drop_tick -
                                 mPerf->get_sequence( m_drop_sequence )->
                                 get_selected_trigger_start_tick( );
@@ -420,7 +431,8 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
                     }
 
             }
-            else //let's select with a box
+
+            if (!selected) //let's select with a box
             {
                 //y is always snapped to rows
                 snap_y(&m_drop_y);
