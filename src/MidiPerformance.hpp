@@ -314,7 +314,7 @@ public:
 
     void start_jack();
     void stop_jack();
-    void position_jack(bool a_state, long tick = 0);
+    void position_jack(long tick = 0);
 
     void off_sequences();
     void all_notes_off();

@@ -969,24 +969,24 @@ void MidiPerformance::stop_jack(  )
 }
 
 
-void MidiPerformance::position_jack(bool a_state , long tick)
+void MidiPerformance::position_jack(long tick)
 {
 
 #ifdef JACK_SUPPORT
 
-    if ( m_jack_running ){
-        jack_transport_locate( m_jack_client, tick );
-    }
-    return;
+    //    if ( m_jack_running ){
+    //        jack_transport_locate( m_jack_client, tick );
+    //    }
+    //    return;
 
 
     jack_nframes_t rate = jack_get_sample_rate( m_jack_client ) ;
 
     long current_tick = tick;
 
-    if ( a_state ){
-        current_tick = m_left_tick;
-    }
+    //    if ( a_state ){
+    //        current_tick = m_left_tick;
+    //    }
 
     jack_position_t pos;
 
@@ -1509,10 +1509,9 @@ void MidiPerformance::output_func()
 
 
                     /* convert ticks */
-                    jack_ticks_converted =
-                            m_jack_tick * ((double) c_ppqn /
-                                           (m_jack_pos.ticks_per_beat *
-                                            m_jack_pos.beat_type / 4.0  ));
+                    jack_ticks_converted =                             m_jack_tick * ((double) c_ppqn /
+                                                                                      (m_jack_pos.ticks_per_beat *
+                                                                                       m_jack_pos.beat_type / 4.0  ));
 
                     set_orig_ticks( (long) jack_ticks_converted );
                     current_tick = clock_tick = total_tick = jack_ticks_converted_last = jack_ticks_converted;
@@ -2385,10 +2384,11 @@ void MidiPerformance::panic()
 
 void MidiPerformance::setTick(long tick)
 {
-    position_jack(true, tick);
+    if (m_jack_running)
+        position_jack(tick);
+
     get_master_midi_bus()->continue_from(tick);
     current_tick = tick;
-
 }
 
 #ifdef JACK_SUPPORT
@@ -2481,5 +2481,4 @@ void print_jack_pos( jack_position_t* jack_pos ){
     printf( "    frame_time       [%lf]\n", jack_pos->frame_time );
     printf( "    next_time        [%lf]\n", jack_pos->next_time );
 }
-
-#endif
+#endif //JACK_SUPPORT
