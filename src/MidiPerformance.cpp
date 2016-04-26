@@ -2413,7 +2413,8 @@ void MidiPerformance::selectTriggersInRange(int seqL, int seqH,
     {
         for (long tick = tickS; tick <= tickF; tick++)
         {
-            get_sequence(seqId)->select_trigger(tick);
+            if (is_active(seqId))
+                get_sequence(seqId)->select_trigger(tick);
         }
     }
 }
