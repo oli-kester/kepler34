@@ -2704,7 +2704,7 @@ MidiSequence::get_selected_trigger_end_tick()
 
 
 void
-MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int a_which )
+MidiSequence::move_selected_triggers_to(long a_tick, bool a_adjust_offset, trigger_edit editMode )
 {
 
     lock();
@@ -2714,10 +2714,6 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
 
     list<MidiTrigger>::iterator i = m_list_trigger.begin();
     list<MidiTrigger>::iterator s = m_list_trigger.begin();
-
-
-    // min_tick][0                1][max_tick
-    //                   2
 
     while(  i != m_list_trigger.end() ){
 
@@ -2738,7 +2734,7 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
 
             long a_delta_tick = 0;
 
-            if ( a_which == 1 )
+            if ( editMode == 1 )
             {
                 a_delta_tick = a_tick - s->m_tick_end;
 
@@ -2756,7 +2752,7 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
                 }
             }
 
-            if ( a_which == 0 )
+            if ( editMode == 0 )
             {
                 a_delta_tick = a_tick - s->m_tick_start;
 
@@ -2774,7 +2770,7 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
                 }
             }
 
-            if ( a_which == 2 )
+            if ( editMode == 2 )
             {
                 a_delta_tick = a_tick - s->m_tick_start;
 
@@ -2791,10 +2787,10 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
                 }
             }
 
-            if ( a_which == 0 || a_which == 2 )
+            if ( editMode == 0 || editMode == 2 )
                 s->m_tick_start += a_delta_tick;
 
-            if ( a_which == 1 || a_which == 2 )
+            if ( editMode == 1 || editMode == 2 )
                 s->m_tick_end   += a_delta_tick;
 
             if ( a_adjust_offset ){
@@ -2816,52 +2812,30 @@ MidiSequence::move_selected_triggers_to( long a_tick, bool a_adjust_offset, int 
 }
 
 void
-MidiSequence::offset_selected_triggers_by(long a_tick, bool a_adjust_offset,
-                                          int a_which)
+MidiSequence::offset_selected_triggers_by(long a_tick,
+                                          trigger_edit editMode)
 {
     lock();
 
-    long min_tick = 0;
-    long max_tick = 0x7ffffff;
 
     list<MidiTrigger>::iterator i = m_list_trigger.begin();
     list<MidiTrigger>::iterator s = m_list_trigger.begin();
 
-    while(  i != m_list_trigger.end() ){
-
-        if ( i->m_selected ){
-
-            s = i;
-
-            if (     i != m_list_trigger.end() &&
-                     ++i != m_list_trigger.end())
-            {
-                max_tick = (*i).m_tick_start - 1;
-            }
-
-            // if we are moving the 0, use first as offset
-            // if we are moving the 1, use the last as the offset
-            // if we are moving both (2), use first as offset
-
-            if ( a_which == 0 || a_which == 2 )
-                s->m_tick_start += a_tick;
-
-            if ( a_which == 1 || a_which == 2 )
-                s->m_tick_end   += a_tick;
-
-            if ( a_adjust_offset )
-            {
-                s->m_offset += a_tick;
-                s->m_offset = adjust_offset( s->m_offset );
-            }
-
-            break;
-        }
-        else
+    while(i != m_list_trigger.end())
+    {
+        if ( i->m_selected )
         {
-            min_tick = (*i).m_tick_end + 1;
-        }
+            if (editMode == GROW_START ||
+                    editMode == MOVE)
+                i->m_tick_start += a_tick;
 
+            if (editMode == GROW_END ||
+                    editMode == MOVE)
+                i->m_tick_end += a_tick;
+
+            if (editMode == MOVE)
+                i->m_offset += a_tick;
+        }
         ++i;
     }
 

@@ -1,7 +1,10 @@
-/* class to handle triggers for notes and seq on/off */
-
 #ifndef MIDITRIGGER_HPP
 #define MIDITRIGGER_HPP
+
+///
+/// \brief The MidiTrigger class
+///
+/// Class holding the Song Editor's seq on/off triggers
 
 class MidiTrigger
 {

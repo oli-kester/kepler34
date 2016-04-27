@@ -23,6 +23,13 @@ enum draw_type
     DRAW_NOTE_OFF
 };
 
+enum trigger_edit
+{
+    GROW_START = 0, //grow the start of the trigger
+    GROW_END = 1, //grow the end of the trigger
+    MOVE = 2 //move the entire trigger block
+};
+
 ///
 /// \brief The MidiSequence class
 ///
@@ -307,8 +314,8 @@ public:
     void copy_selected_trigger();
     void paste_trigger();
 
-    void move_selected_triggers_to(long a_tick, bool a_adjust_offset, int a_which=2);
-    void offset_selected_triggers_by(long a_tick, bool a_adjust_offset, int a_which=2);
+    void move_selected_triggers_to(long a_tick, bool a_adjust_offset, trigger_edit editMode = MOVE);
+    void offset_selected_triggers_by(long a_tick, trigger_edit editMode = MOVE);
     long get_selected_trigger_start_tick();
     long get_selected_trigger_end_tick();
 

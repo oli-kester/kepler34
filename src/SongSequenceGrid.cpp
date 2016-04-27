@@ -11,7 +11,9 @@ SongSequenceGrid::SongSequenceGrid(MidiPerformance *a_perf,
     m_adding(false),
     m_adding_pressed(false),
     zoom(1),
-    mLastTick(0)
+    mLastTick(0),
+    seq_h(-1),
+    seq_l(-1)
 {
     setSizePolicy(QSizePolicy::Fixed,
                   QSizePolicy::Fixed);
@@ -336,10 +338,10 @@ QSize SongSequenceGrid::sizeHint() const
 
 void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
 {
-    if ( mPerf->is_active( m_drop_sequence ))
-    {
-        mPerf->get_sequence( m_drop_sequence )->unselect_triggers( );
-    }
+//    if ( mPerf->is_active( m_drop_sequence ))
+//    {
+//        mPerf->get_sequence( m_drop_sequence )->unselect_triggers( );
+//    }
 
     m_drop_x = event->x();
     m_drop_y = event->y();
@@ -390,6 +392,16 @@ void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
             if ( mPerf->is_active( m_drop_sequence ))
             {
                 mPerf->push_trigger_undo();
+
+                //if the current seq is not in our selection range,
+                //bin our selection
+                if (m_drop_sequence > seq_h || m_drop_sequence < seq_l ||
+                        tick < tick_s || tick > tick_f)
+                {
+                    mPerf->unselectAllTriggers();
+                    seq_h = seq_l = m_drop_sequence;
+                }
+
                 mPerf->get_sequence( m_drop_sequence )->select_trigger( tick );
 
                 long start_tick = mPerf->get_sequence( m_drop_sequence )->get_selected_trigger_start_tick();
@@ -555,55 +567,43 @@ void SongSequenceGrid::mouseMoveEvent(QMouseEvent *event)
 
             if ( m_moving )
             {
-                //move these triggers
-                mPerf->get_sequence( m_drop_sequence )
-                        ->move_selected_triggers_to( tick, true );
-
-                //...and any selected ones
+                //move all selected triggers
                 for (int seqId = seq_l; seqId <= seq_h; seqId++)
                 {
-                    if (mPerf->is_active(seqId) && seqId != m_drop_sequence)
+                    if (mPerf->is_active(seqId))
                     {
                         if (mLastTick != 0)
                             mPerf->get_sequence(seqId)
-                                    ->offset_selected_triggers_by(-(mLastTick - tick), true );
+                                    ->offset_selected_triggers_by(-(mLastTick - tick));
                     }
                 }
             }
+
             if ( m_growing )
             {
                 if ( m_grow_direction )
                 {
-                    //grow this trigger
-                    mPerf->get_sequence( m_drop_sequence )
-                            ->move_selected_triggers_to( tick, false, 0 );
-
-                    //...and any selected ones
+                    //grow start of all selected triggers
                     for (int seqId = seq_l; seqId <= seq_h; seqId++)
                     {
-                        if (mPerf->is_active(seqId) && seqId != m_drop_sequence)
+                        if (mPerf->is_active(seqId))
                         {
                             if (mLastTick != 0)
                                 mPerf->get_sequence( seqId )
-                                        ->offset_selected_triggers_by(-(mLastTick - tick), false, 0 );
+                                        ->offset_selected_triggers_by(-(mLastTick - tick), GROW_START );
                         }
                     }
                 }
-
                 else
                 {
-                    //grow this trigger
-                    mPerf->get_sequence( m_drop_sequence )
-                            ->move_selected_triggers_to( tick - 1, false, 1 );
-
-                    //..and any selected ones
+                    //grow end of all selected triggers
                     for (int seqId = seq_l; seqId <= seq_h; seqId++)
                     {
-                        if (mPerf->is_active(seqId) && seqId != m_drop_sequence)
+                        if (mPerf->is_active(seqId))
                         {
                             if (mLastTick != 0)
                                 mPerf->get_sequence(seqId)
-                                        ->offset_selected_triggers_by(-(mLastTick - tick) - 1, false, 1 );
+                                        ->offset_selected_triggers_by(-(mLastTick - tick) - 1, GROW_END );
                         }
                     }
                 }
