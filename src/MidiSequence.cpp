@@ -2939,17 +2939,25 @@ MidiSequence::unselect_triggers()
 
 
 void
-MidiSequence::del_selected_trigger()
+MidiSequence::del_selected_triggers()
 {
     lock();
 
     list<MidiTrigger>::iterator i;
-
-    for ( i = m_list_trigger.begin(); i != m_list_trigger.end(); i++ ){
-
-        if ( i->m_selected ){
-            m_list_trigger.erase(i);
-            break;
+    i = m_list_trigger.begin();
+    while (i != m_list_trigger.end())
+    {
+        if (i->m_selected)
+        {
+            //erasing invalidates the pointer
+            //so copy it and iterate before erasing
+            list<MidiTrigger>::iterator s = i;
+            i++;
+            m_list_trigger.erase(s);
+        }
+        else
+        {
+            i++;
         }
     }
 
@@ -2961,7 +2969,7 @@ void
 MidiSequence::cut_selected_trigger()
 {
     copy_selected_trigger();
-    del_selected_trigger();
+    del_selected_triggers();
 }
 
 

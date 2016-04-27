@@ -338,10 +338,10 @@ QSize SongSequenceGrid::sizeHint() const
 
 void SongSequenceGrid::mousePressEvent(QMouseEvent *event)
 {
-//    if ( mPerf->is_active( m_drop_sequence ))
-//    {
-//        mPerf->get_sequence( m_drop_sequence )->unselect_triggers( );
-//    }
+    //    if ( mPerf->is_active( m_drop_sequence ))
+    //    {
+    //        mPerf->get_sequence( m_drop_sequence )->unselect_triggers( );
+    //    }
 
     m_drop_x = event->x();
     m_drop_y = event->y();
@@ -628,7 +628,9 @@ void SongSequenceGrid::keyPressEvent(QKeyEvent *event)
     {
         //delete selected notes
         mPerf->push_trigger_undo();
-        mPerf->get_sequence( m_drop_sequence )->del_selected_trigger();
+        for (int seqId = seq_l; seqId <= seq_h; seqId++)
+            if (mPerf->is_active(seqId))
+                mPerf->get_sequence( seqId )->del_selected_triggers();
     }
 
     //Ctrl + ... events

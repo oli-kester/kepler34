@@ -309,7 +309,7 @@ public:
     bool intersectNotes( long position, long position_note, long& start, long& end, long& note );
     bool intersectEvents( long posstart, long posend, long status, long& start );
 
-    void del_selected_trigger();
+    void del_selected_triggers();
     void cut_selected_trigger();
     void copy_selected_trigger();
     void paste_trigger();
