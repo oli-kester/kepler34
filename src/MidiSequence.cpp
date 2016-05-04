@@ -2949,11 +2949,11 @@ MidiSequence::del_selected_triggers()
     {
         if (i->m_selected)
         {
-            //erasing invalidates the pointer
-            //so copy it and iterate before erasing
-            list<MidiTrigger>::iterator s = i;
+            //erasing invalidates the pointer,
+            //so we copy it and iterate before erasing
+            list<MidiTrigger>::iterator d = i;
             i++;
-            m_list_trigger.erase(s);
+            m_list_trigger.erase(d);
         }
         else
         {

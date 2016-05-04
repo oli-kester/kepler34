@@ -29,5 +29,8 @@
     </qresource>
     <qresource prefix="/">
         <file>pixmaps/drum.xpm</file>
+        <file>pixmaps/logo.xpm</file>
+        <file>pixmaps/panic.xpm</file>
+        <file>pixmaps/song-snap.xpm</file>
     </qresource>
 </RCC>

@@ -33,6 +33,10 @@
   <property name="windowTitle">
    <string>Kepler34</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="kepler34.qrc">
+    <normaloff>:/pixmaps/logo.xpm</normaloff>:/pixmaps/logo.xpm</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -322,7 +326,11 @@
          <string>Snap newly drawn sequence blocks to their length in the Song Editor</string>
         </property>
         <property name="text">
-         <string>S</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="kepler34.qrc">
+          <normaloff>:/pixmaps/song-snap.xpm</normaloff>:/pixmaps/song-snap.xpm</iconset>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -350,7 +358,17 @@
          <string>Panic - send global note off signal</string>
         </property>
         <property name="text">
-         <string>P</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="kepler34.qrc">
+          <normaloff>:/pixmaps/panic.xpm</normaloff>:/pixmaps/panic.xpm</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
         <property name="checkable">
          <bool>false</bool>
@@ -654,6 +672,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="kepler34.qrc"/>
+ </resources>
  <connections/>
 </ui>
