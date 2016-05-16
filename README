@@ -22,3 +22,73 @@ Requirements -
 Based heavily on the seq24 source -
 
 http://filter24.org/seq24/
+
+--- Usage ---
+
+< Live Tab >
+
+The Live tab contains banks of sequences. Double click on a slot to add a 
+new sequence, or right click for further options.
+
+Sequences can be toggled with the mouse, or with the corresponding keys shown
+on each thumbnail.
+
+Hold down "/" to queue a sequence to start on the next full loop.
+
+Hold down "." to queue a sequence one-shot.
+
+Banks can be switched between with the [ ]  keys.
+
+< Edit Tab >
+
+The Edit tab is used to edit sequences. Right click on a sequence in the 
+Live tab to edit it here. To enter new notes, hold down the right mouse 
+button and draw with the left mouse button. Selections are made with 
+the left mouse button. 
+
+Hotkeys - 
+
+- Ctrl+X = Cut
+- Ctrl+C = Copy
+- Ctrl+V = Paste
+- Del = Delete
+- Ctrl+Z = Undo
+- Ctrl+Shift+Z = Redo
+- Ctrl+X = Cut
+
+Switch to a percussion-friendly Drum Mode with the button located top-right.
+
+Control values (currently just note velocity) are altered at the bottom of
+the sequence grid. 
+
+Key height is configurable in the preferences.
+
+< Song Tab >
+
+The Song tab contains the layout of the track. New sequence triggers 
+are drawn just like notes in the sequence editor. The length of triggers
+can be adjusted using the little boxes at either end.
+
+Hotkeys - 
+
+- Ctrl+X = Cut
+- Ctrl+C = Copy
+- Ctrl+V = Paste
+- Del = Delete
+- Ctrl+Z = Undo
+- Ctrl+Shift+Z = Redo
+- Ctrl+X = Cut
+
+Position transport by clicking on the top half of the transport bar.
+
+Set loop points with right/left clicks on the bottom half of the transport bar.
+
+< Further Features >
+
+In the main window tools - 
+
+- Control transport with the play/stop buttons
+- Turn on/off the song data using the song playback button
+- Record live sequence changes into the song data with the record button
+- Snap recorded changes to the grid with the snap button
+- Send note off down all MIDI channels using the panic button
